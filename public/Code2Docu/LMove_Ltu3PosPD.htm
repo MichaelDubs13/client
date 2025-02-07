@@ -1,0 +1,589 @@
+﻿<!DOCTYPE html><html lang='en-US'>
+<head>
+<script src='../../../Code2Docu/katex/katex.min.js'></script>
+<script src='../../../Code2Docu/katex/katexStartUp.js'></script>
+<link rel='stylesheet' href='../../../Code2Docu/katex/katex.min.css' />
+<!--[if lt IE 9]><script src='../../../Code2Docu/katex/html5shiv-printshiv-3.7.3.min.js'></script><![endif]-->
+<link rel='stylesheet' href='../../../Code2Docu/highlightJS/scl.css'>
+<script src='../../../Code2Docu/highlightJS/highlight.pack.js'></script>
+<script src='../../../Code2Docu/highlightJS/scl.js'></script>
+<script src='../../../Code2Docu/Code2DocuScript.js'></script>
+<script type='text/javascript'>
+hljs.registerLanguage('scl', window.hljsDefineSCL);
+hljs.initHighlightingOnLoad();
+</script>
+<link rel='stylesheet' href='../../../Code2Docu/style.css'>
+<link rel='stylesheet' href='../../../Code2Docu/styleCustomized.css'>
+<meta http-equiv='Content-type' content='text/html;charset=UTF-8'>
+<title>LMove_Ltu3PosPD (FB / V7.3.0)</title>
+</head>
+<body>
+ <div class="containerFluid"> 
+ <h1>LMove_Ltu3PosPD (FB / V7.3.0)</h1>
+<div class='langSelectionBox'>
+<a href='..\..\en-US\Folders\LCode2Docu.htm' target='_self'>Overview</a> 
+</div></div><hr>
+<h2>Short description</h2>
+<p>This function block serves as the primary controller for a 3 position conveyor lift transfer unit (LTU).</p>
+
+<h2>Interface description</h2>
+<h3>Block interface</h3>
+<table class='block'><thead><tr><th colspan='2'> </th><th colspan='5'>LMove_Ltu3PosPD (FB)</th><th colspan='2'> </th></tr></thead><tbody>
+<tr class='in out'><td rowspan='2'>WString[24]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>plantIdentifier</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>generalAlarm</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>WString[35]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>tecUnitDescription</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>home</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>WString[9]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletID</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>lower</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>WString[15]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>additionalAlarmText</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>lowerStopper</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Int</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>tecUnitNumber</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>raise</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enableBlock</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>beltRunForward</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>hardwareOK</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>beltRunReverse</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>safetyOK</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>extendCushionPassThrou</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enableMove</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>retractCushionPassThrou</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enableForward</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>extendCushionLeft</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enableReverse</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>retractCushionLeft</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>hideAlarmAll</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>lowerCushionLeft</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Word</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>hideAlarmMask</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>raiseCushionLeft</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>runWithoutEnable</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>extendCushionRight</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>firstScan</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>retractCushionRight</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>typeOpmodeOut</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>opmodeUserIntertace</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>lowerCushionRight</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletLeave</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>raiseCushionRight</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletPresent</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletAreaMonitoring</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timePartPresentOnDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timePartPresentOffDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeLeaveOnDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeLeaveOffDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeSubstateTimeout</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeReceivedFeedbackDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeLower</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeCushionFeedback</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletCycleEnabled</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>homed</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>lowered</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>raised</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>stopperLowered</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>cushionLeftLowered</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>cushionLeftRaised</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>cushionRightLowered</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>cushionRightRaised</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>externalReceivedFeedback</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>receiveLeftPrepared</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>receiveRightPrepared</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>sendLeftPrepared</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>sendRightPrepared</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>downstreamClearLeft</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>downstreamClearMain</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>downstreamMainPalletReceived</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>downstreamClearRight</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>Array[*] of LMove_typeLtu3PosInterfaceHmi</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interfaceHmi</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Array[*] of LMove_typeLtu3PosInterfaceHmi</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>LMove_typeLtu3PosIf</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interfaceLtu</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>LMove_typeLtu3PosIf</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>Array[*] of LMove_typeLtu3PosPara</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interfaceParameter</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Array[*] of LMove_typeLtu3PosPara</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</tbody><tfoot><tr><td colspan='2'>&nbsp;</td><td colspan='5'>&nbsp;</td><td colspan='2'>&nbsp;</td></tr></tfoot></table>
+<h3>Input parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th class='default'>Default value</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>plantIdentifier</td><td>WString[24]</td>
+<td>---</td>
+<td>Plant identifier</td></tr>
+<tr><td>tecUnitDescription</td><td>WString[35]</td>
+<td>---</td>
+<td>Unit description</td></tr>
+<tr><td>palletID</td><td>WString[9]</td>
+<td>---</td>
+<td>Current pallet-id. Used for alarms</td></tr>
+<tr><td>additionalAlarmText</td><td>WString[15]</td>
+<td>---</td>
+<td>Additional text appended to alarms</td></tr>
+<tr><td>tecUnitNumber</td><td>Int</td>
+<td>0</td>
+<td>Unit number</td></tr>
+<tr><td>enableBlock</td><td>Bool</td>
+<td>TRUE</td>
+<td>Enable block</td></tr>
+<tr><td>hardwareOK</td><td>Bool</td>
+<td>TRUE</td>
+<td>Hardware OK</td></tr>
+<tr><td>safetyOK</td><td>Bool</td>
+<td>TRUE</td>
+<td>Safety OK</td></tr>
+<tr><td>enableMove</td><td>Bool</td>
+<td>FALSE</td>
+<td>Enable move</td></tr>
+<tr><td>enableForward</td><td>Bool</td>
+<td>FALSE</td>
+<td>Release forward (automatic / manual)</td></tr>
+<tr><td>enableReverse</td><td>Bool</td>
+<td>FALSE</td>
+<td>Release backward (automatic / manual)</td></tr>
+<tr><td>hideAlarmAll</td><td>Bool</td>
+<td>FALSE</td>
+<td>Hide Alarm All</td></tr>
+<tr><td>hideAlarmMask</td><td>Word</td>
+<td>16#0000</td>
+<td>Hide Alarm Mask (see description)</td></tr>
+<tr><td>runWithoutEnable</td><td>Bool</td>
+<td>FALSE</td>
+<td>Run without ENABLE</td></tr>
+<tr><td>firstScan</td><td>Bool</td>
+<td>FALSE</td>
+<td>First scan</td></tr>
+<tr><td>opmodeUserIntertace</td><td>typeOpmodeOut</td>
+<td>---</td>
+<td>User interface OPmode</td></tr>
+<tr><td>palletLeave</td><td>Bool</td>
+<td>FALSE</td>
+<td>Pallet leave(with debounce)</td></tr>
+<tr><td>palletPresent</td><td>Bool</td>
+<td>FALSE</td>
+<td>Pallet present (with debounce)</td></tr>
+<tr><td>palletAreaMonitoring</td><td>Bool</td>
+<td>FALSE</td>
+<td>Diagonal Pallet present sensor (0=Off or not existent)</td></tr>
+<tr><td>timePartPresentOnDebounce</td><td>Time</td>
+<td>T#0ms</td>
+<td>Part present on debounce setting</td></tr>
+<tr><td>timePartPresentOffDebounce</td><td>Time</td>
+<td>T#0ms</td>
+<td>Part present off debounce setting</td></tr>
+<tr><td>timeLeaveOnDebounce</td><td>Time</td>
+<td>T#0ms</td>
+<td>Leave on debounce setting</td></tr>
+<tr><td>timeLeaveOffDebounce</td><td>Time</td>
+<td>T#0ms</td>
+<td>Leave off debounce setting</td></tr>
+<tr><td>timeSubstateTimeout</td><td>Time</td>
+<td>T#15000ms</td>
+<td>Timeout time setting</td></tr>
+<tr><td>timeReceivedFeedbackDebounce</td><td>Time</td>
+<td>T#0ms</td>
+<td>Pallet received debounce setting</td></tr>
+<tr><td>timeLower</td><td>Time</td>
+<td>T#0ms</td>
+<td>Lowering timer</td></tr>
+<tr><td>timeCushionFeedback</td><td>Time</td>
+<td>T#0ms</td>
+<td>Debounce for all cushion feedback (extend and retract)</td></tr>
+<tr><td>palletCycleEnabled</td><td>Bool</td>
+<td>FALSE</td>
+<td>Auto cycle enabled</td></tr>
+<tr><td>homed</td><td>Bool</td>
+<td>FALSE</td>
+<td>LTU is homed</td></tr>
+<tr><td>lowered</td><td>Bool</td>
+<td>FALSE</td>
+<td>LTU is lowered</td></tr>
+<tr><td>raised</td><td>Bool</td>
+<td>FALSE</td>
+<td>LTU is raised</td></tr>
+<tr><td>stopperLowered</td><td>Bool</td>
+<td>FALSE</td>
+<td>Stopper is lowered</td></tr>
+<tr><td>cushionLeftLowered</td><td>Bool</td>
+<td>FALSE</td>
+<td>Left-Cushion is lowered</td></tr>
+<tr><td>cushionLeftRaised</td><td>Bool</td>
+<td>FALSE</td>
+<td>Left-Cushion is raised</td></tr>
+<tr><td>cushionRightLowered</td><td>Bool</td>
+<td>FALSE</td>
+<td>Right-Cushion is lowered</td></tr>
+<tr><td>cushionRightRaised</td><td>Bool</td>
+<td>FALSE</td>
+<td>Right-Cushion is raised</td></tr>
+<tr><td>externalReceivedFeedback</td><td>Bool</td>
+<td>FALSE</td>
+<td>Pallet received</td></tr>
+<tr><td>receiveLeftPrepared</td><td>Bool</td>
+<td>FALSE</td>
+<td>Prepared to receive left</td></tr>
+<tr><td>receiveRightPrepared</td><td>Bool</td>
+<td>FALSE</td>
+<td>Prepared to receive right</td></tr>
+<tr><td>sendLeftPrepared</td><td>Bool</td>
+<td>FALSE</td>
+<td>Prepared to send left</td></tr>
+<tr><td>sendRightPrepared</td><td>Bool</td>
+<td>FALSE</td>
+<td>Prepared to send right</td></tr>
+<tr><td>downstreamClearLeft</td><td>Bool</td>
+<td>FALSE</td>
+<td>Left path of LTU is ready to accept a pallet</td></tr>
+<tr><td>downstreamClearMain</td><td>Bool</td>
+<td>FALSE</td>
+<td>Main path ahead of LTU is ready to accept a pallet</td></tr>
+<tr><td>downstreamMainPalletReceived</td><td>Bool</td>
+<td>FALSE</td>
+<td>Main path received pallet</td></tr>
+<tr><td>downstreamClearRight</td><td>Bool</td>
+<td>FALSE</td>
+<td>Right path of LTU is ready to accept a pallet</td></tr>
+</tbody></table>
+<h3>Output parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>generalAlarm</td><td>Bool</td>
+<td>General Alarm</td></tr>
+<tr><td>home</td><td>Bool</td>
+<td>Home LTU (Actuator)</td></tr>
+<tr><td>lower</td><td>Bool</td>
+<td>Lower LTU (Actuator)</td></tr>
+<tr><td>lowerStopper</td><td>Bool</td>
+<td>Lower Stopper (Solenoid)</td></tr>
+<tr><td>raise</td><td>Bool</td>
+<td>Raise LTU (Actuator)</td></tr>
+<tr><td>beltRunForward</td><td>Bool</td>
+<td>Run Forward (Belt)</td></tr>
+<tr><td>beltRunReverse</td><td>Bool</td>
+<td>Run Reverse (Belt)</td></tr>
+<tr><td>extendCushionPassThrou</td><td>Bool</td>
+<td>Extend pass through cushion</td></tr>
+<tr><td>retractCushionPassThrou</td><td>Bool</td>
+<td>Retract pass through cushion</td></tr>
+<tr><td>extendCushionLeft</td><td>Bool</td>
+<td>Extend left cushion</td></tr>
+<tr><td>retractCushionLeft</td><td>Bool</td>
+<td>Retract left cushion</td></tr>
+<tr><td>lowerCushionLeft</td><td>Bool</td>
+<td>Lower left cushion</td></tr>
+<tr><td>raiseCushionLeft</td><td>Bool</td>
+<td>Raise left cushion</td></tr>
+<tr><td>extendCushionRight</td><td>Bool</td>
+<td>Extend right cushion</td></tr>
+<tr><td>retractCushionRight</td><td>Bool</td>
+<td>Retract right cushion</td></tr>
+<tr><td>lowerCushionRight</td><td>Bool</td>
+<td>Lower right cushion</td></tr>
+<tr><td>raiseCushionRight</td><td>Bool</td>
+<td>Raise right cushion</td></tr>
+</tbody></table>
+<h3>In/Out parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>interfaceHmi</td><td>Array[*] of LMove_typeLtu3PosInterfaceHmi</td>
+<td>HMI interface</td></tr>
+<tr><td>interfaceLtu</td><td>LMove_typeLtu3PosIf</td>
+<td>Unit interface</td></tr>
+<tr><td>interfaceParameter</td><td>Array[*] of LMove_typeLtu3PosPara</td>
+<td>Interface parameters. Used to configure LTU unit's function</td></tr>
+</tbody></table>
+<h3>Retain static parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th class='retain'>Retain</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>codeViewCondControl</td><td>Struct</td><td class='retain'>✓</td><td>Settings to enable Code view to see conditions for auto forward or reverse</td></tr>
+</tbody></table>
+<h2>Functional description</h2>
+<p><a href="https://issues.teslamotors.com/browse/ACE-12057" target='_blank' >LMove_Ltu3PosPD</a> serves as the primary controller for a 3 position conveyor lift transfer unit (LTU).</p>
+<p>A 3 position LTU is designed to moves to 3 vertical positions, and is intended to interface with a maximum of four conveyors, each attached to one of its four sides. Please note that this function block does not support configurations exceeding four sides.</p>
+<p>The external PLC logic and HMI should interface with the LTU function block rather than directly with the hardware. This block processes inputs and program commands from external ladder logic, actuating the turn unit, stopper, and cushions as necessary, and returning status outputs utilized by the external ladder logic. It also processes operator commands directly triggered from the HMI interface, providing on-screen display of status information.</p>
+<p>The LTU function block is designated for the following core functions:</p>
+<ol>
+<li>Receiving an incoming pallet from up to three sides connected to an incoming conveyor.</li>
+<li>Sending a pallet to one of up to three sides linked to an outgoing conveyor.</li>
+<li>Enabling manual operator control via HMI.</li>
+<li>Facilitating fault handling and displaying alarms on the HMI.</li>
+</ol>
+<hr class='pageBreak' />
+<h3 id="plc-program-integration">PLC Program Integration</h3>
+<p>Each LTU requires a unique instance of <code>LMove_Ltu3PosPD</code>.</p>
+<p><img src="../../../Code2Docu/images/LMove_Ltu3PosPD/LTU_Instance.PNG" alt="Code2Docu Graphic" /></p>
+<p>Moreover, external SCL logic is essential for configuring the LTU function. This is achieved through the use of the <code>interfaceParameter</code> In/Out tag.</p>
+<hr class='pageBreak' />
+<p>All commands must be initiated by external logic, adhering to the communication flow depicted below.</p>
+<p><img src="../../../Code2Docu/images/LMove_Ltu3PosPD/LTU_Flow.PNG" alt="Code2Docu Graphic" /></p>
+<p>The following table provides a comprehensive overview of all available configuration parameters for the <code>interfaceParameter</code> tag.</p>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>confirmDelivery</td>
+<td>Confirm Pass Thru Delivery</td>
+</tr>
+<tr>
+<td>divertLeftEnable</td>
+<td>Divert Left Enable</td>
+</tr>
+<tr>
+<td>divertRightEnable</td>
+<td>Divert Right Enable</td>
+</tr>
+<tr>
+<td>enableForward</td>
+<td>Enable Motor Forward</td>
+</tr>
+<tr>
+<td>enableReverse</td>
+<td>Enable Motor Reverse</td>
+</tr>
+<tr>
+<td>externalReceivedFB</td>
+<td>Set Input When Received</td>
+</tr>
+<tr>
+<td>passThruMainEnable</td>
+<td>Pass Thru Main Enable</td>
+</tr>
+<tr>
+<td>passMainHoldEnable</td>
+<td>Pass Main Hold Enable</td>
+</tr>
+<tr>
+<td>receiveLeftEnable</td>
+<td>Receive Left Enable</td>
+</tr>
+<tr>
+<td>receiveLeftHoldEnable</td>
+<td>Receive Left Hold Enable</td>
+</tr>
+<tr>
+<td>receiveLeftPassThruEnable</td>
+<td>Receive Left Pass Thru Enable</td>
+</tr>
+<tr>
+<td>receiveLeftPrepare</td>
+<td>Receive Left Requires Preparation</td>
+</tr>
+<tr>
+<td>receiveRightEnable</td>
+<td>Receive Right Enable</td>
+</tr>
+<tr>
+<td>receiveRightHoldEnable</td>
+<td>Receive Right Hold Enable</td>
+</tr>
+<tr>
+<td>receiveRightPassThruEnable</td>
+<td>Receive Right Pass Thru Enable</td>
+</tr>
+<tr>
+<td>receiveRightPrepare</td>
+<td>Receive Right Requires Preparation</td>
+</tr>
+<tr>
+<td>sendLeftPrepare</td>
+<td>Send Left Requires Preparation</td>
+</tr>
+<tr>
+<td>sendRightPrepare</td>
+<td>Send Right Requires Preparation</td>
+</tr>
+<tr>
+<td>holdUntilExit</td>
+<td>Hold Until Exit</td>
+</tr>
+<tr>
+<td>cushionPassThruEnable</td>
+<td>Pass Thru Cushion Enabled</td>
+</tr>
+<tr>
+<td>cushionLeftEnable</td>
+<td>Left Cushion Enable</td>
+</tr>
+<tr>
+<td>cushionRightEnable</td>
+<td>Right Cushion Enable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="routing-terminology">Routing Terminology</h3>
+<p><img src="../../../Code2Docu/images/LMove_Ltu3PosPD/LTU_Routing.PNG" alt="Code2Docu Graphic" /></p>
+<h3 id="hmi-components">HMI Components</h3>
+<p><strong>Wincc Faceplate</strong></p>
+<p>A basic faceplate <code>Ltu3Pos</code> is included to visualize the general state of the LTU.</p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LMove_Ltu3PosPD/LTU_HmiFaceplate.PNG" alt="Code2Docu Graphic" /></p>
+<p><strong>Wincc Popup Pop-up</strong></p>
+<p>For a more comprehensive view, an additional faceplate, <code>MoveLineHmiCtrl_Ltu3Pos</code>, can complement the basic faceplate. <code>Ltu2Pos</code> is usually implemented with pop-up event that integrates the second faceplate, offering a detailed portrayal of LTU status. Moreover, it enables manual manipulation of the LTU when operating in manual mode.</p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LMove_Ltu3PosPD/LTU_HmiPopup.PNG" alt="Code2Docu Graphic" /></p>
+<hr class='pageBreak' />
+<h3 id="alarms-warnings-and-error-handling">Alarms, Warnings and Error Handling</h3>
+<table class="pagewidth">
+<thead>
+<tr>
+<th>Alarm</th>
+<th>Description / Possible error causes</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Position check error</td>
+<td>Failure in position verification</td>
+<td>Check positioning sensors and actuators.</td>
+</tr>
+<tr>
+<td>Pass Thru Main timeout</td>
+<td>Main pass-through timeout exceeded</td>
+<td>Inspect pass-through mechanism and timing.</td>
+</tr>
+<tr>
+<td>Divert Left timeout</td>
+<td>Left divert timeout exceeded</td>
+<td>Verify divert mechanism and timing.</td>
+</tr>
+<tr>
+<td>No Enable forward</td>
+<td>Forward motion not enabled</td>
+<td>Check enable signal and associated safety interlocks.</td>
+</tr>
+<tr>
+<td>No Enable reverse</td>
+<td>Reverse motion not enabled</td>
+<td>Check enable signal and associated safety interlocks.</td>
+</tr>
+<tr>
+<td>Divert Right timeout</td>
+<td>Right divert timeout exceeded</td>
+<td>Verify divert mechanism and timing.</td>
+</tr>
+<tr>
+<td>Receive Left timeout</td>
+<td>Left receive timeout exceeded</td>
+<td>Check conveyor or receiving mechanism.</td>
+</tr>
+<tr>
+<td>Receive Right timeout</td>
+<td>Right receive timeout exceeded</td>
+<td>Check conveyor or receiving mechanism.</td>
+</tr>
+<tr>
+<td>Receive Left Pass Thru timeout</td>
+<td>Left pass-through timeout exceeded</td>
+<td>Inspect pass-through mechanism and timing.</td>
+</tr>
+<tr>
+<td>Receive Right Pass Thru timeout</td>
+<td>Right pass-through timeout exceeded</td>
+<td>Inspect pass-through mechanism and timing.</td>
+</tr>
+<tr>
+<td>Receive Left Hold timeout</td>
+<td>Left hold timeout exceeded</td>
+<td>Check conveyor or holding configuration.</td>
+</tr>
+<tr>
+<td>Receive Right Hold timeout</td>
+<td>Right hold timeout exceeded</td>
+<td>Check conveyor or holding configuration.</td>
+</tr>
+<tr>
+<td>Pass Main Hold timeout</td>
+<td>Main hold timeout exceeded</td>
+<td>Check conveyor or holding configuration.</td>
+</tr>
+<tr>
+<td>LTU lowered timeout</td>
+<td>LTU lowering timeout exceeded</td>
+<td>Inspect lift mechanism and timing.</td>
+</tr>
+<tr>
+<td>LTU raised timeout</td>
+<td>LTU raising timeout exceeded</td>
+<td>Inspect lift mechanism and timing.</td>
+</tr>
+<tr>
+<td>Safety not OK</td>
+<td>Opmode safety not ok</td>
+<td>Check safety input</td>
+</tr>
+</tbody>
+</table>
+<table class="pagewidth">
+<thead>
+<tr>
+<th>Warning</th>
+<th>Description / Possible error causes</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No Enable Block</td>
+<td>Function block not enables</td>
+<td>Check enable input</td>
+</tr>
+<tr>
+<td>No Enable move</td>
+<td>Motion not enabled</td>
+<td>Check move enable input</td>
+</tr>
+<tr>
+<td>Hide all Alarms</td>
+<td>All alarms are hidden</td>
+<td>Identify the reason behind hiding all the alarms</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Change log</h2>
+<table class='ChangeLog'><thead><tr><th colspan='2'>Version & Date</th><th>Change description</th></tr></thead><tbody>
+<tr class='LogEntryStart'><td></td><td>000.000.021</td><td>Author</td></tr>
+<tr><td></td><td>2021-05-21</td><td>Start of Version History, Added pallet Area Monitoring</td></tr>
+<tr class='LogEntryStart'><td></td><td>007.003.000</td><td>Luis Serrano</td></tr>
+<tr><td></td><td>2024-05-15</td><td>Added markdown structure for code2docu. Updated tag comments</td></tr>
+</tbody></table>
+<hr>
+<p class='footer'>
+<a href='https://confluence.teslamotors.com/display/EquipEng/26+-+Siemens+Library+Documentation' target='_blank'>Documentation for Tesla Siemens Standard Library</a><br>
+<span>Project-ID: 001</span>
+<span>Date: 06/2024</span>
+<span>Version: V7.4.0</span>
+<span>Generated with TIA Portal Add-In
+<a href='https://support.industry.siemens.com/cs/ww/en/view/109809007' target='_blank'>Code2Docu</a>
+</span>
+</p>
+</body></html>

@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html><html lang='en-US'>
+<head>
+<script src='../../../Code2Docu/katex/katex.min.js'></script>
+<script src='../../../Code2Docu/katex/katexStartUp.js'></script>
+<link rel='stylesheet' href='../../../Code2Docu/katex/katex.min.css' />
+<!--[if lt IE 9]><script src='../../../Code2Docu/katex/html5shiv-printshiv-3.7.3.min.js'></script><![endif]-->
+<link rel='stylesheet' href='../../../Code2Docu/highlightJS/scl.css'>
+<script src='../../../Code2Docu/highlightJS/highlight.pack.js'></script>
+<script src='../../../Code2Docu/highlightJS/scl.js'></script>
+<script src='../../../Code2Docu/Code2DocuScript.js'></script>
+<script type='text/javascript'>
+hljs.registerLanguage('scl', window.hljsDefineSCL);
+hljs.initHighlightingOnLoad();
+</script>
+<link rel='stylesheet' href='../../../Code2Docu/style.css'>
+<link rel='stylesheet' href='../../../Code2Docu/styleCustomized.css'>
+<meta http-equiv='Content-type' content='text/html;charset=UTF-8'>
+<title>LDiag_SiemensSelectivityAdvPD (FB / V7.5.2)</title>
+</head>
+<body>
+ <div class="containerFluid"> 
+ <h1>LDiag_SiemensSelectivityAdvPD (FB / V7.5.2)</h1>
+<div class='langSelectionBox'>
+<a href='..\..\en-US\Folders\LCode2Docu.htm' target='_self'>Overview</a> 
+<select class='langSelector' id='langSelector' onChange=changeLang('en-US')>
+<option class='langOption' value=de-DE>German (Germany)</option>
+<option class='langOption' value=en-US selected>English (United States)</option>
+<option class='langOption' value=zh-CN>Chinese (Simplified, PRC)</option>
+</select></div></div><hr>
+<h2>Interface description</h2>
+<h3>Block interface</h3>
+<table class='block'><thead><tr><th colspan='2'> </th><th colspan='5'>LDiag_SiemensSelectivityAdvPD (FB)</th><th colspan='2'> </th></tr></thead><tbody>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enable</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>done</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[32]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>plantIdentifier</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>valid</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>impulseDI</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>busy</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput01</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>error</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput01</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>status</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Word</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput02</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>frame</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>DWord</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput02</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>resetDQ</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput03</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output01OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput03</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output02OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput04</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output03OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput04</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output04OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput05</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output05OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput05</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output06OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput06</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output07OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput06</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>output08OK</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput07</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput07</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>String[28]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>identifierOutput08</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>monitorOutput08</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>faultReset</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>LDiag_typeSiemensSelectivityAdvHmiInterface</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interface</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>LDiag_typeSiemensSelectivityAdvHmiInterface</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>typeOpmodeOut</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>opmode</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>typeOpmodeOut</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</tbody><tfoot><tr><td colspan='2'>&nbsp;</td><td colspan='5'>&nbsp;</td><td colspan='2'>&nbsp;</td></tr></tfoot></table>
+<h3>Input parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th class='default'>Default value</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>enable</td><td>Bool</td>
+<td>false</td>
+<td>TRUE: Enable functionality of FB</td></tr>
+<tr><td>plantIdentifier</td><td>String[32]</td>
+<td>''</td>
+<td>Plant Identifier of the control device</td></tr>
+<tr><td>impulseDI</td><td>Bool</td>
+<td>FALSE</td>
+<td>Digital input from the selectivity module</td></tr>
+<tr><td>identifierOutput01</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput01</td><td>Bool</td>
+<td>FALSE</td>
+<td>TRUE: FB will alarm if output is not ON</td></tr>
+<tr><td>identifierOutput02</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput02</td><td>Bool</td>
+<td>false</td>
+<td>TRUE: FB will alarm if output is not ON</td></tr>
+<tr><td>identifierOutput03</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput03</td><td>Bool</td>
+<td>false</td>
+<td>TRUE: FB will alarm if output is not ON</td></tr>
+<tr><td>identifierOutput04</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput04</td><td>Bool</td>
+<td>false</td>
+<td>TRUE: FB will alarm if output is not ON</td></tr>
+<tr><td>identifierOutput05</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput05</td><td>Bool</td>
+<td>false</td>
+<td>TRUE: FB will alarm if output is not ON</td></tr>
+<tr><td>identifierOutput06</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput06</td><td>Bool</td>
+<td>false</td>
+<td>TRUE: FB will alarm if output is not ON</td></tr>
+<tr><td>identifierOutput07</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput07</td><td>Bool</td>
+<td>false</td>
+<td>FB will alarm if monitor is TRUE and output is not ON</td></tr>
+<tr><td>identifierOutput08</td><td>String[28]</td>
+<td>---</td>
+<td>Identifier of the output device connected to the selectivity module</td></tr>
+<tr><td>monitorOutput08</td><td>Bool</td>
+<td>false</td>
+<td>FB will alarm if monitor is TRUE and output is not ON</td></tr>
+<tr><td>faultReset</td><td>Bool</td>
+<td>FALSE</td>
+<td>TRUE: Send fault reset command to selectivity module</td></tr>
+</tbody></table>
+<h3>Output parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>done</td><td>Bool</td>
+<td>TRUE: Command was executed successfully</td></tr>
+<tr><td>valid</td><td>Bool</td>
+<td>TRUE: Valid set of output values available at the FB</td></tr>
+<tr><td>busy</td><td>Bool</td>
+<td>TRUE: FB is not finished and new output values can be expected</td></tr>
+<tr><td>error</td><td>Bool</td>
+<td>TRUE: An error occurred during the execution of the FB</td></tr>
+<tr><td>status</td><td>Word</td>
+<td>16#0000 - 16#7FFF: Status of the FB, 16#8000 - 16#FFFF: Error identification</td></tr>
+<tr><td>frame</td><td>DWord</td>
+<td></td></tr>
+<tr><td>resetDQ</td><td>Bool</td>
+<td>Physical reset output to the selectivity module</td></tr>
+<tr><td>output01OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output02OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output03OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output04OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output05OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output06OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output07OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+<tr><td>output08OK</td><td>Bool</td>
+<td>TRUE: Output is ON</td></tr>
+</tbody></table>
+<h3>In/Out parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>interface</td><td>LDiag_typeSiemensSelectivityAdvHmiInterface</td>
+<td></td></tr>
+<tr><td>opmode</td><td>typeOpmodeOut</td>
+<td></td></tr>
+</tbody></table>
+<h3>Status & Error codes</h3>
+<table class='StatusAndErrorConstants'><thead><tr><th>Code / Value</th><th>Identifier / Description</th></tr></thead><tbody>
+<tr><td>16#0000</td><td>STATUS_NONE<br></td></tr>
+<tr><td>16#7000</td><td>STATUS_NO_CALL<br>No job being currently processed</td></tr>
+<tr><td>16#7001</td><td>STATUS_FIRST_CALL<br>First call after incoming new job (rising edge 'enable')</td></tr>
+<tr><td>16#7002</td><td>STATUS_SUBSEQUENT_CALL<br>Subsequent call during active processing without further details</td></tr>
+<tr><td>16#7003</td><td>STATUS_USER_DEFINED<br>User Defined status. NOTE: Developers to refer to Function Design document for guidelines on using user defined status.</td></tr>
+<tr><td>16#8001</td><td>ERR_IN_BLOCK_OPERATION<br>Error: Wrong operation of the function block</td></tr>
+<tr><td>16#8600</td><td>ERR_UNDEFINED_STATE<br>Error: due to an undefined state in state machine</td></tr>
+</tbody></table>
+<h2>Functional description</h2>
+<h3 id="docu">DOCU</h3>
+<p>Jira: <a href="https://issues.teslamotors.com/browse/ACE-28117" target='_blank' >ACE-28117: LDiag_SiemensSelectivityAdvPD</a></p>
+<p>This FB and associated HMI faceplate supports reading diagnostic information for the SEL1200 and SEL1400 series of Siemens Selectivity Modules (24V electronic circuit breakers) as well as remotely resetting an output channel electrical fault without needing to access the physical hardware. The FB can be configured to raise ProDiag alarms if any of the 24V output channels of the selectivity module are not ON or alarm if there is an issue with the module itself.</p>
+<p>Data read from the module includes:</p>
+<ul>
+<li>State of the DIP switches (used to enable IO diagnostics and change the startup behavior).</li>
+<li>Type (SEL1200 v SEL1400)</li>
+<li>Article number (6EP4438-7FB00-3DX0)</li>
+<li>Serial number (O6/R8)</li>
+<li>Module status (OK, overvolt/undervolt, overcurrent, etc)</li>
+<li>For each output channel: status, actual current, adjustable current limit setpoint, state, and reason an output channel is switched off.</li>
+</ul>
+<p>Data written to the module:</p>
+<ul>
+<li>RESET command for restoring 24V current for all channels in the 'automatically switched off, reset possible state'.
+<ul>
+<li>Note: RESET does not energize outputs that are manually switched off.</li>
+</ul>
+</li>
+</ul>
+<h3 id="hardware-setup">Hardware Setup</h3>
+<p>Visit the <a href="https://support.industry.siemens.com/cs/document/109972355/sitop-sel1200-1400-manual?dti=0&amp;lc=en-MU" target='_blank' >SIEMENS SITOP SEL1200-SEL1400 Manual</a> for detailed installation and use information.</p>
+<ol>
+<li>Connect the PLC DI to the module signal contact (pins 13/14).</li>
+<li>Connect the PLC DQ to the module reset input.</li>
+<li><strong>Set the COM DIP switch to '1' to enable diagnostics.</strong></li>
+<li>Set the TD1/TD2 switches as required to '1' to enable a time delay between outputs being switched on.</li>
+</ol>
+<p class="pagewidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-wiring.png" alt="Wiring" title="Wiring" /></p>
+<h3 id="plc-program-integration">PLC Program Integration</h3>
+<ol>
+<li>Create cyclic interrupt OB with a 10ms cyclic time (10000us) <img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-OB.png" alt="OB" title="OB" /></li>
+<li>Assign the input module associated with the selectivity module diagnostic input tag to the Cyclic Interrupt OB and process image partition (PIP). <img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-HWIN.png" alt="Hardware Integration" title="Hardware Integration" /></li>
+<li>Instantiate the FB (LDiag_SiemensSelectivityAdvPD) inside the cyclic interrupt OB and configure the block inputs/outputs. <img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-FB.png" alt="FB Configuration" title="FB Configuration" /></li>
+</ol>
+<h3 id="hmi-components">HMI Components</h3>
+<p><strong>HMI Tags</strong></p>
+<p class="pagewidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-HMITAG.png" alt="HMI Tags" title="HMI Tags" /></p>
+<p><strong>Wincc Faceplate</strong>
+The faceplate dynamically resizes to show either 4 or 8 outputs depending on which model of selectivity module has been connected, and displays the configured module name (plant identifier), and the name and status of each output. The status indicator matches the LED colors shown on the selectivity module.</p>
+<p class="pagewidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-FACEPLATE.png" alt="Faceplate" title="Faceplate" /></p>
+<p><em>HMI Faceplate</em></p>
+<p class="pagewidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-COLORKEY.png" alt="LED Diagnostics" title="LED Diagnostics - SITOP SEL1200-1400 16 Equipment Manual, 06.2020, A5E46496083-2-76" /></p>
+<p><em>Selectivity Module Color Key</em></p>
+<p><img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-FACEPLATESETUP.png" alt="Faceplate Setup" title="Faceplate Setup" /></p>
+<p><em>HMI Faceplate Interface Tag Setup</em></p>
+<p><strong>Wincc Popup</strong>
+The pop-up screen provides more diagnostic information about the module and offers the ability to reset a channel fault from the HMI. Note that the RESET button only resets output channels that have been automatically switched off AND reset is possible. The RESET button <em>will not</em> enable output channels that have been manually switched off - those must be manually switched back on at the module.</p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-POPUPOK.png" alt="Pop-Up Faceplate: Normal Operating Condition" title="Pop-Up Faceplate: Normal Operating Condition" /></p>
+<p><em>Normal Operating Condition</em></p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-POPUPNOK.png" alt="Pop-Up Faceplate: Faulted Selectivity Module Output Channel, Reset Possible" title="Pop-Up Faceplate: Faulted Selectivity Module Output Channel, Reset Possible" /></p>
+<p><em>Faulted Condition</em></p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LDiag_SiemensSelectivityAdvPD/DOCUSEL-POPUPSETUP.png" alt="Event SetTag for Pop-Up" title="Event SetTag for Pop-Up" /></p>
+<p><em>Multiplex Tag Setup</em></p>
+<h3 id="alarms-warnings-and-error-handling">Alarms, Warnings and Error Handling</h3>
+<p>Output Channel Alarms</p>
+<table class="pagewidth">
+<thead>
+<tr>
+<th>Alarm</th>
+<th>Description</th>
+<th><strong>Action</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Imax Exceeded</td>
+<td>Output channel current exceeded set current limit.</td>
+<td>Verify output channel current limit set correctly. Verify total output channel current draw. Verify startup switch-on delay settings (DIP switch) for inrush current.</td>
+</tr>
+<tr>
+<td>Imax Exceeded &gt;150%</td>
+<td>Output channel current significantly exceeded set current limit.</td>
+<td>Check for short circuit. Verify output channel current limit set correctly/verify total channel current draw.</td>
+</tr>
+<tr>
+<td>Total Current Draw &gt;60 A</td>
+<td>Total current draw exceeds device maximum.</td>
+<td>Verify total channel current draw.</td>
+</tr>
+<tr>
+<td>V &lt;19.4 V and Imax Exceeded</td>
+<td>Undervoltage and output channel current exceeded.</td>
+<td>Check power supply input to selectivity module.</td>
+</tr>
+<tr>
+<td>Vin &lt; 19.4 V</td>
+<td>Undervoltage.</td>
+<td>Check power supply input to selectivity module.</td>
+</tr>
+<tr>
+<td>Vin &lt; 15 V</td>
+<td>Undervoltage.</td>
+<td>Check power supply input to selectivity module.</td>
+</tr>
+<tr>
+<td>Vin &gt; 30V</td>
+<td>Overvoltage.</td>
+<td>Check power supply input to selectivity module.</td>
+</tr>
+<tr>
+<td>Device Overtemperature</td>
+<td>Output channel temperature exceeded maximum.</td>
+<td>Check thermal dissipation.</td>
+</tr>
+</tbody>
+</table>
+<p>Module-Wide Alarms</p>
+<table class="pagewidth">
+<thead>
+<tr>
+<th>Alarm</th>
+<th><strong>Action</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No Connection to Selectivity Module</td>
+<td>Verify digital input connected correctly. Verify the selectivity module COM DIP switch is ON.</td>
+</tr>
+<tr>
+<td>PLC Cycle Time Exceeded for Selectivity Module Diagnostics</td>
+<td>Verify the selectivity module FB is being called in an OB with a 10ms cycle.</td>
+</tr>
+<tr>
+<td>Error When Parsing Selectivity Module Diagnostics</td>
+<td>Verify the selectivity module FB is being called in an OB with a 10ms cycle. Verify process input image (PIP) is used for the module digital input to PLC.</td>
+</tr>
+<tr>
+<td>Telegram Length Error When Parsing Selectivity Module Diagnostics</td>
+<td>Verify the selectivity module FB is being called in an OB with a 10ms cycle. Verify process input image (PIP) is used for the module digital input to PLC.</td>
+</tr>
+<tr>
+<td>Selectivity Module Device Type Not Detected</td>
+<td>Verify the selectivity module FB is being called in an OB with a 10ms cycle. Verify process input image (PIP) is used for the module digital input to PLC.</td>
+</tr>
+<tr>
+<td>Selectivity Module Diagnostics Telegram Not Supported</td>
+<td>Verify the selectivity module is a SEL1200 or SEL1400.</td>
+</tr>
+<tr>
+<td>Selectivity Module Communication Error or Device Replaced</td>
+<td>Verify digital input connected correctly. Verify module replaced with the correct module. Verify the selectivity module COM DIP switch is ON.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Change log</h2>
+<table class='ChangeLog'><thead><tr><th colspan='2'>Version & Date</th><th>Change description</th></tr></thead><tbody>
+<tr class='LogEntryStart'><td></td><td>07.05.01</td><td>J. Luetzelschwab</td></tr>
+<tr><td></td><td>2024-07-01</td><td>First released version</td></tr>
+<tr class='LogEntryStart'><td></td><td>07.05.02</td><td>J. Luetzelschwab</td></tr>
+<tr><td></td><td>2024-07-15</td><td>Fix Code2Docu Image Filepath</td></tr>
+</tbody></table>
+<hr>
+<p class='footer'>
+<a href='https://confluence.teslamotors.com/display/EquipEng/26+-+Siemens+Library+Documentation' target='_blank'>Documentation for Tesla Siemens Standard Library</a><br>
+<span>Project-ID: 001</span>
+<span>Date: 07/2024</span>
+<span>Version: V7.4.0</span>
+<span>Generated with TIA Portal Add-In
+<a href='https://support.industry.siemens.com/cs/ww/en/view/109809007' target='_blank'>Code2Docu</a>
+</span>
+</p>
+</body></html>

@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html><html lang='en-US'>
+<head>
+<script src='../../../Code2Docu/katex/katex.min.js'></script>
+<script src='../../../Code2Docu/katex/katexStartUp.js'></script>
+<link rel='stylesheet' href='../../../Code2Docu/katex/katex.min.css' />
+<!--[if lt IE 9]><script src='../../../Code2Docu/katex/html5shiv-printshiv-3.7.3.min.js'></script><![endif]-->
+<link rel='stylesheet' href='../../../Code2Docu/highlightJS/scl.css'>
+<script src='../../../Code2Docu/highlightJS/highlight.pack.js'></script>
+<script src='../../../Code2Docu/highlightJS/scl.js'></script>
+<script src='../../../Code2Docu/Code2DocuScript.js'></script>
+<script type='text/javascript'>
+hljs.registerLanguage('scl', window.hljsDefineSCL);
+hljs.initHighlightingOnLoad();
+</script>
+<link rel='stylesheet' href='../../../Code2Docu/style.css'>
+<link rel='stylesheet' href='../../../Code2Docu/styleCustomized.css'>
+<meta http-equiv='Content-type' content='text/html;charset=UTF-8'>
+<title>LMove_PalletStopPD (FB / V7.4.3)</title>
+</head>
+<body>
+ <div class="containerFluid"> 
+ <h1>LMove_PalletStopPD (FB / V7.4.3)</h1>
+<div class='langSelectionBox'>
+<a href='..\..\en-US\Folders\LCode2Docu.htm' target='_self'>Overview</a> 
+</div></div><hr>
+<span class='author'>Author: somsingh</span>
+<h2>Short description</h2>
+<p>This FB serves as the primary controller for the pallet stops on conveyance.</p>
+
+<h2>Interface description</h2>
+<h3>Block interface</h3>
+<table class='block'><thead><tr><th colspan='2'> </th><th colspan='5'>LMove_PalletStopPD (FB)</th><th colspan='2'> </th></tr></thead><tbody>
+<tr class='in out'><td rowspan='2'>WString[24]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>plantIdentifier</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>generalAlarm</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>WString[35]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>tecUnitDescription</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>lower</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in out'><td rowspan='2'>WString[9]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletID</td><td rowspan='2'>&nbsp;</td><td rowspan='2'>raise</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Bool</td></tr>
+<tr class='in out interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>WString[15]</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>additionalAlarmText</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Int</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>tecUnitNumber</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enableBlock</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>hardwareOk</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>safetyOk</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>enableMove</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>posEndLowered</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>posEndRaised</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletPresent</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>downstreamPalletPresent</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>downstreamClear</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>upstreamReleased</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>runWithoutEnable</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>hideAlarmAll</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Word</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>hideAlarmMask</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>typeOpmodeOut</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>opModeUserInterfaceOut</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeReceiving</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeReleasing</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeSending</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeLowering</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeRaising</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timePosEndCheck</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeStopLowered</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timePpOnDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timePpOffDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeDownstreamClearOnDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeDownstreamClearOffDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Time</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>timeDownstreamPalletPresentOnDebounce</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>palletCycleEnabled</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>pcmdRelease</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='in'><td rowspan='2'>Bool</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>quickReleaseEnable</td><td rowspan='2'>&nbsp;</td><td rowspan='2'></td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'></td></tr>
+<tr class='in interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>Array[*] of LMove_typePalletStopHmi</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interfaceHmi</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Array[*] of LMove_typePalletStopHmi</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>Array[*] of LMove_typePalletStopParameter</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interfacePara</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>Array[*] of LMove_typePalletStopParameter</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr class='inOut'><td rowspan='2'>LMove_typePalletStopStatus</td><td>&nbsp;</td><td>&nbsp;</td><td colspan='3'>interfaceStatus</td><td>&nbsp;</td><td>&nbsp;</td><td rowspan='2'>LMove_typePalletStopStatus</td></tr>
+<tr class='inOut interface'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</tbody><tfoot><tr><td colspan='2'>&nbsp;</td><td colspan='5'>&nbsp;</td><td colspan='2'>&nbsp;</td></tr></tfoot></table>
+<h3>Input parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th class='default'>Default value</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>plantIdentifier</td><td>WString[24]</td>
+<td>---</td>
+<td>Plant identifier</td></tr>
+<tr><td>tecUnitDescription</td><td>WString[35]</td>
+<td>---</td>
+<td>Sensor description</td></tr>
+<tr><td>palletID</td><td>WString[9]</td>
+<td>---</td>
+<td></td></tr>
+<tr><td>additionalAlarmText</td><td>WString[15]</td>
+<td>---</td>
+<td></td></tr>
+<tr><td>tecUnitNumber</td><td>Int</td>
+<td>0</td>
+<td></td></tr>
+<tr><td>enableBlock</td><td>Bool</td>
+<td>TRUE</td>
+<td>Enable block</td></tr>
+<tr><td>hardwareOk</td><td>Bool</td>
+<td>TRUE</td>
+<td>Hardware OK</td></tr>
+<tr><td>safetyOk</td><td>Bool</td>
+<td>TRUE</td>
+<td>Safety OK</td></tr>
+<tr><td>enableMove</td><td>Bool</td>
+<td>FALSE</td>
+<td>Enable move</td></tr>
+<tr><td>posEndLowered</td><td>Bool</td>
+<td>FALSE</td>
+<td>End position FORWARD</td></tr>
+<tr><td>posEndRaised</td><td>Bool</td>
+<td>FALSE</td>
+<td>End position FORWARD</td></tr>
+<tr><td>palletPresent</td><td>Bool</td>
+<td>FALSE</td>
+<td></td></tr>
+<tr><td>downstreamPalletPresent</td><td>Bool</td>
+<td>FALSE</td>
+<td>Used to confirm delivery downstream</td></tr>
+<tr><td>downstreamClear</td><td>Bool</td>
+<td>FALSE</td>
+<td></td></tr>
+<tr><td>upstreamReleased</td><td>Bool</td>
+<td>FALSE</td>
+<td></td></tr>
+<tr><td>runWithoutEnable</td><td>Bool</td>
+<td>FALSE</td>
+<td>Run without ENABLE</td></tr>
+<tr><td>hideAlarmAll</td><td>Bool</td>
+<td>FALSE</td>
+<td>Hide Alarm All</td></tr>
+<tr><td>hideAlarmMask</td><td>Word</td>
+<td>16#0000</td>
+<td>Hide Alarm Mask (see description)</td></tr>
+<tr><td>opModeUserInterfaceOut</td><td>typeOpmodeOut</td>
+<td>---</td>
+<td>User interface OPmode</td></tr>
+<tr><td>timeReceiving</td><td>Time</td>
+<td>t#10s</td>
+<td>Time value monitoring pallet receiving time</td></tr>
+<tr><td>timeReleasing</td><td>Time</td>
+<td>t#5s</td>
+<td>Time value monitoring pallet releasing time</td></tr>
+<tr><td>timeSending</td><td>Time</td>
+<td>T#10s</td>
+<td>Time value monitoring pallet sending time</td></tr>
+<tr><td>timeLowering</td><td>Time</td>
+<td>t#2s</td>
+<td>Time value monitoring stopper lowering time</td></tr>
+<tr><td>timeRaising</td><td>Time</td>
+<td>t#2s</td>
+<td>Time value monitoring stopper raising time</td></tr>
+<tr><td>timePosEndCheck</td><td>Time</td>
+<td>t#1s</td>
+<td>Time value monitoring time</td></tr>
+<tr><td>timeStopLowered</td><td>Time</td>
+<td>t#1s</td>
+<td>Time stopper stays lowered each release</td></tr>
+<tr><td>timePpOnDebounce</td><td>Time</td>
+<td>T#500ms</td>
+<td>Pallet Present ON Delay</td></tr>
+<tr><td>timePpOffDebounce</td><td>Time</td>
+<td>T#500ms</td>
+<td>Pallet Present OFF Delay</td></tr>
+<tr><td>timeDownstreamClearOnDebounce</td><td>Time</td>
+<td>T#0s</td>
+<td>Delay Downstream clear ON</td></tr>
+<tr><td>timeDownstreamClearOffDebounce</td><td>Time</td>
+<td>T#0s</td>
+<td>Delay Downstream clear OFF</td></tr>
+<tr><td>timeDownstreamPalletPresentOnDebounce</td><td>Time</td>
+<td>T#0s</td>
+<td>Delay Downstream Pallet Present</td></tr>
+<tr><td>palletCycleEnabled</td><td>Bool</td>
+<td>FALSE</td>
+<td>Auto cycle enabled</td></tr>
+<tr><td>pcmdRelease</td><td>Bool</td>
+<td>FALSE</td>
+<td>DIVERT LEFT CMD</td></tr>
+<tr><td>quickReleaseEnable</td><td>Bool</td>
+<td>FALSE</td>
+<td>Quick release enable interlock</td></tr>
+</tbody></table>
+<h3>Output parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>generalAlarm</td><td>Bool</td>
+<td>General Alarm</td></tr>
+<tr><td>lower</td><td>Bool</td>
+<td>Output Forward</td></tr>
+<tr><td>raise</td><td>Bool</td>
+<td>Output Reverse</td></tr>
+</tbody></table>
+<h3>In/Out parameter</h3>
+<table class='BlockInterface'><thead><tr><th class='name'>Identifier</th><th class='type'>Data type</th>
+<th>Description</th></tr></thead><tbody>
+<tr><td>interfaceHmi</td><td>Array[*] of LMove_typePalletStopHmi</td>
+<td>HMI: Interface</td></tr>
+<tr><td>interfacePara</td><td>Array[*] of LMove_typePalletStopParameter</td>
+<td>Parameter Interface</td></tr>
+<tr><td>interfaceStatus</td><td>LMove_typePalletStopStatus</td>
+<td></td></tr>
+</tbody></table>
+<h2>Functional description</h2>
+<p><a href="https://issues.teslamotors.com/browse/ACE-12059" target='_blank' >LMove_PalletStopPD</a> serves as the primary controller for the pallet stops used on conveyors.</p>
+<p>A pallet stop is used to stop pallets or buffer parts on the conveyor. Most Pallet stops have a dampening feature to reduce the impact on the pallet and the part. The pallet stops are designed in a way to return to their raised state once air is de-energized to them.
+Pallet stops can be configured with or without feedback.</p>
+<p>This block does not support individual actutation of the dampners/cushions on the stoppers.</p>
+<h3 id="plc-program-integration">PLC Program Integration</h3>
+<p>Each Pallet Stop requires a unique instance of  <code>LMove_PalletStopPD</code> .</p>
+<p><img src="../../../Code2Docu/images/LMove_PalletStopPD/PalletStop_Instance.PNG" alt="Code2Docu Graphic" /></p>
+<hr class='pageBreak' />
+<p>The basic functionality of the pallet stop FB is as shown below,</p>
+<p><img src="../../../Code2Docu/images/LMove_PalletStopPD/PalletStop_Visio.PNG" alt="Code2Docu Graphic" /></p>
+<p>After the instantiation of the FB, external configuration logic needs to be in place for proper functioning of the pallet stop</p>
+<p><img src="../../../Code2Docu/images/LMove_PalletStopPD/PalletStop_Parameters.PNG" alt="Code2Docu Graphic" /></p>
+<p>The following table provides a comprehensive overview of all available configuration parameters for the <code>interfacePara</code> tag.</p>
+<table class="pagewidth">
+<thead>
+<tr>
+<th style="text-align: center;">Configuration</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">confirmDelivery</td>
+<td style="text-align: center;">Wait for state change until downstream not clear</td>
+</tr>
+<tr>
+<td style="text-align: center;">chainConvey</td>
+<td style="text-align: center;">Enables Simultaneous releasing</td>
+</tr>
+<tr>
+<td style="text-align: center;">quickRelease</td>
+<td style="text-align: center;">Quick release if downstream clear</td>
+</tr>
+<tr>
+<td style="text-align: center;">holdUntilExit</td>
+<td style="text-align: center;">Keep stop lowered until pallet not present</td>
+</tr>
+<tr>
+<td style="text-align: center;">maintainDown</td>
+<td style="text-align: center;">Keep lowered with part</td>
+</tr>
+<tr>
+<td style="text-align: center;">palletPresentMemory</td>
+<td style="text-align: center;">hold pallet present in memory</td>
+</tr>
+</tbody>
+</table>
+<hr class='pageBreak' />
+<h3 id="hmi-components">HMI Components</h3>
+<p><strong>Wincc Faceplate</strong></p>
+<p>A basic faceplate 'PalletStop' is included to visualize the general state of the Pallet Stop.</p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LMove_PalletStopPD/PalletStop_HmiBasic.PNG" alt="Code2Docu Graphic" /></p>
+<p><strong>Wincc Popup</strong></p>
+<p>The popup houses the information for active alarms, alarm history and all the configuration parameters. It is also has code-view for specific buttons to enable more visibility for easy troubleshooting.</p>
+<p class="pageWidth">
+<img src="../../../Code2Docu/images/LMove_PalletStopPD/PalletStop_HmiPopup.PNG" alt="Code2Docu Graphic" /></p>
+<h3 id="alarms-warnings-and-error-handling">Alarms, Warnings and Error Handling</h3>
+<table class="pagewidth">
+<thead>
+<tr>
+<th>Alarm</th>
+<th>Description / Possible error causes</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Receiving Time Out</td>
+<td>Alm caused when pallet does not reach pallet stop from upstream in the set timeout window</td>
+<td>Set proper timeout in the cfg</td>
+</tr>
+<tr>
+<td>Releasing Time Out</td>
+<td>Alm caused when pallet does not reach pallet stop to downstream in the set timeout window</td>
+<td>Set proper timeout in the cfg</td>
+</tr>
+<tr>
+<td>Lowering Time Out</td>
+<td>Alm caused when pallet stop does not lower in the set timeout window</td>
+<td>Set proper timeout in the cfg</td>
+</tr>
+<tr>
+<td>Raising Time Out</td>
+<td>Alm caused when pallet stop does not raise in the set timeout window</td>
+<td>Set proper timeout in the cfg</td>
+</tr>
+<tr>
+<td>Sending Time Out if confirm delivery on</td>
+<td>Alm caused when pallet does not reach pallet stop to downstream in the set timeout window if confirm delivery is ON</td>
+<td>Set proper timeout in the cfg</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Change log</h2>
+<table class='ChangeLog'><thead><tr><th colspan='2'>Version & Date</th><th>Change description</th></tr></thead><tbody>
+<tr class='LogEntryStart'><td></td><td>007.002.003</td><td>Adam Janowski</td></tr>
+<tr><td></td><td>2023-12-08</td><td>Added conveyor running signal;</td></tr>
+<tr class='LogEntryStart'><td></td><td>007.004.003</td><td>Somesh Singh</td></tr>
+<tr><td></td><td>2024-27-06</td><td>Removed conveyor running signal & Added Code2Docu;</td></tr>
+</tbody></table>
+<hr>
+<p class='footer'>
+<a href='https://confluence.teslamotors.com/display/EquipEng/26+-+Siemens+Library+Documentation' target='_blank'>Documentation for Tesla Siemens Standard Library</a><br>
+<span>Project-ID: 001</span>
+<span>Date: 06/2024</span>
+<span>Version: V7.4.0</span>
+<span>Generated with TIA Portal Add-In
+<a href='https://support.industry.siemens.com/cs/ww/en/view/109809007' target='_blank'>Code2Docu</a>
+</span>
+</p>
+</body></html>
