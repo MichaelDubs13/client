@@ -8,6 +8,7 @@ import ItemStore from "../../../store/eec/ItemStore";
 import PowerDistributionComponent from "./PowerDistribution";
 import "./Eec.css";
 import MEB_PDP_Testing from "./M_W_PdpConfiguration";
+import M_W_PdpConfiguration from "./M_W_PdpConfiguration";
 
 const PdpConfiguration = () => {
     const counts = pdpStore((state)=> state.counts)
@@ -82,8 +83,7 @@ const PdpConfiguration = () => {
                         {   
                             pdps.map((pdp, index) => (
                                 // <ListGroup item={pdp}><PowerDistributionComponent pdp={pdp}/></ListGroup>
-                                // <ListGroup item={pdp}><MEB_PDP_Testing pdp={pdp}/></ListGroup>
-                                <MEB_PDP_Testing pdp={pdp}/>
+                                <M_W_PdpConfiguration pdp={pdp}/>
                         ))}
                     </div>
                 }

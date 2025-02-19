@@ -76,7 +76,7 @@ const EecPage = () => {
             ))}
             <LineConfiguration/>
             <Button onClick={handleSumbit} style={{marginTop:"20px"}}>Generate</Button>
-            <M_W_PdpConfiguration></M_W_PdpConfiguration>
+            {/* <M_W_PdpConfiguration></M_W_PdpConfiguration> */}
         </>
     )
     
