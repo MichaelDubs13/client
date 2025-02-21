@@ -45,6 +45,12 @@ export default class Component {
 
         return mo;
     };
+
+    createWithoutParameter(doc){
+        const mo = this.createMoWithoutParameter(doc);
+        return mo;
+    }
+
     createMo(doc){
         var elem = doc.createElement("mo");
         elem.setAttribute("name", this._name);
@@ -58,38 +64,63 @@ export default class Component {
         return elem;
     };
 
+    createMoWithoutParameter(doc){
+        var elem = doc.createElement("mo");
+        elem.setAttribute("name", this._name);
+        elem.setAttribute("typeClass", this.Class);
+
+        return elem;
+    };
+
     createParameter(doc, parameter){
         var elem = doc.createElement("parameter");
-        
         elem.setAttribute("name", parameter.name);
-        if(parameter.type){
+
+        if(parameter.type === "arrayList"){
+            var valueElem = doc.createElement("value");
+            var arrayListElem = doc.createElement("arrayList");
+            valueElem.appendChild(arrayListElem);
+            elem.appendChild(valueElem);
+
+        } else if(parameter.type === "hashMap") {
+            var valueElem = doc.createElement("value");
+            var arrayListElem = doc.createElement("hashMap");
+            valueElem.appendChild(arrayListElem);
+            elem.appendChild(valueElem);
+        } else {
             elem.setAttribute("type", parameter.type);
+    
+            if (parameter.type == "Boolean") {
+                if(parameter.value){
+                    elem.setAttribute("value", true);            
+                } else {
+                    elem.setAttribute("value", false); 
+                } 
+            } else if(parameter.type == "Integer"){
+                if(parameter.value){
+                    elem.setAttribute("value", parameter.value);            
+                } else {
+                    elem.setAttribute("value", 0); 
+                }
+            } else if(parameter.type == "Double"){
+                if(parameter.value){
+                    elem.setAttribute("value", parameter.value);            
+                } else {
+                    elem.setAttribute("value", "0.0"); 
+                }
+            }else if(parameter.type == "String"){
+                if(parameter.value){
+                    elem.setAttribute("value", parameter.value);            
+                } else {
+                    elem.setAttribute("value", "Undefined"); 
+                }
+            } else {
+                if(parameter.value){
+                    elem.setAttribute("value", parameter.value);            
+                }
+            }
         }
-
-        if (parameter.type == "Boolean") {
-            if(parameter.value){
-                elem.setAttribute("value", true);            
-            } else {
-                elem.setAttribute("value", false); 
-            } 
-        } else if(parameter.type == "Integer"){
-            if(parameter.value){
-                elem.setAttribute("value", parameter.value);            
-            } else {
-                elem.setAttribute("value", 0); 
-            }
-        } else if(parameter.type == "Double"){
-            if(parameter.value){
-                elem.setAttribute("value", parameter.value);            
-            } else {
-                elem.setAttribute("value", "0.0"); 
-            }
-        }else {
-            if(parameter.value){
-                elem.setAttribute("value", parameter.value);            
-            }
-        }
-
+        
         return elem;
     };
     get Parameters(){

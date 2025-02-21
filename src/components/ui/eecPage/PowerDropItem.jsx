@@ -14,9 +14,10 @@ import {
     initialValues,
     onSettingsChange, 
     absIndex,
+    branchCircuit,
   }) => {
     const [powerDropSettings, setPowerDropSettings] = useState({
-      PwrDrop_Spare: true,
+      PwrDrop_Spare: false,
       DropType: "A-external",
       PwrDrop_DescTxt: "",
       dbl_Cable_Length: 0,
@@ -40,12 +41,19 @@ import {
       };
       setPowerDropSettings(newSettings);
       onSettingsChange?.(index, newSettings);
+      //branchCircuit[field] = value;
+
+      if (branchCircuit) {
+        branchCircuit[field] = value;
+      }
     };
+    
   
+
     return (
       <div className="power-drop-item">
         <div className="power-drop-header">
-          <h3>{amperage}A Branch circuit power drop {index + 1}: CB{absIndex}</h3>
+          <h3>{amperage} Branch circuit power drop {index + 1}: CB{absIndex}</h3>
         </div>
   
         <div className="power-drop-settings">
@@ -56,6 +64,7 @@ import {
               checked={powerDropSettings.PwrDrop_Spare}
               label="Spare power drop"
               onChange={(e) => handleChange('PwrDrop_Spare', e.target.checked)}
+              //onChange={(value) => handleChange('PwrDrop_Spare', value)}
             />
           </FormItem>
 

@@ -24,25 +24,20 @@ export default class Fg_PowerDistributionPanel extends Component{
     }
 
     getNumberOfPowerDrops(){
-        return this._pdp.numberOf10APwrDrps + 
-                    this._pdp.numberOf20APwrDrps + 
-                    this._pdp.numberOf30APwrDrps +
-                    this._pdp.numberOf40APwrDrps +
-                    this._pdp.numberOf60APwrDrps +
-                    this._pdp.numberOf70APwrDrps +
-                    this._pdp.numberOf100APwrDrps +
-                    this._pdp.numberOf250APwrDrps;
+        return  this._pdp.numberOf10APwrDrps + 
+                this._pdp.numberOf20APwrDrps + 
+                this._pdp.numberOf30APwrDrps +
+                this._pdp.numberOf40APwrDrps +
+                this._pdp.numberOf60APwrDrps +
+                this._pdp.numberOf70APwrDrps +
+                this._pdp.numberOf100APwrDrps +
+                this._pdp.numberOf250APwrDrps;
     }
 
     get Parameters(){
-        return [{name: "frmUI_PDPInstanceName", value: "", type: "String"},
-            {name: "InstallationLocation", value: ProjectConfiguration.installation_location, type: "String"},
+        return [
             {name: "Amperage", value: this._pdp.amp, type: "String"},
-            {name: "Plant", value: ProjectConfiguration.plant, type: "String"},
-            {name: "Shop", value: ProjectConfiguration.shop, type: "String"},
-            {name: "Line", value: ProjectConfiguration.line, type: "String"},
             {name: "Location", value: this._pdp.location, type: "String"},
-            {name: "NumberOfPowerDrops", value: this.getNumberOfPowerDrops(), type: "Integer"},
             {name: "NumberofPowerDrops_10A", value: this.numberOf10APwrDrps, type: "Integer"},
             {name: "NumberofPowerDrops_20A", value: this.numberOf20APwrDrps, type: "Integer"},
             {name: "NumberofPowerDrops_30A", value: this.numberOf30APwrDrps, type: "Integer"},
@@ -51,22 +46,13 @@ export default class Fg_PowerDistributionPanel extends Component{
             {name: "NumberofPowerDrops_70A", value: this.numberOf70APwrDrps, type: "Integer"},
             {name: "NumberofPowerDrops_100A", value: this.numberOf100APwrDrps, type: "Integer"},
             {name: "NumberofPowerDrops_250A", value: this.numberOf250APwrDrps, type: "Integer"},
-            {name: "TotalBusbarWidth", value: "", type: "String"},
-            {name: "EnclosureSize", value: "", type: "String"},
-            {name: "frmUI_BusbarLength", value: "", type: "Integer"},
-            {name: "frmUI_OptPwrMonitorLength", value: "", type: "Integer"},
-            {name: "frmUI_OptSPDLength", value: "", type: "Integer"},
-            {name: "frmUI_OptHotPwrLength", value: "", type: "Integer"},
-            {name: "frmUI_BusbarLengthExceeded", value: "", type: "Boolean"},
-            {name: "NumberOfBusBars", value: "", type: "Integer"},
-            {name: "PwrMonitorEnable", value: "", type: "Boolean"},
-            {name: "HotPwrDrop1Type", value: "", type: "String"},
-            {name: "HotPwrDrop2Type", value: "", type: "String"},
-            {name: "HotPwrDrop3Type", value: "", type: "String"},
-            {name: "frmUI_HotPwrDrp1_Spare", value: "", type: "Boolean"},
-            {name: "frmUI_HotPwrDrp2_Spare", value: "", type: "Boolean"},
-            {name: "frmUI_HotPwrDrp3_Spare", value: "", type: "Boolean"},
-            {name: "frmUI_InstLoc_EU", value: "", type: "Boolean"},
+            {name: "EnclosureSize", value: this._pdp.enclosureSize, type: "String"},
+            {name: "PwrMonitorEnable", value: this._pdp.PwrMonitorEnable, type: "Boolean"},
+            {name: "Opt_SurgeProtectionDevice", value: this._pdp.Opt_SurgeProtectionDevice, type: "Boolean"},
+            {name: "Opt_HotPwrEnable", value: this._pdp.Opt_HotPwrEnable, type: "Boolean"},
+            {name: "HotPwrDrop1Type", value: "Spare", type: "String"}, //device or spare, only usable if hotPwrEnable is true
+            {name: "HotPwrDrop2Type", value: "Spare", type: "String"},
+            {name: "HotPwrDrop3Type", value: "Spare", type: "String"},
         ];
     }
 

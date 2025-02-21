@@ -10,7 +10,8 @@ export default class PwrDrop extends Component {
         this._pdp = pdp;
     }
     get Parameters(){
-        return [{name: "NumberOfBusBars", value: this.parent.Components.filter(i=>i.className === "BusBar").length, type: "Integer"},
+        return [
+            // {name: "NumberOfBusBars", value: this.parent.Components.filter(i=>i.className === "BusBar").length, type: "Integer"},
             ];
     }
     

@@ -9,7 +9,6 @@ export default class _F_PSU extends Component{
         this._class = "_f_PSU";
         this._name = "_f_PSU";
         this._pwrDistrbution = pwrDistrbution;
-        
     }
 
     build(){

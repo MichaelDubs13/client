@@ -12,8 +12,8 @@ export default class _f_Sub_DC_Distribution_CLS2_Balluff_120VPSU extends Compone
     }
     get Parameters(){
         return [
-            {name: "PortUsed", value: "", type: "String"},
-            {name: "Summation_Drops_XD3_XD4_XD5", value: "", type: "Double"},
+            // {name: "PortUsed", value: "", type: "String"},
+            // {name: "Summation_Drops_XD3_XD4_XD5", value: "", type: "Double"},
         ];
     }
 

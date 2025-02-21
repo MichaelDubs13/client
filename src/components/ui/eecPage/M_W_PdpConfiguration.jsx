@@ -9,7 +9,7 @@ import PowerDropItem from "./PowerDropItem";
 import HotPowerDropItem from "./HotPowerDropItem";
 import ItemStore from "../../../store/eec/ItemStore";
 
-const M_W_PdpConfiguration = () => {
+const M_W_PdpConfiguration = ({pdp}) => {
 
     // Get plant, shop, line, and installationLocation values from store
     const plant = ItemStore.lineGroupItems.find(
@@ -39,64 +39,62 @@ const M_W_PdpConfiguration = () => {
         Opt_HotPwrEnable: false,
         ...initialValues
     }); */
-
+    const addBranchCircuit = pdpStore((state) => state.addBranchCircuit);
     const [Line, setLine] = useState(line);
     const [Location, setLocation] = useState(0);
     const [Amperage, setAmperage] = useState(0);
     const [EnclosureSize, setEnclosureSize] = useState(0);
-    const [PwrMonitorEnable, setPwrMonitorEnable] = useState(0);
-    const [Opt_SurgeProtectionDevice, setOpt_SurgeProtectionDevice] = useState(0);
-    const [Opt_HotPwrEnable, setOpt_HotPwrEnable] = useState(0);
+    const [enclosureNameplateFLA, setEnclosureNameplateFLA] = useState(0);
+    const [PwrMonitorEnable, setPwrMonitorEnable] = useState(false);
+    const [Opt_SurgeProtectionDevice, setOpt_SurgeProtectionDevice] = useState(false);
+    const [Opt_HotPwrEnable, setOpt_HotPwrEnable] = useState(false);
     
-    //Values to be passed to Parser.js
-    /* const result = {
-        Line: Line,
-        Location: Location,
-        Amperage: Amperage,
-        EnclosureSize: EnclosureSize,
-        PwrMonitorEnable: PwrMonitorEnable,
-        Opt_SurgeProtectionDevice: Opt_SurgeProtectionDevice,
-        Opt_HotPwrEnable: Opt_HotPwrEnable,
-        numberOf10APwrDrps: powerDrops[10],
-        numberOf20APwrDrps: powerDrops[20],
-        numberOf30APwrDrps: powerDrops[30],
-        numberOf40APwrDrps: powerDrops[40],
-        numberOf60APwrDrps: powerDrops[60],
-        numberOf70APwrDrps: powerDrops[70],
-        numberOf100APwrDrps: powerDrops[100],
-        numberOf250APwrDrps: powerDrops[250]
-    } */
- 
     const handleSetLineChange = (event)=> {
-        const Linevalue = event.target.value;
-        setLine(Linevalue);
+        const value = event.target.value;
+        setLine(value);
+        pdp.line = value;
     }
 
     const handleSetLocationChange = (event)=> {
-        const Locationvalue = event.target.value;
-        setLocation(Locationvalue);
+        const value = event.target.value;
+        setLocation(value);
+        pdp.location = value;
     }
 
     const handleSetAmperageChange = (event)=> {
-        const Amperagevalue = event.target.value;
-        setAmperage(Amperagevalue);
+        const value = event.target.value;
+        setAmperage(value);
+        pdp.amp = value;
     }
 
     const handleSetEnclosureSizeChange = (event)=> {
-        const EnclosureSizevalue = event.target.value;
-        setEnclosureSize(EnclosureSizevalue);
+        const value = event.target.value;
+        setEnclosureSize(value);
+        pdp.enclosureSize = value;
+    }
+
+    const handleSetEnclosureNameplateFLAChange = (event)=> {
+        const value = event.target.value;
+        setEnclosureNameplateFLA(value);
+        pdp.FLA = value;
     }
 
     const handleSetPwrMonitorEnableChange = (event)=> {
-        setPwrMonitorEnable(!PwrMonitorEnable)
+        const value = !PwrMonitorEnable;
+        setPwrMonitorEnable(value)
+        pdp.PwrMonitorEnable = value;
     }
 
     const handleSetOpt_SurgeProtectionChange = (event)=> {
-        setOpt_SurgeProtectionDevice(!Opt_SurgeProtectionDevice)
+        const value = !Opt_SurgeProtectionDevice;
+        setOpt_SurgeProtectionDevice(value)
+        pdp.Opt_SurgeProtectionDevice = value;
     }
 
     const handleSetOpt_HotPwrChange = (event)=> {
+        const value = !Opt_HotPwrEnable;
         setOpt_HotPwrEnable(!Opt_HotPwrEnable)
+        pdp.Opt_HotPwrEnable = value;
     }
 
     const AmperageOptions = [
@@ -132,46 +130,119 @@ const M_W_PdpConfiguration = () => {
 
     // State for each amperage type
     const [powerDrops, setPowerDrops] = useState({
-        10: 0,
-        20: 0,
-        30: 0,
-        40: 0,
-        60: 0,
-        70: 0,
-        100: 0,
-        250: 0
+        "10A": 0,
+        "20A": 0,
+        "30A": 0,
+        "40A": 0,
+        "60A": 0,
+        "70A": 0,
+        "100A": 0,
+        "250A": 0
     });
 
+    const handlePowerDropChange = (amperage) => (e) =>{
+            const data = {...powerDrops, [amperage]: parseInt(e.target.value) || 0}
+            setPowerDrops(data);
+
+            pdp.numberOf10APwrDrps = data["10A"]
+            pdp.numberOf20APwrDrps = data["20A"]
+            pdp.numberOf30APwrDrps = data["30A"]
+            pdp.numberOf40APwrDrps = data["40A"]
+            pdp.numberOf60APwrDrps = data["60A"]
+            pdp.numberOf70APwrDrps = data["70A"]
+            pdp.numberOf100APwrDrps = data["100A"]
+            pdp.numberOf250APwrDrps = data["250A"] 
+            pdp.circuitBranches = {}
+            pdp.branchCircuit["10A"] = createBranchCircuit(pdp.numberOf10APwrDrps, "10A");
+            pdp.branchCircuit["20A"] = createBranchCircuit(pdp.numberOf20APwrDrps, "20A");
+            pdp.branchCircuit["30A"] = createBranchCircuit(pdp.numberOf30APwrDrps, "30A");
+            pdp.branchCircuit["40A"] = createBranchCircuit(pdp.numberOf40APwrDrps, "40A");
+            pdp.branchCircuit["60A"] = createBranchCircuit(pdp.numberOf60APwrDrps, "60A");
+            pdp.branchCircuit["70A"] = createBranchCircuit(pdp.numberOf70APwrDrps, "70A");
+            pdp.branchCircuit["100A"] = createBranchCircuit(pdp.numberOf100APwrDrps, "100A");
+            pdp.branchCircuit["250A"] = createBranchCircuit(pdp.numberOf250APwrDrps, "250A");
+    }
+
+    const createBranchCircuit = (numberOfDrps, amperage) => {
+        var newPwrDrops = []
+        for(let i=0; i<numberOfDrps; i++){
+            var newPwrDrop = addBranchCircuit(i, amperage);
+            newPwrDrops.push(newPwrDrop);
+        }
+        return newPwrDrops;
+    }
+
     // Create array of power drop items for each amperage
-    const renderPowerDrops = () => {
+    const renderPowerDrops = (amperage) => {
         var i = 0;
-        return Object.entries(powerDrops).reverse().flatMap(([amperage, count]) => 
-            Array.from({ length: count }).map((_, index) => {
-                i=i+1;
-                return <PowerDropItem 
+        var powerDropItems = []
+        var branchCircuit = pdp.branchCircuit[amperage]
+        
+
+        for(i=0;i<powerDrops[amperage];i++){
+            var index = i+1;
+            powerDropItems.push(
+            <PowerDropItem 
                 key={`${amperage}-${index}`}
-                amperage={parseInt(amperage)}
+                amperage={(amperage)} //{parseInt(amperage)}
                 index={index}
                 absIndex={i}
-            />})   
-        );
+                branchCircuit={branchCircuit[i]}
+            />)
+        }
+        return powerDropItems;
     };
+
+    const renderAllPowerDrops = () => {
+        var powerDrops10A = renderPowerDrops("10A");
+        var powerDrops20A = renderPowerDrops("20A"); 
+        var powerDrops30A = renderPowerDrops("30A"); 
+        var powerDrops40A = renderPowerDrops("40A");
+        var powerDrops60A = renderPowerDrops("60A");
+        var powerDrops70A = renderPowerDrops("70A");
+        var powerDrops100A = renderPowerDrops("100A");
+        var powerDrops250A = renderPowerDrops("250A");
+        return [...powerDrops250A, ...powerDrops100A, ...powerDrops70A, ...powerDrops60A, ...powerDrops40A, ...powerDrops30A, ...powerDrops20A, ...powerDrops10A]
+        
+    }
+    // const renderTempPowerDrops = () => {
+    //     var i = 0;
+    //     pdp.branchCircuits = []
+    //     return Object.entries(powerDrops).reverse().flatMap(([amperage, count]) => 
+    //         Array.from({ length: count }).map((_, index) => {
+    //             i=i+1;
+    //             // var branchCircuit = pdp.branchCircuits.filter(i=> i.amp === amperage && i.index === index-1)[0];
+    //             // console.log(pdp.branchCircuits)
+    //             return <PowerDropItem 
+    //             key={`${amperage}-${index}`}
+    //             amperage={(amperage)} //{parseInt(amperage)}
+    //             index={index}
+    //             absIndex={i}
+    //             branchCircuit={branchCircuit}
+    //         />})   
+    //     );
+    // };
 
     return (
         
         <div>
             <div>
+                <h4>Power Distribution Panel ++{Line}+{Location} Parameters</h4>
+            </div>
+            <div>
                 <FormItem className="form-item">
                     <FormLabel className="form-label" htmlFor="context">Plant name</FormLabel>
                     <FormInputText
                     id="context"
-                    value={plant}/>
+                    value={plant}
+                    readOnly/>
                 </FormItem> 
                 <FormItem className="form-item">
                     <FormLabel className="form-label" htmlFor="context">Shop name</FormLabel>
                     <FormInputText
                     id="context"
-                    value={shop}/>
+                    value={shop}
+                    readOnly/>
                 </FormItem> 
                 <FormItem className="form-item">
                     <FormLabel className="form-label" htmlFor="context">Manufacturing Line name (e.g., UBM1, DOR1)</FormLabel>
@@ -205,6 +276,14 @@ const M_W_PdpConfiguration = () => {
                     value={EnclosureSize}
                     onChange={handleSetEnclosureSizeChange}/>
                 </FormItem>
+                {/* Input for Enclosure nameplate FLA */}
+                <FormItem className="form-item">
+                <FormLabel className="form-label" htmlFor="context">Enclosure nameplate FLA</FormLabel>
+                <FormInputText
+                    id="context"
+                    value={enclosureNameplateFLA}
+                    onChange={handleSetEnclosureNameplateFLAChange}/>
+                </FormItem>
                 {/* Checkbox for Power monitor */}
                 <FormItem className="form-item">
                 <FormInputCheckbox
@@ -230,21 +309,8 @@ const M_W_PdpConfiguration = () => {
                     onChange={handleSetOpt_HotPwrChange} />
                 </FormItem>
             </div>  
-            {/* Input fields for each hot power drop */}
-           {/*  {Object.keys(hotPowerDrops).map(hotPowerDrop => (
-                <FormItem key={hotPowerDrop}>
-                    <FormLabel>{hotPowerDrop}A Hot Power Drops</FormLabel>
-                    <FormInputText
-                        id="context"
-                        value={hotPowerDrops[hotPowerDrop]}
-                        onChange={(e) => setHotPowerDrops(prev => ({
-                            ...prev,
-                            [hotPowerDrop]: e.target.value
-                        }))}
-                    />
-                </FormItem>
-            ))} */}
 
+            {/* Input fields for each hot power drop */}
             {/* Render all hot power drops */}
             {Opt_HotPwrEnable && (
                 <>
@@ -255,20 +321,19 @@ const M_W_PdpConfiguration = () => {
             {/* Input fields for each amperage */}
             {Object.keys(powerDrops).reverse().map(amperage => (
                 <FormItem key={amperage}>
-                    <FormLabel>{amperage}A Power Drops</FormLabel>
+                    <FormLabel>{amperage} Power Drops</FormLabel>
                     <FormInputText
                         type="number"
                         value={powerDrops[amperage]}
-                        onChange={(e) => setPowerDrops(prev => ({
-                            ...prev,
-                            [amperage]: parseInt(e.target.value) || 0
-                        }))}
+                        onChange={handlePowerDropChange(amperage)}
                     />
                 </FormItem>
             ))}
 
             {/* Render all power drops */}
-            {renderPowerDrops()}
+            {
+                renderAllPowerDrops()
+            }
         </div>
     );
 };

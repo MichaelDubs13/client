@@ -11,9 +11,11 @@ export default class BusBar extends Component{
     }
 
     getParameters(){
-        return [{name: "DropsOnThisBusBar", value: "", type: "Integer"},
-            {name: "DropsOnThisBusBarIRL", value: "", type: "Integer"},
-            {name: "BB_DT", value: `BB${_dTCounter}`, type: "String"},
+        return [
+            // {name: "DTCounter", value: `${this._dTCounter}`, type: "String"},
+            // {name: "DropsOnThisBusBar", value: "", type: "Integer"},
+            // {name: "DropsOnThisBusBarIRL", value: "", type: "Integer"},
+            // {name: "BB_DT", value: `BB${this._dTCounter}`, type: "String"},
             ];
     }
 

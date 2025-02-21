@@ -5,6 +5,7 @@ import F_AddDeleteMoveIOModule from "./F_AddDeleteMoveIOModule";
 export default class Fg_IOModule extends Component{
     constructor(parent, io) {
         super(parent);
+        console.log(io);
         this.parent = parent;
         this._classPath = "Config-IO_Modules.Mechatronic";
         this._class = "fg_IOModule";

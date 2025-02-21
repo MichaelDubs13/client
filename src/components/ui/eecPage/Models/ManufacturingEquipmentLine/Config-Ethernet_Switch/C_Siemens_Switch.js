@@ -14,16 +14,16 @@ export default class C_Siemens_Switch extends Component{
 
     get Parameters(){
         return [
-            {name: "6GK5208_0HA00_2AS6", value: "", type: "Boolean"},
-            {name: "6GK5216_0HA00_2AS6", value: "", type: "Boolean"},
-            {name: "Siemens", value: "", type: "Boolean"},
-            {name: "Switch_DT", value: this._switch, type: "String"},
-            {name: "Switch_Location", value: this._location, type: "String"},
-            {name: "DeviceType_Spare", value: "", type: "Boolean"},
-            {name: "PWR1_IN_IntPt_DT", value: "", type: "String"},
-            {name: "Local_IP", value: "", type: "String"},
-            {name: "Plant_IP", value: "", type: "String"},
-            {name: "Switch_Title", value: this._switchTitle, type: "String"},
+            // {name: "6GK5208_0HA00_2AS6", value: "", type: "Boolean"},
+            // {name: "6GK5216_0HA00_2AS6", value: "", type: "Boolean"},
+            // {name: "Siemens", value: "", type: "Boolean"},
+            // {name: "Switch_DT", value: this._switch, type: "String"},
+            // {name: "Switch_Location", value: this._location, type: "String"},
+            // {name: "DeviceType_Spare", value: "", type: "Boolean"},
+            // {name: "PWR1_IN_IntPt_DT", value: "", type: "String"},
+            // {name: "Local_IP", value: "", type: "String"},
+            // {name: "Plant_IP", value: "", type: "String"},
+            // {name: "Switch_Title", value: this._switchTitle, type: "String"},
         ];
     }
 

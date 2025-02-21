@@ -12,9 +12,10 @@ export default class C_KED extends Component{
     }
 
     get Parameters(){
-        return [{name: "Local_IP", value: this._mcp.ked_local_ip, type: "String"},
-            {name: "Local_Secondary_IP", value: "", type: "String"},
-            {name: "PLC_IP", value: "", type: "String"},
+        return [
+            {name: "Local_IP", value: this._mcp.ked_local_ip, type: "String"},
+            {name: "Local_Secondary_IP", value: "Undefined", type: "String"},
+            {name: "PLC_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
             {name: "Plant_IP", value: this._mcp.ked_plant_ip, type: "String"},
         ];
     }

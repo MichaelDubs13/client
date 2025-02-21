@@ -12,7 +12,7 @@ const CreateEecForm = ({onSubmit}) => {
   const {user, isAuthenticated} = useAuthStore();
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState(''); 
-  const [xml, setXml] = useState(''); 
+  const [imx, setIMX] = useState('');
   
   useEffect(() => {
     if (isAuthenticated === true) {
@@ -23,7 +23,7 @@ const CreateEecForm = ({onSubmit}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    downloadXML(xml);
+    downloadXML(imx, "generated_imx.imx");
     onSubmit()
   };
 
@@ -46,28 +46,19 @@ const CreateEecForm = ({onSubmit}) => {
       reader.onload = function(event) {
         var data = event.target.result;
         const excelParser = new Parser(data);
-        const config = excelParser.parseProjectSheet();
-        const pdps = excelParser.parsePdpSheet();
-        const mcps = excelParser.parseMcpSheet();
-        const psus = excelParser.parsePsuSheet();
-        let switches = excelParser.parseNetworkSheet();
-        const devices = excelParser.parseDeviceSheet();
-        const ios = excelParser.parseIOSheet();
-
-        switches = excelParser.createNetworkTree(devices, switches);
-        const ioDevices = excelParser.createIODevices(devices, ios);
-        var xml = ModelBuilder.build(config, pdps, mcps, psus, switches, devices, ioDevices);
-        setXml(xml);
+        const {config,pdps, xpdps, mcps, psus, switches, devices, ioDevices} = excelParser.parse();
+        var imx = ModelBuilder.buildIMX(config, pdps,xpdps, mcps, psus, switches, devices, ioDevices);
+        setIMX(imx);
       }
       reader.readAsBinaryString(file)
   }
 
-  function downloadXML(doc) {
+  function downloadXML(doc, name) {
     const fileData = doc;
     const blob = new Blob([fileData], { type: "text/xml" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = "xmlDoc";
+    link.download = name;
     link.href = url;
     link.click();
   }
@@ -80,7 +71,7 @@ const CreateEecForm = ({onSubmit}) => {
           <FormLabel htmlFor="eec">EEC Configuration</FormLabel>
           <FormItemFileUpload
               id="eec"
-              accept=".xlsx"
+              accept=".xlsx, .xlsm"
               multiple = {false}
               label="Select File"
               placeholder="Upload EEC configuration"

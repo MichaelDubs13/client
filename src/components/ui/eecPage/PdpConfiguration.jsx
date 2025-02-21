@@ -3,11 +3,8 @@ import { IoIosArrowForward, IoIosArrowDown,  } from "react-icons/io";
 import {IconContext} from "react-icons";
 import pdpStore from "../../../store/eec/pdpStore";
 import { FormLabel, FormItem, Button, FormInputText} from '@tesla/design-system-react';
-import ListGroup from "./ListGroup";
 import ItemStore from "../../../store/eec/ItemStore";
-import PowerDistributionComponent from "./PowerDistribution";
 import "./Eec.css";
-import MEB_PDP_Testing from "./M_W_PdpConfiguration";
 import M_W_PdpConfiguration from "./M_W_PdpConfiguration";
 
 const PdpConfiguration = () => {

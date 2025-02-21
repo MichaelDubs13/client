@@ -11,9 +11,9 @@ export default class _f_DC_Distribution_CLS2_Balluff_120VPSU extends Component{
     }
     get Parameters(){
         return [
-            {name: "Drops_On_XD3", value: "", type: "Integer"},
-            {name: "Drops_On_XD4", value: "", type: "Integer"},
-            {name: "Drops_On_XD5", value: "", type: "Integer"},
+            // {name: "Drops_On_XD3", value: "", type: "Integer"},
+            // {name: "Drops_On_XD4", value: "", type: "Integer"},
+            // {name: "Drops_On_XD5", value: "", type: "Integer"},
         ];
     }
 

@@ -10,6 +10,8 @@ export default class PanelLayout_Interior extends Component{
     }
 
     get Parameters(){
-        return [{name: "PageLocationDesignation", value: this._pdp.location, type: "String"}]
+        return [
+            // {name: "PageLocationDesignation", value: this._pdp.location, type: "String"}
+        ]
     }
 }

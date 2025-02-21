@@ -13,9 +13,10 @@ export default class C_PLC extends Component{
     }
 
     get Parameters(){
-        return [{name: "Local_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
-            {name: "Local_Secondary_IP", value: "", type: "String"},
-            {name: "PLC_IP", value: "", type: "String"},
+        return [
+            {name: "Local_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
+            {name: "Local_Secondary_IP", value: "Undefined", type: "String"},
+            {name: "PLC_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
             {name: "Plant_IP", value: this._mcp.plc_local_x3_ip, type: "String"},
             {name: "b_PLC_ETH", value: this._plc_eth , type: "Boolean"},
         ];

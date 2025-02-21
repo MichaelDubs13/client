@@ -10,7 +10,10 @@ export default class Fg_M_W_PowerDistributionPanel extends Component{
         this._name = "fg_M_W_PowerDistributionPanel";
         this._pdps = pdps;
     }
-
+    get Parameters(){
+        return [{name: "NumberofPDP_Instances", value: this._pdps.length, type: "Integer"},
+            ];
+    }
     build(){
         for(let i = 0; i < this._pdps.length; i++){
             const pdp = this._pdps[i];

@@ -33,8 +33,8 @@ export default class Fg_24VDC_PowerDistribution extends Component{
     build(){
         for(let i=0; i < this._totalBranches; i++){
             let psus = this._psus.filter(psu => psu.inputBranch === (i+1))
-            const fg_24VDC_PowerDistribution = new Fg_24VPowerDistribution(this, psus)
-            fg_24VDC_PowerDistribution.build();
+            const fg_24V_PowerDistribution = new Fg_24VPowerDistribution(this, i+1, psus)
+            fg_24V_PowerDistribution.build();
         }
     }
 }

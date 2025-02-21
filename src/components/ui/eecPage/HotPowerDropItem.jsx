@@ -36,9 +36,9 @@ import {
         ...hotPowerDropSettings,
         [field]: value
       };
-      /* console.log(value);
+      
       setHotPowerDropSettings(newSettings);
-      onSettingsChange?.(index, newSettings); */
+      onSettingsChange?.(index, newSettings);
     };
 
     return (

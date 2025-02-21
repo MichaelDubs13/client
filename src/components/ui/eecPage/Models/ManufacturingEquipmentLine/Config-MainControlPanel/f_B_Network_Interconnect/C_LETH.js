@@ -24,22 +24,23 @@ export default class C_LETH extends Component{
     }
 
     get Parameters(){
-        return [{name: "Local_IP", value: this._mcp.leth_sw_ip, type: "String"},
-            {name: "Local_Secondary_IP", value: "", type: "String"},
-            {name: "PLC_IP", value: "", type: "String"},
-            {name: "Plant_IP", value: "", type: "String"},
+        return [
+            {name: "Local_IP", value: this._mcp.leth_sw_ip, type: "String"},
+            {name: "Local_Secondary_IP", value: "Undefined", type: "String"},
+            {name: "PLC_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
+            {name: "Plant_IP", value: this._mcp.ked_plant_ip, type: "String"},
             {name: "Gigabit_Port2_Location", value: this._port2_location, type: "String"},
             {name: "Gigabit_Port2_DT", value: this._port2_dt, type: "String"},
-            {name: "Gigabit_Port2_TargetPort", value: "", type: "String"},
+            {name: "Gigabit_Port2_TargetPort", value: "Undefined", type: "String"},
             {name: "Gigabit_Port3_Location", value: this._port3_location, type: "String"},
             {name: "Gigabit_Port3_DT", value: this._port3_dt, type: "String"},
-            {name: "Gigabit_Port3_TargetPort", value: "", type: "String"},
+            {name: "Gigabit_Port3_TargetPort", value: "Undefined", type: "String"},
             {name: "Gigabit_Port4_Location", value: this._port4_location, type: "String"},
             {name: "Gigabit_Port4_DT", value: this._port4_dt, type: "String"},
-            {name: "Gigabit_Port4_TargetPort", value: "", type: "String"},
-            {name: "Gigabit_Port2_CableLength", value: "", type: "String"},
-            {name: "Gigabit_Port3_CableLength", value: "", type: "String"},
-            {name: "Gigabit_Port4_CableLength", value: "", type: "String"},
+            {name: "Gigabit_Port4_TargetPort", value: "Undefined", type: "String"},
+            {name: "Gigabit_Port2_CableLength", value: "1.5 m", type: "String"},
+            {name: "Gigabit_Port3_CableLength", value: "1.5 m", type: "String"},
+            {name: "Gigabit_Port4_CableLength", value: "1.5 m", type: "String"},
 
         ];
     }

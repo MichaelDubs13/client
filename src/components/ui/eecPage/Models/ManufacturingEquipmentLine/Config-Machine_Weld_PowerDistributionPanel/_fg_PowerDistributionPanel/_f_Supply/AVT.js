@@ -10,6 +10,8 @@ export default class AVT extends Component{
     }
 
     get Parameters(){
-        return [{name: "AVT_PE", value: "AVTPE", type: "String"}];
+        return [
+            // {name: "AVT_PE", value: "AVTPE", type: "String"}
+        ];
     }
 }

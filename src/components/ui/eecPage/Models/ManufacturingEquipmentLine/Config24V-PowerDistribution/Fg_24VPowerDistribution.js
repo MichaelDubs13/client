@@ -6,12 +6,13 @@ import _f_PSU_Balluff_CLS2_BAE0133 from "./_f_PSU_Balluff/_f_PSU_Balluff_CLS2_BA
 
 
 export default class Fg_24VPowerDistribution extends Component{
-    constructor(parent, psus) {
+    constructor(parent, index, psus) {
         super(parent);
         this.parent = parent;
+        this._index = index;
         this._classPath = "Config24V-PowerDistribution.Mechatronic._fg_24VPowerDistribution";
         this._class = "fg_24VPowerDistribution";
-        this._name = "fg_24VPowerDistribution";
+        this._name = `fg_24VPowerDistribution${index > 1 ? index : ""}`;
         this._psus = psus;
         this.Balluff_CLS2_BAE0133_NumberOfPSU = 0
         this.Balluf_BAE00FL_BAE00ET_NumberOfPSU = 0
@@ -44,6 +45,7 @@ export default class Fg_24VPowerDistribution extends Component{
                     this._Balluff_CLS2_BAE0133.push(psu);
                     this.PSU_Selection_120 = `${psu.MFG}-${psu.partNumber}`;
                     this.s_PSU_Selection_120_240 = `${psu.MFG}-${psu.partNumber}`;
+                    this.s_PSU_Selection_480_400 = `${psu.MFG}-${psu.partNumber}`;
                     this.b_PSU_Selection_BAE0133 = true;
                     this._PSUSupplyVoltage_ = "120";
                 }}
@@ -53,32 +55,34 @@ export default class Fg_24VPowerDistribution extends Component{
 
 
     get Parameters(){
-        return [{name: "list_CascadingGroup_PSU_DTs", value: "", type: "List"},
-            {name: "Shop", value: ProjectConfiguration.shop, type: "String"},
-            {name: "Line", value: ProjectConfiguration.line, type: "String"},
-            {name: "Location", value: "", type: "String"},
-            {name: "Plant", value: ProjectConfiguration.plant, type: "String"},
-            {name: "LocalDisconnectRequired", value: "", type: "Boolean"},
+        return [
+            // {name: "list_CascadingGroup_PSU_DTs", value: [], type: "arrayList"},
+            // {name: "Shop", value: ProjectConfiguration.shop, type: "String"},
+            // {name: "Line", value: ProjectConfiguration.line, type: "String"},
+            {name: "Location", value: "LOCATION", type: "String"},
+            // {name: "Plant", value: ProjectConfiguration.plant, type: "String"},
+            {name: "LocalDisconnectRequired", value: false, type: "Boolean"},
             {name: "Turck_NumberOfPSU", value: this.Turck_NumberOfPSU, type: "Integer"},
             {name: "Puls_NumberOfPSU", value: this.Puls_NumberOfPSU, type: "Integer"},
             {name: "Siemens_NumberOfPSU", value: this.Siemens_NumberOfPSU, type: "Integer"},
             {name: "Balluf_BAE00FL_BAE00ET_NumberOfPSU", value: this.Balluf_BAE00FL_BAE00ET_NumberOfPSU, type: "Integer"},
             {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this.numberOfBAE0133, type: "Integer"},
-            {name: "LocationDesignation", value: "", type: "String"},
-            {name: "DeviceTag", value: "", type: "String"},
-            {name: "PSU_Selection_120", value: this.PSU_Selection_120, type: "String"},
+            {name: "LocationDesignation", value: "Undefined", type: "String"},
+            {name: "DeviceTag", value: "Undefined", type: "String"},
+            // {name: "PSU_Selection_120", value: this.PSU_Selection_120, type: "String"},
             {name: "_PSUSupplyVoltage_", value: this._PSUSupplyVoltage_, type: "String"},
-            {name: "b_PSU_Selection_Balluff_BAE00ET", value: this.b_PSU_Selection_Balluff_BAE00ET, type: "Boolean"},
-            {name: "b_PSU_Selection_BAE00FL", value: this.b_PSU_Selection_BAE00FL, type: "Boolean"},
-            {name: "b_PSU_Selection_BAE0133", value: this.b_PSU_Selection_BAE0133, type: "Boolean"},
-            {name: "b_PSU_Selection_Puls", value: this.b_PSU_Selection_Puls, type: "Boolean"},
-            {name: "b_PSU_Selection_Turck", value: this.b_PSU_Selection_Turck, type: "Boolean"},
-            {name: "b_PSU_Selection_Siemens", value: this.b_PSU_Selection_Siemens, type: "Boolean"},
+            // {name: "b_PSU_Selection_Balluff_BAE00ET", value: this.b_PSU_Selection_Balluff_BAE00ET, type: "Boolean"},
+            // {name: "b_PSU_Selection_BAE00FL", value: this.b_PSU_Selection_BAE00FL, type: "Boolean"},
+            // {name: "b_PSU_Selection_BAE0133", value: this.b_PSU_Selection_BAE0133, type: "Boolean"},
+            // {name: "b_PSU_Selection_Puls", value: this.b_PSU_Selection_Puls, type: "Boolean"},
+            // {name: "b_PSU_Selection_Turck", value: this.b_PSU_Selection_Turck, type: "Boolean"},
+            // {name: "b_PSU_Selection_Siemens", value: this.b_PSU_Selection_Siemens, type: "Boolean"},
+            {name: "s_PSU_Selection_480_400", value: this.s_PSU_Selection_480_400, type: "String"},
             {name: "s_PSU_Selection_120_240", value: this.s_PSU_Selection_120_240, type: "String"},
-            {name: "b_PSU_Selection_480_", value: this.b_PSU_Selection_480_, type: "Boolean"},
-            {name: "b_PSU_Selection_120_", value: this.b_PSU_Selection_120_, type: "Boolean"},
-            {name: "b_PSU_Selection_400_", value: this.b_PSU_Selection_400_, type: "Boolean"},
-            {name: "b_PSU_Selection_240_", value: this.b_PSU_Selection_240_, type: "Boolean"},
+            // {name: "b_PSU_Selection_480_", value: this.b_PSU_Selection_480_, type: "Boolean"},
+            // {name: "b_PSU_Selection_120_", value: this.b_PSU_Selection_120_, type: "Boolean"},
+            // {name: "b_PSU_Selection_400_", value: this.b_PSU_Selection_400_, type: "Boolean"},
+            // {name: "b_PSU_Selection_240_", value: this.b_PSU_Selection_240_, type: "Boolean"},
 
         ];
     }
