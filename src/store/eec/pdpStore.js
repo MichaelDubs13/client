@@ -1,10 +1,16 @@
 import {create} from "zustand";
 
 const pdpCondiguration = {
-  createBranchCircuit: (index, amp) => {
+  createBranchCircuit: () => {
     return {
-      index: index,
-      amp: amp,
+      PwrDrop_Spare: false,
+      DropType: "A-external",
+      PwrDrop_DescTxt: "",
+      dbl_Cable_Length: 0,
+      StrBox_DT: "",
+      TargetDevice_DT: "",
+      TargetDevice_FLA: 0,
+      StrBox_DT_FLA: 0,
     }
   },
   create: () => { 
@@ -34,6 +40,16 @@ const pdpCondiguration = {
         spare70A:"",
         spare100A:"",
         spare250A:"",
+        branchCircuit:{
+          "10A":[],
+          "20A":[],
+          "30A":[],
+          "40A":[],
+          "60A":[],
+          "70A":[],
+          "100A":[],
+          "250A":[],
+        }
   }
   }
 }

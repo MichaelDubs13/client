@@ -16,29 +16,30 @@ export default class PwrDrop extends Component {
     }
     
     build(){
+        console.log("test")
         for(let i = 0; i < this._pdp.numberOf250APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 250, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["250A"][i], 250, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf100APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 100, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["100A"][i], 100, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf70APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 70, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["70A"][i], 70, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf60APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 60, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["60A"][i], 60, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf40APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 40, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["40A"][i], 40, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf30APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 30, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["30A"][i], 30, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf20APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 20, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["20A"][i], 20, i+1);
         }
         for(let i = 0; i < this._pdp.numberOf10APwrDrps; i++){
-            const pwrDrp = new BranchCircuit(this, 10, i+1);
+            const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["10A"][i], 10, i+1);
         }
     }
 }

@@ -152,21 +152,20 @@ const M_W_PdpConfiguration = ({pdp}) => {
             pdp.numberOf70APwrDrps = data["70A"]
             pdp.numberOf100APwrDrps = data["100A"]
             pdp.numberOf250APwrDrps = data["250A"] 
-            pdp.circuitBranches = {}
-            pdp.branchCircuit["10A"] = createBranchCircuit(pdp.numberOf10APwrDrps, "10A");
-            pdp.branchCircuit["20A"] = createBranchCircuit(pdp.numberOf20APwrDrps, "20A");
-            pdp.branchCircuit["30A"] = createBranchCircuit(pdp.numberOf30APwrDrps, "30A");
-            pdp.branchCircuit["40A"] = createBranchCircuit(pdp.numberOf40APwrDrps, "40A");
-            pdp.branchCircuit["60A"] = createBranchCircuit(pdp.numberOf60APwrDrps, "60A");
-            pdp.branchCircuit["70A"] = createBranchCircuit(pdp.numberOf70APwrDrps, "70A");
-            pdp.branchCircuit["100A"] = createBranchCircuit(pdp.numberOf100APwrDrps, "100A");
-            pdp.branchCircuit["250A"] = createBranchCircuit(pdp.numberOf250APwrDrps, "250A");
+            pdp.branchCircuit["10A"] = createBranchCircuit(pdp.numberOf10APwrDrps);
+            pdp.branchCircuit["20A"] = createBranchCircuit(pdp.numberOf20APwrDrps);
+            pdp.branchCircuit["30A"] = createBranchCircuit(pdp.numberOf30APwrDrps);
+            pdp.branchCircuit["40A"] = createBranchCircuit(pdp.numberOf40APwrDrps);
+            pdp.branchCircuit["60A"] = createBranchCircuit(pdp.numberOf60APwrDrps);
+            pdp.branchCircuit["70A"] = createBranchCircuit(pdp.numberOf70APwrDrps);
+            pdp.branchCircuit["100A"] = createBranchCircuit(pdp.numberOf100APwrDrps);
+            pdp.branchCircuit["250A"] = createBranchCircuit(pdp.numberOf250APwrDrps);
     }
 
-    const createBranchCircuit = (numberOfDrps, amperage) => {
+    const createBranchCircuit = (numberOfDrps) => {
         var newPwrDrops = []
         for(let i=0; i<numberOfDrps; i++){
-            var newPwrDrop = addBranchCircuit(i, amperage);
+            var newPwrDrop = addBranchCircuit();
             newPwrDrops.push(newPwrDrop);
         }
         return newPwrDrops;
@@ -176,8 +175,7 @@ const M_W_PdpConfiguration = ({pdp}) => {
     const renderPowerDrops = (amperage) => {
         var i = 0;
         var powerDropItems = []
-        var branchCircuit = pdp.branchCircuit[amperage]
-        
+        var branchCircuit = pdp.branchCircuit[amperage];
 
         for(i=0;i<powerDrops[amperage];i++){
             var index = i+1;
@@ -205,23 +203,6 @@ const M_W_PdpConfiguration = ({pdp}) => {
         return [...powerDrops250A, ...powerDrops100A, ...powerDrops70A, ...powerDrops60A, ...powerDrops40A, ...powerDrops30A, ...powerDrops20A, ...powerDrops10A]
         
     }
-    // const renderTempPowerDrops = () => {
-    //     var i = 0;
-    //     pdp.branchCircuits = []
-    //     return Object.entries(powerDrops).reverse().flatMap(([amperage, count]) => 
-    //         Array.from({ length: count }).map((_, index) => {
-    //             i=i+1;
-    //             // var branchCircuit = pdp.branchCircuits.filter(i=> i.amp === amperage && i.index === index-1)[0];
-    //             // console.log(pdp.branchCircuits)
-    //             return <PowerDropItem 
-    //             key={`${amperage}-${index}`}
-    //             amperage={(amperage)} //{parseInt(amperage)}
-    //             index={index}
-    //             absIndex={i}
-    //             branchCircuit={branchCircuit}
-    //         />})   
-    //     );
-    // };
 
     return (
         

@@ -35,7 +35,7 @@ const EecPage = () => {
       event.preventDefault();
       // var doc = xml.create(pdps, mcpStore,lpds, {});
       // downloadXML(doc)
-
+      console.log(pdps);
       var mcps = []
       var psus = []
       var switches =[]
