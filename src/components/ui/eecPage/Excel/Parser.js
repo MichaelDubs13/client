@@ -186,6 +186,7 @@ export default class Parser {
                     xf_size = "30kVA Transformer"
                 }
             }
+            const branchCircuits = [];
             
 
             if(location){
@@ -205,6 +206,7 @@ export default class Parser {
                     spare20A1p:spare20A1p,
                     spare20A3p:spare20A3p,
                     xf_size:xf_size,
+                    branchCircuits:branchCircuits,
                }
                xpdps.push(xpdp);
             }

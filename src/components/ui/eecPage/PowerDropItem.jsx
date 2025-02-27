@@ -53,7 +53,7 @@ import {
     return (
       <div className="power-drop-item">
         <div className="power-drop-header">
-          <h3>{amperage} Branch circuit power drop {index + 1}: CB{absIndex}</h3>
+          <h3>{amperage} Branch circuit power drop {index}: CB{absIndex}</h3>
         </div>
   
         <div className="power-drop-settings">

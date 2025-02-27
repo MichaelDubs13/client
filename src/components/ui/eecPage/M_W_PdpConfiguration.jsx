@@ -171,6 +171,12 @@ const M_W_PdpConfiguration = ({pdp}) => {
         return newPwrDrops;
     }
 
+    // Calculate the total number of power drops
+    const totalPowerDrops = Object.values(powerDrops).reduce((acc, count) => acc + count, 0);
+
+    // Variable to keep track of absIndex across all power drops
+    let absIndexCounter = 1; 
+
     // Create array of power drop items for each amperage
     const renderPowerDrops = (amperage) => {
         var i = 0;
@@ -182,9 +188,9 @@ const M_W_PdpConfiguration = ({pdp}) => {
             powerDropItems.push(
             <PowerDropItem 
                 key={`${amperage}-${index}`}
-                amperage={(amperage)} //{parseInt(amperage)}
+                amperage={(amperage)} 
                 index={index}
-                absIndex={i}
+                absIndex={absIndexCounter++}
                 branchCircuit={branchCircuit[i]}
             />)
         }
@@ -192,14 +198,14 @@ const M_W_PdpConfiguration = ({pdp}) => {
     };
 
     const renderAllPowerDrops = () => {
-        var powerDrops10A = renderPowerDrops("10A");
-        var powerDrops20A = renderPowerDrops("20A"); 
-        var powerDrops30A = renderPowerDrops("30A"); 
-        var powerDrops40A = renderPowerDrops("40A");
-        var powerDrops60A = renderPowerDrops("60A");
-        var powerDrops70A = renderPowerDrops("70A");
-        var powerDrops100A = renderPowerDrops("100A");
         var powerDrops250A = renderPowerDrops("250A");
+        var powerDrops100A = renderPowerDrops("100A");
+        var powerDrops70A = renderPowerDrops("70A");
+        var powerDrops60A = renderPowerDrops("60A");
+        var powerDrops40A = renderPowerDrops("40A");
+        var powerDrops30A = renderPowerDrops("30A");
+        var powerDrops20A = renderPowerDrops("20A"); 
+        var powerDrops10A = renderPowerDrops("10A");
         return [...powerDrops250A, ...powerDrops100A, ...powerDrops70A, ...powerDrops60A, ...powerDrops40A, ...powerDrops30A, ...powerDrops20A, ...powerDrops10A]
         
     }
