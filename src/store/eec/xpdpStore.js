@@ -19,6 +19,12 @@ const xpdpCondiguration = {
       spare20A1p:"",
       spare20A3p:"",
       xf_size:"",
+      branchCircuit:{
+        "8A 1ph": [],
+        "15A 1ph": [],
+        "20A 1ph": [],
+        "20A 3ph": []
+      }
     }  
   
   },
