@@ -28,17 +28,6 @@ const M_W_PdpConfiguration = ({pdp}) => {
         item => item.parameter === "InstallationLocation"
     )?.value || "N/A";
 
-    /* // State for form inputs
-    const [pdpSettings, setpdpSettings] = useState({
-        Line: "",
-        Location: "MPDP01",
-        Amperage: "400A",
-        EnclosureSize: "1000(W) x 1800(H) x 500(D)",
-        PwrMonitorEnable: false,
-        Opt_SurgeProtectionDevice: false,
-        Opt_HotPwrEnable: false,
-        ...initialValues
-    }); */
     const addBranchCircuit = pdpStore((state) => state.addBranchCircuit);
     const [Line, setLine] = useState(line);
     const [Location, setLocation] = useState(0);

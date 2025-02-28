@@ -13,6 +13,12 @@ export default class Parser {
         this._mcpWorksheet = "MCP";
         this._networkWorksheet = "Network";
         this._ios = "IO";
+        this.powerDrops = {
+            "8A 1ph": 0,
+            "15A 1ph": 0,
+            "20A 1ph": 0,
+            "20A 3ph": 0
+        };
     }
 
     parse(){
@@ -188,9 +194,16 @@ export default class Parser {
             }
             const branchCircuits = [];
             
+            //ensure powerDrops is initialized before assignment
+            this.powerDrops = this.powerDrops || {};
+            this.powerDrops["8A 1ph"] = numberOfPwrDrop8A;
+            this.powerDrops["15A 1ph"] = numberOfPwrDrop15A;
+            this.powerDrops["20A 1ph"] = numberOfPwrDrop20A1p;
+            this.powerDrops["20A 3ph"] = numberOfPwrDrop20A3p;
 
             if(location){
-                const xpdp = {numberOfPwrDrop8A:numberOfPwrDrop8A,
+                const xpdp = {
+                    numberOfPwrDrop8A:numberOfPwrDrop8A,
                     numberOfPwrDrop15A:numberOfPwrDrop15A,
                     numberOfPwrDrop20A1p:numberOfPwrDrop20A1p,
                     numberOfPwrDrop20A3p:numberOfPwrDrop20A3p,
@@ -207,6 +220,7 @@ export default class Parser {
                     spare20A3p:spare20A3p,
                     xf_size:xf_size,
                     branchCircuits:branchCircuits,
+                    //line:line,
                }
                xpdps.push(xpdp);
             }

@@ -28,6 +28,7 @@ const XpdpConfiguration = ({xpdp}) => {
         item => item.parameter === "InstallationLocation"
     )?.value || "N/A";
 
+    const addBranchCircuit = xpdpStore((state) => state.addBranchCircuit);
     const [Line, setLine] = useState(line);
     const [Location, setLocation] = useState(0);
     const [xfmrLocation, setxfmrLocation] = useState(0);
@@ -40,7 +41,7 @@ const XpdpConfiguration = ({xpdp}) => {
     const handleSetLineChange = (event)=> {
         const value = event.target.value;
         setLine(value);
-        xpdp.line = value;
+        //xpdp.line = value; //need to look into this as it is not in the parser file, may need to be added to the model.
     }
 
     const handleSetLocationChange = (event)=> {
@@ -97,16 +98,63 @@ const XpdpConfiguration = ({xpdp}) => {
         if (amperage === "20A 3ph" && value > 2) {
             return;
         }
-        const data = {...powerDrops,[amperage]: value}
+        const data = {...powerDrops, [amperage]: parseInt(e.target.value) || 0}
         setPowerDrops(data);
         xpdp.numberOfPwrDrop8A = data["8A 1ph"]
         xpdp.numberOfPwrDrop15A = data["15A 1ph"]
         xpdp.numberOfPwrDrop20A1p = data["20A 1ph"]
         xpdp.numberOfPwrDrop20A3p = data["20A 3ph"]
+        xpdp.branchCircuit["8A 1ph"] = createBranchCircuit(xpdp.numberOfPwrDrop8A);
+        xpdp.branchCircuit["15A 1ph"] = createBranchCircuit(xpdp.numberOfPwrDrop15A);
+        xpdp.branchCircuit["20A 1ph"] = createBranchCircuit(xpdp.numberOfPwrDrop20A1p);
+        xpdp.branchCircuit["20A 3ph"] = createBranchCircuit(xpdp.numberOfPwrDrop20A3p);
     }
 
+    const createBranchCircuit = (numberOfDrps) => {
+        var newPwrDrops = []
+        for(let i=0; i<numberOfDrps; i++){
+            var newPwrDrop = addBranchCircuit();
+            newPwrDrops.push(newPwrDrop);
+        }
+        return newPwrDrops;
+    }
+
+    // Calculate the total number of power drops
+    const totalPowerDrops = Object.values(powerDrops).reduce((acc, count) => acc + count, 0);
+
+    // Variable to keep track of absIndex across all power drops
+    let absIndexCounter = 1; 
+
+
     // Create array of power drop items for each amperage
-    const renderPowerDrops = () => {
+    const renderPowerDrops = (amperage) => {
+        var i = 0;
+        var powerDropItems = []
+        var branchCircuit = xpdp.branchCircuit[amperage];
+        var index = 1;
+
+        for (let i=0; i<powerDrops[amperage]; i++) {
+            //var index = i+1;
+            powerDropItems.push(
+                <PowerDropItem
+                    key={`${amperage}-${index}`}
+                    amperage={(amperage)}
+                    index={index++}
+                    absIndex={absIndexCounter++}
+                    branchCircuit={branchCircuit[i]}
+                />)
+        }
+        return powerDropItems;
+    };
+
+    const renderAllPowerDrops = () => {
+        var numberOfPwrDrop8A = renderPowerDrops("8A 1ph");
+        var numberOfPwrDrop15A = renderPowerDrops("15A 1ph");
+        var numberOfPwrDrop20A1p = renderPowerDrops("20A 1ph");
+        var numberOfPwrDrop20A3p = renderPowerDrops("20A 3ph");
+        return [...numberOfPwrDrop8A, ...numberOfPwrDrop15A, ...numberOfPwrDrop20A1p, ...numberOfPwrDrop20A3p]
+    }
+    /* const renderPowerDrops = () => {
         var i = 0;
         
         return Object.entries(powerDrops).reverse().flatMap(([amperage, count]) => 
@@ -119,7 +167,7 @@ const XpdpConfiguration = ({xpdp}) => {
                 absIndex={i}
             />})   
         );
-    };
+    }; */
 
     // Calculate total number of drops minus 20A 3ph
     useEffect(() => {
@@ -205,7 +253,7 @@ const XpdpConfiguration = ({xpdp}) => {
                     <FormInputText
                         type="number"
                         value={powerDrops[amperage]}
-                        onChange={handlePowerDropChange}
+                        onChange={handlePowerDropChange(amperage)}
                     />
                 </FormItem>
                 
@@ -222,7 +270,7 @@ const XpdpConfiguration = ({xpdp}) => {
                 </FormItem> 
 
             {/* Render all power drops */}
-            {renderPowerDrops()}
+            {renderAllPowerDrops()}
         </div>
     );
 };
