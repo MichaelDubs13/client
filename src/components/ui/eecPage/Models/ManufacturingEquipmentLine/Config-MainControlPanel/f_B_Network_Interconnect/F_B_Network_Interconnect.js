@@ -1,6 +1,7 @@
 import Component from "../../Component";
 import C_KED from "./C_KED";
 import C_LETH from "./C_LETH";
+import C_ETH from "./C_ETH";
 import C_NetworkOverview from "./C_NetworkOverview";
 import C_PLC from "./C_PLC";
 
@@ -26,5 +27,8 @@ export default class F_B_Network_Interconnect extends Component{
 
         const c_leth = new C_LETH(this, this._mcp);
         c_leth.build();
+
+        const c_eth = new C_ETH(this, this._mcp);
+        c_eth.build();
     }
 }

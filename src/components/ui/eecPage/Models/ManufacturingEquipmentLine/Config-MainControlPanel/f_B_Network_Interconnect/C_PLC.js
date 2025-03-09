@@ -15,10 +15,13 @@ export default class C_PLC extends Component{
     get Parameters(){
         return [
             {name: "Local_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
-            {name: "Local_Secondary_IP", value: "Undefined", type: "String"},
-            {name: "PLC_IP", value: this._mcp.plc_local_x1_ip, type: "String"},
+            {name: "Local_Secondary_IP", value: this._mcp.plc_local_ip_secondary, type: "String"},
+            {name: "PLC_IP", value: this._mcp.plc_plc_ip, type: "String"}, // changed from 'plc_local_x1_ip' to 'plc_plc_ip' the port number for PLC to PLC communication
             {name: "Plant_IP", value: this._mcp.plc_local_x3_ip, type: "String"},
             {name: "b_PLC_ETH", value: this._plc_eth , type: "Boolean"},
+            {name: "PLC_ID", value: this._mcp.plc_id, type: "String"}, // added from EEC eox v1.0.1
+            {name: "PortX1P2R_Target_Location", value: this._mcp.plc_portx1p2r_target_location, type: "String"}, // added from EEC eox v1.0.1
+            {name: "PortX1P2R_Target_DT", value: this._mcp.plc_portx1p2r_target_dt, type: "String"}, // added from EEC eox v1.0.1
         ];
     }
 
