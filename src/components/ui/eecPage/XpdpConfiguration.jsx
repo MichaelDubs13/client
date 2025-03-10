@@ -1,5 +1,5 @@
 import ListGroup from "./ListGroup";
-import xpdpStore from "../../../store/eec/xpdpStore";
+import {xpdpStore} from "../../../store/eec/xpdpStore";
 import { IoIosArrowForward, IoIosArrowDown,  } from "react-icons/io";
 import {IconContext} from "react-icons";
 import { FormLabel, FormInputText, Button, FormItem, FormInputCheckbox, FormInputDropdown } from '@tesla/design-system-react';

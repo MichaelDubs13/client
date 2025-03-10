@@ -1,5 +1,5 @@
 import ListGroup from "./ListGroup";
-import pdpStore from "../../../store/eec/pdpStore";
+import {pdpStore} from "../../../store/eec/pdpStore";
 import { IoIosArrowForward, IoIosArrowDown,  } from "react-icons/io";
 import {IconContext} from "react-icons";
 import { FormLabel, FormInputText, Button, FormItem } from '@tesla/design-system-react';

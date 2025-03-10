@@ -47,6 +47,6 @@ export default class C_LETH extends Component{
     }
 
     build(){
-        const leth_interface = new C_LETH_Interface(this);
+        const leth_interface = new C_LETH_Interface(this, this._mcp);
     }
 }
