@@ -1,7 +1,7 @@
 import { Component, useState } from "react";
 import { IoIosArrowForward, IoIosArrowDown,  } from "react-icons/io";
 import {IconContext} from "react-icons";
-import pdpStore from "../../../store/eec/pdpStore";
+import {pdpStore} from "../../../store/eec/pdpStore";
 import { FormLabel, FormItem, Button, FormInputText} from '@tesla/design-system-react';
 import ItemStore from "../../../store/eec/ItemStore";
 import "./Eec.css";

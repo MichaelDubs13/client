@@ -20,7 +20,7 @@ export default class Fg_MainControlPanel extends Component{
     }
 
     build(){
-
+        
         this._mcps.forEach(mcp => {
             const fg_mainPanel = new Fg_MainControlPanelComponent(this, mcp);
             fg_mainPanel.build();

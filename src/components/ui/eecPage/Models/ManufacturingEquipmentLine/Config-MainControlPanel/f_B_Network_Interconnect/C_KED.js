@@ -25,6 +25,6 @@ export default class C_KED extends Component{
     }
 
     build(){
-        const ked_interface = new C_KED_Interface(this);
+        const ked_interface = new C_KED_Interface(this, this._mcp);
     }
 }

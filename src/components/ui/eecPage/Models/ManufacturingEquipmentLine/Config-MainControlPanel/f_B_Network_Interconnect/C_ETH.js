@@ -23,6 +23,6 @@ export default class C_ETH extends Component{
     }
 
     build(){
-        const leth_interface = new C_ETH_Interface(this);
+        const leth_interface = new C_ETH_Interface(this, this._mcp);
     }
 }

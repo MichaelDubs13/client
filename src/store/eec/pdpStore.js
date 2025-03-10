@@ -1,6 +1,6 @@
 import {create} from "zustand";
 
-const pdpCondiguration = {
+const pdpConfiguration = {
   createBranchCircuit: () => {
     return {
       PwrDrop_Spare: false,
@@ -13,6 +13,22 @@ const pdpCondiguration = {
       StrBox_DT_FLA: 0,
     }
   },
+
+  createBranchCircuits: () => {
+       const branchCircuit = {
+          "10A":[],
+          "20A":[],
+          "30A":[],
+          "40A":[],
+          "60A":[],
+          "70A":[],
+          "100A":[],
+          "250A":[],
+        }
+
+        return branchCircuit;
+  },
+
   create: () => { 
     return {
         name:"",
@@ -67,15 +83,18 @@ const pdpStore = create((set) => ({
     addPdp: (numberOfPdp, data) => {
       set({pdps:[]});
       for (let i = 0; i < numberOfPdp; i++) {
-        var pdp = pdpCondiguration.create();
+        var pdp = pdpConfiguration.create();
         set((state) => ({pdps:[...state.pdps, pdp]}));
       }
     },
 
     addBranchCircuit:()=>{
-      return pdpCondiguration.createBranchCircuit();
+      return pdpConfiguration.createBranchCircuit();
     }
 
 }));
 
-export default pdpStore
+export {
+  pdpStore,
+  pdpConfiguration
+}

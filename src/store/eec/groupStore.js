@@ -1,5 +1,5 @@
 import ItemStore from "./ItemStore";
-import pdpStores from "./pdpStore";
+import {pdpStore} from "./pdpStore";
 
 const groupStore = {
     firstGroup : {
@@ -28,7 +28,7 @@ const groupStore = {
       },
       
    fithGroup :{
-        items:pdpStores.counts,
+        items:pdpStore.counts,
         heading: "Power Distribution Panel Configuration",
       },
 }

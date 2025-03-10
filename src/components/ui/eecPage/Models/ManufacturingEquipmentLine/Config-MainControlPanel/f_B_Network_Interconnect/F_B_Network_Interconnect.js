@@ -16,6 +16,7 @@ export default class F_B_Network_Interconnect extends Component{
     }
 
     build(){
+
         const c_networkOverview = new C_NetworkOverview(this);
         c_networkOverview.build();
 

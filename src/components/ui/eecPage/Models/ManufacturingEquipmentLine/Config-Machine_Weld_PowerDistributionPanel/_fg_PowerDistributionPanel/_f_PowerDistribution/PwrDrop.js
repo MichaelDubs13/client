@@ -16,7 +16,6 @@ export default class PwrDrop extends Component {
     }
     
     build(){
-        console.log("test")
         for(let i = 0; i < this._pdp.numberOf250APwrDrps; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["250A"][i], 250, i+1);
         }
