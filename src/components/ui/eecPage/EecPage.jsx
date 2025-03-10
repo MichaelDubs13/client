@@ -2,7 +2,7 @@ import { Button, Card} from "@tesla/design-system-react";
 import ListSection from "./ListSection";
 import LineConfiguration from "./LineConfiguration";
 import {pdpStore} from "../../../store/eec/pdpStore";
-import xpdpStore from "../../../store/eec/xpdpStore";
+import {xpdpStore} from "../../../store/eec/xpdpStore";
 import dataStore from "../../../store/eec/dataStore";
 import xml from "../../../services/xml.service";
 import mcpStore from "../../../store/eec/mcpStore";

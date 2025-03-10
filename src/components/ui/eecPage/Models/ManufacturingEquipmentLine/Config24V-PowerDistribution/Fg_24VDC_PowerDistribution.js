@@ -14,6 +14,7 @@ export default class Fg_24VDC_PowerDistribution extends Component{
     }
 
     getTotalBranch() {
+        console.log(this._psus);
         let totalBranch = 0;
         this._psus.forEach(psu => {
             if(psu.inputBranch > totalBranch){

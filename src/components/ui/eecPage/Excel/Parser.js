@@ -30,18 +30,19 @@ export default class Parser {
     parse(){
         const config = this.parseProjectSheet();
         let pdps = pdpParser.parse(this._wb, this._pdpWorksheet)
-        
-        const xpdps = xpdpParser.parse(this._wb, this._xpdpWorksheet)
-        const mcps = mcpParser.parse(this._wb, this._mcpWorksheet)
+        let xpdps = xpdpParser.parse(this._wb, this._xpdpWorksheet)
+        let mcps = mcpParser.parse(this._wb, this._mcpWorksheet)
         const psus = psuParser.parse(this._wb, this._psuWorksheet)
 
         const devices = deviceParser.parse(this._wb, this._devicesWorksheet)
         const ios = deviceParser.createIODevices(devices);
         pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
-        
+        xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
+
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
         switches = switchParser.createNetworkTree(devices, switches);
         
+        mcps = mcpParser.getNetworkPorts(mcps, devices);
 
         return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, psus:psus, switches:switches,devices:devices, ios:ios }
         

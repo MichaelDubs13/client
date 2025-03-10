@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx'
+import { xpdpConfiguration } from '../../../../store/eec/xpdpStore';
 
 
 const xpdpParser = {
@@ -41,12 +42,7 @@ const xpdpParser = {
                        xf_size = "30kVA Transformer"
                    }
                }
-               const branchCircuit = {
-                   "8A 1ph": [],
-                   "15A 1ph": [],
-                   "20A 1ph": [],
-                   "20A 3ph": []
-                 }
+               const branchCircuit = xpdpConfiguration.createBranchCircuits();
                
                //ensure powerDrops is initialized before assignment
                this.powerDrops = this.powerDrops || {};
@@ -80,9 +76,66 @@ const xpdpParser = {
                }
            })
    
-           console.log(xpdps);
            return xpdps;
-       }
+       },
+    createXpdpBranchCircuit:(xpdps, devices)=>{
+        xpdps.forEach(xpdp => {
+            var sources = devices.filter(device => device.ac_primary_connection_source === xpdp.name)
+            for(let i=0; i<sources.length; i++){
+                const sourceDevice = sources[i];
+                if(sourceDevice.ac_primary_power_branch_size){
+                    const arr = sourceDevice.ac_primary_power_branch_size.split(" ")
+                    if(arr.length > 2){
+                        const branchSize = arr[2]
+                        const branch = xpdpParser.createBranchCircuit(sourceDevice);
+                        xpdp.branchCircuit[branchSize].push(branch);
+                    }
+                }
+            }
+            xpdpParser.fillEmptyBranchCircuits(xpdp);
+            xpdpParser.calculateAllBranchFLA(xpdp);
+        })        
+        return xpdps;
+    },
+    createBranchCircuit:(sourceDevice)=>{
+        const branch = xpdpConfiguration.createBranchCircuit();
+        branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
+        branch.TargetDevice_DT = sourceDevice.device_dt;
+        branch.StrBox_DT = sourceDevice.station;
+        branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
+        branch.DropType = sourceDevice.ac_secondary_power_drop_type;
+        return branch;
+    },
+    fillEmptyBranchCircuit: (numberOfPwrDrps, pdp, key)=>{
+        const numberOfEmptyPwrDrps = numberOfPwrDrps - pdp.branchCircuit[key].length;
+        if(numberOfEmptyPwrDrps > 0)
+        for(let i = 0; i < numberOfEmptyPwrDrps; i++){
+            var branch =  xpdpConfiguration.createBranchCircuit();
+            pdp.branchCircuit[key].push(branch);
+        }
+    },
+    fillEmptyBranchCircuits:(xpdp) => {
+        xpdpParser.fillEmptyBranchCircuit(xpdp.numberOfPwrDrop8A, xpdp, "8A 1ph");
+        xpdpParser.fillEmptyBranchCircuit(xpdp.numberOfPwrDrop15A, xpdp, "15A 1ph");
+        xpdpParser.fillEmptyBranchCircuit(xpdp.numberOfPwrDrop20A1p, xpdp, "20A 1ph");
+        xpdpParser.fillEmptyBranchCircuit(xpdp.numberOfPwrDrop20A3p, xpdp, "20A 3ph");
+    },
+    calculateBranchFLA:(branchCircuits)=>{
+        var fla = 0;
+        branchCircuits.forEach(branchCircuit => {
+            fla = fla + branchCircuit.TargetDevice_FLA;
+        })
+
+        branchCircuits.forEach(branchCircuit => {
+            branchCircuit.StrBox_DT_FLA = fla;
+        })
+    },
+    calculateAllBranchFLA:(xpdp)=>{
+        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["8A 1ph"])
+        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["15A 1ph"])
+        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["20A 1ph"])
+        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["20A 3ph"])
+    }
 }
 
 export default xpdpParser;

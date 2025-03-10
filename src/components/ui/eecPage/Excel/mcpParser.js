@@ -43,12 +43,12 @@ const mcpParser = {
                 const leth_port2 = item["XPF-LETH01.P2 (LETH-LETH)"];
                 const leth_port3 = item["XPF-LETH01.P3 (LETH-LETH)"];
                 const leth_port4 = item["XPF-LETH01.P4 (LETH-LETH)"];
-                const leth_port2_target_port = item["LETH Port2 Target Port"];
-                const leth_port3_target_port = item["LETH Port3 Target Port"];
-                const leth_port4_target_port = item["LETH Port4 Target Port"];
-                const gb_Port2_CableLength = item["Gigabit Port2 Cable Length"];
-                const gb_Port3_CableLength = item["Gigabit Port3 Cable Length"];
-                const gb_Port4_CableLength = item["Gigabit Port4 Cable Length"];
+                const leth_port2_target_port = "";
+                const leth_port3_target_port = "";
+                const leth_port4_target_port = "";
+                const gb_Port2_CableLength = "0 m";
+                const gb_Port3_CableLength = "0 m";
+                const gb_Port4_CableLength = "0 m";
                 const leth_numberOfDevices = item["Number of Devices"];
                 const eth_plant_ip = item["ETH Plant IP"];
                 const eth_plc_to_plc_ip = item["ETH PLC-PLC IP"];
@@ -98,9 +98,9 @@ const mcpParser = {
                     leth_port2_target_port: leth_port2_target_port,
                     leth_port3_target_port: leth_port3_target_port,
                     leth_port4_target_port: leth_port4_target_port,
-                    leth_port2_target_cable_length: gb_Port2_CableLength,
-                    leth_port3_target_cable_length: gb_Port3_CableLength,
-                    leth_port4_target_cable_length: gb_Port4_CableLength,
+                    gb_Port2_CableLength: gb_Port2_CableLength,
+                    gb_Port3_CableLength: gb_Port3_CableLength,
+                    gb_Port4_CableLength: gb_Port4_CableLength,
                     leth_number_of_ports: leth_numberOfDevices,
                     eth_plant_ip: eth_plant_ip,
                     eth_plc_to_plc_ip: eth_plc_to_plc_ip,
@@ -112,6 +112,31 @@ const mcpParser = {
                 }
                 mcps.push(mcp);
             });
+            
+        return mcps;
+    },
+
+    getNetworkPorts:(mcps, devices) => {
+        mcps.forEach(mcp => {
+            var targetSwitch = devices.find(device => mcp.leth_port2 === device.target_device_location_dt)
+            if(targetSwitch){
+                mcp.leth_port2_target_port = targetSwitch.local_switch_port;
+                mcp.leth_port2_target_cable_length = `${targetSwitch.local_cable_length} m`;
+            }
+
+            var targetSwitch = devices.find(device => mcp.leth_port3 === device.target_device_location_dt)
+            if(targetSwitch){
+                mcp.leth_port3_target_port = targetSwitch.local_switch_port;
+                mcp.leth_port3_target_cable_length = `${targetSwitch.local_cable_length} m`;
+            }
+
+            var targetSwitch = devices.find(device => mcp.leth_port4 === device.target_device_location_dt)
+            if(targetSwitch){
+                mcp.leth_port4_target_port = targetSwitch.local_switch_port;
+                mcp.leth_port4_target_cable_length = `${targetSwitch.local_cable_length} m`;
+            }
+        })
+
         return mcps;
     }
 }

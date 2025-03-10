@@ -17,6 +17,7 @@ const deviceParser = {
             const ac_secondary_power_branch_size = item["AC Secondary Power Branch Size"];  
             const ac_secondary_power_drop = item["AC Secondary Power Drop"];  
             const ac_secondary_power_drop_demand_amp = item["AC Secondary Power Drop - Demand Amps"];  
+            const ac_secondary_power_drop_type = item["AC Primary Power Type"];  
             const ac_secondary_power_length = item["AC Secondary Power Length (<100m)"];  
             const aux_cable_length = item["Aux Cable Length (<90m)"];  
             const aux_network_direct = item["Aux Network Direct"];  
@@ -41,6 +42,7 @@ const deviceParser = {
             const local_cable_length = item["Local Cable Length (<90m)"]; 
             const local_network_direct = item["Local Network Direct"];  
             const local_network_source = item["Local Network Source"];  
+            const local_switch_port = item["Local Switch Port"];  
             const mcp_name = item["MCP Name"];  
             const opmode = item["OP MODE"];  
             const other_cable_length = item["Other Cable Length"];  
@@ -72,6 +74,7 @@ const deviceParser = {
                 ac_secondary_power_branch_size:ac_secondary_power_branch_size,
                 ac_secondary_power_drop:ac_secondary_power_drop,
                 ac_secondary_power_drop_demand_amp:ac_secondary_power_drop_demand_amp,
+                ac_secondary_power_drop_type:ac_secondary_power_drop_type,
                 ac_secondary_power_length:ac_secondary_power_length,
                 aux_cable_length:aux_cable_length,
                 aux_network_direct:aux_network_direct,
@@ -96,6 +99,7 @@ const deviceParser = {
                 local_cable_length:local_cable_length,
                 local_network_direct:local_network_direct,
                 local_network_source:local_network_source,
+                local_switch_port:local_switch_port,
                 mcp_name:mcp_name,
                 opmode:opmode,
                 other_cable_length:other_cable_length,

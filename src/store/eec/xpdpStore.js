@@ -1,6 +1,28 @@
 import {create} from "zustand";
 
-const xpdpCondiguration = {
+const xpdpConfiguration = {
+  createBranchCircuit: () => {
+    return {
+      PwrDrop_Spare: false,
+      DropType: "A-external",
+      PwrDrop_DescTxt: "",
+      dbl_Cable_Length: 0,
+      StrBox_DT: "",
+      TargetDevice_DT: "",
+      TargetDevice_FLA: 0,
+      StrBox_DT_FLA: 0,
+    }
+  },
+  createBranchCircuits: () => {
+    const branchCircuit = {
+      "8A 1ph": [],
+      "15A 1ph": [],
+      "20A 1ph": [],
+      "20A 3ph": []
+     }
+
+     return branchCircuit;
+  },
   create: () => { 
     return {
       numberOfPwrDrop8A:"",
@@ -19,12 +41,7 @@ const xpdpCondiguration = {
       spare20A1p:"",
       spare20A3p:"",
       xf_size:"",
-      branchCircuit:{
-        "8A 1ph": [],
-        "15A 1ph": [],
-        "20A 1ph": [],
-        "20A 3ph": []
-      }
+      branchCircuit:xpdpConfiguration.createBranchCircuits(),
     }  
   
   },
@@ -127,11 +144,14 @@ const xpdpStore = create((set) => ({
     addXpdp: (numberOfXpdp, data) => {
       set({xpdps:[]});
       for (let i = 0; i < numberOfXpdp; i++) {
-        var xpdp = xpdpCondiguration.create();
+        var xpdp = xpdpConfiguration.create();
         set((state) => ({xpdps:[...state.xpdps, xpdp]}));
       }
     },
 
 }));
 
-export default xpdpStore
+export {
+  xpdpStore,
+  xpdpConfiguration,
+}

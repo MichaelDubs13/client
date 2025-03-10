@@ -75,25 +75,29 @@ const pdpParser = {
             var sources = devices.filter(device => device.ac_primary_connection_source === pdp.name)
             for(let i=0; i<sources.length; i++){
                 const sourceDevice = sources[i];
-                if(sourceDevice.ac_secondary_power_branch_size){
-                    const arr = sourceDevice.ac_secondary_power_branch_size.split(" ")
+                if(sourceDevice.ac_primary_power_branch_size){
+                    const arr = sourceDevice.ac_primary_power_branch_size.split(" ")
                     if(arr.length > 2){
                         const branchSize = arr[2]
-                        const branch = pdpConfiguration.createBranchCircuit();
-                        branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
-                        branch.TargetDevice_DT = sourceDevice.device_dt;
-                        branch.StrBox_DT = sourceDevice.station;
-                        branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
+                        const branch = pdpParser.createBranchCircuit(sourceDevice);
                         pdp.branchCircuit[branchSize].push(branch);
                     }
                 }
             }
             pdpParser.fillEmptyBranchCircuits(pdp);
+            pdpParser.calculateAllBranchFLA(pdp);
         })        
-        console.log(pdps);
         return pdps;
     },
-
+    createBranchCircuit:(sourceDevice)=>{
+        const branch = pdpConfiguration.createBranchCircuit();
+        branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
+        branch.TargetDevice_DT = sourceDevice.device_dt;
+        branch.StrBox_DT = sourceDevice.station;
+        branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
+        branch.DropType = sourceDevice.ac_secondary_power_drop_type;
+        return branch;
+    },
     fillEmptyBranchCircuit: (numberOfPwrDrps, pdp, key)=>{
         const numberOfEmptyPwrDrps = numberOfPwrDrps - pdp.branchCircuit[key].length;
         if(numberOfEmptyPwrDrps > 0)
@@ -111,7 +115,29 @@ const pdpParser = {
         pdpParser.fillEmptyBranchCircuit(pdp.numberOf30APwrDrps, pdp, "30A");
         pdpParser.fillEmptyBranchCircuit(pdp.numberOf20APwrDrps, pdp, "20A");
         pdpParser.fillEmptyBranchCircuit(pdp.numberOf10APwrDrps, pdp, "10A");
+    },
+    calculateBranchFLA:(branchCircuits)=>{
+        var fla = 0;
+        branchCircuits.forEach(branchCircuit => {
+            fla = fla + branchCircuit.TargetDevice_FLA;
+        })
+
+        branchCircuits.forEach(branchCircuit => {
+            branchCircuit.StrBox_DT_FLA = fla;
+        })
+    },
+    calculateAllBranchFLA:(pdp)=>{
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["250A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["100A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["70A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["60A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["40A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["30A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["20A"])
+        pdpParser.calculateBranchFLA(pdp.branchCircuit["10A"])
     }
+
+
 }
 
 export default pdpParser

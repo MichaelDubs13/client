@@ -35,19 +35,19 @@ export default class C_PwrDrop extends Component{
     // }
     build(){
         for(let i = 0; i < this._xpdp.numberOfPwrDrop8A; i++){
-            const pwrDrp = new C_BranchCircuit(this,i+1,8,1);
+            const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["8A 1ph"][i],i+1,8,1,this._xpdp);
             pwrDrp.build();        
         }
         for(let i = 0; i < this._xpdp.numberOfPwrDrop15A; i++){
-            const pwrDrp = new C_BranchCircuit(this,i+1,15,1);
+            const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["15A 1ph"][i],i+1,15,1, this._xpdp);
             pwrDrp.build();        
         }
         for(let i = 0; i < this._xpdp.numberOfPwrDrop20A1p; i++){
-            const pwrDrp = new C_BranchCircuit(this,i+1,20,1);
+            const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["20A 1ph"][i],i+1,20,1, this._xpdp);
             pwrDrp.build();        
         }
         for(let i = 0; i < this._xpdp.numberOfPwrDrop20A3p; i++){
-            const pwrDrp = new C_BranchCircuit(this,i+1,20,3);
+            const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["20A 3ph"][i],i+1,20,3, this._xpdp);
             pwrDrp.build();        
         }
     }
