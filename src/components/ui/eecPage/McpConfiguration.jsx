@@ -8,6 +8,7 @@ import "./Eec.css";
 // change this import to ethernet drops
 import PowerDropItem from "./PowerDropItem";
 import ItemStore from "../../../store/eec/ItemStore";
+import McpLethPorts from "./McpLethPorts";
 
 const McpConfiguration = ({mcp}) => {
 
@@ -28,10 +29,6 @@ const McpConfiguration = ({mcp}) => {
         item => item.parameter === "InstallationLocation"
     )?.value || "N/A";
 
-    // change this to local ethernet drops
-    //const addBranchCircuit = mcpStore((state) => state.addBranchCircuit);  //New code
-    //const addBranchCircuit = pdpStore((state) => state.addBranchCircuit);  //OG code
-
     // Custom hook to manage the state of the form inputs
     function useMcpState(initialValue, property) {
         const [value, setValue] = useState(initialValue);
@@ -50,7 +47,6 @@ const McpConfiguration = ({mcp}) => {
     const [mcpPSU_Location, handleSetmcpPSU_LocationChange] = useMcpState(0, 'psu_location');
     const [mcpPSU_DT, handleSetmcpPSU_DTChange] = useMcpState(0, 'psu_location_dt');
     const [mcpUpsIp, handleSetmcpUpsIpChange] = useMcpState(0, 'ups_ip');
-    //const [plcNetworkSwitchRequired, handleSetplcNetworkSwitchRequiredChange] = useMcpState(false, 'plc_network_switch_required');
     const [plcPlantIp, handleSetplcPlantIpChange] = useMcpState(0, 'plc_plant_ip');
     const [plcToPlcIp, handleSetplcToPlcIpChange] = useMcpState(0, 'plc_to_plc_ip');
     const [plcLocalIp, handleSetplcLocalIpChange] = useMcpState(0, 'plc_local_ip');
@@ -92,51 +88,6 @@ const McpConfiguration = ({mcp}) => {
 
     const [plcNetworkSwitchRequired, setplcNetworkSwitchRequired] = useState(false);
     
-    //const [mcpMountingLocation, setmcpMountingLocation] = useState(0);
-    /* const [mcpPSU_Location, setmcpPSU_Location] = useState(0);
-    const [mcpPSU_DT, setmcpPSU_DT] = useState(0);
-    const [mcpUpsIpAddress, setmcpUpsIpAddress] = useState(0);
-    const [plcNetworkSwitchRequired, setplcNetworkSwitchRequired] = useState(false);
-    const [plcPlantIpAddress, setplcPlantIpAddress] = useState(0);
-    const [plcToPlcIpAddress, setplcToPlcIpAddress] = useState(0);
-    const [plcLocalIpAddress, setplcLocalIpAddress] = useState(0);
-    const [plcLocalIpAddressSecondary, setplcLocalIpAddressSecondary] = useState(0);
-    const [plcID, setplcID] = useState(0);
-    const [plcPortX1TargetLocation, setplcPortX1TargetLocation] = useState(0);
-    const [plcPortX1TargetDT, setplcPortX1TargetDT] = useState(0);
-    const [kedPlantIpAddress, setkedPlantIpAddress] = useState(0);
-    const [kedPlcToPlcIpAddress, setkedPlcToPlcIpAddress] = useState(0);
-    const [kedLocalIpAddress, setkedLocalIpAddress] = useState(0);
-    const [kedLocalIpAddressSecondary, setkedLocalIpAddressSecondary] = useState(0);
-    const [kedPort4TargetLocation, setkedPort4TargetLocation] = useState(0);
-    const [kedPort4TargetDT, setkedPort4TargetDT] = useState(0);
-    const [kedPort5TargetLocation, setkedPort5TargetLocation] = useState(0);
-    const [kedPort5TargetDT, setkedPort5TargetDT] = useState(0);
-    const [lethPlantIpAddress, setlethPlantIpAddress] = useState(0);
-    const [lethPLCtoPLCIpAddress, setlethPLCtoPLCIpAddress] = useState(0);
-    const [lethLocalIpAddress, setlethLocalIpAddress] = useState(0);
-    const [lethLocalIpAddressSecondary, setlethLocalIpAddressSecondary] = useState(0);
-    const [lethPort2TargetLocation, setlethPort2TargetLocation] = useState(0);
-    const [lethPort2TargetDT, setlethPort2TargetDT] = useState(0);
-    const [lethPort2TargetPort, setlethPort2TargetPort] = useState(0);
-    const [lethPort2TargetCableLength, setlethPort2TargetCableLength] = useState(0);
-    const [lethPort3TargetLocation, setlethPort3TargetLocation] = useState(0);
-    const [lethPort3TargetDT, setlethPort3TargetDT] = useState(0);
-    const [lethPort3TargetPort, setlethPort3TargetPort] = useState(0);
-    const [lethPort3TargetCableLength, setlethPort3TargetCableLength] = useState(0);
-    const [lethPort4TargetLocation, setlethPort4TargetLocation] = useState(0);
-    const [lethPort4TargetDT, setlethPort4TargetDT] = useState(0);
-    const [lethPort4TargetPort, setlethPort4TargetPort] = useState(0);
-    const [lethPort4TargetCableLength, setlethPort4TargetCableLength] = useState(0);
-    const [lethNumberOfPorts, setlethNumberOfPorts] = useState(0);
-    const [ethPlantIpAddress, setethPlantIpAddress] = useState(0);
-    const [ethPLCtoPLCIpAddress, setethPLCtoPLCIpAddress] = useState(0);
-    const [ethLocalIpAddress, setethLocalIpAddress] = useState(0);
-    const [ethLocalIpAddressSecondary, setethLocalIpAddressSecondary] = useState(0);
-    const [ethPort1TargetLocation, setethPort1TargetLocation] = useState(0);
-    const [ethPort2TargetLocation, setethPort2TargetLocation] = useState(0); */
-
-    
     const handleSetLineChange = (event)=> {
         const value = event.target.value;
         setLine(value);
@@ -154,42 +105,6 @@ const McpConfiguration = ({mcp}) => {
         setplcNetworkSwitchRequired(value);
         mcp.plc_network_switch_required = value;
     }
-
-    /* const handleSetmcpMountingLocationChange = (event)=> {
-        const value = event.target.value;
-        setmcpMountingLocation(value);
-        mcp.mcpMountingLocation = value;
-    } */
-
-    /* const handleSetmcpPSU_LocationChange = (event)=> {
-        const value = event.target.value;
-        setmcpPSU_Location(value);
-        mcp.psu_location = value;
-    } */
-
-    /* const handleSetmcpPSU_DTChange = (event)=> {
-        const value = event.target.value;
-        setmcpPSU_DT(value);
-        mcp.psu_location_dt = value;
-    } */
-
-    /* const handleSetlethPort2TargetCableLengthChange = (event)=> {
-        const value = event.target.value;
-        setlethPort2TargetCableLength(value);
-        mcp.Gigabit_Port2_CableLength = value;
-    } */
-
-    /* const handleSetlethPort3TargetCableLengthChange = (event)=> {
-        const value = event.target.value;
-        setlethPort3TargetCableLength(value);
-        mcp.Gigabit_Port3_CableLength = value;
-    } */
-
-    /* const handleSetlethPort4TargetCableLengthChange = (event)=> {
-        const value = event.target.value;
-        setlethPort4TargetCableLength(value);
-        mcp.Gigabit_Port4_CableLength = value;
-    } */
 
     const cableLengthOptions = [
         { value: "NULL", label: "NULL" },
@@ -214,71 +129,44 @@ const McpConfiguration = ({mcp}) => {
         { value: "9", label: "9" },
       ];
     
+    // ******************I need help in getting the LETH port drops to work**********************
+    // McpLethPorts.jsx to be called based on the value of lethNumberOfPorts and then display
+    // the number of ports selected by the value of lethNumberOfPorts
+    // LETH ethernet drops
+    const [lethPorts, setLethPorts] = useState(0);
+
+    // Create array of LETH ethernet drops
+    const renderLethPorts = () => {
+        const ports = [];
+        for (let i=0; i < lethNumberOfPorts; i++) {
+            ports.push(<McpLethPorts
+                key={i}
+                index={i}
+                initialValues={{}}
+                onSettingsChange={() => {}}
+            />);
+        }
+        return ports;
+    };
+    /* const renderLethPorts = () => {
+        return Array.from({ length: lethPorts }).map((_, index) => (
+            <McpLethPorts
+                key={index}
+                index={index}
+                initialValues={{}}
+                onSettingsChange={() => {}}
+            />
+        ));
+    }; */
+
+    useEffect(() => {
+        setLethPorts(lethNumberOfPorts);
+    }, [lethNumberOfPorts]);
+    
     useEffect(() => {
         const newPlcID = '${Line}-${Location}-PLC01'; // need help with this to display the actual values of Line and Location
         handleSetplcIDChange({ target: { value: newPlcID }});
     }, [Line, Location, handleSetplcIDChange]);
-
-    /* const [expanded, setExpanded] = useState(true);
-    const [expandedMenu2, setExpandedMenu2] = useState(true);
-    const [expandedMenu3, setExpandedMenu3] = useState(true);
-    const [expandedMenu4, setExpandedMenu4] = useState(true);
-    const [expandedMenu5, setExpandedMenu5] = useState(true);
-    const [expandedMenu6, setExpandedMenu6] = useState(true);
-    
-    const handleToggleClick = async () => {
-        if (!expanded) {
-          setExpanded(true);
-          
-        } else {
-          setExpanded(false);
-        }
-      };
-
-    const handleToggleClick2 = async () => {
-    if (!expandedMenu2) {
-        setExpandedMenu2(true);
-        
-    } else {
-        setExpandedMenu2(false);
-    }
-    };
-
-    const handleToggleClick3 = async () => {
-        if (!expandedMenu3) {
-            setExpandedMenu3(true);
-            
-        } else {
-            setExpandedMenu3(false);
-        }
-        };
-
-    const handleToggleClick4 = async () => {
-        if (!expandedMenu4) {
-            setExpandedMenu4(true);
-            
-        } else {
-            setExpandedMenu4(false);
-        }
-        };
-
-    const handleToggleClick5 = async () => {
-        if (!expandedMenu5) {
-            setExpandedMenu5(true);
-            
-        } else {
-            setExpandedMenu5(false);
-        }
-        };
-
-    const handleToggleClick6 = async () => {
-        if (!expandedMenu6) {
-            setExpandedMenu6(true);
-            
-        } else {
-            setExpandedMenu6(false);
-        }
-        }; */
 
     const [expandedStates, setExpandedStates] = useState({
         menu1: true,
@@ -779,7 +667,12 @@ const McpConfiguration = ({mcp}) => {
                                     <h7>----</h7>
                                 </div>
                                 {/* Need to insert the remaining 0-9 port inputs based on the number of ports selected in the previous question*/}
-
+                                {/* Render all LETH ports*/}
+                                {lethPorts > 0 && (
+                                    <>
+                                        {renderLethPorts()}
+                                    </>
+                                )}
                                 
                                 </div>
                             </div>
