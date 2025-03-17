@@ -1,28 +1,30 @@
-import { Component, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowForward, IoIosArrowDown,  } from "react-icons/io";
 import {IconContext} from "react-icons";
-import mcpStore from "../../../store/eec/mcpStore";
+import lpdStore from "../../../store/eec/lpdStore";
 import { FormLabel, FormItem, Button, FormInputText} from '@tesla/design-system-react';
-import Item from "./Item";
-import "./Eec.css";
 import ItemStore from "../../../store/eec/ItemStore";
-import McpConfiguration from "./McpConfiguration";
+import ListGroup from "./ListGroup";
+import "./Eec.css";
+import LpdConfiguration from "./LpdConfiguration";
 
-const McpInstances = () => {    
-    const counts = mcpStore((state)=> state.counts)
-    const item = counts[0];
+const LpdInstances = () => {
     const [expanded, setExpanded] = useState(false);
     const [value, setValue] = useState(0);
-    const mcps = mcpStore((state) => state.mcps);
-    const addMcp =  mcpStore((state) => state.addMcp);
-
+    const counts = lpdStore((state)=> state.counts)
+    const item = counts[0];
+    const lpds = lpdStore((state) => state. lpds);
+    const addLpd =  lpdStore((state) => state.addLpd);
     const handleSumbit = (event) => {
         event.preventDefault();    
 
         const data = createData();
-        addMcp(value, data);
+        addLpd(value, data);
     }
-    
+    const handleValueChange = (event)=> {
+        setValue(event.target.value);
+        item.value = event.target.value;
+    }
     const handleToggleClick = async () => {
         if (!expanded) {
           setExpanded(true);
@@ -31,12 +33,7 @@ const McpInstances = () => {
           setExpanded(false);
         }
       };
-      
-    const handleValueChange = (event)=> {
-        setValue(event.target.value);
-        item.value = event.target.value;
-    }
-
+   
     const createData = () => {
         var plant = ItemStore.lineGroupItems.find(item => item.parameter === "FunctionalAssignment_(PLANT)").value
         var shop = ItemStore.lineGroupItems.find(item => item.parameter === "FunctionDesignation_(SHOP)").value
@@ -48,7 +45,6 @@ const McpInstances = () => {
           shop:shop,
           line:line,
           installationLocation:installationLocation,  
-          //busbars:[],
         }
 
         return data;
@@ -65,7 +61,7 @@ const McpInstances = () => {
                 </IconContext.Provider>
                 <button style={{fontSize:20, fontWeight:"bolder", marginBottom:"10px"}} 
                     onClick={handleToggleClick}>
-                    Main Control Panel Configuration
+                    24VDC Power Distribution Configuration
                 </button>
                 {
                     expanded &&
@@ -79,9 +75,9 @@ const McpInstances = () => {
                                     <Button style={{marginLeft:"10px"}} onClick={handleSumbit}>Set</Button>
                                 </FormItem>                        
                         {   
-                            mcps.map((mcp, index) => (
-                                // <ListGroup item={pdp}><PowerDistributionComponent pdp={pdp}/></ListGroup>
-                                <McpConfiguration mcp={mcp}/>
+                            lpds.map((lpd, index) => (
+                                //<ListGroup item={lpd}></ListGroup>
+                                <LpdConfiguration lpd={lpd}/>
                         ))}
                     </div>
                 }
@@ -90,4 +86,4 @@ const McpInstances = () => {
     )
 }
     
-export default McpInstances;
+export default LpdInstances;

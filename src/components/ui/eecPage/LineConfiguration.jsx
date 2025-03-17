@@ -1,5 +1,5 @@
 import "./Eec.css";
-import LpdConfiguration from "./LpdConfiguration";
+import LpdInstances from "./LpdInstances";
 import McpInstances from "./McpInstances";
 import PdpConfiguration from "./PdpConfiguration";
 import X_PdpConfiguration from "./X_PdpConfiguration";
@@ -11,7 +11,7 @@ const LineConfiguration = () => {
             <PdpConfiguration/>
             <X_PdpConfiguration/>
             <McpInstances/>
-            <LpdConfiguration/>
+            <LpdInstances/>
         </>
     )
 }

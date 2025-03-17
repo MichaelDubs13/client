@@ -1,7 +1,73 @@
 import {create} from "zustand";
 
-const lpdConfiguration  = {
-    getConfiguration: (data) => { 
+const lpdConfiguration = {
+  
+  // Change this to reflect the 24VDC power distribution configuration
+  create: () => { 
+    return {
+        name:"",
+        line:"",
+        amp:"", 
+        FLA:"", 
+        location:"", 
+        enclosureSize:"",
+        Opt_SurgeProtectionDevice:"",
+        PwrMonitorEnable:"",
+        Opt_HotPwrEnable:"",
+        numberOf10APwrDrps:"", 
+        numberOf20APwrDrps:"",
+        numberOf30APwrDrps:"",
+        numberOf40APwrDrps:"",
+        numberOf60APwrDrps:"",
+        numberOf70APwrDrps:"",
+        numberOf100APwrDrps:"",
+        numberOf250APwrDrps:"",
+        spare10A:"",
+        spare20A:"",
+        spare30A:"",
+        spare40A:"",
+        spare60A:"",
+        spare70A:"",
+        spare100A:"",
+        spare250A:"",
+        branchCircuit:{
+          "10A":[],
+          "20A":[],
+          "30A":[],
+          "40A":[],
+          "60A":[],
+          "70A":[],
+          "100A":[],
+          "250A":[],
+        }
+  }
+  }
+}
+const lpdStore = create((set) => ({
+  counts : [
+    {
+      parameter: 'NumberofLPD_Instances',
+      name :'Consider cascading 24VDC power supplies as a group. Enter the number of cascading groups required for this project:',
+      placeholder: "1",
+      type:"number",
+      value:""
+    },
+  ],
+    lpds:[],    
+    addLpd: (numberOfLpd, data) => {
+      set({lpds:[]});
+      for (let i = 0; i < numberOfLpd; i++) {
+        var lpd = lpdConfiguration.create();
+        set((state) => ({lpds:[...state.lpds, lpd]}));
+      }
+    },
+
+}));
+
+export default lpdStore
+/* 
+const lpdInstance  = {
+    getInsance: (data) => { 
         return [
           {
             parameter: 'Shop',
@@ -221,7 +287,7 @@ const lpdStore = create((set) => ({
         addLpd: (numberOflpd, data) => {
             set({lpds:[]});
             for (let i = 0; i < numberOflpd; i++) {
-                var group = { heading: `24VDC Power Distribution ${i+1}`, items: lpdConfiguration.getConfiguration(data) }
+                var group = { heading: `24VDC Power Distribution ${i+1}`, items: lpdInstance.getInstance(data) }
                 set((state) => ({lpds:[...state.lpds, group]}));
             }
         },
@@ -229,4 +295,4 @@ const lpdStore = create((set) => ({
     })
 )
 
-export default lpdStore;
+export default lpdStore; */
