@@ -5,41 +5,8 @@ const lpdConfiguration = {
   // Change this to reflect the 24VDC power distribution configuration
   create: () => { 
     return {
-        name:"",
-        line:"",
-        amp:"", 
-        FLA:"", 
-        location:"", 
-        enclosureSize:"",
-        Opt_SurgeProtectionDevice:"",
-        PwrMonitorEnable:"",
-        Opt_HotPwrEnable:"",
-        numberOf10APwrDrps:"", 
-        numberOf20APwrDrps:"",
-        numberOf30APwrDrps:"",
-        numberOf40APwrDrps:"",
-        numberOf60APwrDrps:"",
-        numberOf70APwrDrps:"",
-        numberOf100APwrDrps:"",
-        numberOf250APwrDrps:"",
-        spare10A:"",
-        spare20A:"",
-        spare30A:"",
-        spare40A:"",
-        spare60A:"",
-        spare70A:"",
-        spare100A:"",
-        spare250A:"",
-        branchCircuit:{
-          "10A":[],
-          "20A":[],
-          "30A":[],
-          "40A":[],
-          "60A":[],
-          "70A":[],
-          "100A":[],
-          "250A":[],
-        }
+        psu_supply_voltage:"",
+        
   }
   }
 }

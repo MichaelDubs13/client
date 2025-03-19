@@ -106,6 +106,7 @@ const McpConfiguration = ({mcp}) => {
         mcp.plc_network_switch_required = value;
     }
 
+
     const cableLengthOptions = [
         { value: "NULL", label: "NULL" },
         { value: "1.5 m", label: "1.5 m" },
@@ -575,7 +576,7 @@ const McpConfiguration = ({mcp}) => {
                                                     </FormItem> 
                                                     <FormItem className="form-item">
                                                         <FormLabel className="form-label" htmlFor="context">Cable length selection</FormLabel>
-                                                        <FormInputText
+                                                        <FormInputDropdown
                                                         id="context"
                                                         options={cableLengthOptions}
                                                         value={lethPort2TargetCableLength}
@@ -607,7 +608,7 @@ const McpConfiguration = ({mcp}) => {
                                                     </FormItem> 
                                                     <FormItem className="form-item">
                                                         <FormLabel className="form-label" htmlFor="context">Cable length selection</FormLabel>
-                                                        <FormInputText
+                                                        <FormInputDropdown
                                                         id="context"
                                                         options={cableLengthOptions}
                                                         value={lethPort3TargetCableLength}
@@ -639,7 +640,7 @@ const McpConfiguration = ({mcp}) => {
                                                     </FormItem> 
                                                     <FormItem className="form-item">
                                                         <FormLabel className="form-label" htmlFor="context">Cable length selection</FormLabel>
-                                                        <FormInputText
+                                                        <FormInputDropdown
                                                         id="context"
                                                         options={cableLengthOptions}
                                                         value={lethPort4TargetCableLength}

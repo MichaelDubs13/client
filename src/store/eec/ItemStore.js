@@ -76,13 +76,6 @@ const ItemStore = {
             parameter: 'make visible the following parameter',
             value: 'if "UL" then display else hide',
           },
-
-          parameter: 'MichaelsTest_EECparameter',
-          name :'Enter data here for EEC', 
-          placeholder: "Example text shown in light gray in the input field", 
-          type:"text",
-          valueType:"String",
-          value:"set the default value and it will go to EEC"
         },
       ],
    secondGroupItems : [

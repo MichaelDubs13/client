@@ -9,6 +9,7 @@ import "./Eec.css";
 //import PowerDropItem from "./PowerDropItem";
 import ItemStore from "../../../store/eec/ItemStore";
 //import LpdLethPorts from "./LpdLethPorts";
+import LpdPsuItem from "./LpdPsuItem";
 
 const LpdConfiguration = ({lpd}) => {
 
@@ -43,50 +44,28 @@ const LpdConfiguration = ({lpd}) => {
     // State variables for each form input
     const [Line, setLine] = useState(line);
     const [Location, setLocation] = useState(0);
-    const [mcpMountingLocation, handleSetmcpMountingLocationChange] = useLpdState(0, 'mcpMountingLocation');
-    const [mcpPSU_Location, handleSetmcpPSU_LocationChange] = useLpdState(0, 'psu_location');
-    const [mcpPSU_DT, handleSetmcpPSU_DTChange] = useLpdState(0, 'psu_location_dt');
-    const [mcpUpsIp, handleSetmcpUpsIpChange] = useLpdState(0, 'ups_ip');
-    const [plcPlantIp, handleSetplcPlantIpChange] = useLpdState(0, 'plc_plant_ip');
-    const [plcToPlcIp, handleSetplcToPlcIpChange] = useLpdState(0, 'plc_to_plc_ip');
-    const [plcLocalIp, handleSetplcLocalIpChange] = useLpdState(0, 'plc_local_ip');
-    const [plcLocalIpSecondary, handleSetplcLocalIpSecondaryChange] = useLpdState(0, 'plc_local_ip_secondary');
-    const [plcID, handleSetplcIDChange] = useLpdState(0, 'plc_id');
-    const [plcPortX1P2RTargetLocation, handleSetplcPortX1P2RTargetLocationChange] = useLpdState(0, 'plc_port_x1p2r_target_location');
-    const [plcPortX1P2RTargetDT, handleSetplcPortX1P2RTargetDTChange] = useLpdState(0, 'plc_port_x1p2r_target_dt');
-    const [kedPlantIp, handleSetkedPlantIpChange] = useLpdState(0, 'ked_plant_ip');
-    const [kedPlcToPlcIp, handleSetkedPlcToPlcIpChange] = useLpdState(0, 'ked_plc_to_plc_ip');
-    const [kedLocalIp, handleSetkedLocalIpChange] = useLpdState(0, 'ked_local_ip');
-    const [kedLocalIpSecondary, handleSetkedLocalIpSecondaryChange] = useLpdState(0, 'ked_local_ip_secondary');
-    const [kedPort4TargetLocation, handleSetkedPort4TargetLocationChange] = useLpdState(0, 'ked_port4_target_location');
-    const [kedPort4TargetDT, handleSetkedPort4TargetDTChange] = useLpdState(0, 'ked_port4_target_dt');
-    const [kedPort5TargetLocation, handleSetkedPort5TargetLocationChange] = useLpdState(0, 'ked_port5_target_location');
-    const [kedPort5TargetDT, handleSetkedPort5TargetDTChange] = useLpdState(0, 'ked_port5_target_dt');
-    const [lethPlantIp, handleSetlethPlantIpChange] = useLpdState(0, 'leth_plant_ip');
-    const [lethPlcToPlcIp, handleSetlethPlcToPlcIpChange] = useLpdState(0, 'leth_plc_to_plc_ip');
-    const [lethLocalIp, handleSetlethLocalIpChange] = useLpdState(0, 'leth_local_ip');
-    const [lethLocalIpSecondary, handleSetlethLocalIpSecondaryChange] = useLpdState(0, 'leth_local_ip_secondary');
-    const [lethPort2TargetLocation, handleSetlethPort2TargetLocationChange] = useLpdState(0, 'leth_port2_target_location');
-    const [lethPort2TargetDT, handleSetlethPort2TargetDTChange] = useLpdState(0, 'leth_port2_target_dt');
-    const [lethPort2TargetPort, handleSetlethPort2TargetPortChange] = useLpdState(0, 'leth_port2_target_port');
-    const [lethPort2TargetCableLength, handleSetlethPort2TargetCableLengthChange] = useLpdState(0, 'leth_port2_target_cable_length');
-    const [lethPort3TargetLocation, handleSetlethPort3TargetLocationChange] = useLpdState(0, 'leth_port3_target_location');
-    const [lethPort3TargetDT, handleSetlethPort3TargetDTChange] = useLpdState(0, 'leth_port3_target_dt');
-    const [lethPort3TargetPort, handleSetlethPort3TargetPortChange] = useLpdState(0, 'leth_port3_target_port');
-    const [lethPort3TargetCableLength, handleSetlethPort3TargetCableLengthChange] = useLpdState(0, 'leth_port3_target_cable_length');
-    const [lethPort4TargetLocation, handleSetlethPort4TargetLocationChange] = useLpdState(0, 'leth_port4_target_location');
-    const [lethPort4TargetDT, handleSetlethPort4TargetDTChange] = useLpdState(0, 'leth_port4_target_dt');
-    const [lethPort4TargetPort, handleSetlethPort4TargetPortChange] = useLpdState(0, 'leth_port4_target_port');
-    const [lethPort4TargetCableLength, handleSetlethPort4TargetCableLengthChange] = useLpdState(0, 'leth_port4_target_cable_length');
-    const [lethNumberOfPorts, handleSetlethNumberOfPortsChange] = useLpdState(0, 'leth_number_of_ports');
-    const [ethPlantIp, handleSetethPlantIpChange] = useLpdState(0, 'eth_plant_ip');
-    const [ethPlcToPlcIp, handleSetethPlcToPlcIpChange] = useLpdState(0, 'eth_plc_to_plc_ip');
-    const [ethLocalIp, handleSetethLocalIpChange] = useLpdState(0, 'eth_local_ip');
-    const [ethLocalIpSecondary, handleSetethLocalIpSecondaryChange] = useLpdState(0, 'eth_local_ip_secondary');
-    const [ethPort1TargetLocation, handleSetethPort1TargetLocationChange] = useLpdState(0, 'eth_port1_target_location');
-    const [ethPort2TargetLocation, handleSetethPort2TargetLocationChange] = useLpdState(0, 'eth_port2_target_location');
+    const [psuSupplyVoltage, handleSetpsuSupplyVoltageChange] = useLpdState("", 'psu_supply_voltage'); //EEC var: _PSUSupplyVoltage_
+    const [psuSelection, setPsuSelection] = useState(0);
+    const [psuSelection120_240, handleSetpsuSelection120_240Change] = useLpdState(0, 'psu_selection_120_240'); //EEC var: s_PSU_Selection_120_240
+    const [psuSelection400_480, handleSetpsuSelection400_480Change] = useLpdState(0, 'psu_selection_400_480'); //EEC var: s_PSU_Selection_400_480
+    const [psuSupplySourceLocation, handleSetpsuSupplySourceLocationChange] = useLpdState("", 'psu_supply_source_location'); //EEC var: LocationDesignation
+    const [psuSupplySourceDevice, handleSetpsuSupplySourceDeviceChange] = useLpdState("", 'psu_supply_source_device'); //EEC var: DeviceTag
+    const [psuCascadingLimit, setPsuCascadingLimit] = useState(0);
+    const [numberOfPsu, handleSetnumberOfPsuChange] = useLpdState("", 'number_of_psu'); //EEC var: Balluff_CLS2_BAE0133_NUmberOfPSU, Balluff_BAE00FL_BAE00ET_NumberOfPSU, Siemens_NumberOfPSU, Turck_NumberOfPSU, Puls_NumberOfPSU
+    const [numberOf24V_Drops, handleSetnumberOf24V_DropsChange] = useLpdState(0, 'number_of_24V_Drops'); //EEC var: NumberOf24V_PowerDrops
+    const [psuLocation, handleSetpsuLocationChange] = useLpdState(0, 'psu_location'); //EEC var: Location
+    const [psuDT, handleSetpsuDTChange] = useLpdState(0, 'psu_location_dt'); //EEC var: PSU_DT
+    const [psuToPsuCableLength, handleSetpsuToPsuCableLengthChange] = useLpdState(0, 'psu_to_psu_cable_length'); //EEC var: s_PSU-to-PSU_CableLength
 
-    const [plcNetworkSwitchRequired, setplcNetworkSwitchRequired] = useState(false);
+    // these 2 constants are specific to Puls PSU
+    const [psuClass2PortEnable, handleSetpsuClass2PortEnableChange] = useLpdState(false, 'psu_class2_port_enable'); //EEC var: b_Class2_Port_Needed
+    const [numberOfClass2_Drops, handleSetnumberOfClass2_DropsChange] = useLpdState(0, 'number_of_class2_drops'); //EEC var: NumberOf24V_Class2_PowerDrop
+    
+    const [psuOutputPort1Sum, handleSetpsuOutputPort1SumChange] = useLpdState(0, 'psu_output_port1_sum');
+    const [psuOutputPort2Sum, handleSetpsuOutputPort2SumChange] = useLpdState(0, 'psu_output_port2_sum');
+    const [psuOutputPort3Sum, handleSetpsuOutputPort3SumChange] = useLpdState(0, 'psu_output_port3_sum');
+    const [psuOutputPortClass2Sum, handleSetpsuOutputPortClass2SumChange] = useLpdState(0, 'psu_output_port_class2_sum');
+    
     
     const handleSetLineChange = (event)=> {
         const value = event.target.value;
@@ -100,47 +79,118 @@ const LpdConfiguration = ({lpd}) => {
         lpd.location = value;
     }
 
-    const cableLengthOptions = [
-        { value: "NULL", label: "NULL" },
-        { value: "1.5 m", label: "1.5 m" },
-        { value: "3 m", label: "3 m" },
-        { value: "5 m", label: "5 m" },
-        { value: "10 m", label: "10 m" },
-        { value: "15 m", label: "15 m" },
-        { value: "20 m", label: "20 m" },
+    const handleSetpsuSelectionChange = (event)=> {
+        const value = event.target.value;
+        setPsuSelection(value);
+    }
+
+    const handleSetpsuCascadingLimitChange = (event)=> {
+        const value = event.target.value;
+        setPsuCascadingLimit(value);
+    }
+
+    const psuSupplyVoltageOptions = [
+        { value: "120", label: "120V" },
+        { value: "240", label: "240V" },
+        { value: "400", label: "400V" },
+        { value: "480", label: "480V" },
       ];
 
-      const lethNumberOfPortOptions = [
-        { value: "0", label: "0" },
-        { value: "1", label: "1" },
-        { value: "2", label: "2" },
-        { value: "3", label: "3" },
-        { value: "4", label: "4" },
-        { value: "5", label: "5" },
-        { value: "6", label: "6" },
-        { value: "7", label: "7" },
-        { value: "8", label: "8" },
-        { value: "9", label: "9" },
-      ];
-    
-    
-    
+    const psuSelection120_240Options = [
+    { value: "Balluff-BAE00ET", label: "Balluff: BAE00ET" },
+    { value: "Balluff-BAE00FL", label: "Balluff: BAE00FL" },
+    { value: "Balluff-BAE0133", label: "Balluff: BAE0133" },
+    ];
+
+    const psuSelection400_480Options = [
+    { value: "Siemens", label: "Siemens: 6ES7148-4PC00-0HA0" },
+    { value: "Turck", label: "Turck: PSU67-3P-1MP-2M5-24200-F" },
+    { value: "Puls", label: "Puls: FPT500.247-064-102" },
+    ];
+
+    /* const getPsuSelectionOptions = () => {
+        if (Number(psuSupplyVoltage) > 240) {
+            return [
+                {value: "Siemens", label: "Siemens: 6ES7148-4PC00-0HA0"},
+                {value: "Turck", label: "Turck: PSU67-3P-1MP-2M5-24200-F"},
+                {value: "Puls", label: "Puls: FPT500.247-064-102"},
+                ];
+        } else {
+            return [
+                {value: "Balluff-BAE00ET", label: "Balluff: BAE00ET"},
+                {value: "Balluff-BAE00FL", label: "Balluff: BAE00FL"},
+                {value: "Balluff-BAE0133", label: "Balluff: BAE0133"},
+                ];
+        }
+    }; */
+
+    // Update psuCascadeLimit based on psuSelection
+    // Need help with this logic as it is not working as expected
+    // it is not updating the UI when the psuSelection changes
     useEffect(() => {
-        const newPlcID = '${Line}-${Location}-PLC01'; // need help with this to display the actual values of Line and Location
-        handleSetplcIDChange({ target: { value: newPlcID }});
-    }, [Line, Location, handleSetplcIDChange]);
+        if (psuSelection === "Balluff-BAE00ET" || psuSelection === "Balluff-BAE00FL") {
+            setPsuCascadingLimit('maximum of 2 at 120V, 4 at 240V');
+        } else if (psuSelection === "Balluff-BAE0133") {
+            setPsuCascadingLimit('maximum of 3');
+        } else if (psuSelection === "Siemens") {
+            setPsuCascadingLimit('maximum of 15');
+        } else if (psuSelection === "Turck") {
+            setPsuCascadingLimit('maximum of 8');
+        } else if (psuSelection === "Puls") {
+            setPsuCascadingLimit('maximum of 8');
+        } else {
+            setPsuCascadingLimit('maximum of 8');
+        }
+    },[psuSelection]);
 
+    // Initilize lpdPsuItems based on numberOfPsu and psuSelection
+    // this was intended to limit the number of psu items based on the psuSelection
+    // but it is not working as expected
+    useEffect(() => {
+        const InitializePsuItems = () => {
+            if (psuSelection === "Balluff-BAE00ET" || psuSelection === "Balluff-BAE00FL") {
+                return {[psuSelection]: 2};
+            } else if (psuSelection === "Balluff-BAE0133") {
+                return {[psuSelection]: 3};
+            } else if (psuSelection === "Siemens") {
+                return {[psuSelection]: 15};
+            } else if (psuSelection === "Turck") {
+                return {[psuSelection]: 8};
+            } else if (psuSelection === "Puls") {
+                return {[psuSelection]: 8};
+            } else {
+                return {};
+            }
+        };
+        setLpdPsuItems(InitializePsuItems());
+    }, [psuSelection, numberOfPsu]);
+
+    // State for each PSU item
+    const [lpdPsuItems, setLpdPsuItems] = useState({
+        [psuSelection]: numberOfPsu
+    });
+
+    // Create array of PSU items
+    const renderLpdPsuItems = () => {
+        return Array.from({ length: numberOfPsu }).map((_, index) => (
+            <LpdPsuItem
+                key={`${psuSelection}-${index}`}
+                lpdPsuItem={psuSelection}
+                psuLine={Line}
+                psuLocation={psuLocation}
+                psuDT={psuDT}
+                numberOfPsu={numberOfPsu}
+                numberOf24V_Drops={numberOf24V_Drops}
+                index={index}
+                absIndex={index + 1}
+                line={Line}
+            />
+        ));
+    }; 
+
+    // code for creating collapsible menus
     const [expandedStates, setExpandedStates] = useState({
         menu1: true,
-        menu2: true,
-        menu3: true,
-        menu4: true,
-        menu5: true,
-        menu6: true,
-        menu7: true, // submenu for menu 3
-        menu8: true, // submenu for menu 4
-        menu9: true, // submenu for menu 5
-        menu10: true, // submenu for menu 6
     });
 
     const createToggleHandler = (menuKey) => () => {
@@ -151,15 +201,7 @@ const LpdConfiguration = ({lpd}) => {
     };
 
     const handleToggleClick1 = createToggleHandler('menu1');
-    const handleToggleClick2 = createToggleHandler('menu2');
-    const handleToggleClick3 = createToggleHandler('menu3');
-    const handleToggleClick4 = createToggleHandler('menu4');
-    const handleToggleClick5 = createToggleHandler('menu5');
-    const handleToggleClick6 = createToggleHandler('menu6');
-    const handleToggleClick7 = createToggleHandler('menu7');
-    const handleToggleClick8 = createToggleHandler('menu8');
-    const handleToggleClick9 = createToggleHandler('menu9');
-    const handleToggleClick10 = createToggleHandler('menu10');
+    
 
     return (
         
@@ -172,558 +214,82 @@ const LpdConfiguration = ({lpd}) => {
                 </IconContext.Provider>
                 <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
                     onClick={handleToggleClick1}>
-                    Main Control Panel ++{Line}+{Location} Parameters
+                    24V Field mounted Power Supply Unit (PSU) Configuration
                 </button>
                 {
                     expandedStates.menu1 &&
                     <div>
                     <FormItem className="form-item">
-                        <FormLabel className="form-label" htmlFor="context">Plant name</FormLabel>
-                        <FormInputText
+                        <FormLabel className="form-label" htmlFor="context">Select the supply voltage for the PSU(s):</FormLabel>
+                        <FormInputDropdown
                         id="context"
-                        value={plant}
-                        readOnly/>
+                        value="120V"
+                        options={psuSupplyVoltageOptions}
+                        onChange={handleSetpsuSupplyVoltageChange}
+                        />
                     </FormItem> 
                     <FormItem className="form-item">
-                        <FormLabel className="form-label" htmlFor="context">Shop name</FormLabel>
-                        <FormInputText
+                        <FormLabel className="form-label" htmlFor="context">Select the PSU:</FormLabel>
+                        <FormInputDropdown
                         id="context"
-                        value={shop}
-                        readOnly/>
-                    </FormItem> 
+                        value={psuSelection}
+                        options={
+                            Number(psuSupplyVoltage) <= 240 ?
+                            [
+                                {value: "Balluff-BAE00ET", label: "Balluff: BAE00ET"},
+                                {value: "Balluff-BAE00FL", label: "Balluff: BAE00FL"},
+                                {value: "Balluff-BAE0133", label: "Balluff: BAE0133"},
+                            ] : [
+                                {value: "Siemens", label: "Siemens: 6ES7148-4PC00-0HA0"},
+                                {value: "Turck", label: "Turck: PSU67-3P-1MP-2M5-24200-F"},
+                                {value: "Puls", label: "Puls: FPT500.247-064-102"},
+                            ]
+                        }
+                        onChange={handleSetpsuSelectionChange}
+                        />
+                    </FormItem>
+                    
                     <FormItem className="form-item">
-                        <FormLabel className="form-label" htmlFor="context">Manufacturing Line name (e.g., UBM1, DOR1)</FormLabel>
+                        <FormLabel className="form-label" htmlFor="context">Enter the power source Line name: (e.g., UBM01)</FormLabel>
                         <FormInputText
                         id="context"
                         value={Line}
-                        onChange={handleSetLineChange}/>
-                    </FormItem>   
+                        onChange={handleSetLineChange}
+                        />
+                    </FormItem>
                     <FormItem className="form-item">
-                        <FormLabel className="form-label" htmlFor="context">Location designation (e.g., MCP01, MCP02)</FormLabel>
+                        <FormLabel className="form-label" htmlFor="context">Enter the power source location designation: (e.g., XPDP01)</FormLabel>
                         <FormInputText
                         id="context"
-                        value={Location}
-                        onChange={handleSetLocationChange}/>
-                    </FormItem>  
+                        value={psuSupplySourceLocation}
+                        onChange={handleSetpsuSupplySourceLocationChange}
+                        />
+                    </FormItem>
+                    <FormItem className="form-item">
+                        <FormLabel className="form-label" htmlFor="context">Enter the power source device tag: (e.g., CB01)</FormLabel>
+                        <FormInputText
+                        id="context"
+                        value={psuSupplySourceDevice}
+                        onChange={handleSetpsuSupplySourceDeviceChange}
+                        />
+                    </FormItem> 
+                    <FormItem className="form-item">
+                        <FormLabel className="form-label" htmlFor="context">Calculate and enter the total number of PSU(s) needed for this cascading group: ({psuCascadingLimit})</FormLabel>
+                        <FormInputText
+                        id="context"
+                        value={numberOfPsu}
+                        onChange={handleSetnumberOfPsuChange}
+                        />
+                    </FormItem> 
                 
-                    {/* Panel monuting location and options */}
-                    <div className="div-inline">
-                        <IconContext.Provider value={{ color:"black", size:20 }}>
-                        {
-                            expandedStates.menu2?<IoIosArrowDown/>:<IoIosArrowForward/>
-                        }
-                        </IconContext.Provider>
-                        <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                            onClick={handleToggleClick2}>
-                            Panel Mounting Location and Options
-                        </button>
-                        {
-                            expandedStates.menu2 &&
-                            <div>
-                                <FormItem className="form-item">
-                                    <FormLabel className="form-label" htmlFor="context">MCP mounted in Station number (e.g., 00010)</FormLabel>
-                                    <FormInputText
-                                    id="context"
-                                    value={mcpMountingLocation}
-                                    onChange={handleSetmcpMountingLocationChange}/>
-                                </FormItem>    
-                                <FormItem className="form-item">
-                                    <FormLabel className="form-label" htmlFor="context">MCP power source is from what location (i.e., Station number) (e.g., 00010)</FormLabel>
-                                    <FormInputText
-                                    id="context"
-                                    value={mcpPSU_Location}
-                                    onChange={handleSetmcpPSU_LocationChange}/>
-                                </FormItem>   
-                                <FormItem className="form-item">
-                                    <FormLabel className="form-label" htmlFor="context">MCP power source is from what device (e.g., PSU01)</FormLabel>
-                                    <FormInputText
-                                    id="context"
-                                    value={mcpPSU_DT}
-                                    onChange={handleSetmcpPSU_DTChange}/>
-                                </FormItem>  
-                                <FormItem className="form-item">
-                                    <FormLabel className="form-label" htmlFor="context">UPS01 Local IP Address (e.g., 192.168.1.x)</FormLabel>
-                                    <FormInputText
-                                    id="context"
-                                    value={mcpUpsIp}
-                                    onChange={handleSetmcpUpsIpChange}/>
-                                </FormItem> 
-                                
-                            </div>
-                        }
-
-                        {/* PLC01 Configuration parameters */}
-                        <div className="div-inline">
-                            <IconContext.Provider value={{ color:"black", size:20 }}>
-                            {
-                                expandedStates.menu3?<IoIosArrowDown/>:<IoIosArrowForward/>
-                            }
-                            </IconContext.Provider>
-                            <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                onClick={handleToggleClick3}>
-                                PLC01 Configuration parameters
-                            </button>
-                            {
-                                expandedStates.menu3 &&
-                                <div>
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">Plant IP Address (e.g., 10.x.x.x)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={plcPlantIp}
-                                        onChange={handleSetplcPlantIpChange}/>
-                                    </FormItem> 
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">PLC-to-PLC IP Address (e.g., 192.168.136.x)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={plcToPlcIp}
-                                        onChange={handleSetplcToPlcIpChange}/>
-                                    </FormItem>
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">Local IP Address (e.g., 192.168..x)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={plcLocalIp}
-                                        pattern="[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" // need help to verify if this will keep the input to an actual IP address
-                                        onChange={handleSetplcLocalIpChange}/>
-                                    </FormItem>
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">Secondary Local IP Address (e.g., 192.168.x.x)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={plcLocalIpSecondary}
-                                        readOnly
-                                        //onChange={handleSetplcLocalIpSecondaryChange}
-                                        />
-                                    </FormItem>
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">PLC ID (used to identify all devices controlled by this PLC)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={plcID} // need help in changing the display output to values to 'Line-Location-PLC01'
-                                        pattern="[A-Za-z0-9]+-[A-Za-z0-9]+-PLC01"
-                                        onChange={handleSetplcIDChange}/>
-                                    </FormItem>
-
-                                    {/* PLC01 - Port configuration parameters */}
-                                    <div className="div-inline">
-                                        <IconContext.Provider value={{ color:"black", size:20 }}>
-                                        {
-                                            expandedStates.menu7?<IoIosArrowDown/>:<IoIosArrowForward/>
-                                        }
-                                        </IconContext.Provider>
-                                        <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                            onClick={handleToggleClick7}>
-                                            PLC01 - Port configuration parameters
-                                        </button>
-                                        {
-                                            expandedStates.menu7 &&
-                                            <div>
-                                                <FormItem className="form-item">
-                                                    <FormLabel className="form-label" htmlFor="context">Port X1:P2R - Target location (i.e., Station number) (e.g., 00010)</FormLabel>
-                                                    <FormInputText
-                                                    id="context"
-                                                    value={plcPortX1P2RTargetLocation}
-                                                    readOnly
-                                                    //onChange={handleSetplcPortX1P2RTargetLocationChange}
-                                                    />
-                                                </FormItem>
-                                                <FormItem className="form-item">
-                                                    <FormLabel className="form-label" htmlFor="context">Port X1:P2R - Target device (e.g., MIO01)</FormLabel>
-                                                    <FormInputText
-                                                    id="context"
-                                                    value={plcPortX1P2RTargetDT}
-                                                    readOnly
-                                                    //onChange={handleSetplcPortX1P2RTargetDTChange}
-                                                    />
-                                                </FormItem>
-                                            </div>
-                                    }
-                                    </div>
-                                </div>
-                            }
-
-                            {/* KED - Plant switch configuration parameters */}
-                            <div className="div-inline">
-                                <IconContext.Provider value={{ color:"black", size:20 }}>
-                                {
-                                    expandedStates.menu4?<IoIosArrowDown/>:<IoIosArrowForward/>
-                                }
-                                </IconContext.Provider>
-                                <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                    onClick={handleToggleClick4}>
-                                    KED - Plant switch configuration parameters
-                                </button>
-                                {
-                                    expandedStates.menu4 &&
-                                    <div>
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">Plant IP Address (e.g., 10.x.x.x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={kedPlantIp}
-                                            onChange={handleSetkedPlantIpChange}/>
-                                        </FormItem> 
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">PLC-to-PLC IP Address (e.g., 192.168.136.x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={kedPlcToPlcIp}
-                                            onChange={handleSetkedPlcToPlcIpChange}/>
-                                        </FormItem>
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">Local IP Address (e.g., 192.168..x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={kedLocalIp}
-                                            onChange={handleSetkedLocalIpChange}/>
-                                        </FormItem>
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">Secondary Local IP Address (e.g., 192.168.x.x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={kedLocalIpSecondary}
-                                            readOnly
-                                            //onChange={handleSetkedLocalIpSecondaryChange}
-                                            />
-                                        </FormItem>
-
-                                        {/* KED - Port configuration parameters */}
-                                        <div className="div-inline">
-                                            <IconContext.Provider value={{ color:"black", size:20 }}>
-                                            {
-                                                expandedStates.menu8?<IoIosArrowDown/>:<IoIosArrowForward/>
-                                            }
-                                            </IconContext.Provider>
-                                            <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                                onClick={handleToggleClick8}>
-                                                KED - Port configuration parameters
-                                            </button>
-                                            {
-                                                expandedStates.menu8 &&
-                                                <div>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Port 4 - Target location (e.g., 00010)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={kedPort4TargetLocation}
-                                                        readOnly
-                                                        //onChange={handleSetkedPort4TargetLocationChange}
-                                                        />
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Port 4 - Target device (e.g., MIO01)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={kedPort4TargetDT}
-                                                        readOnly
-                                                        //onChange={handleSetkedPort4TargetDTChange}
-                                                        />
-                                                    </FormItem> 
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Port 5  - Target location (e.g., 00010)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={kedPort5TargetLocation}
-                                                        readOnly
-                                                        //onChange={handleSetkedPort5TargetLocationChange}
-                                                        />
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Port 5  - Target device (e.g., MIO01)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={kedPort5TargetDT}
-                                                        readOnly
-                                                        //onChange={handleSetkedPort5TargetDTChange}
-                                                        />
-                                                    </FormItem>
-                                                </div>
-                                            }
-                                            </div>
-                                    </div>
-                                }
-                            
-                            {/* LETH - Configuration parameters */}
-                            <div className="div-inline">
-                                <IconContext.Provider value={{ color:"black", size:20 }}>
-                                {
-                                    expandedStates.menu5?<IoIosArrowDown/>:<IoIosArrowForward/>
-                                }
-                                </IconContext.Provider>
-                                <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                    onClick={handleToggleClick5}>
-                                    LETH - Configuration parameters
-                                </button>
-                                {
-                                    expandedStates.menu5 &&
-                                    <div>
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">Plant IP Address (e.g., 10.x.x.x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={lethPlantIp}
-                                            onChange={handleSetlethPlantIpChange}/>
-                                        </FormItem> 
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">PLC-to-PLC IP Address (e.g., 192.168.136.x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={lethPlcToPlcIp}
-                                            readOnly
-                                            //onChange={handleSetlethPlcToPlcIpChange}
-                                            />
-                                        </FormItem>
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">Local IP Address (e.g., 192.168..x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={lethLocalIp}
-                                            onChange={handleSetlethLocalIpChange}/>
-                                        </FormItem>
-                                        <FormItem className="form-item">
-                                            <FormLabel className="form-label" htmlFor="context">Secondary Local IP Address (e.g., 192.168.x.x)</FormLabel>
-                                            <FormInputText
-                                            id="context"
-                                            value={lethLocalIpSecondary}
-                                            onChange={handleSetlethLocalIpSecondaryChange}/>
-                                        </FormItem>
-
-                                        {/* LETH - Port configuration parameters */}
-                                        <div className="div-inline">
-                                            <IconContext.Provider value={{ color:"black", size:20 }}>
-                                            {
-                                                expandedStates.menu9?<IoIosArrowDown/>:<IoIosArrowForward/>
-                                            }
-                                            </IconContext.Provider>
-                                            <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                                onClick={handleToggleClick9}>
-                                                LETH - Port configuration parameters
-                                            </button>
-                                            {
-                                                expandedStates.menu9 &&
-                                                <div>
-                                                    <div>
-                                                        <h7>Port 2</h7>
-                                                    </div>  
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target location (e.g., 00010)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort2TargetLocation}
-                                                        onChange={handleSetlethPort2TargetLocationChange}/>
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target device (e.g., LETH01)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort2TargetDT}
-                                                        onChange={handleSetlethPort2TargetDTChange}/>
-                                                    </FormItem> 
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target port ID (e.g., P1)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort2TargetPort}
-                                                        onChange={handleSetlethPort2TargetPortChange}/>
-                                                    </FormItem> 
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Cable length selection</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        options={cableLengthOptions}
-                                                        value={lethPort2TargetCableLength}
-                                                        onChange={handleSetlethPort2TargetCableLengthChange}/>
-                                                    </FormItem> 
-                                                    <div>
-                                                        <h7>Port 3</h7>
-                                                    </div>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target location (e.g., 00010)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort3TargetLocation}
-                                                        onChange={handleSetlethPort3TargetLocationChange}/>
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target device (e.g., LETH01)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort3TargetDT}
-                                                        onChange={handleSetlethPort3TargetDTChange}/>
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target port ID (e.g., P1)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort3TargetPort}
-                                                        onChange={handleSetlethPort3TargetPortChange}/>
-                                                    </FormItem> 
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Cable length selection</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        options={cableLengthOptions}
-                                                        value={lethPort3TargetCableLength}
-                                                        onChange={handleSetlethPort3TargetCableLengthChange}/>
-                                                    </FormItem> 
-                                                    <div>
-                                                        <h7>Port 4</h7>
-                                                    </div>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target location (e.g., 00010)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort4TargetLocation}
-                                                        onChange={handleSetlethPort4TargetLocationChange}/>
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target device (e.g., LETH01)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort4TargetDT}
-                                                        onChange={handleSetlethPort4TargetDTChange}/>
-                                                    </FormItem>
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Target port ID (e.g., P1)</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        value={lethPort4TargetPort}
-                                                        onChange={handleSetlethPort4TargetPortChange}/>
-                                                    </FormItem> 
-                                                    <FormItem className="form-item">
-                                                        <FormLabel className="form-label" htmlFor="context">Cable length selection</FormLabel>
-                                                        <FormInputText
-                                                        id="context"
-                                                        options={cableLengthOptions}
-                                                        value={lethPort4TargetCableLength}
-                                                        onChange={handleSetlethPort4TargetCableLengthChange}/>
-                                                    </FormItem>
-
-                                                </div>
-                                            }
-                                            </div>
-
-                                    </div>
-                                }
-                                <div>
-                                    <h7>----</h7>
-                                </div>
-                                <FormItem className="form-item">
-                                    <FormLabel className="form-label" htmlFor="context">Enter the number of device connections required for this line (i.e., Total number of devices)</FormLabel>
-                                    <FormInputDropdown
-                                    id="context"
-                                    options={lethNumberOfPortOptions}
-                                    value={lethNumberOfPorts}
-                                    onChange={handleSetlethNumberOfPortsChange}/>
-                                </FormItem>
-                                <div>
-                                    <h7>----</h7>
-                                </div>
-                                
-                                
-                                </div>
-                            </div>
-                        </div>
+                    {/* Cascading PSUs within this configuration */}
+                        <>
+                            {renderLpdPsuItems()}
+                        </>
+                    
                     </div>
-                </div>
-            }
+                }
         </div>       
-    {plcNetworkSwitchRequired && (
-        <>
-            {/* PLC to PLC Ethernet switch configuration parameters */}
-            <div className="div-inline">
-                <IconContext.Provider value={{ color:"black", size:20 }}>
-                {
-                    expandedStates.menu6?<IoIosArrowDown/>:<IoIosArrowForward/>
-                }
-                </IconContext.Provider>
-                <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                    onClick={handleToggleClick6}>
-                    ETH - Configuration parameters
-                </button>
-                {
-                    expandedStates.menu6 &&
-                    <div>
-                        <FormItem className="form-item">
-                            <FormLabel className="form-label" htmlFor="context">Plant IP Address (e.g., 10.x.x.x)</FormLabel>
-                            <FormInputText
-                            id="context"
-                            value={ethPlantIp}
-                            readOnly
-                            //onChange={handleSetlethPlantIpChange}
-                            />
-                        </FormItem> 
-                        <FormItem className="form-item">
-                            <FormLabel className="form-label" htmlFor="context">PLC-to-PLC IP Address (e.g., 192.168.136.x)</FormLabel>
-                            <FormInputText
-                            id="context"
-                            value={ethPlcToPlcIp}
-                            onChange={handleSetethPlcToPlcIpChange}
-                            />
-                        </FormItem>
-                        <FormItem className="form-item">
-                            <FormLabel className="form-label" htmlFor="context">Local IP Address (e.g., 192.168..x)</FormLabel>
-                            <FormInputText
-                            id="context"
-                            value={ethLocalIp}
-                            readOnly
-                            //onChange={handleSetethLocalIpChange}
-                            />
-                        </FormItem>
-                        <FormItem className="form-item">
-                            <FormLabel className="form-label" htmlFor="context">Secondary Local IP Address (e.g., 192.168.x.x)</FormLabel>
-                            <FormInputText
-                            id="context"
-                            value={ethLocalIpSecondary}
-                            readOnly
-                            //onChange={handleSetethLocalIpSecondaryChange}
-                            />
-                        </FormItem>
-
-                        {/* ETH - Port configuration parameters */}
-                        <div className="div-inline">
-                            <IconContext.Provider value={{ color:"black", size:20 }}>
-                            {
-                                expandedStates.menu10?<IoIosArrowDown/>:<IoIosArrowForward/>
-                            }
-                            </IconContext.Provider>
-                            <button style={{fontSize:16, fontWeight:"bolder", marginBottom:"10px"}} 
-                                onClick={handleToggleClick10}>
-                                ETH - Port configuration parameters
-                            </button>
-                            {
-                                expandedStates.menu10 &&
-                                <div>
-                                    <div>
-                                        <h7>Port 1 (Ring topology - In)</h7>
-                                    </div>  
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">Target location (e.g., MCP01, MCP02)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={ethPort1TargetLocation}
-                                        onChange={handleSetethPort1TargetLocationChange}/>
-                                    </FormItem>
-                                    <div>
-                                        <h7>Port 2 (Ring topology - Out)</h7>
-                                    </div>
-                                    <FormItem className="form-item">
-                                        <FormLabel className="form-label" htmlFor="context">Target location (e.g., MCP01, MCP02)</FormLabel>
-                                        <FormInputText
-                                        id="context"
-                                        value={ethPort2TargetLocation}
-                                        onChange={handleSetethPort2TargetLocationChange}/>
-                                    </FormItem>
-                                </div>
-                            }
-                            </div>
-                    </div>
-                }
-                </div>   
-        </>
-    )}
     </div>  
     );
 };
