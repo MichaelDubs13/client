@@ -38,7 +38,7 @@ const ModelBuilder = {
             fg_MainControlPanel.build();
         }
         
-        if(psus.length > 0){
+        if(Object.keys(psus).length > 0){
             const fg_24VDCPowerDistribution = new Fg_24VDC_PowerDistribution(manufacturingEquipmentLINE, psus);
             fg_24VDCPowerDistribution.build();
         }

@@ -56,11 +56,7 @@ export default class Fg_24VPowerDistribution extends Component{
 
     get Parameters(){
         return [
-            // {name: "list_CascadingGroup_PSU_DTs", value: [], type: "arrayList"},
-            // {name: "Shop", value: ProjectConfiguration.shop, type: "String"},
-            // {name: "Line", value: ProjectConfiguration.line, type: "String"},
             {name: "Location", value: "LOCATION", type: "String"},
-            // {name: "Plant", value: ProjectConfiguration.plant, type: "String"},
             {name: "LocalDisconnectRequired", value: false, type: "Boolean"},
             {name: "Turck_NumberOfPSU", value: this.Turck_NumberOfPSU, type: "Integer"},
             {name: "Puls_NumberOfPSU", value: this.Puls_NumberOfPSU, type: "Integer"},
@@ -69,20 +65,9 @@ export default class Fg_24VPowerDistribution extends Component{
             {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this.numberOfBAE0133, type: "Integer"},
             {name: "LocationDesignation", value: "Undefined", type: "String"},
             {name: "DeviceTag", value: "Undefined", type: "String"},
-            // {name: "PSU_Selection_120", value: this.PSU_Selection_120, type: "String"},
             {name: "_PSUSupplyVoltage_", value: this._PSUSupplyVoltage_, type: "String"},
-            // {name: "b_PSU_Selection_Balluff_BAE00ET", value: this.b_PSU_Selection_Balluff_BAE00ET, type: "Boolean"},
-            // {name: "b_PSU_Selection_BAE00FL", value: this.b_PSU_Selection_BAE00FL, type: "Boolean"},
-            // {name: "b_PSU_Selection_BAE0133", value: this.b_PSU_Selection_BAE0133, type: "Boolean"},
-            // {name: "b_PSU_Selection_Puls", value: this.b_PSU_Selection_Puls, type: "Boolean"},
-            // {name: "b_PSU_Selection_Turck", value: this.b_PSU_Selection_Turck, type: "Boolean"},
-            // {name: "b_PSU_Selection_Siemens", value: this.b_PSU_Selection_Siemens, type: "Boolean"},
             {name: "s_PSU_Selection_480_400", value: this.s_PSU_Selection_480_400, type: "String"},
             {name: "s_PSU_Selection_120_240", value: this.s_PSU_Selection_120_240, type: "String"},
-            // {name: "b_PSU_Selection_480_", value: this.b_PSU_Selection_480_, type: "Boolean"},
-            // {name: "b_PSU_Selection_120_", value: this.b_PSU_Selection_120_, type: "Boolean"},
-            // {name: "b_PSU_Selection_400_", value: this.b_PSU_Selection_400_, type: "Boolean"},
-            // {name: "b_PSU_Selection_240_", value: this.b_PSU_Selection_240_, type: "Boolean"},
 
         ];
     }

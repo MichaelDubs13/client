@@ -40,7 +40,37 @@ const psuParser = {
         })
 
         return psus;
+    },
+
+    getOrderedBranch(psus){
+        var results = {}
+
+        psus.forEach(psu => {
+            if(psu.xpdpCBIndex){
+                psuParser.addToBranch(psu.xpdpCBIndex, psu, results);
+            } else {
+                if(psu.powerFedFrom){
+                    var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
+                    if(sourcePsu){
+                        psuParser.addToBranch(sourcePsu.xpdpCBIndex, psu, results);
+                    }
+                }
+            }
+        })
+
+        return results;
+    },
+
+    addToBranch(key, psu, results){
+        if(key in results){
+            results[key].push(psu)
+        } else {
+            results[key] = [psu,]
+        }
+
+        return results;
     }
+
 }
 
 export default psuParser;

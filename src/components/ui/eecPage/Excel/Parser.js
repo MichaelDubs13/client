@@ -32,8 +32,10 @@ export default class Parser {
         let pdps = pdpParser.parse(this._wb, this._pdpWorksheet)
         let xpdps = xpdpParser.parse(this._wb, this._xpdpWorksheet)
         let mcps = mcpParser.parse(this._wb, this._mcpWorksheet)
-        const psus = psuParser.parse(this._wb, this._psuWorksheet)
+        var psus = psuParser.parse(this._wb, this._psuWorksheet)
+        psus = psuParser.getOrderedBranch(psus);
 
+        
         const devices = deviceParser.parse(this._wb, this._devicesWorksheet)
         const ios = deviceParser.createIODevices(devices);
         pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
