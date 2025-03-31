@@ -108,7 +108,7 @@ const mcpParser = {
                     eth_local_ip_secondary: eth_local_ip_secondary,
                     eth_port1_target_location: eth_port1_target_location,
                     eth_port2_target_location: eth_port2_target_location,
-    
+                    local_network_direct:[],
                 }
                 mcps.push(mcp);
             });
@@ -138,7 +138,20 @@ const mcpParser = {
         })
 
         return mcps;
+    },
+    getDirectNetworkDevices:(mcps, devices, networkSwitches) => {
+        mcps.forEach(mcp => {
+            var localSwitches = networkSwitches.filter(networkSwitch => networkSwitch.mcpName === mcp.mcp_name && networkSwitch.networkType.toLowerCase() === "local")
+
+            localSwitches.forEach(localSwitch => {
+                var directNetworkSwitches = devices.filter(device => localSwitch.switch_location_dt === device.local_network_direct)
+                mcp.local_network_direct = [...directNetworkSwitches, ...mcp.local_network_direct]
+            })
+        })
+
+        return mcps;
     }
+
 }
 
 export default mcpParser;

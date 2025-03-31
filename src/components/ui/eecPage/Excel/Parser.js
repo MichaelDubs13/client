@@ -42,11 +42,11 @@ export default class Parser {
         xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
 
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
-        switches = switchParser.createNetworkTree(devices, switches);
+        var networkTree = switchParser.createNetworkTree(devices, switches);
         
         mcps = mcpParser.getNetworkPorts(mcps, devices);
-
-        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, psus:psus, switches:switches,devices:devices, ios:ios }
+        mcps = mcpParser.getDirectNetworkDevices(mcps, devices, switches)
+        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, psus:psus, switches:networkTree,devices:devices, ios:ios }
         
     }
 
