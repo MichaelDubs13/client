@@ -2,13 +2,13 @@ import Component from "../../Component";
 
 
 export default class _f_Sub_DC_Distribution_CLS2_Balluff_120VPSU extends Component{
-    constructor(parent, pwrDistrbution) {
+    constructor(parent, psu) {
         super(parent);
         this.parent = parent;
         this._classPath = "Config24V-PowerDistribution.Mechatronic._f_DC_Distribution";
         this._class = "_f_Sub_DC_Distribution_CLS2_Balluff_120VPSU";
         this._name = "_f_Sub_DC_Distribution_CLS2_Balluff_120VPSU";
-        this._pwrDistrbution = pwrDistrbution;
+        this._psu = psu;
     }
     get Parameters(){
         return [
@@ -19,6 +19,6 @@ export default class _f_Sub_DC_Distribution_CLS2_Balluff_120VPSU extends Compone
 
     
     build(){
- 
+
     }
 }
