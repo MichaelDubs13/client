@@ -14,12 +14,12 @@ export default class C_Balluff_Switch extends Component{
 
     get Parameters(){
         return [
-            // {name: "Switch_DT", value: this._switch, type: "String"},
-            // {name: "Switch_Location", value: this._location, type: "String"},
-            // {name: "BNI0089", value: "", type: "Boolean"},
-            // {name: "Balluff", value: "", type: "Boolean"},
-            // {name: "Local_IP", value: "", type: "String"},
-            // {name: "Plant_IP", value: "", type: "String"},
+            {name: "Switch_DT", value: this._switch, type: "String"},
+            {name: "Switch_Location", value: this._location, type: "String"},
+            {name: "BNI0089", value: false, type: "Boolean"}, //false if not balluf
+            {name: "Balluff", value: false, type: "Boolean"}, //false if not balluf
+            {name: "Local_IP", value: "", type: "String"},
+            {name: "Plant_IP", value: "", type: "String"},
             // {name: "Switch_Title", value: this._switchTitle, type: "String"},
         ];
     }

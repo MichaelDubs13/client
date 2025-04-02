@@ -30,30 +30,27 @@ export default class F_Network_SwitchConfig extends Component{
 
     get Parameters(){
         return [
-            {name: "PLC_ID", value: "Undefined", type: "String"},
-            {name: "PWR_IN_Location", value: this._networkSwitch.psu_location, type: "String"},
-            {name: "PWR_IN_DT", value: this._networkSwitch.psu_dt, type: "String"},
-            {name: "PWR1_IN_Location", value: "Undefined", type: "String"},
-            {name: "PWR1_IN_DT", value: "Undefined", type: "String"},
-            {name: "PWR2_IN_Location", value: "Undefined", type: "String"},
-            {name: "PWR2_IN_DT", value: "Undefined", type: "String"},
+            {name: "PWR_IN_Location", value: this._networkSwitch.psu_location, type: "String"}, //for Balluf
+            {name: "PWR_IN_DT", value: this._networkSwitch.psu_dt, type: "String"}, //for Balluf
+            {name: "PWR1_IN_Location", value: "Undefined", type: "String"}, //for Siemens
+            {name: "PWR1_IN_DT", value: "Undefined", type: "String"}, //for Siemens
+            // {name: "PWR2_IN_Location", value: "Undefined", type: "String"},
+            // {name: "PWR2_IN_DT", value: "Undefined", type: "String"},
             {name: "Switch_Location", value: this._location, type: "String"},
             {name: "Local_IP", value: this._networkSwitch.localIp, type: "String"},
-            {name: "Plant_IP", value: "Undefined", type: "String"},
-            {name: "Network_Type_Selection", value: this._networkSwitch.networkType, type: "String"},
+            // {name: "Plant_IP", value: "Undefined", type: "String"},
+            {name: "Network_Type_Selection", value: "Local", type: "String"},
             {name: "Switch_DT", value: this._switch, type: "String"},
-            {name: "Switch_Type_Selection", value: "Managed", type: "String"},
+            {name: "Switch_Type_Selection", value: "Managed", type: "String"}, //if siemens then managed if its balluf then unmanaged
             {name: "Ethernet_Speed_Selection", value: "Gigabit", type: "String"},
-            {name: "Ethernet_DT", value: this._networkSwitch.switch_dt, type: "String"},
-            {name: "Ethernet_Location", value: this._networkSwitch.switch_location, type: "String"},
-            {name: "Alarm_DT", value: "Undefined", type: "String"},
-            {name: "Alarm_Output_Selection", value: this._alarmOutput, type: "Boolean"},
-            {name: "Console_DT", value: "Undefined", type: "String"},
-            {name: "Console_Output_Selection", value: this._consoleOutput, type: "Boolean"},
-            {name: "Cable_Length_Selection", value: "Undefined", type: "String"},
-            {name: "8_ports", value: this._8_ports, type: "Integer"},
-            {name: "8or16_ports", value: this._8or16_ports, type: "Integer"},
-            {name: "8or16or24_ports", value: this._8or16or24_ports, type: "Integer"},
+            {name: "Alarm_DT", value: "Undefined", type: "String"}, //for Siemens 
+            {name: "Alarm_Output_Selection", value: this._alarmOutput, type: "Boolean"}, //Reserved for plant networkSwitch
+            {name: "Console_DT", value: "Undefined", type: "String"}, //for siemens
+            {name: "Console_Output_Selection", value: this._consoleOutput, type: "Boolean"}, //Reserved for plant networkSwitch
+            // {name: "Cable_Length_Selection", value: "Undefined", type: "String"},
+            // {name: "8_ports", value: this._8_ports, type: "Integer"},
+            // {name: "8or16_ports", value: this._8or16_ports, type: "Integer"},
+            // {name: "8or16or24_ports", value: this._8or16or24_ports, type: "Integer"},
          
         ];
     }

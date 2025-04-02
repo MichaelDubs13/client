@@ -43,6 +43,7 @@ const deviceParser = {
             const local_network_direct = item["Local Network Direct"];  
             const local_network_source = item["Local Network Source"];  
             const local_switch_port = item["Local Switch Port"];  
+            const target_switch_port = item["Target Switch Port"];  
             const mcp_name = item["MCP Name"];  
             const opmode = item["OP MODE"];  
             const other_cable_length = item["Other Cable Length"];  
@@ -62,7 +63,8 @@ const deviceParser = {
             const target_device_location = item["Target Device (location)"];  
             const target_device_location_dt = item["Target Device (Location-DT)"];  
             const totalDevice24V_FLA = item["Total Device 24VDC FLA"];  
-
+            const direct24VDC = item["24Vdc Direct"]; 
+            const source24VDC = item["24Vdc Source"]; 
             const device = {
                 ac_primary_connection_direct:ac_primary_connection_direct,
                 ac_primary_connection_source:ac_primary_connection_source, 
@@ -99,6 +101,7 @@ const deviceParser = {
                 local_cable_length:local_cable_length,
                 local_network_direct:local_network_direct,
                 local_network_source:local_network_source,
+                target_switch_port:target_switch_port,
                 local_switch_port:local_switch_port,
                 mcp_name:mcp_name,
                 opmode:opmode,
@@ -119,6 +122,8 @@ const deviceParser = {
                 target_device_location:target_device_location,
                 target_device_location_dt:target_device_location_dt,
                 totalDevice24V_FLA:totalDevice24V_FLA,
+                direct24VDC: direct24VDC,
+                source24VDC: source24VDC,
             }
 
             devices.push(device);

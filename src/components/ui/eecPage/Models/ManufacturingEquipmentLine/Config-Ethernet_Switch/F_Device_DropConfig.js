@@ -34,13 +34,14 @@ export default class f_Device_DropConfig extends Component{
             // {name: "NetworkSwitch_List", value: [], type: "arrayList"},
             // {name: "Unmanaged_Connection", value: "", type: "Boolean"},
             // {name: "DeviceType_IDFNetworkDrop", value: "", type: "Boolean"},
-            {name: "Interruption_InOrOut", value: "Undefined", type: "String"},
-            {name: "Device_Type_Selection", value: "Undefined", type: "String"},
+            {name: "Interruption_InOrOut", value: "Undefined", type: "String"}, //if i have network switch going to another network switch 
+            {name: "Device_Type_Selection", value: "Undefined", type: "String"}, //device, spare or switch
             // {name: "Switch_Type_Selection", value: "", type: "String"},
             // {name: "Device_DT", value: this._device?.target_device_dt, type: "String"},
-            {name: "NotPLC_Connection_DT", value: this._device?.target_device_dt, type: "String"},
-            {name: "PLC_Connection_DT", value: "Undefined", type: "String"},
-            {name: "Target_Location", value: this._device?.target_device_location, type: "String"},
+            // {name: "NotPLC_Connection_DT", value: this._device?.target_device_dt, type: "String"},
+            // {name: "PLC_Connection_DT", value: "Undefined", type: "String"},
+            {name: "TargetDevice_DT", value: this._device?.target_device_location, type: "String"}, //device DT: SIO01
+            {name: "Target_Location", value: this._device?.target_device_location, type: "String"}, //station number : 10000
             // {name: "Device_Location", value: this._device?.target_device_location, type: "String"},
             // {name: "DeviceType_Spare", value: "", type: "Boolean"},
             // {name: "Drop_Title", value: "", type: "String"},
@@ -48,10 +49,12 @@ export default class f_Device_DropConfig extends Component{
             // {name: "s_Port_FuncText_8ports", value: "", type: "String"},
             // {name: "s_Port_FuncText_16ports", value: "", type: "String"},
             // {name: "s_Port_FuncText_24ports", value: "", type: "String"},
-            {name: "Cable_Length_Selection", value: "Undefined", type: "String"},
+            {name: "Cable_Length_Selection", value: "TBD", type: "String"},
             // {name: "Network_Type_Selection", value: "", type: "String"},
             // {name: "NetworkSwitch_DT", value: this._device?.target_device_location_dt, type: "String"},
-            {name: "Switch_Cascading", value: true, type: "Boolean"},
+            {name: "Switch_Cascading", value: true, type: "Boolean"}, //if its a switch not going to MCP then its true
+            {name: "frmUI_DevicePortSelection", value: "Undefined", type: "String"}, //only needs this if its switch to another switch
+            {name: "frmUI_NetworkSwitchSelection", value: "Undefined", type: "String"}, //only needs this if its switch to another switch
             // {name: "Connected_Switches", value: "", type: "Boolean"},
             // {name: "Switch_DT", value: this._switch, type: "String"},
         ];

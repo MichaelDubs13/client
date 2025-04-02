@@ -35,6 +35,7 @@ const psuParser = {
                 powerFedFrom:powerFedFrom,
                 supplyVoltage:supplyVoltage,
                 xpdpCBIndex:xpdpCBIndex,
+                pwrDrops:[],
             }
             psus.push(psu);
         })
@@ -69,6 +70,15 @@ const psuParser = {
         }
 
         return results;
+    },
+
+    getPwrDrops(psus, devices){
+        psus.forEach(psu => {
+            var directDevices = devices.filter(device => device.direct24VDC === psu.psuLocationDt)
+            psu.pwrDrops = directDevices;
+        })
+
+        return psus;
     }
 
 }
