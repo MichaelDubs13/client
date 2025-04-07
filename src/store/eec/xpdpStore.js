@@ -149,6 +149,10 @@ const xpdpStore = create((set) => ({
       }
     },
 
+    addBranchCircuit:()=>{
+      return xpdpConfiguration.createBranchCircuit();
+    },
+
 }));
 
 export {

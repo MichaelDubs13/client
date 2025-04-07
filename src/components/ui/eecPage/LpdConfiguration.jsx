@@ -44,7 +44,8 @@ const LpdConfiguration = ({lpd}) => {
     // State variables for each form input
     const [Line, setLine] = useState(line);
     const [Location, setLocation] = useState(0);
-    const [psuSupplyVoltage, handleSetpsuSupplyVoltageChange] = useLpdState("", 'psu_supply_voltage'); //EEC var: _PSUSupplyVoltage_
+    //const [psuSupplyVoltage, handleSetpsuSupplyVoltageChange] = useLpdState("", 'psu_supply_voltage'); //EEC var: _PSUSupplyVoltage_
+    const [psuSupplyVoltage, setPsuSupplyVoltage] = useState(0);
     const [psuSelection, setPsuSelection] = useState(0);
     const [psuSelection120_240, handleSetpsuSelection120_240Change] = useLpdState(0, 'psu_selection_120_240'); //EEC var: s_PSU_Selection_120_240
     const [psuSelection400_480, handleSetpsuSelection400_480Change] = useLpdState(0, 'psu_selection_400_480'); //EEC var: s_PSU_Selection_400_480
@@ -66,7 +67,10 @@ const LpdConfiguration = ({lpd}) => {
     const [psuOutputPort3Sum, handleSetpsuOutputPort3SumChange] = useLpdState(0, 'psu_output_port3_sum');
     const [psuOutputPortClass2Sum, handleSetpsuOutputPortClass2SumChange] = useLpdState(0, 'psu_output_port_class2_sum');
     
-    
+    const handleSetpsuSupplyVoltageChange = (event)=> {
+        const value = event.value;
+        setPsuSupplyVoltage(value);
+    }
     const handleSetLineChange = (event)=> {
         const value = event.target.value;
         setLine(value);
@@ -223,9 +227,10 @@ const LpdConfiguration = ({lpd}) => {
                         <FormLabel className="form-label" htmlFor="context">Select the supply voltage for the PSU(s):</FormLabel>
                         <FormInputDropdown
                         id="context"
-                        value="120V"
-                        options={psuSupplyVoltageOptions}
-                        onChange={handleSetpsuSupplyVoltageChange}
+                        value={psuSupplyVoltage}
+                        selected={psuSupplyVoltage}
+                        options={psuSupplyVoltageOptions}                        
+                        onOptionSelect={handleSetpsuSupplyVoltageChange}
                         />
                     </FormItem> 
                     <FormItem className="form-item">

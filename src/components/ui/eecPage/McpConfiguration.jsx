@@ -78,16 +78,33 @@ const McpConfiguration = ({mcp}) => {
     const [lethPort4TargetDT, handleSetlethPort4TargetDTChange] = useMcpState(0, 'leth_port4_target_dt');
     const [lethPort4TargetPort, handleSetlethPort4TargetPortChange] = useMcpState(0, 'leth_port4_target_port');
     const [lethPort4TargetCableLength, handleSetlethPort4TargetCableLengthChange] = useMcpState(0, 'leth_port4_target_cable_length');
-    const [lethNumberOfPorts, handleSetlethNumberOfPortsChange] = useMcpState(0, 'leth_number_of_ports');
     const [ethPlantIp, handleSetethPlantIpChange] = useMcpState(0, 'eth_plant_ip');
     const [ethPlcToPlcIp, handleSetethPlcToPlcIpChange] = useMcpState(0, 'eth_plc_to_plc_ip');
     const [ethLocalIp, handleSetethLocalIpChange] = useMcpState(0, 'eth_local_ip');
     const [ethLocalIpSecondary, handleSetethLocalIpSecondaryChange] = useMcpState(0, 'eth_local_ip_secondary');
     const [ethPort1TargetLocation, handleSetethPort1TargetLocationChange] = useMcpState(0, 'eth_port1_target_location');
     const [ethPort2TargetLocation, handleSetethPort2TargetLocationChange] = useMcpState(0, 'eth_port2_target_location');
-
+    const initialLethPortSetting= {
+        targetLocation: "",
+        targetDT: "",
+        targetPort: "",
+        targetCableLength: "NULL"
+    };
+    const [lethPortSettings, setLethPortSettings] = useState([])
     const [plcNetworkSwitchRequired, setplcNetworkSwitchRequired] = useState(false);
+    const [lethNumberOfPorts, setLethNumberOfPorts] = useState(0);
+    const handleSetlethNumberOfPortsChange = (event)=>{
+        const value = event.value;
     
+        setLethNumberOfPorts(value);
+        var newLethPortSettings = [];
+        for (let i = 0; i < value; i++) {
+            var newLethPortSetting = { ...initialLethPortSetting };
+            newLethPortSettings.push(newLethPortSetting);
+        }
+        setLethPortSettings(newLethPortSettings);
+  
+    }
     const handleSetLineChange = (event)=> {
         const value = event.target.value;
         setLine(value);
@@ -131,17 +148,7 @@ const McpConfiguration = ({mcp}) => {
       ];
     
     const handleChange = (field, value) => {
-    const newSettings = {
-        ...lethPortSettings,
-        [field]: value
-    };
-    setLethPortSettings(newSettings);
-    onSettingsChange?.(index, newSettings);
-    //branchCircuit[field] = value;
-
-    /* if (lpdbranchCircuit) {
-        lpdbranchCircuit[field] = value;
-    } */
+        
     };
     
     // ******************I need help in getting the LETH port drops to work**********************
@@ -158,7 +165,7 @@ const McpConfiguration = ({mcp}) => {
                 numberOfPorts={parseInt(lethNumberOfPorts)}
                 index={portIndex}
                 absIndex={portIndex + 1}
-                initialValues={lethPortSettings}
+                initialValues={lethPortSettings[portIndex]}
                 onSettingsChange={handleChange}
             />
         ));
@@ -170,7 +177,7 @@ const McpConfiguration = ({mcp}) => {
     }, [lethNumberOfPorts]);
     
     useEffect(() => {
-        const newPlcID = '${Line}-${Location}-PLC01'; // need help with this to display the actual values of Line and Location
+        const newPlcID = `${Line}-${Location}-PLC01`; // need help with this to display the actual values of Line and Location
         handleSetplcIDChange({ target: { value: newPlcID }});
     }, [Line, Location, handleSetplcIDChange]);
 
@@ -667,7 +674,7 @@ const McpConfiguration = ({mcp}) => {
                                     id="context"
                                     options={lethNumberOfPortOptions}
                                     value={lethNumberOfPorts}
-                                    onChange={handleSetlethNumberOfPortsChange}/>
+                                    onOptionSelect={handleSetlethNumberOfPortsChange}/>
                                 </FormItem>
                                 <div>
                                     <h7>----</h7>

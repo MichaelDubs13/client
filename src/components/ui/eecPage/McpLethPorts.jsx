@@ -48,7 +48,7 @@ import {
     return (
         <div className="com-drop-item">
           <div className="com-drop-header">
-            <h7>Port ({index}+6)</h7>
+            <h7>Port {index+5}</h7>
           </div>
             {/* Target device location */}
             <FormItem className="form-item">
