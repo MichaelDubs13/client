@@ -8,6 +8,7 @@ import "./Eec.css";
 import PowerDropItem from "./PowerDropItem";
 import HotPowerDropItem from "./HotPowerDropItem";
 import ItemStore from "../../../store/eec/ItemStore";
+import { create } from "zustand";
 
 const M_W_PdpConfiguration = ({pdp}) => {
 
@@ -29,6 +30,7 @@ const M_W_PdpConfiguration = ({pdp}) => {
     )?.value || "N/A";
 
     const addBranchCircuit = pdpStore((state) => state.addBranchCircuit);
+    const addHotPowerBranchCircuit = pdpStore((state) => state.addHotPowerBranchCircuit);
     const [Line, setLine] = useState(line);
     const [Location, setLocation] = useState(0);
     const [Amperage, setAmperage] = useState(0);
@@ -84,6 +86,9 @@ const M_W_PdpConfiguration = ({pdp}) => {
         const value = !Opt_HotPwrEnable;
         setOpt_HotPwrEnable(!Opt_HotPwrEnable)
         pdp.Opt_HotPwrEnable = value;
+        var hotPowerDrops = createHotPowerBranchCircuit();
+        console.log(hotPowerDrops);
+        setHotPowerDrops(hotPowerDrops);
     }
 
     const AmperageOptions = [
@@ -98,14 +103,12 @@ const M_W_PdpConfiguration = ({pdp}) => {
       ];
 
     // State for each hot power drop
-    const [hotPowerDrops, setHotPowerDrops] = useState({
-        5: 3
-    });
+    const [hotPowerDrops, setHotPowerDrops] = useState([]);
 
     // Create array of hot power drop items
     const renderHotPowerDrops = () => {
         var i = 0;
-        return Object.entries(hotPowerDrops).flatMap(([hotPowerDrop, count]) =>
+        /* return Object.entries(hotPowerDrops).flatMap(([hotPowerDrop, count]) =>
             Array.from({ length: count }).map((_, index) => {
                 i=i+1;
                 return <HotPowerDropItem
@@ -114,8 +117,26 @@ const M_W_PdpConfiguration = ({pdp}) => {
                 index={index}
                 absIndex={i}
             />})
-        );
+        ); */
+        return hotPowerDrops.map((hotPowerDrop, index) => {
+            i=i+1;
+            console.log(hotPowerDrop);
+            return <HotPowerDropItem
+                key={`${hotPowerDrop}-${index}`}
+                hotPowerDrop={hotPowerDrop}
+                index={index}
+                absIndex={i}
+            />})
     };
+
+    const createHotPowerBranchCircuit = () => {
+        var newPwrDrops = []
+        for(let i=0; i<3; i++){
+            var newPwrDrop = addHotPowerBranchCircuit();
+            newPwrDrops.push(newPwrDrop);
+        }
+        return newPwrDrops;
+    }
 
     // State for each amperage type
     const [powerDrops, setPowerDrops] = useState({

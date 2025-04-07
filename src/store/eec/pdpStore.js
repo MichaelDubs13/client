@@ -29,6 +29,15 @@ const pdpConfiguration = {
         return branchCircuit;
   },
 
+  createHotPowerBranchCircuit: () => {
+    return {
+      HotPwrDropType: "Spare",
+      HotPwrDrp_Target_Location: "",
+      HotPwrDrp_Target_DT: "",
+      HotPwrDrp_Target_Desc: "",
+    }
+  },
+
   create: () => { 
     return {
         name:"",
@@ -65,7 +74,8 @@ const pdpConfiguration = {
           "70A":[],
           "100A":[],
           "250A":[],
-        }
+        },
+        hotPowerBranchCircuit:[]        
   }
   }
 }
@@ -90,6 +100,10 @@ const pdpStore = create((set) => ({
 
     addBranchCircuit:()=>{
       return pdpConfiguration.createBranchCircuit();
+    },
+
+    addHotPowerBranchCircuit:()=>{
+      return pdpConfiguration.createHotPowerBranchCircuit();
     }
 
 }));
