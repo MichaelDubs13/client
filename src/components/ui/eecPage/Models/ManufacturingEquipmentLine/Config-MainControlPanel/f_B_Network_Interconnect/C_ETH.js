@@ -16,9 +16,11 @@ export default class C_ETH extends Component{
     get Parameters(){
         return [
             {name: "Plant_IP", value: this._mcp.eth_plant_ip, type: "String"},
-            {name: "PLC_IP", value: this._mcp.eth_plc_plc_ip, type: "String"},
+            {name: "PLC_IP", value: this._mcp.eth_plc_to_plc_ip, type: "String"},
             {name: "Local_IP", value: this._mcp.eth_local_ip, type: "String"},
             {name: "Local_Secondary_IP", value: this._mcp.eth_local_ip_secondary, type: "String"},
+            {name: "ETH_Network_In_Location", value: this._mcp.eth_port1_target_location, type: "String"},
+            {name: "ETH_Network_Out_Location", value: this._mcp.eth_port2_target_location, type: "String"},
         ];
     }
 

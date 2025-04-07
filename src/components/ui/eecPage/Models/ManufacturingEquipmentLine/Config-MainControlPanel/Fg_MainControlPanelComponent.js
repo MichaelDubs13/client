@@ -38,7 +38,7 @@ export default class Fg_MainControlPanelComponent extends Component{
             // {name: "Location", value: this._location, type: "String"},
             {name: "PowerFeed_Location_PSU", value: this._powerFeedLocation, type: "String"},
             {name: "PowerFeed_DT_PSU", value: this._powerFeed_DT_PSU, type: "String"},
-            {name: "b_PLC_ETH", value: this._plc_eth, type: "Boolean"},
+            {name: "b_PLC_ETH", value: this._mcp.b_PLC_ETH, type: "Boolean"},
             // {name: "Pwr1_IntPt1_DT", value: "", type: "String"},
             // {name: "Pwr2_IntPt2_DT", value: "", type: "String"},
             {name: "MCP_Location", value: this._mcp_location, type: "String"},

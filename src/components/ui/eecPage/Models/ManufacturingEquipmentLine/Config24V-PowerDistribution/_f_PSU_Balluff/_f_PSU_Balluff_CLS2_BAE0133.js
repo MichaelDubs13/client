@@ -11,9 +11,6 @@ export default class _f_PSU_Balluff_CLS2_BAE0133 extends Component{
         this._class = "_f_PSU_Balluff_CLS2_BAE0133";
         this._name = `_f_PSU_Balluff_CLS2_BAE0133${number}`;
         this._psu = psu;
-
-        const psuLocationDt = psu.psuLocationDt.split("-");
-        this._location = psuLocationDt[0]
     }
     get Parameters(){
         return [

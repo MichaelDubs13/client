@@ -3,10 +3,11 @@ import ProjectConfiguration from "../ProjectConfiguration";
 import _F_PSU from "./_F_PSU";
 import _f_DC_Distribution_CLS2_Balluff_120VPSU from "./_f_DC_Distribution/_f_DC_Distribution_CLS2_Balluff_120VPSU";
 import _f_PSU_Balluff_CLS2_BAE0133 from "./_f_PSU_Balluff/_f_PSU_Balluff_CLS2_BAE0133";
+import _f_PSU_TURCK from "./_f_PSU_TURCK/_f_PSU_TURCK";
 
 
 export default class Fg_24VPowerDistribution extends Component{
-    constructor(parent, index, psus) {
+    constructor(parent, index, psus, branchBreaker) {
         super(parent);
         this.parent = parent;
         this._index = index;
@@ -14,7 +15,10 @@ export default class Fg_24VPowerDistribution extends Component{
         this._class = "fg_24VPowerDistribution";
         this._name = `fg_24VPowerDistribution${index > 1 ? index : ""}`;
         this._psus = psus;
+        this._branchBreaker = branchBreaker;
+        this._locationDesignation = this._psus[0].device.target_device_location
         this.Balluff_CLS2_BAE0133_NumberOfPSU = 0
+        this.Balluff_CLS2_BAE012P_NumberOfPSU = 0
         this.Balluf_BAE00FL_BAE00ET_NumberOfPSU = 0
         this.Turck_NumberOfPSU = 0
         this.Puls_NumberOfPSU = 0
@@ -35,22 +39,32 @@ export default class Fg_24VPowerDistribution extends Component{
         this._PSUSupplyVoltage_ = 0;
 
         this._Balluff_CLS2_BAE0133 = [];
+        this._Turck = [];
         this.update();
     }
 
     update(){
+        //need to get full list
         this._psus.forEach(psu => {
-            if(psu.MFG === "Balluff" && 
-                psu.partNumber === "BAE0133"){
+            if(psu.MFG === "Balluff"){
+                if(psu.partNumber === "BAE0133"){
                     this._Balluff_CLS2_BAE0133.push(psu);
                     this.PSU_Selection_120 = `${psu.MFG}-${psu.partNumber}`;
                     this.s_PSU_Selection_120_240 = `${psu.MFG}-${psu.partNumber}`;
-                    this.s_PSU_Selection_480_400 = `${psu.MFG}-${psu.partNumber}`;
+                    this.s_PSU_Selection_480_400 = ``;
                     this.b_PSU_Selection_BAE0133 = true;
                     this._PSUSupplyVoltage_ = "120";
-                }}
-            )
+                }
+            } else if(psu.MFG === "Turck"){
+                this._Turck.push(psu);
+                this.PSU_Selection_120 = ``;
+                this.s_PSU_Selection_120_240 = ``;
+                this.s_PSU_Selection_480_400 = `${psu.MFG}`;
+                this._PSUSupplyVoltage_ = "480";
+            }
+        })
         this.Balluff_CLS2_BAE0133_NumberOfPSU = this._Balluff_CLS2_BAE0133.length;
+        this.Turck_NumberOfPSU = this._Turck.length;
     }
 
 
@@ -63,8 +77,8 @@ export default class Fg_24VPowerDistribution extends Component{
             {name: "Siemens_NumberOfPSU", value: this.Siemens_NumberOfPSU, type: "Integer"},
             {name: "Balluf_BAE00FL_BAE00ET_NumberOfPSU", value: this.Balluf_BAE00FL_BAE00ET_NumberOfPSU, type: "Integer"},
             {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this.numberOfBAE0133, type: "Integer"},
-            {name: "LocationDesignation", value: "Undefined", type: "String"},
-            {name: "DeviceTag", value: "Undefined", type: "String"},
+            {name: "LocationDesignation", value: this._locationDesignation, type: "String"},
+            {name: "DeviceTag", value: this._branchBreaker, type: "String"},
             {name: "_PSUSupplyVoltage_", value: this._PSUSupplyVoltage_, type: "String"},
             {name: "s_PSU_Selection_480_400", value: this.s_PSU_Selection_480_400, type: "String"},
             {name: "s_PSU_Selection_120_240", value: this.s_PSU_Selection_120_240, type: "String"},
@@ -75,11 +89,5 @@ export default class Fg_24VPowerDistribution extends Component{
     build(){
         const f_psu = new _F_PSU(this, this._psus);
         f_psu.build();
-
-        for(let i=0; i<this._Balluff_CLS2_BAE0133.length;i++){
-            const psu =  this._Balluff_CLS2_BAE0133[i];
-            const ballufPsu = new _f_PSU_Balluff_CLS2_BAE0133(this,i+1, psu);
-            ballufPsu.build();
-        }
     }
 }

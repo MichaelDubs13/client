@@ -8,12 +8,7 @@ export default class BranchCircuit extends Component {
         this._name  = `${amp}A_BranchCircuit${index+1}`; 
         this._dTCounter = index.toLocaleString('en-US', {minimumIntegerDigits: 2})
         this._amp = amp;
-        this._index = index;
-        this._powerDropTypes = ["A", "B", "C","D","E"]
-        this._protectionType = "CB";
-        this._pwrDropName = `${this._amp}A Branch circuit power drop ${this._index}`
-        this._widthUsed = 0;
-        this._enclosureSize = ""; //get it from global
+        this._index = index; 
         this._branchCircuit = branchCircuit;
     }
    

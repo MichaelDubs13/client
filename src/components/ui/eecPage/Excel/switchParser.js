@@ -7,35 +7,46 @@ const switchParser = {
         let switches = [];
         arr.forEach(item => {
             const fla = item["24Vdc FLA"];  
-            const alarmOutput = item["Alarm Output?"];  
-            const consoleOutput = item["Console Output?"];  
+            let alarmOutput = item["Alarm Output?"];  
+            alarmOutput = alarmOutput != "N";
+            let consoleOutput = item["Console Output?"];  
+            consoleOutput = consoleOutput != "N";
+
             const localIp = item["Local IP"];  
+            const plantIp = item["Plant IP"];  
             const mcpName = item["MCP Name"];  
             const networkType = item["Network Type"];  
             const psu_location_dt = item["PSU 1 Location-DT"];
-            const psu_location = switchParser.splitAndMergeFirstTwo(psu_location_dt, '-', '-')
             var psu_dt = '';
-            var psuDtArr = psu_location_dt.split('-');
-            if(psuDtArr.length > 2){
+            var psu_location = '';
+            const psuDtArr = psu_location_dt.split('-');
+            if(psuDtArr.length > 1){
+                psu_location = psuDtArr[0];
                 psu_dt = psuDtArr[psuDtArr.length - 1]
             }
-            const portCount = item["Port Count"];  
+            let portCount = item["Port Count"];  
+            if(!portCount){
+                portCount = 16;
+            }
             const switch_location_dt = item["Switch Location-DT"]; 
-            const switch_location = switchParser.splitAndMergeFirstTwo(switch_location_dt, '-', '-')
             var switch_dt = '';
-            var switchDtArr = switch_location_dt.split('-');
-            if(switchDtArr.length > 2){
+            var switch_location = '';
+            const switchDtArr = switch_location_dt.split('-');
+            
+            if(switchDtArr.length > 1){
+                switch_location = switchDtArr[0]
                 switch_dt = switchDtArr[switchDtArr.length - 1]
             }
             const switchType = item["Switch type"];  
             const inPort = item["in port"];  
             const inSwitch = item["in switch"];  
-
+            const mfg = switchParser.getMFG(switchType);
             const networkSwitch = {
                 fla:fla,
                 alarmOutput:alarmOutput,
                 consoleOutput:consoleOutput,
                 localIp:localIp,
+                plantIp:plantIp,
                 mcpName:mcpName,
                 networkType:networkType,
                 psu_location_dt:psu_location_dt,
@@ -48,12 +59,61 @@ const switchParser = {
                 switchType:switchType,
                 inPort:inPort,
                 inSwitch:inSwitch,
+                mfg:mfg,
             }
-
+            switchParser.createAdditionalParameters(networkSwitch);
             switches.push(networkSwitch);
         })
-
         return switches;
+    },
+
+    createAdditionalParameters(networkSwitch){
+        //Parameter for F_Network_switchConfig
+        networkSwitch.pwr_in_location = ""
+        networkSwitch.pwr_in_dt = ""
+        networkSwitch.pwr1_in_location = ""
+        networkSwitch.pwr1_in_dt = ""
+        networkSwitch.managedtype = "Managed";
+        if(networkSwitch.mfg === "Siemens"){
+            networkSwitch.pwr_in_location = ""
+            networkSwitch.pwr_in_dt = ""
+            networkSwitch.pwr1_in_location = networkSwitch.psu_location;
+            networkSwitch.pwr1_in_dt = networkSwitch.psu_dt;
+            networkSwitch.managedtype = "Managed";
+        } else if (networkSwitch.mfg === "Balluf"){
+            networkSwitch.pwr_in_location = networkSwitch.psu_location;
+            networkSwitch.pwr_in_dt = networkSwitch.psu_dt;
+            networkSwitch.pwr1_in_location = ""
+            networkSwitch.pwr1_in_dt = ""
+            networkSwitch.managedtype = "Unmanaged";
+        }
+
+        //Parameter for C_Siemens_Switch
+        networkSwitch.is6GK5216_0HA00_2AS6 = false;
+        networkSwitch.is6GK5208_0HA00_2AS6 = false;
+        if(networkSwitch.switchType == "6GK5216-0HA00-2AS6"){
+            networkSwitch.is6GK5216_0HA00_2AS6 = true;
+        } else if (networkSwitch.switchType == "6GK5208_0HA00_2AS6"){
+            networkSwitch.is6GK5208_0HA00_2AS6 = false;
+        }
+
+        //Parameter for C_Balluf_Switch
+        networkSwitch.isBNI0089 = false;
+        networkSwitch.isBalluff = false;
+        if(networkSwitch.switchType == "BNI0089"){
+            networkSwitch.isBNI0089 = true;
+            networkSwitch.isBalluff = true;
+        }
+    },
+
+    getMFG(type){
+        //need to complete this list
+        if(type === "6GK5216-0HA00-2AS6")
+        {
+            return "Siemens";
+        }
+
+        return "";
     },
     createNetworkTree(devices, switches){
         let results =[];

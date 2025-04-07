@@ -2,6 +2,8 @@ import * as XLSX from 'xlsx'
 import {pdpConfiguration} from '../../../../store/eec/pdpStore';
 
 const pdpParser = {
+    enclosureSizeOptions: ["800x1400x500", "1000x1800x500"],
+    ampOptions : [600, 400, 200],
     parse:(workbook, sheet) => {
         var arr = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
         let pdps = [];
@@ -10,9 +12,22 @@ const pdpParser = {
             var enclosureSize = item["Enclosure Size"];
             if(!enclosureSize || enclosureSize === "N/A"){
                 enclosureSize = "1000x1800x500(WHD)";
+            } else {
+                if(pdpParser.enclosureSizeOptions.includes(enclosureSize)){
+                    enclosureSize = `${enclosureSize}(WHD)`;
+                } else {
+                    enclosureSize = "1000x1800x500(WHD)";
+                }
             }
+
+            const numberOfBusBar = pdpParser.getNumberOfBusBar(enclosureSize);
+
             var amp = item["Amperage"];
-            amp = `${amp}A`;
+            if(amp){
+                amp = pdpParser.findNearest(pdpParser.ampOptions, amp)
+                amp = `${amp}A`;
+            }
+
             const FLA = item["FLA Demand"];
             var location = item["Location"];
             if(location){
@@ -22,14 +37,24 @@ const pdpParser = {
                 }
             }
 
-            const numberOf10APwrDrps = item["Number of 10A Power Drops"];
-            const numberOf20APwrDrps = item["Number of 20A Power Drops"];
-            const numberOf30APwrDrps = item["Number of 30A Power Drops"];
-            const numberOf40APwrDrps = item["Number of 40A Power Drops"];
-            const numberOf60APwrDrps = item["Number of 60A Power Drops"];
-            const numberOf70APwrDrps = item["Number of 70A Power Drops"];
-            const numberOf100APwrDrps = item["Number of 100A Power Drops"];
-            const numberOf250APwrDrps = item["Number of 250A Power Drops"];
+            let numberOf10APwrDrps = item["Number of 10A Power Drops"];
+            let numberOf20APwrDrps = item["Number of 20A Power Drops"];
+            let numberOf30APwrDrps = item["Number of 30A Power Drops"];
+            let numberOf40APwrDrps = item["Number of 40A Power Drops"];
+            let numberOf60APwrDrps = item["Number of 60A Power Drops"];
+            let numberOf70APwrDrps = item["Number of 70A Power Drops"];
+            let numberOf100APwrDrps = item["Number of 100A Power Drops"];
+            let numberOf250APwrDrps = item["Number of 250A Power Drops"];
+
+            numberOf10APwrDrps = numberOf10APwrDrps ? numberOf10APwrDrps : 0;
+            numberOf20APwrDrps = numberOf20APwrDrps ? numberOf20APwrDrps : 0;
+            numberOf30APwrDrps = numberOf30APwrDrps ? numberOf30APwrDrps : 0;
+            numberOf40APwrDrps = numberOf40APwrDrps ? numberOf40APwrDrps : 0;
+            numberOf60APwrDrps = numberOf60APwrDrps ? numberOf60APwrDrps : 0;
+            numberOf70APwrDrps = numberOf70APwrDrps ? numberOf70APwrDrps : 0;
+            numberOf100APwrDrps = numberOf100APwrDrps ? numberOf100APwrDrps : 0;
+            numberOf250APwrDrps = numberOf250APwrDrps ? numberOf250APwrDrps : 0;
+
             const spare10A = item["Spare 10A"];
             const spare20A = item["Spare 20A"];
             const spare30A = item["Spare 30A"];
@@ -42,6 +67,7 @@ const pdpParser = {
             if(location){
                 const pdp = {name:name, amp:amp, FLA:FLA, location:location, 
                     enclosureSize:enclosureSize,
+                    numberOfBusBar:numberOfBusBar,
                     numberOf10APwrDrps:numberOf10APwrDrps, 
                     numberOf20APwrDrps:numberOf20APwrDrps,
                     numberOf30APwrDrps:numberOf30APwrDrps,
@@ -69,7 +95,13 @@ const pdpParser = {
 
         return pdps;
     },
-
+    getNumberOfBusBar:(enclosureSize)=>{
+        if(enclosureSize == "800x1400x500(WHD)"){
+            return 3;
+        } else {
+            return 4;
+        }
+    },
     createPdpBranchCircuit:(pdps, devices)=>{
         pdps.forEach(pdp => {
             var sources = devices.filter(device => device.ac_primary_connection_source === pdp.name)
@@ -135,7 +167,26 @@ const pdpParser = {
         pdpParser.calculateBranchFLA(pdp.branchCircuit["30A"])
         pdpParser.calculateBranchFLA(pdp.branchCircuit["20A"])
         pdpParser.calculateBranchFLA(pdp.branchCircuit["10A"])
-    }
+    },
+    findNearest(array, target) {
+        if (!array || array.length === 0) {
+          return null;
+        }
+      
+        let nearest = array[0];
+        let minDiff = array[0] - target
+      
+        for (let i = 1; i < array.length; i++) {
+            const diff = array[i] - target;
+            if(diff > 0){
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nearest = array[i];
+                  }
+            }
+        }
+        return nearest;
+    },
 
 
 }

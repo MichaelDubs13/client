@@ -10,54 +10,24 @@ export default class f_Device_DropConfig extends Component{
         this._name = `f_Device_DropConfig${index > 1 ? index : ""}`;
         this._networkSwitch = networkSwitch;
         this._device = device;
-        this._switchTitle = `switch${parent._index}`;
-        this._location = parent._location;
-        this._switch = parent._switch;
-        this._switch_full_dt = `${this._location}-${this._switch}`;
-        this._network_selection_type = device?.localIp ? "Local" : "";
     }
 
     get Parameters(){
-        return [
-            // {name: "Switch_SinglelinePage", value: "", type: "Integer"},
-            // {name: "Index_Switch_onSingleline", value: "", type: "Integer"},
-            // {name: "Switch_Side", value: "", type: "String"},
-            // {name: "Switch_Location", value: this._location, type: "String"},
-            // {name: "Switch_Title", value: this._switchTitle, type: "String"},
-            // {name: "Index_ConnectedSwitch", value: "", type: "Integer"},
-            // {name: "Index_UnmanagedConnection", value: "", type: "Integer"},
-            // {name: "Index_UnmanagedSwitch", value: "", type: "Integer"},
-            // {name: "Index_ConnectedDevice", value: "", type: "Integer"},
-            // {name: "Index_SelectedDevice", value: "", type: "Integer"},
-            // {name: "NetworkSwitch_DT_full", value: this._switch_full_dt, type: "String"},
-            // {name: "Device_DT_full", value: "", type: "String"},
-            // {name: "NetworkSwitch_List", value: [], type: "arrayList"},
-            // {name: "Unmanaged_Connection", value: "", type: "Boolean"},
-            // {name: "DeviceType_IDFNetworkDrop", value: "", type: "Boolean"},
-            {name: "Interruption_InOrOut", value: "Undefined", type: "String"}, //if i have network switch going to another network switch 
-            {name: "Device_Type_Selection", value: "Undefined", type: "String"}, //device, spare or switch
-            // {name: "Switch_Type_Selection", value: "", type: "String"},
-            // {name: "Device_DT", value: this._device?.target_device_dt, type: "String"},
-            // {name: "NotPLC_Connection_DT", value: this._device?.target_device_dt, type: "String"},
-            // {name: "PLC_Connection_DT", value: "Undefined", type: "String"},
-            {name: "TargetDevice_DT", value: this._device?.target_device_location, type: "String"}, //device DT: SIO01
-            {name: "Target_Location", value: this._device?.target_device_location, type: "String"}, //station number : 10000
-            // {name: "Device_Location", value: this._device?.target_device_location, type: "String"},
-            // {name: "DeviceType_Spare", value: "", type: "Boolean"},
-            // {name: "Drop_Title", value: "", type: "String"},
-            // {name: "Device_Count", value: "", type: "String"},
-            // {name: "s_Port_FuncText_8ports", value: "", type: "String"},
-            // {name: "s_Port_FuncText_16ports", value: "", type: "String"},
-            // {name: "s_Port_FuncText_24ports", value: "", type: "String"},
-            {name: "Cable_Length_Selection", value: "TBD", type: "String"},
-            // {name: "Network_Type_Selection", value: "", type: "String"},
-            // {name: "NetworkSwitch_DT", value: this._device?.target_device_location_dt, type: "String"},
-            {name: "Switch_Cascading", value: true, type: "Boolean"}, //if its a switch not going to MCP then its true
-            {name: "frmUI_DevicePortSelection", value: "Undefined", type: "String"}, //only needs this if its switch to another switch
-            {name: "frmUI_NetworkSwitchSelection", value: "Undefined", type: "String"}, //only needs this if its switch to another switch
-            // {name: "Connected_Switches", value: "", type: "Boolean"},
-            // {name: "Switch_DT", value: this._switch, type: "String"},
-        ];
+        if(this._device){
+            return [
+                {name: "Interruption_InOrOut", value: this._device.interruption_InOrOut, type: "String"}, //if i have network switch going to another network switch 
+                {name: "Device_Type_Selection", value: this._device.deviceType, type: "String"}, //device, spare or switch
+                {name: "TargetDevice_DT", value: this._device.device_dt, type: "String"}, //device DT: SIO01
+                {name: "Target_Location", value: this._device?.target_device_location, type: "String"}, //station number : 10000
+                {name: "Cable_Length_Selection", value: this._device.local_cable_length, type: "String"},
+                {name: "Switch_Cascading", value: this._device.switchCascading, type: "Boolean"}, //if its a switch not going to MCP then its true
+                {name: "frmUI_DevicePortSelection", value: "Undefined", type: "String"}, //only needs this if its switch to another switch
+                {name: "frmUI_NetworkSwitchSelection", value: "Undefined", type: "String"}, //only needs this if its switch to another switch
+            ];
+        } else {
+            return [];
+        }
+        
     }
 
     

@@ -36,6 +36,7 @@ const psuParser = {
                 supplyVoltage:supplyVoltage,
                 xpdpCBIndex:xpdpCBIndex,
                 pwrDrops:[],
+                device:{}
             }
             psus.push(psu);
         })
@@ -46,18 +47,31 @@ const psuParser = {
     getOrderedBranch(psus){
         var results = {}
 
-        psus.forEach(psu => {
-            if(psu.xpdpCBIndex){
-                psuParser.addToBranch(psu.xpdpCBIndex, psu, results);
-            } else {
-                if(psu.powerFedFrom){
-                    var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
-                    if(sourcePsu){
-                        psuParser.addToBranch(sourcePsu.xpdpCBIndex, psu, results);
-                    }
+        // psus.forEach(psu => {
+        //     if(psu.xpdpCBIndex){
+        //         psuParser.addToBranch(psu.xpdpCBIndex, psu, results);
+        //     } else if(psu.powerFedFrom){
+        //         var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
+        //         if(sourcePsu){
+        //             psuParser.addToBranch(sourcePsu.xpdpCBIndex, psu, results);
+        //         }
+        //     } else {
+        //         psuParser.addToBranch(0, psu, results);
+        //     }}
+        // )
+
+         psus.forEach(psu => {
+            if(psu.branchBreaker){
+                psuParser.addToBranch(psu.branchBreaker, psu, results);
+            } else if(psu.powerFedFrom){
+                var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
+                if(sourcePsu){
+                    psuParser.addToBranch(sourcePsu.branchBreaker, psu, results);
                 }
-            }
-        })
+            } else {
+                psuParser.addToBranch(0, psu, results);
+            }}
+        )
 
         return results;
     },
@@ -76,6 +90,15 @@ const psuParser = {
         psus.forEach(psu => {
             var directDevices = devices.filter(device => device.direct24VDC === psu.psuLocationDt)
             psu.pwrDrops = directDevices;
+        })
+
+        return psus;
+    },
+
+    getDevice(psus, devices){
+        psus.forEach(psu => {
+            var networkDevice = devices.filter(device => device.target_device_location_dt === psu.psuLocationDt)
+            psu.device = networkDevice;
         })
 
         return psus;

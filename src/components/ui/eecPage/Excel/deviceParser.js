@@ -2,13 +2,13 @@ import * as XLSX from 'xlsx'
 
 
 const deviceParser = {
+    cable_length_options:[50, 20, 10, 5, 3, 1.5],
     parse:(workbook, sheet) => {
         var arr = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
         let devices = [];
-        console.log(arr);
         arr.forEach(item => {
-            const ac_primary_connection_direct = item["AC Primary Connection Direct"];  
-            const ac_primary_connection_source = item["AC Primary Connection Source"];  
+            const ac_primary_connection_direct = item["AC Primary Direct"];  
+            const ac_primary_connection_source = item["AC Primary Source"];  
             const ac_primary_power_branch_size = item["AC Primary Power Branch Size"];  
             const ac_primary_power_drop = item["AC Primary Power Drop"];  
             const ac_primary_power_length = item["AC Primary Power Length (<100m)"];  
@@ -39,7 +39,8 @@ const deviceParser = {
             const io_port = item["IO Port"];
             const layer = item["Layer"];
             const line = item["Line"];  
-            const local_cable_length = item["Local Cable Length (<90m)"]; 
+            let local_cable_length = item["Local Cable Length (<90m)"]; 
+            local_cable_length = deviceParser.getCableLength(local_cable_length);
             const local_network_direct = item["Local Network Direct"];  
             const local_network_source = item["Local Network Source"];  
             const local_switch_port = item["Local Switch Port"];  
@@ -65,7 +66,7 @@ const deviceParser = {
             const totalDevice24V_FLA = item["Total Device 24VDC FLA"];  
             const direct24VDC = item["24Vdc Direct"]; 
             const source24VDC = item["24Vdc Source"]; 
-            const device = {
+            let device = {
                 ac_primary_connection_direct:ac_primary_connection_direct,
                 ac_primary_connection_source:ac_primary_connection_source, 
                 ac_primary_power_branch_size:ac_primary_power_branch_size,
@@ -124,15 +125,76 @@ const deviceParser = {
                 totalDevice24V_FLA:totalDevice24V_FLA,
                 direct24VDC: direct24VDC,
                 source24VDC: source24VDC,
+                deviceType: "",
+                switchCascading: false,
+                interruption_InOrOut:"", //in or out
             }
-
             devices.push(device);
         })
 
         return devices;
     },
+
+    getCableLength(length){
+        if(length){
+            var cable_length = deviceParser.findNearest(deviceParser.cable_length_options, length)
+            return `${cable_length} m`;
+        } else {
+            return `TBD`;
+        }
+    },
+
+    findNearest(array, target) {
+        if (!array || array.length === 0) {
+          return null;
+        }
+      
+        let nearest = array[0];
+        let minDiff = array[0] - target
+      
+        for (let i = 1; i < array.length; i++) {
+            const diff = array[i] - target;
+            if(diff > 0){
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nearest = array[i];
+                  }
+            }
+        }
+        return nearest;
+    },
+
+    updateDeviceType(devices, mcps){
+        //return options: Device, Network Switch, Spare
+        devices.forEach(device => {
+            const networkSwitchIdentifers = ["LETH", "PETH"]
+            var startsWithAny = networkSwitchIdentifers.some(prefix => device.device_dt.startsWith(prefix));
+            if(startsWithAny){
+                device.deviceType = "Network Switch";
+                const foundMcp = mcps.find(mcp => mcp.mcpName === device.local_network_direct);
+                if(foundMcp){
+                    device.switchCascading = true;
+                }
+    
+                const directNetworkArr = device.local_network_direct.split('-');
+                const directNetworkDevice = directNetworkArr[directNetworkArr.length - 1];
+                startsWithAny = networkSwitchIdentifers.some(prefix => directNetworkDevice.startsWith(prefix));
+                if(startsWithAny){
+                    device.interruption_InOrOut = "out"; //need to change to figure out if a network is going out or coming in to the switch
+                }
+    
+            } else {
+                device.deviceType = "Device";
+            }
+        })
+       
+        return devices;
+    },
+
+
     createIODevices(devices){
         let results =[];
+        console.log(devices);
         devices.forEach(io => {
             if(io.io_direct){
                 let matchedDevice = devices.filter(device =>device.target_device_location_dt === io.io_direct);

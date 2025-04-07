@@ -1,4 +1,4 @@
-import Component from "../Component";
+import Component from "../../Component";
 
 export default class F_AddDeleteMoveIOModule extends Component{
     constructor(parent, io) {
@@ -9,7 +9,11 @@ export default class F_AddDeleteMoveIOModule extends Component{
         this._name = `f_AddDeleteMoveIOModule`;
         this._io = io;
     }
-
+    get Parameters(){
+        return [
+           
+        ];
+    }
     build(){
 
     }

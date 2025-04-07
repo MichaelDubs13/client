@@ -32,32 +32,48 @@ export default class Parser {
         let pdps = pdpParser.parse(this._wb, this._pdpWorksheet)
         let xpdps = xpdpParser.parse(this._wb, this._xpdpWorksheet)
         let mcps = mcpParser.parse(this._wb, this._mcpWorksheet)
-        const devices = deviceParser.parse(this._wb, this._devicesWorksheet)
-        
+        let devices = deviceParser.parse(this._wb, this._devicesWorksheet)
+        devices = deviceParser.updateDeviceType(devices, mcps);
         var psus = psuParser.parse(this._wb, this._psuWorksheet)
-        psus = psuParser.getOrderedBranch(psus);
-        psus = psuParser.getPwrDrops(psus, devices)
+        psus = psuParser.getPwrDrops(psus, devices);
+        psus = psuParser.getDevice(psus, devices);
+        var branches = psuParser.getOrderedBranch(psus); //what to do with branches
         
         const ios = deviceParser.createIODevices(devices);
         pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
         xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
-
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
         var networkTree = switchParser.createNetworkTree(devices, switches);
-        
+
         mcps = mcpParser.getNetworkPorts(mcps, devices);
-        mcps = mcpParser.getDirectNetworkDevices(mcps, devices, switches)
-        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, psus:psus, switches:networkTree,devices:devices, ios:ios }
+        mcps = mcpParser.getConnectedNetworkDevices(mcps, devices, switches)
+        mcps = mcpParser.getDirectNetworkDevices(mcps, devices);
+        mcps = mcpParser.getNetworkTopology(mcps);
+        
+        console.log(ios);
+        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, branches:branches, switches:networkTree,devices:devices, ios:ios }
         
     }
 
     parseProjectSheet(){
         var arr = XLSX.utils.sheet_to_json(this._wb.Sheets[this._projectWorksheet]);
 
-        const PLANT = arr[1].Value;
-        const SHOP = arr[2].Value;
-        const LINE = arr[3].Value;
-        const INSTALLATION_LOCATION = arr[4].Value;
+        let PLANT = arr[1].Value;
+        if(!PLANT){
+            PLANT = "PLANT1";
+        }
+        let SHOP = arr[2].Value;
+        if(!SHOP){
+            SHOP = "SHOP1";
+        }
+        let LINE = arr[3].Value;
+        if(!LINE){
+            LINE = "LINE1";
+        }
+        let INSTALLATION_LOCATION = arr[4].Value;
+        if(!INSTALLATION_LOCATION){
+            INSTALLATION_LOCATION = "UL";
+        }
 
         //General Project properties
         const SHAREPOINT = arr[6].Value;

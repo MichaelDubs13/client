@@ -23,7 +23,7 @@ export default class Fg_24VDC_PowerDistribution extends Component{
       
         var i = 0;
         Object.keys(this._branches).forEach(key => {
-            const fg_24V_PowerDistribution = new Fg_24VPowerDistribution(this, i+1, this._branches[key])
+            const fg_24V_PowerDistribution = new Fg_24VPowerDistribution(this, i+1, this._branches[key], key)
             fg_24V_PowerDistribution.build();
             i = i +1;
         });

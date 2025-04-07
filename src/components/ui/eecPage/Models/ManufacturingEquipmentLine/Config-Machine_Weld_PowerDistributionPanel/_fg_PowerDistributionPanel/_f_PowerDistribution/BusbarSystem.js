@@ -13,15 +13,6 @@ export default class BusbarSystem extends Component{
         this._class = `BusBarSystem`;
         this._name = `BusBarSystem`;
         this._pdp = pdp;
-        this._numberOfBusbars = this.getNumberOfBusBar();
-    }
-
-    getNumberOfBusBar(){
-        if(this._pdp.enclosureSize == "800x1400x500(WHD)"){
-            return 3;
-        } else {
-            return 4;
-        }
     }
 
     getParameters(){
@@ -33,7 +24,7 @@ export default class BusbarSystem extends Component{
 
     build(){
 
-        for(let i = 0; i < this._numberOfBusbars; i++){
+        for(let i = 0; i < this._pdp.numberOfBusbars; i++){
             const busbar = new BusBar(this, i+1);
         }
 

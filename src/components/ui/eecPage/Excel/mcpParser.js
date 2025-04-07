@@ -2,6 +2,7 @@ import * as XLSX from 'xlsx'
 
 
 const mcpParser = {
+    cable_length_options:[50, 20, 10, 5, 3, 1.5],
     parse:(workbook, sheet) => {
         var arr = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
             let mcps = [];
@@ -21,16 +22,10 @@ const mcpParser = {
                 const leth_plant_ip = item["LETH Plant IP"];
                 const leth_plc_plc_ip = item["LETH PLC-PLC IP"];
                 const leth_sw_type = item["LETH SW Type (4-Gb vs 16-Gb)"];
-                var location = item["Location"];
-                if(location){
-                    var locationArray = location.split('-')
-                    if(locationArray.length > 1){
-                        location = locationArray[1]
-                    }
-                }
+                const location = item["Location"];
                 const mcp_name = item["MCP Name"];
                 const mcpMountingLocation = item["MCP Mounting Location"];
-                const plc_local_x1_ip = item["PLC Local (X1) IP"];
+                const plc_local_x1_ip = item["PLC Local (X1) IP"]; 
                 const plc_local_x3_ip = item["PLC Plant (X3) IP"];
                 const plc_plc_ip = item["PLC-PLC IP"];
                 const plc_local_ip_secondary = item["PLC Local IP Secondary"];
@@ -43,12 +38,23 @@ const mcpParser = {
                 const leth_port2 = item["XPF-LETH01.P2 (LETH-LETH)"];
                 const leth_port3 = item["XPF-LETH01.P3 (LETH-LETH)"];
                 const leth_port4 = item["XPF-LETH01.P4 (LETH-LETH)"];
+                var leth_port2_arr = leth_port2 ? leth_port2.split('-') : [];
+                var leth_port3_arr = leth_port3 ? leth_port3.split('-') : [];
+                var leth_port4_arr = leth_port4 ? leth_port4.split('-') : [];
+                let leth_port2_target_location = leth_port2_arr[0];
+                let leth_port3_target_location = leth_port3_arr[0];
+                let leth_port4_target_location = leth_port4_arr[0];
+                let leth_port2_target_dt = leth_port2_arr.length > 1 ? leth_port2_arr[1] : "";
+                let leth_port3_target_dt = leth_port3_arr.length > 1 ? leth_port3_arr[1] : "";
+                let leth_port4_target_dt = leth_port4_arr.length > 1 ? leth_port4_arr[1] : "";
+                let b_PLC_ETH = false //if true => create ring topology
+
                 const leth_port2_target_port = "";
                 const leth_port3_target_port = "";
                 const leth_port4_target_port = "";
-                const gb_Port2_CableLength = "0 m";
-                const gb_Port3_CableLength = "0 m";
-                const gb_Port4_CableLength = "0 m";
+                const gb_Port2_CableLength = "NULL";
+                const gb_Port3_CableLength = "NULL";
+                const gb_Port4_CableLength = "NULL";
                 const leth_numberOfDevices = item["Number of Devices"];
                 const eth_plant_ip = item["ETH Plant IP"];
                 const eth_plc_to_plc_ip = item["ETH PLC-PLC IP"];
@@ -89,12 +95,12 @@ const mcpParser = {
                     leth_port2:leth_port2,
                     leth_port3:leth_port3,
                     leth_port4:leth_port4,
-                    leth_port2_target_location: leth_port2.split("-")[0],
-                    leth_port3_target_location: leth_port3.split("-")[0],
-                    leth_port4_target_location: leth_port4.split("-")[0],
-                    leth_port2_target_dt: leth_port2.split("-")[1],
-                    leth_port3_target_dt: leth_port3.split("-")[1],
-                    leth_port4_target_dt: leth_port4.split("-")[1],
+                    leth_port2_target_location: leth_port2_target_location,
+                    leth_port3_target_location: leth_port3_target_location,
+                    leth_port4_target_location: leth_port4_target_location,
+                    leth_port2_target_dt: leth_port2_target_dt,
+                    leth_port3_target_dt: leth_port3_target_dt,
+                    leth_port4_target_dt: leth_port4_target_dt,
                     leth_port2_target_port: leth_port2_target_port,
                     leth_port3_target_port: leth_port3_target_port,
                     leth_port4_target_port: leth_port4_target_port,
@@ -108,12 +114,37 @@ const mcpParser = {
                     eth_local_ip_secondary: eth_local_ip_secondary,
                     eth_port1_target_location: eth_port1_target_location,
                     eth_port2_target_location: eth_port2_target_location,
-                    local_network_direct:[],
+                    b_PLC_ETH:b_PLC_ETH,
+                    direct_network_devices:[],
+                    connected_network_devices:[],
                 }
-                mcps.push(mcp);
+
+                //validation
+                //name must not include -
+                if(!mcp.mcp_name.includes('-')){
+                    mcps.push(mcp);
+                }
             });
             
         return mcps;
+    },
+
+
+    getNetworkTopology:(mcps)=>{
+        if(mcps.length < 2){
+            return;
+        }
+        for(let i = 0; i<mcps.length;i++){
+            mcps[i].b_PLC_ETH = true;
+            if(i==0){
+                mcps[i].eth_port1_target_location = mcps[i+1].mcp_name
+                mcps[i].eth_port2_target_location = mcps[i+1].mcp_name
+            } else if(i == mcps.length-1) {
+                mcps[i].eth_port1_target_location = mcps[0].mcp_name
+                mcps[i].eth_port2_target_location = mcps[0].mcp_name
+            }
+        }
+        return mcps
     },
 
     getNetworkPorts:(mcps, devices) => {
@@ -139,18 +170,55 @@ const mcpParser = {
 
         return mcps;
     },
-    getDirectNetworkDevices:(mcps, devices, networkSwitches) => {
+    getConnectedNetworkDevices:(mcps, devices, networkSwitches) => {
         mcps.forEach(mcp => {
             var localSwitches = networkSwitches.filter(networkSwitch => networkSwitch.mcpName === mcp.mcp_name && networkSwitch.networkType.toLowerCase() === "local")
 
             localSwitches.forEach(localSwitch => {
                 var directNetworkSwitches = devices.filter(device => localSwitch.switch_location_dt === device.local_network_direct)
-                mcp.local_network_direct = [...directNetworkSwitches, ...mcp.local_network_direct]
+                mcp.connected_network_devices = [...directNetworkSwitches, ...mcp.connected_network_devices]
             })
         })
 
         return mcps;
-    }
+    },
+
+    getDirectNetworkDevices:(mcps, devices) => {
+        mcps.forEach(mcp => {
+            var directDevices = devices.filter(device => device.local_network_direct === mcp.mcpName)
+            mcp.direct_network_devices = directDevices;
+        })
+
+        return mcps;
+    },
+    getCableLength(length){
+        if(length){
+            var cable_length = mcpParser.findNearest(mcpParser.cable_length_options, length)
+            return `${cable_length} m`;
+        } else {
+            return `TBD`;
+        }
+    },
+
+    findNearest(array, target) {
+        if (!array || array.length === 0) {
+          return null;
+        }
+      
+        let nearest = array[0];
+        let minDiff = array[0] - target
+      
+        for (let i = 1; i < array.length; i++) {
+            const diff = array[i] - target;
+            if(diff > 0){
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nearest = array[i];
+                  }
+            }
+        }
+        return nearest;
+    },
 
 }
 

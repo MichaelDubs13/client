@@ -13,10 +13,10 @@ export default class C_KED_Interface extends Component{
 
     get Parameters(){
         return [
-            {name: "Port4_Target_Location", value: this._mcp.ked_port4_target_location, type: "String"}, // added in EEC eox v1.0.1
-            {name: "Port4_Target_DT", value: this._mcp.ked_port4_target_dt, type: "String"}, // added in EEC eox v1.0.1
-            {name: "Port5_Target_Location", value: this._mcp.ked_port5_target_location, type: "String"}, // added in EEC eox v1.0.1
-            {name: "Port5_Target_DT", value: this._mcp.ked_port5_target_dt, type: "String"}, // added in EEC eox v1.0.1
+            // {name: "Port4_Target_Location", value: this._mcp.ked_port4_target_location, type: "String"}, // added in EEC eox v1.0.1
+            // {name: "Port4_Target_DT", value: this._mcp.ked_port4_target_dt, type: "String"}, // added in EEC eox v1.0.1
+            // {name: "Port5_Target_Location", value: this._mcp.ked_port5_target_location, type: "String"}, // added in EEC eox v1.0.1
+            // {name: "Port5_Target_DT", value: this._mcp.ked_port5_target_dt, type: "String"}, // added in EEC eox v1.0.1
         ];
     }
 

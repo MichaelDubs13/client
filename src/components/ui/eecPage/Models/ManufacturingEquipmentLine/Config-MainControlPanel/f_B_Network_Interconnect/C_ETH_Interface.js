@@ -14,8 +14,8 @@ export default class C_ETH_Interface extends Component{
 
     get Parameters(){
         return [
-            {name: "ETH_Network_In_Location", value: this._mcp.eth_port1_target_location, type: "String"},
-            {name: "ETH_Network_Out_Location", value: this._mcp.eth_port2_target_location, type: "String"},
+            // {name: "ETH_Network_In_Location", value: this._mcp.eth_port1_target_location, type: "String"},
+            // {name: "ETH_Network_Out_Location", value: this._mcp.eth_port2_target_location, type: "String"},
         ];
     }
 

@@ -30,8 +30,8 @@ export default class _f_DC_Distribution_CLS2_Balluff_120VPSU extends Component{
             dcSubDistribution.build();
         }
 
-        for(let i=0; i<this._psu.numberOfDrops;i++){
-            const dcPowerDrop = new _c_DC_PowerDrop_Balluff_CLS2_120VPSU(this, i+1, this._psu);
+        for(let i=0; i<this._psu.pwrDrops.length;i++){
+            const dcPowerDrop = new _c_DC_PowerDrop_Balluff_CLS2_120VPSU(this, i+1, this._psu.pwrDrops[i]);
             dcPowerDrop.build();
         }
     }
