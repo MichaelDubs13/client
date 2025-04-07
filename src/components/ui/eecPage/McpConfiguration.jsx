@@ -130,6 +130,20 @@ const McpConfiguration = ({mcp}) => {
         { value: "9", label: "9" },
       ];
     
+    const handleChange = (field, value) => {
+    const newSettings = {
+        ...lethPortSettings,
+        [field]: value
+    };
+    setLethPortSettings(newSettings);
+    onSettingsChange?.(index, newSettings);
+    //branchCircuit[field] = value;
+
+    /* if (lpdbranchCircuit) {
+        lpdbranchCircuit[field] = value;
+    } */
+    };
+    
     // ******************I need help in getting the LETH port drops to work**********************
     // McpLethPorts.jsx to be called based on the value of lethNumberOfPorts and then display
     // the number of ports selected by the value of lethNumberOfPorts
@@ -138,27 +152,18 @@ const McpConfiguration = ({mcp}) => {
 
     // Create array of LETH ethernet drops
     const renderLethPorts = () => {
-        const ports = [];
-        for (let i=0; i < lethNumberOfPorts; i++) {
-            ports.push(<McpLethPorts
-                key={i}
-                index={i}
-                initialValues={{}}
-                onSettingsChange={() => {}}
-            />);
-        }
-        return ports;
-    };
-    /* const renderLethPorts = () => {
-        return Array.from({ length: lethPorts }).map((_, index) => (
+        return Array.from({ length: parseInt(lethNumberOfPorts) }).map((_, portIndex) => (
             <McpLethPorts
-                key={index}
-                index={index}
-                initialValues={{}}
-                onSettingsChange={() => {}}
+                key={portIndex}
+                numberOfPorts={parseInt(lethNumberOfPorts)}
+                index={portIndex}
+                absIndex={portIndex + 1}
+                initialValues={lethPortSettings}
+                onSettingsChange={handleChange}
             />
         ));
-    }; */
+    };
+
 
     useEffect(() => {
         setLethPorts(lethNumberOfPorts);
