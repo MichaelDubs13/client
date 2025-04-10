@@ -9,9 +9,11 @@ const switchParser = {
         arr.forEach(item => {
             const fla = item["24Vdc FLA"];  
             let alarmOutput = item["Alarm Output?"];  
-            alarmOutput = alarmOutput != "N";
+            alarmOutput = alarmOutput == "Y";
+            let alarmTag = item["Alarm Tag"];  
             let consoleOutput = item["Console Output?"];  
-            consoleOutput = consoleOutput != "N";
+            consoleOutput = consoleOutput == "Y";
+            let consoleTag = item["Console Tag"];  
 
             const localIp = item["Local IP"];  
             const plantIp = item["Plant IP"];  
@@ -19,18 +21,19 @@ const switchParser = {
             const networkType = item["Network Type"];  
             const psu_location_dt = item["PSU 1 Location-DT"];
             const psu_arr = splitIntoTwo(psu_location_dt, "-");
-            var psu_dt = psu_arr[0];
-            var psu_location = psu_arr[1];
+            var psu_location = psu_arr[0];
+            var psu_dt = psu_arr[1];
 
             let portCount = item["Port Count"];  
             if(!portCount){
                 portCount = 16;
             }
+            
             const switch_location_dt = item["Switch Location-DT"]; 
             const switch_arr = splitIntoTwo(switch_location_dt, "-");
-            var switch_dt = switch_arr[0];
-            var switch_location = switch_arr[1];
-
+            var switch_location = switch_arr[0];
+            var switch_dt = switch_arr[1];
+          
             const switchType = item["Switch type"];  
             const inPort = item["in port"];  
             const inSwitch = item["in switch"];  
@@ -38,7 +41,9 @@ const switchParser = {
             const networkSwitch = {
                 fla:fla,
                 alarmOutput:alarmOutput,
+                alarmTag:alarmTag,
                 consoleOutput:consoleOutput,
+                consoleTag:consoleTag,
                 localIp:localIp,
                 plantIp:plantIp,
                 mcpName:mcpName,

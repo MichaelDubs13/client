@@ -38,7 +38,7 @@ export default class Parser {
         var psus = psuParser.parse(this._wb, this._psuWorksheet)
         psus = psuParser.getPwrDrops(psus, devices);
         psus = psuParser.getDevice(psus, devices);
-        var branches = psuParser.getOrderedBranch(psus); //what to do with branches
+        var branches = psuParser.getOrderedBranch(psus, devices); //what to do with branches
         
         const groupedIOModules = deviceParser.getGroupedIOModules(devices);
         const cables = cableParser.parse(this._wb, this._cablesWorksheet);

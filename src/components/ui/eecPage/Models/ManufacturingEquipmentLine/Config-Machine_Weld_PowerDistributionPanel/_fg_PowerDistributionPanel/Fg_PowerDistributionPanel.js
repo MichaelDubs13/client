@@ -20,42 +20,42 @@ export default class Fg_PowerDistributionPanel extends Component{
         this._isHotPwrDrp1Spare = true;
         this._isHotPwrDrp2Spare = true;
         this._isHotPwrDrp3Spare = true;
-        this._hotPwrDr1_Target_Location = ""
-        this._hotPwrDr1_Target_DT = ""
-        this._hotPwrDr1_Target_Description = ""
-        this._hotPwrDr2_Target_Location = ""
-        this._hotPwrDr2_Target_DT = ""
-        this._hotPwrDr2_Target_Description = ""
-        this._hotPwrDr3_Target_Location = ""
-        this._hotPwrDr3_Target_DT = ""
-        this._hotPwrDr3_Target_Description = ""
+        this._hotPwrDrp1_Target_Location = ""
+        this._hotPwrDrp1_Target_DT = ""
+        this._hotPwrDrp1_Target_Description = ""
+        this._hotPwrDrp2_Target_Location = ""
+        this._hotPwrDrp2_Target_DT = ""
+        this._hotPwrDrp2_Target_Description = ""
+        this._hotPwrDrp3_Target_Location = ""
+        this._hotPwrDrp3_Target_DT = ""
+        this._hotPwrDrp3_Target_Description = ""
 
         //only available via UI
         if(this._pdp.Opt_HotPwrEnable){
             if(this._pdp.hotPowerDrops.length > 0){
                 this._hotPwrDrop1Type = this._pdp.hotPowerDrops[0].hotPwrDropType;
                 if(this._hotPwrDrop1Type === "Device"){
-                    this._hotPwrDr1_Target_Location = this._pdp.hotPowerDrops[0].HotPwrDrp_Target_Location;
-                    this._hotPwrDr1_Target_DT = this._pdp.hotPowerDrops[0].HotPwrDrp_Target_DT;
-                    this._hotPwrDr1_Target_Description = this._pdp.hotPowerDrops[0].HotPwrDrp_Target_Desc;
+                    this._hotPwrDrp1_Target_Location = this._pdp.hotPowerDrops[0].HotPwrDrp_Target_Location;
+                    this._hotPwrDrp1_Target_DT = this._pdp.hotPowerDrops[0].HotPwrDrp_Target_DT;
+                    this._hotPwrDrp1_Target_Description = this._pdp.hotPowerDrops[0].HotPwrDrp_Target_Desc;
                     this._isHotPwrDrp1Spare = false;
                 }
             }
             if(this._pdp.hotPowerDrops.length > 1){
                 this._hotPwrDrop2Type = this._pdp.hotPowerDrops[1].hotPwrDropType;
                 if(this._hotPwrDrop2Type === "Device"){
-                    this._hotPwrDr2_Target_Location = this._pdp.hotPowerDrops[1].HotPwrDrp_Target_Location;
-                    this._hotPwrDr2_Target_DT = this._pdp.hotPowerDrops[1].HotPwrDrp_Target_DT;
-                    this._hotPwrDr2_Target_Description = this._pdp.hotPowerDrops[1].HotPwrDrp_Target_Desc;
+                    this._hotPwrDrp2_Target_Location = this._pdp.hotPowerDrops[1].HotPwrDrp_Target_Location;
+                    this._hotPwrDrp2_Target_DT = this._pdp.hotPowerDrops[1].HotPwrDrp_Target_DT;
+                    this._hotPwrDrp2_Target_Description = this._pdp.hotPowerDrops[1].HotPwrDrp_Target_Desc;
                     this._isHotPwrDrp2Spare = false;
                 }
             }
             if(this._pdp.hotPowerDrops.length > 2){
                 this._hotPwrDrop3Type = this._pdp.hotPowerDrops[2].hotPwrDropType;
                 if(this._hotPwrDrop3Type === "Device"){
-                    this._hotPwrDr3_Target_Location = this._pdp.hotPowerDrops[2].HotPwrDrp_Target_Location;
-                    this._hotPwrDr3_Target_DT = this._pdp.hotPowerDrops[2].HotPwrDrp_Target_DT;
-                    this._hotPwrDr3_Target_Description = this._pdp.hotPowerDrops[2].HotPwrDrp_Target_Desc;
+                    this._hotPwrDrp3_Target_Location = this._pdp.hotPowerDrops[2].HotPwrDrp_Target_Location;
+                    this._hotPwrDrp3_Target_DT = this._pdp.hotPowerDrops[2].HotPwrDrp_Target_DT;
+                    this._hotPwrDrp3_Target_Description = this._pdp.hotPowerDrops[2].HotPwrDrp_Target_Desc;
                     this._isHotPwrDrp3Spare = false;
                 }
             }
@@ -85,15 +85,15 @@ export default class Fg_PowerDistributionPanel extends Component{
             {name: "frmUI_HotPwrDrp1_Spare", value: this._isHotPwrDrp1Spare, type: "Boolean"},
             {name: "frmUI_HotPwrDrp2_Spare", value: this._isHotPwrDrp2Spare, type: "Boolean"},
             {name: "frmUI_HotPwrDrp3_Spare", value: this._isHotPwrDrp3Spare, type: "Boolean"},
-            {name: "HotPwrDr1_Target_Location", value: this._hotPwrDr1_Target_Location, type: "String"},
-            {name: "HotPwrDr1_Target_DT", value: this._hotPwrDr1_Target_DT, type: "String"},
-            {name: "HotPwrDr1_Target_Desc", value: this._hotPwrDr1_Target_Description, type: "String"},
-            {name: "HotPwrDr2_Target_Location", value:  this._hotPwrDr2_Target_Location, type: "String"},
-            {name: "HotPwrDr2_Target_DT", value: this._hotPwrDr2_Target_DT, type: "String"},
-            {name: "HotPwrDr2_Target_Desc", value: this._hotPwrDr2_Target_Description, type: "String"},
-            {name: "HotPwrDr3_Target_Location", value:  this._hotPwrDr3_Target_Location, type: "String"},
-            {name: "HotPwrDr3_Target_DT", value: this._hotPwrDr3_Target_DT, type: "String"},
-            {name: "HotPwrDr3_Target_Desc", value: this._hotPwrDr3_Target_Description, type: "String"},
+            {name: "HotPwrDrp1_Target_Location", value: this._hotPwrDrp1_Target_Location, type: "String"},
+            {name: "HotPwrDrp1_Target_DT", value: this._hotPwrDrp1_Target_DT, type: "String"},
+            {name: "HotPwrDrp1_Target_Desc", value: this._hotPwrDrp1_Target_Description, type: "String"},
+            {name: "HotPwrDrp2_Target_Location", value:  this._hotPwrDrp2_Target_Location, type: "String"},
+            {name: "HotPwrDrp2_Target_DT", value: this._hotPwrDrp2_Target_DT, type: "String"},
+            {name: "HotPwrDrp2_Target_Desc", value: this._hotPwrDrp2_Target_Description, type: "String"},
+            {name: "HotPwrDrp3_Target_Location", value:  this._hotPwrDrp3_Target_Location, type: "String"},
+            {name: "HotPwrDrp3_Target_DT", value: this._hotPwrDrp3_Target_DT, type: "String"},
+            {name: "HotPwrDrp3_Target_Desc", value: this._hotPwrDrp3_Target_Description, type: "String"},
         ];
     }
 

@@ -25,7 +25,7 @@ export const findClosestHigherNumber = (array, target) => {
 export const getCableLength = (options, length) =>{
     if(length){
         var cable_length = findClosestHigherNumber(options, length)
-        return `${cable_length} m`;
+        return `${cable_length}`;
     } else {
         return `TBD`;
     }
@@ -34,8 +34,9 @@ export const getCableLength = (options, length) =>{
 export const splitIntoTwo = (source, delimiter) =>{
     if(source){
         var array = source.split(delimiter);
+        
         if(array.length > 1){
-            return [array[0],array[-1]]
+            return [array[0],array[1]]
         } else {
             return [array[0], ""]
         }

@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx'
-
+import { splitIntoTwo } from './util';
 
 const psuParser = {
     parse(workbook, worksheet){
@@ -16,6 +16,9 @@ const psuParser = {
             const numberOfDrops = item["Number of Drops"];     
             const numberOfDevices = item["Number of connected Devices"];     
             const psuLocationDt = item["PSU Location-DT"];     
+            const psu_arr = splitIntoTwo(psuLocationDt, "-");
+            const psu_location = psu_arr[0]
+            const psu_dt = psu_arr[1] 
             const partNumber = item["Part Number"];     
             const powerFedFrom = item["Power Fed from"];   
             const supplyVoltage = item["Supply Voltage"];    
@@ -31,6 +34,8 @@ const psuParser = {
                 numberOfDrops:numberOfDrops,
                 numberOfDevices:numberOfDevices,
                 psuLocationDt:psuLocationDt,
+                psu_location:psu_location,
+                psu_dt:psu_dt,
                 partNumber:partNumber,
                 powerFedFrom:powerFedFrom,
                 supplyVoltage:supplyVoltage,
@@ -44,26 +49,30 @@ const psuParser = {
         return psus;
     },
 
-    getOrderedBranch(psus){
+    getOrderedBranch(psus, devices){
         var results = {}
 
          psus.forEach(psu => {
-            if(psu.branchBreaker){
-                psuParser.addToBranch(psu.branchBreaker, psu, results);
-            } else if(psu.powerFedFrom){
-                var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
-                if(sourcePsu){
-                    psuParser.addToBranch(sourcePsu.branchBreaker, psu, results);
-                }
-            } else {
-                psuParser.addToBranch(0, psu, results);
-            }}
+            var psuDevice = devices.find(device => device.target_device_location_dt === psu.psuLocationDt)
+            if(psuDevice){
+                if(psu.branchBreaker){
+                    psuParser.addToBranch(psu.branchBreaker, 0, psu, results);
+                } else if(psu.powerFedFrom){
+                    var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
+                    if(sourcePsu){
+                        psuParser.addToBranch(sourcePsu.branchBreaker, psu, results);
+                    }
+                } else {
+                    psuParser.addToBranch(0, 0, psu, results);
+                }}
+            }
+            
         )
 
         return results;
     },
 
-    addToBranch(key, psu, results){
+    addToBranch(key, panel, psu, results){
         if(key in results){
             results[key].push(psu)
         } else {

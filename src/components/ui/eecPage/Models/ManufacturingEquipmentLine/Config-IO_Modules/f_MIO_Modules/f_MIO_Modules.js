@@ -10,11 +10,12 @@ export default class f_MIO_Modules extends Component{
         this._class = "f_MIO_Modules";
         this._name = `f_MIO_Modules`;
         this._ioModule = ioModule;
+        this._numberOfIOLinkSlaves = 0;
     }
 
     get Parameters(){
         return [
-            {name: "i_NumberOfIOLinkSlaves", value: "Undefined", type: "Integer"},
+            {name: "i_NumberOfIOLinkSlaves", value: this._numberOfIOLinkSlaves, type: "Integer"},
         ];
     }
     build(){

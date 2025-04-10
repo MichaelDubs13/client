@@ -20,7 +20,7 @@ export default class Fg_IOModule extends Component{
 
     get Parameters(){
         return [
-            {name: "s_frmUI_IOModNetworkSourcePort", value: this._source_network_port, type: "String"},
+            {name: "s_frmUI_IOModNetworkSourcePort", value: this._source_network_port, type: "Integer"},
             {name: "s_frmUI_IOModNetworkSourceLocation", value: this._ioModule.local_network_source_location, type: "String"},
             {name: "s_frmUI_IOModNetworkSourceDT", value: this._ioModule.local_network_source_dt, type: "String"},
             {name: "s_frmUI_IOModPSUSourceLocation", value: this._ioModule.source24VDC_location, type: "String"},

@@ -14,9 +14,6 @@ export default class F_Network_SwitchConfig extends Component{
         this._name = `f_Network_SwitchConfig${index > 1 ? index : ""}`;
         this._networkSwitch = networkSwitch
         this._mcp = mcp;
-        this._8_ports = networkSwitch.portCount === 8 ? 8: 0;
-        this._8or16_ports = networkSwitch.portCount === 16 ? 16: 0;
-        this._8or16or24_ports = networkSwitch.portCount === 24? 24: 0;
     }
 
     get Parameters(){
@@ -31,11 +28,13 @@ export default class F_Network_SwitchConfig extends Component{
             {name: "Switch_DT", value: this._networkSwitch.switch_dt, type: "String"},
             {name: "Switch_Type_Selection", value: this._networkSwitch.managedtype, type: "String"}, //if siemens then managed if its balluf then unmanaged
             {name: "Ethernet_Speed_Selection", value: "Gigabit", type: "String"},
-            {name: "Alarm_DT", value: "Undefined", type: "String"}, //for Siemens 
+            {name: "Alarm_DT", value: this._networkSwitch.alarmTag, type: "String"}, //for Siemens 
             {name: "Alarm_Output_Selection", value: this._networkSwitch.alarmOutput, type: "Boolean"}, //Reserved for plant networkSwitch
-            {name: "Console_DT", value: "Undefined", type: "String"}, //for siemens
+            {name: "Console_DT", value: this._networkSwitch.consoleTag, type: "String"}, //for siemens
             {name: "Console_Output_Selection", value: this._networkSwitch.consoleOutput, type: "Boolean"}, //Reserved for plant networkSwitch
-            
+            {name: "8_ports", value: this._networkSwitch.portCount, type: "Integer"},
+            {name: "8or16_ports", value: this._networkSwitch.portCount, type: "Integer"},
+            {name: "8or16or24_ports", value: this._networkSwitch.portCount, type: "Integer"},
             //Parameters that might need to be added later
             // {name: "Plant_IP", value: "Undefined", type: "String"},
             // {name: "PWR2_IN_Location", value: "Undefined", type: "String"},
