@@ -1,4 +1,4 @@
-import Component from "../../Component";
+import Component from "../../../../../../Component";
 
 export default class sc_Pin2 extends Component{
     constructor(parent, io, port) {
@@ -11,7 +11,10 @@ export default class sc_Pin2 extends Component{
     }
     get Parameters(){
         return [
-
+            {name: "s_pin_description", value: this._io.target_device_function_text, type: "String"},
+            {name: "s_TargetDeviceLocation", value: this._io.target_device_location, type: "String"},
+            {name: "s_TargetDeviceDT", value: this._io.target_device_location_dt, type: "String"},
+            {name: "s_TargetDevicePartNumber", value: this._io.partNumber, type: "String"},
         ];
     }
     build(){

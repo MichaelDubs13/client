@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx'
+import { splitIntoTwo } from './util';
 
 
 const switchParser = {
@@ -17,26 +18,19 @@ const switchParser = {
             const mcpName = item["MCP Name"];  
             const networkType = item["Network Type"];  
             const psu_location_dt = item["PSU 1 Location-DT"];
-            var psu_dt = '';
-            var psu_location = '';
-            const psuDtArr = psu_location_dt.split('-');
-            if(psuDtArr.length > 1){
-                psu_location = psuDtArr[0];
-                psu_dt = psuDtArr[psuDtArr.length - 1]
-            }
+            const psu_arr = splitIntoTwo(psu_location_dt, "-");
+            var psu_dt = psu_arr[0];
+            var psu_location = psu_arr[1];
+
             let portCount = item["Port Count"];  
             if(!portCount){
                 portCount = 16;
             }
             const switch_location_dt = item["Switch Location-DT"]; 
-            var switch_dt = '';
-            var switch_location = '';
-            const switchDtArr = switch_location_dt.split('-');
-            
-            if(switchDtArr.length > 1){
-                switch_location = switchDtArr[0]
-                switch_dt = switchDtArr[switchDtArr.length - 1]
-            }
+            const switch_arr = splitIntoTwo(switch_location_dt, "-");
+            var switch_dt = switch_arr[0];
+            var switch_location = switch_arr[1];
+
             const switchType = item["Switch type"];  
             const inPort = item["in port"];  
             const inSwitch = item["in switch"];  
@@ -125,16 +119,6 @@ const switchParser = {
 
         return results;
     },
-
-    splitAndMergeFirstTwo(str, separator, joiner) {
-        const parts = str.split(separator);
-        if (parts.length < 2) {
-          return str; // Or handle the case where there are fewer than two elements
-        }
-        const mergedFirstTwo = parts.slice(0, 2).join(joiner);
-        const remainingParts = parts.slice(2);
-        return [mergedFirstTwo, ...remainingParts].join(separator);
-      }
 }
 
 export default switchParser;

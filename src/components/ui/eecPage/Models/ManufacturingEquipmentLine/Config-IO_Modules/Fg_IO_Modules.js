@@ -13,14 +13,14 @@ export default class Fg_IO_Modules extends Component{
 
     get Parameters(){
         return [
-            {name: "i_NumberOfIOModuleGroups", value: this._ioModuleGroups, type: "Integer"},
+            {name: "i_NumberOfIOModuleGroups", value: this._ioModuleGroups.length, type: "Integer"},
         ];
     }
 
     build(){
-        for(let i=0; i < this._ios.length; i++){
-            const io = this._ios[i];
-            const fg_IOModule = new Fg_IOModule(this, i+1, io);
+        for(let i=0; i < this._ioModuleGroups.length; i++){
+            const ioModuleGroup = this._ioModuleGroups[i];
+            const fg_IOModule = new Fg_IOModule(this, i+1, ioModuleGroup);
             fg_IOModule.build();
         }
     }

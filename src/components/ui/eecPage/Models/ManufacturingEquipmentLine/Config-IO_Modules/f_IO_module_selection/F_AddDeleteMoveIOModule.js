@@ -1,21 +1,26 @@
 import Component from "../../Component";
+import IO_Module from "../IO_Module";
 
 export default class F_AddDeleteMoveIOModule extends Component{
-    constructor(parent, io) {
+    constructor(parent, ioModuleGroup) {
         super(parent);
         this.parent = parent;
         this._classPath = "Config-IO_Modules.Mechatronic.f_IO_module_selection";
         this._class = "f_AddDeleteMoveIOModule";
         this._name = `f_AddDeleteMoveIOModule`;
-        this._io = io;
+        this._ioModuleGroup = ioModuleGroup;
     }
     get Parameters(){
         return [
-           
+            {name: "i_NumberOfMasterIOModules", value: this._ioModuleGroup.length, type: "Integer"},
         ];
     }
     build(){
-
+         for(let i=0; i < this._ioModuleGroup.length; i++){
+            
+            const ioModule = new IO_Module(this, i+1, this._ioModuleGroup[i])
+            ioModule.build();
+        }
     }
     
 }

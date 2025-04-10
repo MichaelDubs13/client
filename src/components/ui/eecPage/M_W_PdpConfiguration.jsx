@@ -86,8 +86,12 @@ const M_W_PdpConfiguration = ({pdp}) => {
         const value = !Opt_HotPwrEnable;
         setOpt_HotPwrEnable(!Opt_HotPwrEnable)
         pdp.Opt_HotPwrEnable = value;
-        var hotPowerDrops = createHotPowerBranchCircuit();
-        console.log(hotPowerDrops);
+        var hotPowerDrops = []
+        if(value){
+            hotPowerDrops = createHotPowerBranchCircuit();
+        }
+        
+        pdp.hotPowerDrops = hotPowerDrops;
         setHotPowerDrops(hotPowerDrops);
     }
 
@@ -108,19 +112,9 @@ const M_W_PdpConfiguration = ({pdp}) => {
     // Create array of hot power drop items
     const renderHotPowerDrops = () => {
         var i = 0;
-        /* return Object.entries(hotPowerDrops).flatMap(([hotPowerDrop, count]) =>
-            Array.from({ length: count }).map((_, index) => {
-                i=i+1;
-                return <HotPowerDropItem
-                key={`${hotPowerDrop}-${index}`}
-                hotPowerDrop={hotPowerDrop}
-                index={index}
-                absIndex={i}
-            />})
-        ); */
+       
         return hotPowerDrops.map((hotPowerDrop, index) => {
             i=i+1;
-            console.log(hotPowerDrop);
             return <HotPowerDropItem
                 key={`${hotPowerDrop}-${index}`}
                 hotPowerDrop={hotPowerDrop}

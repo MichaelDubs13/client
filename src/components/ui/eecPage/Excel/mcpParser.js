@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx'
+import { findClosestHigherNumber, splitIntoTwo } from './util';
 
 
 const mcpParser = {
@@ -38,15 +39,15 @@ const mcpParser = {
                 const leth_port2 = item["XPF-LETH01.P2 (LETH-LETH)"];
                 const leth_port3 = item["XPF-LETH01.P3 (LETH-LETH)"];
                 const leth_port4 = item["XPF-LETH01.P4 (LETH-LETH)"];
-                var leth_port2_arr = leth_port2 ? leth_port2.split('-') : [];
-                var leth_port3_arr = leth_port3 ? leth_port3.split('-') : [];
-                var leth_port4_arr = leth_port4 ? leth_port4.split('-') : [];
+                var leth_port2_arr = splitIntoTwo(leth_port2, "-");
+                var leth_port3_arr = splitIntoTwo(leth_port3, "-");
+                var leth_port4_arr = splitIntoTwo(leth_port4, "-");
                 let leth_port2_target_location = leth_port2_arr[0];
                 let leth_port3_target_location = leth_port3_arr[0];
                 let leth_port4_target_location = leth_port4_arr[0];
-                let leth_port2_target_dt = leth_port2_arr.length > 1 ? leth_port2_arr[1] : "";
-                let leth_port3_target_dt = leth_port3_arr.length > 1 ? leth_port3_arr[1] : "";
-                let leth_port4_target_dt = leth_port4_arr.length > 1 ? leth_port4_arr[1] : "";
+                let leth_port2_target_dt = leth_port2_arr[1]
+                let leth_port3_target_dt = leth_port3_arr[1]
+                let leth_port4_target_dt = leth_port4_arr[1]
                 let b_PLC_ETH = false //if true => create ring topology
 
                 const leth_port2_target_port = "";
@@ -191,35 +192,6 @@ const mcpParser = {
 
         return mcps;
     },
-    getCableLength(length){
-        if(length){
-            var cable_length = mcpParser.findNearest(mcpParser.cable_length_options, length)
-            return `${cable_length} m`;
-        } else {
-            return `TBD`;
-        }
-    },
-
-    findNearest(array, target) {
-        if (!array || array.length === 0) {
-          return null;
-        }
-      
-        let nearest = array[0];
-        let minDiff = array[0] - target
-      
-        for (let i = 1; i < array.length; i++) {
-            const diff = array[i] - target;
-            if(diff > 0){
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    nearest = array[i];
-                  }
-            }
-        }
-        return nearest;
-    },
-
 }
 
 export default mcpParser;

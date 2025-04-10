@@ -5,6 +5,7 @@ import xpdpParser from './xpdpParser';
 import mcpParser from './mcpParser';
 import psuParser from './psuParser';
 import switchParser from './switchParser';
+import cableParser from './cableParser';
 
 export default class Parser {
     constructor(data) {
@@ -39,7 +40,10 @@ export default class Parser {
         psus = psuParser.getDevice(psus, devices);
         var branches = psuParser.getOrderedBranch(psus); //what to do with branches
         
-        const ios = deviceParser.createIODevices(devices);
+        const groupedIOModules = deviceParser.getGroupedIOModules(devices);
+        const cables = cableParser.parse(this._wb, this._cablesWorksheet);
+        deviceParser.addIO(groupedIOModules, cables, devices);
+
         pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
         xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
@@ -50,8 +54,7 @@ export default class Parser {
         mcps = mcpParser.getDirectNetworkDevices(mcps, devices);
         mcps = mcpParser.getNetworkTopology(mcps);
         
-        console.log(ios);
-        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, branches:branches, switches:networkTree,devices:devices, ios:ios }
+        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, branches:branches, switches:networkTree,devices:devices, groupedIOModules:groupedIOModules }
         
     }
 

@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx'
+import { filterItemsByStartsOptions, getCableLength, splitIntoTwo } from './util';
 
 
 const deviceParser = {
@@ -40,9 +41,12 @@ const deviceParser = {
             const layer = item["Layer"];
             const line = item["Line"];  
             let local_cable_length = item["Local Cable Length (<90m)"]; 
-            local_cable_length = deviceParser.getCableLength(local_cable_length);
+            local_cable_length = getCableLength(deviceParser.cable_length_options, local_cable_length);
             const local_network_direct = item["Local Network Direct"];  
-            const local_network_source = item["Local Network Source"];  
+            const local_network_source = item["Local Network Source"]; 
+            const local_network_source_arr = splitIntoTwo(local_network_source, "-");
+            const local_network_source_location = local_network_source_arr[0]
+            const local_network_source_dt = local_network_source_arr[1] 
             const local_switch_port = item["Local Switch Port"];  
             const target_switch_port = item["Target Switch Port"];  
             const mcp_name = item["MCP Name"];  
@@ -66,7 +70,11 @@ const deviceParser = {
             const totalDevice24V_FLA = item["Total Device 24VDC FLA"];  
             const direct24VDC = item["24Vdc Direct"]; 
             const source24VDC = item["24Vdc Source"]; 
-            let device = {
+            let source24VDC_arr = splitIntoTwo(source24VDC, "-");
+            const source24VDC_location = source24VDC_arr[0]
+            const source24VDC_dt = source24VDC_arr[1]
+            const localip = item["Local IP"]; 
+            let device = {  
                 ac_primary_connection_direct:ac_primary_connection_direct,
                 ac_primary_connection_source:ac_primary_connection_source, 
                 ac_primary_power_branch_size:ac_primary_power_branch_size,
@@ -102,6 +110,8 @@ const deviceParser = {
                 local_cable_length:local_cable_length,
                 local_network_direct:local_network_direct,
                 local_network_source:local_network_source,
+                local_network_source_location:local_network_source_location,
+                local_network_source_dt:local_network_source_dt,
                 target_switch_port:target_switch_port,
                 local_switch_port:local_switch_port,
                 mcp_name:mcp_name,
@@ -125,43 +135,19 @@ const deviceParser = {
                 totalDevice24V_FLA:totalDevice24V_FLA,
                 direct24VDC: direct24VDC,
                 source24VDC: source24VDC,
+                source24VDC_location:source24VDC_location,
+                source24VDC_dt:source24VDC_dt,
+                localip:localip,
                 deviceType: "",
                 switchCascading: false,
                 interruption_InOrOut:"", //in or out
+                io_pin:0, //pin2 or pin4
+                ios:[] //container for connected IO devices
             }
             devices.push(device);
         })
 
         return devices;
-    },
-
-    getCableLength(length){
-        if(length){
-            var cable_length = deviceParser.findNearest(deviceParser.cable_length_options, length)
-            return `${cable_length} m`;
-        } else {
-            return `TBD`;
-        }
-    },
-
-    findNearest(array, target) {
-        if (!array || array.length === 0) {
-          return null;
-        }
-      
-        let nearest = array[0];
-        let minDiff = array[0] - target
-      
-        for (let i = 1; i < array.length; i++) {
-            const diff = array[i] - target;
-            if(diff > 0){
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    nearest = array[i];
-                  }
-            }
-        }
-        return nearest;
     },
 
     updateDeviceType(devices, mcps){
@@ -192,27 +178,63 @@ const deviceParser = {
     },
 
 
-    createIODevices(devices){
-        let results =[];
-        console.log(devices);
-        devices.forEach(io => {
-            if(io.io_direct){
-                let matchedDevice = devices.filter(device =>device.target_device_location_dt === io.io_direct);
-                if(matchedDevice.length > 0){
-                    const parentDevice = results.filter(result => result.device.target_device_location_dt === matchedDevice[0].target_device_location_dt);
-                    if(parentDevice.length > 0){
-                        parentDevice[0].ios.push(io);
-                    } else {
-                        const ios = [io,]
-                        const ioDevices = {"device": matchedDevice[0], "ios": ios}
-                        results.push(ioDevices);
-                    }
+    getGroupedIOModules(devices){
+        let groups =[];
+        const ioModuleFilterOptions = ["SIO", "MIO"]
+        const ioModules = filterItemsByStartsOptions(ioModuleFilterOptions, devices, "device_dt")
+        
+        ioModules.forEach(ioModule => {
+            if(ioModule.local_network_direct && ioModule.local_network_direct != ioModule.target_device_location_dt){
+                const ioModuleAdded = deviceParser.addIOModuleToGroup(groups, ioModule);
+                if(!ioModuleAdded){
+                    groups.push([ioModule]);
                 }
+            } else {
+                groups.push([ioModule,])
             }
         })
-        //console.log(results);
-        return results;
-    }    
+
+        return groups;
+    },
+
+    addIOModuleToGroup(groups, ioModule){
+        for(let i=0;i<groups.length;i++){
+            var hasItem = groups[i].some(item => item.target_device_location_dt === ioModule.local_network_direct)
+            if(hasItem){
+                groups[i].push(ioModule)
+                return true;
+            }
+        }
+
+        return false;
+    },
+    
+    addIO(groups, cables, devices){
+        var ioCables = cables.filter(cable => cable.layer === "Cable - IO");
+        
+        for(let i=0;i<groups.length;i++){
+            const ioModuleGroup = groups[i];
+            ioModuleGroup.forEach(ioModule => {
+                var targetCables =  ioCables.filter(cable => cable.cable_source === ioModule.target_device_location_dt)
+                for(let i=0;i<targetCables.length;i++){
+                    var targetDevice = devices.find(device => device.target_device_location_dt === targetCables[i].cable_target)
+                    if(targetDevice){
+                        targetDevice = {...targetDevice, io_pin:2}
+                        if(!targetDevice.io_port){
+                            const nextAvailablePort = ioModule.ios.length; //port number is 0~7
+                            targetDevice = {...targetDevice, io_port:nextAvailablePort}
+                        }
+                        ioModule.ios.push(targetDevice);
+                    }
+                }
+            })
+        }
+        
+    }
+    
+    
 }
+
+
 
 export default deviceParser;

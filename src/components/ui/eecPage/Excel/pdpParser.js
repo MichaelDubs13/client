@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx'
 import {pdpConfiguration} from '../../../../store/eec/pdpStore';
+import { findClosestHigherNumber } from './util';
 
 const pdpParser = {
     enclosureSizeOptions: ["800x1400x500", "1000x1800x500"],
@@ -10,21 +11,13 @@ const pdpParser = {
         arr.forEach(item => {
             const name = item["PDP name"];
             var enclosureSize = item["Enclosure Size"];
-            if(!enclosureSize || enclosureSize === "N/A"){
-                enclosureSize = "1000x1800x500(WHD)";
-            } else {
-                if(pdpParser.enclosureSizeOptions.includes(enclosureSize)){
-                    enclosureSize = `${enclosureSize}(WHD)`;
-                } else {
-                    enclosureSize = "1000x1800x500(WHD)";
-                }
-            }
+            enclosureSize = pdpParser.getEnclosureSize(enclosureSize);
 
             const numberOfBusBar = pdpParser.getNumberOfBusBar(enclosureSize);
 
             var amp = item["Amperage"];
             if(amp){
-                amp = pdpParser.findNearest(pdpParser.ampOptions, amp)
+                amp = findClosestHigherNumber(pdpParser.ampOptions, amp)
                 amp = `${amp}A`;
             }
 
@@ -64,6 +57,7 @@ const pdpParser = {
             const spare100A = item["Spare 100A"];
             const spare250A = item["Spare 250A"];
             const branchCircuit = pdpConfiguration.createBranchCircuits();
+            const hotPowerDrops = [] //only available in UI
             if(location){
                 const pdp = {name:name, amp:amp, FLA:FLA, location:location, 
                     enclosureSize:enclosureSize,
@@ -88,12 +82,26 @@ const pdpParser = {
                     PwrMonitorEnable:false,
                     Opt_HotPwrEnable:false,
                     branchCircuit:branchCircuit,
+                    hotPowerDrops:hotPowerDrops,
                 }
                 pdps.push(pdp);
             }
         })
 
         return pdps;
+    },
+    getEnclosureSize:(enclosureSize)=>{
+        if(!enclosureSize || enclosureSize === "N/A"){
+            enclosureSize = "1000x1800x500(WHD)";
+        } else {
+            if(pdpParser.enclosureSizeOptions.includes(enclosureSize)){
+                enclosureSize = `${enclosureSize}(WHD)`;
+            } else {
+                enclosureSize = "1000x1800x500(WHD)";
+            }
+        }
+
+        return enclosureSize;
     },
     getNumberOfBusBar:(enclosureSize)=>{
         if(enclosureSize == "800x1400x500(WHD)"){
@@ -168,27 +176,6 @@ const pdpParser = {
         pdpParser.calculateBranchFLA(pdp.branchCircuit["20A"])
         pdpParser.calculateBranchFLA(pdp.branchCircuit["10A"])
     },
-    findNearest(array, target) {
-        if (!array || array.length === 0) {
-          return null;
-        }
-      
-        let nearest = array[0];
-        let minDiff = array[0] - target
-      
-        for (let i = 1; i < array.length; i++) {
-            const diff = array[i] - target;
-            if(diff > 0){
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    nearest = array[i];
-                  }
-            }
-        }
-        return nearest;
-    },
-
-
 }
 
 export default pdpParser

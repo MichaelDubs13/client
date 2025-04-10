@@ -47,19 +47,6 @@ const psuParser = {
     getOrderedBranch(psus){
         var results = {}
 
-        // psus.forEach(psu => {
-        //     if(psu.xpdpCBIndex){
-        //         psuParser.addToBranch(psu.xpdpCBIndex, psu, results);
-        //     } else if(psu.powerFedFrom){
-        //         var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
-        //         if(sourcePsu){
-        //             psuParser.addToBranch(sourcePsu.xpdpCBIndex, psu, results);
-        //         }
-        //     } else {
-        //         psuParser.addToBranch(0, psu, results);
-        //     }}
-        // )
-
          psus.forEach(psu => {
             if(psu.branchBreaker){
                 psuParser.addToBranch(psu.branchBreaker, psu, results);
