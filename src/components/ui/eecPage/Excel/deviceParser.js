@@ -151,7 +151,7 @@ const deviceParser = {
         return devices;
     },
 
-    updateDeviceType(devices, mcps){
+    getNetworkType(devices, mcps){
         //return options: Device, Network Switch, Spare
         devices.forEach(device => {
             const networkSwitchIdentifers = ["LETH", "PETH"]
@@ -177,8 +177,46 @@ const deviceParser = {
        
         return devices;
     },
+    getHMIs(devices){
+        const hmiFilterOptions = ["HMI", ]
+        const hmis = filterItemsByStartsOptions(hmiFilterOptions, devices, "device_dt")
+        deviceParser.getHMIParameters(hmis)
 
-
+        return hmis
+    },
+    getHMIParameters(hmis){
+        hmis.map(hmi => {
+                let screen_size = "22in" //size options 22in, 15in
+                let mounting = "Round Tube" //options Round Tube, Flange at Bottom
+                let version = "V17" //options V16, V17
+                let rfid_side = "Left" //options Left, Right
+                if(hmi.partnumber === "6AV7264-3TS44-0AA0"){
+                    screen_size = "22in";
+                    hmi = {...hmi, screen_size:screen_size, mounting:mounting, version:version, rfid_side:rfid_side};
+                }
+        })
+    },
+    getSafetyGates(devices){
+        const gatesFilterOptions = ["GS", ]
+        const gates = filterItemsByStartsOptions(gatesFilterOptions, devices, "device_dt")
+        deviceParser.getGateParameters(gates);
+        return gates
+    },
+    getGateParameters(gates){
+        gates.map(gate => {
+                let communication_type = "PROFINET" //Hardwired, Ethernet, PROFINET
+                let handleside = "Left" //Left, Right
+                if(gate.mfg === "Euchner"){
+                    communication_type = "PROFINET"
+                    if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-L-168720"){
+                        handleside = "Left" 
+                    } else if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-R-168719"){
+                        handleside = "Right" 
+                    }
+                    gate = {...gate, communication_type:communication_type, handleside:handleside};
+                }
+        })
+    },
     getGroupedIOModules(devices){
         let groups =[];
         const ioModuleFilterOptions = ["SIO", "MIO"]

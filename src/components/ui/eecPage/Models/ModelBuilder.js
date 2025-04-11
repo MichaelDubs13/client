@@ -7,6 +7,8 @@ import Fg_NetworkSwitches_FieldInstallations from "./ManufacturingEquipmentLine/
 import Fg_IO_Modules from "./ManufacturingEquipmentLine/Config-IO_Modules/Fg_IO_Modules";
 import Fg_XPowerDistributionPanel_M from "./ManufacturingEquipmentLine/Config-XPDP/Fg_XPowerDistributionPanel_M";
 import Fg_24VDC_PowerDistribution from "./ManufacturingEquipmentLine/Config24V-PowerDistribution/Fg_24VDC_PowerDistribution";
+import Fg_HMIs from "./ManufacturingEquipmentLine/Config-HMI/_fg_HMIs/_f_HMI_Config/Fg_HMIs";
+import Fg_Safety_GateSwitches from "./ManufacturingEquipmentLine/Config-Safety_GateSwitch/Fg_Safety_GateSwitches";
 
 const ModelBuilder = {
     doc : null,
@@ -20,7 +22,7 @@ const ModelBuilder = {
         return ModelBuilder.doc;
     },
     
-    buildContent : (pdps, xpdps, mcps, branches, switches,devices, groupedIOModules) => {
+    buildContent : (pdps, xpdps, mcps, branches, switches,devices, groupedIOModules, hmis, gates) => {
         const manufacturingEquipmentLINE = new ManufacturingEquipmentLINE();
 
         if(pdps.length > 0){
@@ -38,7 +40,7 @@ const ModelBuilder = {
             fg_MainControlPanel.build();
         }
         
-        if(Object.keys(branches).length > 0){
+        if(branches.length > 0){
             const fg_24VDCPowerDistribution = new Fg_24VDC_PowerDistribution(manufacturingEquipmentLINE, branches);
             fg_24VDCPowerDistribution.build();
         }
@@ -53,13 +55,23 @@ const ModelBuilder = {
             fg_IO_Modules.build();
         }
 
+        if(hmis.length > 0){
+            const fg_hmis = new Fg_HMIs(manufacturingEquipmentLINE, hmis);
+            fg_hmis.build();
+        }
+
+        if(gates.length >0){
+            const fg_Safety_GateSwitches = new Fg_Safety_GateSwitches(manufacturingEquipmentLINE, gates)
+            fg_Safety_GateSwitches.build();
+        }
+
         const node = manufacturingEquipmentLINE.create(ModelBuilder.doc);
 
         
         return node;
     },
 
-    buildIMX:(config, pdps,xpdps, mcps, branches, switches,devices, groupedIOModules)=>{
+    buildIMX:(config, pdps,xpdps, mcps, branches, switches,devices, groupedIOModules, hmis, gates)=>{
         ModelBuilder.doc = document.implementation.createDocument("", "", null);
         let imxElem = ModelBuilder.doc.createElement("imx");
         imxElem.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -80,7 +92,7 @@ const ModelBuilder = {
         libraryElem.appendChild(addElem);
         projectElem.appendChild(libraryElem);
 
-        const contentElem = ModelBuilder.buildContent(pdps,xpdps, mcps, branches, switches, devices, groupedIOModules);
+        const contentElem = ModelBuilder.buildContent(pdps,xpdps, mcps, branches, switches, devices, groupedIOModules, hmis, gates);
         //post process
         const pi = ModelBuilder.doc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
         ModelBuilder.doc.insertBefore(pi, ModelBuilder.doc.firstChild);

@@ -46,8 +46,8 @@ const CreateEecForm = ({onSubmit}) => {
       reader.onload = function(event) {
         var data = event.target.result;
         const excelParser = new Parser(data);
-        const {config,pdps, xpdps, mcps, branches, switches, devices, groupedIOModules} = excelParser.parse();
-        var imx = ModelBuilder.buildIMX(config, pdps,xpdps, mcps, branches, switches, devices, groupedIOModules);
+        const {config,pdps, xpdps, mcps, branches, switches, devices, groupedIOModules, hmis, gates} = excelParser.parse();
+        var imx = ModelBuilder.buildIMX(config, pdps,xpdps, mcps, branches, switches, devices, groupedIOModules, hmis, gates);
         setIMX(imx);
       }
       reader.readAsBinaryString(file)

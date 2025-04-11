@@ -50,20 +50,20 @@ const psuParser = {
     },
 
     getOrderedBranch(psus, devices){
-        var results = {}
+        var results = []
 
          psus.forEach(psu => {
             var psuDevice = devices.find(device => device.target_device_location_dt === psu.psuLocationDt)
             if(psuDevice){
                 if(psu.branchBreaker){
-                    psuParser.addToBranch(psu.branchBreaker, 0, psu, results);
+                    psuParser.addToBranch(psu.branchBreaker, psuDevice.ac_primary_connection_source, psu, results);
                 } else if(psu.powerFedFrom){
                     var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
                     if(sourcePsu){
                         psuParser.addToBranch(sourcePsu.branchBreaker, psu, results);
                     }
                 } else {
-                    psuParser.addToBranch(0, 0, psu, results);
+                    psuParser.addToBranch(0, psuDevice.ac_primary_connection_source, psu, results);
                 }}
             }
             
@@ -72,13 +72,14 @@ const psuParser = {
         return results;
     },
 
-    addToBranch(key, panel, psu, results){
-        if(key in results){
-            results[key].push(psu)
+    addToBranch(cb, panel, psu, results){
+        var foundGroup = results.find(group => group.cb === cb && group.panel === panel)
+        if(foundGroup){
+            foundGroup.psus.push(psu)
         } else {
-            results[key] = [psu,]
+            const newEntry = {cb:cb, panel:panel, psus:[psu,]}
+            results.push(newEntry)
         }
-
         return results;
     },
 

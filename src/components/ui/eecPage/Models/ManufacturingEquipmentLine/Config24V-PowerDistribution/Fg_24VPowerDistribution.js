@@ -7,16 +7,15 @@ import _f_PSU_TURCK from "./_f_PSU_TURCK/_f_PSU_TURCK";
 
 
 export default class Fg_24VPowerDistribution extends Component{
-    constructor(parent, index, psus, branchBreaker) {
+    constructor(parent, index, branch) {
         super(parent);
         this.parent = parent;
         this._index = index;
         this._classPath = "Config24V-PowerDistribution.Mechatronic._fg_24VPowerDistribution";
         this._class = "fg_24VPowerDistribution";
         this._name = `fg_24VPowerDistribution${index > 1 ? index : ""}`;
-        this._psus = psus;
-        this._branchBreaker = branchBreaker;
-        this._locationDesignation = this._psus[0].device.target_device_location
+        this._branch = branch;
+        this._locationDesignation = branch.psus[0].target_device_location
         this.Balluff_CLS2_BAE0133_NumberOfPSU = 0
         this.Balluff_CLS2_BAE012P_NumberOfPSU = 0
         this.Balluf_BAE00FL_BAE00ET_NumberOfPSU = 0
@@ -45,7 +44,7 @@ export default class Fg_24VPowerDistribution extends Component{
 
     update(){
         //need to get full list
-        this._psus.forEach(psu => {
+        this._branch.psus.forEach(psu => {
             if(psu.MFG === "Balluff"){
                 if(psu.partNumber === "BAE0133"){
                     this._Balluff_CLS2_BAE0133.push(psu);
@@ -78,7 +77,7 @@ export default class Fg_24VPowerDistribution extends Component{
             {name: "Balluf_BAE00FL_BAE00ET_NumberOfPSU", value: this.Balluf_BAE00FL_BAE00ET_NumberOfPSU, type: "Integer"},
             {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this.numberOfBAE0133, type: "Integer"},
             {name: "LocationDesignation", value: this._locationDesignation, type: "String"},
-            {name: "DeviceTag", value: this._branchBreaker, type: "String"},
+            {name: "DeviceTag", value: this._branch.cb, type: "String"},
             {name: "_PSUSupplyVoltage_", value: this._PSUSupplyVoltage_, type: "String"},
             {name: "s_PSU_Selection_480_400", value: this.s_PSU_Selection_480_400, type: "String"},
             {name: "s_PSU_Selection_120_240", value: this.s_PSU_Selection_120_240, type: "String"},

@@ -10,22 +10,20 @@ export default class Fg_24VDC_PowerDistribution extends Component{
         this._class = "fg_24VDC_PowerDistribution.fg_24VDC_PowerDistribution";
         this._name = "fg_24VDC_PowerDistribution";
         this._branches = branches;
-        this._totalBranches = Object.keys(branches).length
+        
     }
 
     get Parameters(){
         return [
-            {name: "i_NumberOfCascading_24VPSUs", value: this._totalBranches, type: "Integer"},
+            {name: "i_NumberOfCascading_24VPSUs", value:this._branches.length, type: "Integer"},
         ];
     }
 
     build(){
       
-        var i = 0;
-        Object.keys(this._branches).forEach(key => {
-            const fg_24V_PowerDistribution = new Fg_24VPowerDistribution(this, i+1, this._branches[key], key)
+        for(let i=0;i<this._branches.length;i++){
+            const fg_24V_PowerDistribution = new Fg_24VPowerDistribution(this, i+1, this._branches[i])
             fg_24V_PowerDistribution.build();
-            i = i +1;
-        });
+        }
     }
 }

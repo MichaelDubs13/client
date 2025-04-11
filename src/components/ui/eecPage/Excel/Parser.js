@@ -34,12 +34,14 @@ export default class Parser {
         let xpdps = xpdpParser.parse(this._wb, this._xpdpWorksheet)
         let mcps = mcpParser.parse(this._wb, this._mcpWorksheet)
         let devices = deviceParser.parse(this._wb, this._devicesWorksheet)
-        devices = deviceParser.updateDeviceType(devices, mcps);
+        devices = deviceParser.getNetworkType(devices, mcps);
         var psus = psuParser.parse(this._wb, this._psuWorksheet)
         psus = psuParser.getPwrDrops(psus, devices);
         psus = psuParser.getDevice(psus, devices);
         var branches = psuParser.getOrderedBranch(psus, devices); //what to do with branches
         
+        const hmis = deviceParser.getHMIs(devices);
+        const gates = deviceParser.getSafetyGates(devices);
         const groupedIOModules = deviceParser.getGroupedIOModules(devices);
         const cables = cableParser.parse(this._wb, this._cablesWorksheet);
         deviceParser.addIO(groupedIOModules, cables, devices);
@@ -54,7 +56,9 @@ export default class Parser {
         mcps = mcpParser.getDirectNetworkDevices(mcps, devices);
         mcps = mcpParser.getNetworkTopology(mcps);
         
-        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, branches:branches, switches:networkTree,devices:devices, groupedIOModules:groupedIOModules }
+        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, branches:branches, 
+            switches:networkTree,devices:devices, groupedIOModules:groupedIOModules,
+            hmis:hmis, gates:gates }
         
     }
 
