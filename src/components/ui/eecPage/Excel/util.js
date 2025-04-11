@@ -36,7 +36,9 @@ export const splitIntoTwo = (source, delimiter) =>{
         var array = source.split(delimiter);
         
         if(array.length > 1){
-            return [array[0],array[1]]
+            const firstElement = array[0];
+            const lastElement = array.slice(1).join(delimiter)
+            return [firstElement,lastElement]
         } else {
             return [array[0], ""]
         }

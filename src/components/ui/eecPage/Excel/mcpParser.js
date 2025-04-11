@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx'
 import { findClosestHigherNumber, splitIntoTwo } from './util';
+import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 
 
 const mcpParser = {
@@ -35,7 +36,8 @@ const mcpParser = {
                 const psu_location = item["PSU Location"];
                 const psu_location_dt = item["PSU Location-DT"];
                 const ups_ipAddress = item["UPS IP Address"];
-                const plc_id = item["PLC ID"];
+                //const plc_id = item["PLC ID"];
+                
                 const leth_port2 = item["XPF-LETH01.P2 (LETH-LETH)"];
                 const leth_port3 = item["XPF-LETH01.P3 (LETH-LETH)"];
                 const leth_port4 = item["XPF-LETH01.P4 (LETH-LETH)"];
@@ -63,6 +65,9 @@ const mcpParser = {
                 const eth_local_ip_secondary = item["ETH Local IP Secondary"];
                 const eth_port1_target_location = item["ETH Port1 Target Location"];
                 const eth_port2_target_location = item["ETH Port2 Target Location"];
+
+                const plc_id = `${ProjectConfiguration.line}-${mcp_name}-PLC01`
+
                 const mcp = {
                     //left side variables are from UI, right variables go to data model
                     fla:fla, //not needed, to be removed

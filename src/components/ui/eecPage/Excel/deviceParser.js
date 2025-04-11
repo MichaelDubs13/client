@@ -143,11 +143,26 @@ const deviceParser = {
                 switchCascading: false,
                 interruption_InOrOut:"", //in or out
                 io_pin:0, //pin2 or pin4
-                ios:[] //container for connected IO devices
+                ios:[], //container for connected IO devices
+                mcp:{} //mcp this device is connected to
             }
             devices.push(device);
         })
 
+        return devices;
+    },
+
+    getMcp(devices, mcps){
+        devices = devices.map(device => {
+            if(device.mcp_name){
+                const targetMcp = mcps.find(mcp => mcp.mcp_name == device.mcp_name);
+                if(targetMcp){
+                    device = {...device, mcp:targetMcp};
+                }
+            }
+            return device;
+        })
+        console.log(devices);
         return devices;
     },
 
@@ -179,13 +194,12 @@ const deviceParser = {
     },
     getHMIs(devices){
         const hmiFilterOptions = ["HMI", ]
-        const hmis = filterItemsByStartsOptions(hmiFilterOptions, devices, "device_dt")
-        deviceParser.getHMIParameters(hmis)
-
+        let hmis = filterItemsByStartsOptions(hmiFilterOptions, devices, "device_dt")
+        hmis = deviceParser.getHMIParameters(hmis)
         return hmis
     },
     getHMIParameters(hmis){
-        hmis.map(hmi => {
+        hmis = hmis.map(hmi => {
                 let screen_size = "22in" //size options 22in, 15in
                 let mounting = "Round Tube" //options Round Tube, Flange at Bottom
                 let version = "V17" //options V16, V17
@@ -193,17 +207,23 @@ const deviceParser = {
                 if(hmi.partnumber === "6AV7264-3TS44-0AA0"){
                     screen_size = "22in";
                     hmi = {...hmi, screen_size:screen_size, mounting:mounting, version:version, rfid_side:rfid_side};
+                    return hmi;
+                } else {
+                    hmi = {...hmi, screen_size:screen_size, mounting:mounting, version:version, rfid_side:rfid_side};
+                    return hmi;
                 }
         })
+
+        return hmis
     },
     getSafetyGates(devices){
         const gatesFilterOptions = ["GS", ]
-        const gates = filterItemsByStartsOptions(gatesFilterOptions, devices, "device_dt")
-        deviceParser.getGateParameters(gates);
+        let gates = filterItemsByStartsOptions(gatesFilterOptions, devices, "device_dt")        
+        gates = deviceParser.getGateParameters(gates);
         return gates
     },
     getGateParameters(gates){
-        gates.map(gate => {
+        gates = gates.map(gate => {
                 let communication_type = "PROFINET" //Hardwired, Ethernet, PROFINET
                 let handleside = "Left" //Left, Right
                 if(gate.mfg === "Euchner"){
@@ -213,9 +233,13 @@ const deviceParser = {
                     } else if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-R-168719"){
                         handleside = "Right" 
                     }
-                    gate = {...gate, communication_type:communication_type, handleside:handleside};
+                    return gate = {...gate, communication_type:communication_type, handleside:handleside};
+                } else {
+                    return gate = {...gate, communication_type:communication_type, handleside:handleside};
                 }
         })
+
+        return gates
     },
     getGroupedIOModules(devices){
         let groups =[];
@@ -262,13 +286,13 @@ const deviceParser = {
                         if(!targetDevice.io_port){
                             const nextAvailablePort = ioModule.ios.length; //port number is 0~7
                             targetDevice = {...targetDevice, io_port:nextAvailablePort}
-                        }
+                        } 
                         ioModule.ios.push(targetDevice);
                     }
                 }
             })
         }
-        
+        console.log(groups)
     }
     
     

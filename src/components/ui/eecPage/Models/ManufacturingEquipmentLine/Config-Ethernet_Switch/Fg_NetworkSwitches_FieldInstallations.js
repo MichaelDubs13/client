@@ -38,7 +38,7 @@ export default class Fg_NetworkSwitches_FieldInstallations extends Component{
         for(let i = 0; i < this._switches.length; i++){
             //TODO - find which mcp to pass into the networkConfig
             const item = this._switches[i];
-            const networkSwitch = new F_Network_SwitchConfig(this,i+1, item,this._switches.length, null);
+            const networkSwitch = new F_Network_SwitchConfig(this,i+1, item,this._switches.length, item.mcp);
             networkSwitch.build();
         }
     }

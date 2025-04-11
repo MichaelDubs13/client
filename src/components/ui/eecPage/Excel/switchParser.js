@@ -59,6 +59,7 @@ const switchParser = {
                 inPort:inPort,
                 inSwitch:inSwitch,
                 mfg:mfg,
+                mcp:{},
             }
             switchParser.createAdditionalParameters(networkSwitch);
             switches.push(networkSwitch);
@@ -123,6 +124,19 @@ const switchParser = {
         })
 
         return results;
+    },
+    getMcp(switches, mcps){
+        switches.forEach(networkSwitch => {
+            if(networkSwitch.mcp_name){
+                const targetMcp = mcps.find(mcp => mcp.mcp_name);
+                if(targetMcp){
+                    networkSwitch = {...networkSwitch, mcp:targetMcp};
+                }
+                
+            }
+        })
+       
+        return switches;
     },
 }
 

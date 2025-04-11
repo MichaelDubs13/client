@@ -5,7 +5,7 @@ export default class f_MountingLocation_Config extends Component{
     constructor(parent, index, gateGroup, station) {
         super(parent);
         this.parent = parent;
-        this._classPath = "Config-IO_Modules.Mechatronic._fg_Safety_GateSwitches._f_MountingLocation_Config";
+        this._classPath = "Config-Safety_GateSwitch.Mechatronic._fg_Safety_GateSwitches._f_MountingLocation_Config";
         this._class = "f_MountingLocation_Config";
         this._name = `f_MountingLocation_Config${index > 1 ? index : ""}`;
         this._gateGroup = gateGroup;

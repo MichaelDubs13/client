@@ -35,6 +35,7 @@ export default class Parser {
         let mcps = mcpParser.parse(this._wb, this._mcpWorksheet)
         let devices = deviceParser.parse(this._wb, this._devicesWorksheet)
         devices = deviceParser.getNetworkType(devices, mcps);
+        devices = deviceParser.getMcp(devices, mcps);
         var psus = psuParser.parse(this._wb, this._psuWorksheet)
         psus = psuParser.getPwrDrops(psus, devices);
         psus = psuParser.getDevice(psus, devices);
@@ -49,6 +50,7 @@ export default class Parser {
         pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
         xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
+        switches = switchParser.getMcp(switches, mcps);
         var networkTree = switchParser.createNetworkTree(devices, switches);
 
         mcps = mcpParser.getNetworkPorts(mcps, devices);

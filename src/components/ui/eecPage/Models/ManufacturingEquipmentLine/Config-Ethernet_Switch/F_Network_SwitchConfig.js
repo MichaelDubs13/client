@@ -14,10 +14,12 @@ export default class F_Network_SwitchConfig extends Component{
         this._name = `f_Network_SwitchConfig${index > 1 ? index : ""}`;
         this._networkSwitch = networkSwitch
         this._mcp = mcp;
+        
     }
 
     get Parameters(){
         return [
+            {name: "PLC_ID", value: this._mcp.plc_id, type: "String"},
             {name: "PWR_IN_Location", value: this._networkSwitch.pwr_in_location, type: "String"}, //for Balluf
             {name: "PWR_IN_DT", value: this._networkSwitch.pwr_in_dt, type: "String"}, //for Balluf
             {name: "PWR1_IN_Location", value: this._networkSwitch.pwr1_in_location, type: "String"}, //for Siemens

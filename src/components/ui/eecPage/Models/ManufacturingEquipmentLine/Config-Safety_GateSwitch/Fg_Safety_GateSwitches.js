@@ -26,7 +26,7 @@ export default class Fg_Safety_GateSwitches extends Component{
     build(){
       
         for(let i=0;i<this._gateGroups.length;i++){
-            const mountingLocationConfig = new f_MountingLocation_Config(this,i+1, this._gateGroups[i].gates, this._gateGroups[i].target_device_location);
+            const mountingLocationConfig = new f_MountingLocation_Config(this,i+1, this._gateGroups[i].gates, this._gateGroups[i].target_device_location, this._gateGroups.length);
             mountingLocationConfig.build();
         }
     }
