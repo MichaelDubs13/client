@@ -41,14 +41,15 @@ const PdpConfigurations = () => {
         <>
              <div>
                 <Heading is="h4">Power Distribution Panel Configuration</Heading>
-                <FormItem className="form-item">
-                    <FormLabel className="form-label" htmlFor="context">Enter the number of Power Distribution Panels required for this line:</FormLabel>
+                <FormItem className="form-set-item">
+                    <FormLabel className="form-set-label" htmlFor="context">Enter the number of Power Distribution Panels required for this line:</FormLabel>
                     <FormInputText
                         id="context"
+                        className="form-set-input"
                         value={numberOfPdps}
                         placeholder={pdps.length}
                         onChange={handleValueChange}/>
-                    <Button style={{marginLeft:"10px"}} onClick={handleSumbit}>Set</Button>
+                    <Button variant='secondary' style={{marginLeft:"10px", marginTop:'10px'}} onClick={handleSumbit}>Set</Button>
                 </FormItem>                        
                 
                 {   

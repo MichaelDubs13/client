@@ -49,7 +49,7 @@ import "../../Eec.css";
           {/* Drop: Target DT */}
           <InputTextItem title={"Device Tag (e.g., MIO01)"} placeHolder={drop.deviceTag} setModelValue={setDropValue} index={index} property={"deviceTag"}/>    
           {/* Drop: Description */}
-          <InputTextItem title={"Device Tag (e.g., MIO01)"} placeHolder={drop.description} setModelValue={setDropValue} index={index} property={"description"}/>    
+          <InputTextItem title={"Enter the description of the target device"} placeHolder={drop.description} setModelValue={setDropValue} index={index} property={"description"}/>    
           {/* Drop: FLA */}
           <InputTextItem title={"FLA"} placeHolder={drop.fla} setModelValue={setDropValue} index={index} property={"fla"}/>              
         </div>

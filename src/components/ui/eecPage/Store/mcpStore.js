@@ -107,6 +107,12 @@ const mcpStore = create((set) => ({
           }
         })
     },
+    duplicateMcp:(index) => {  
+      set((state) => {
+        const newMcp = {...state.mcps[index]}
+        return {mcps: [...state.mcps, newMcp]};
+      })
+    },
     deleteMcp:(index) => {  
       set((state) => {
         return {mcps: [...state.mcps.slice(0, index), ...state.mcps.slice(index + 1)]};

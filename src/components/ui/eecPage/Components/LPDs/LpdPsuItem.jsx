@@ -46,7 +46,7 @@ return (
           )}
           {/* Number of 24V drops */}
           <FormItem className="form-item">
-            <FormLabel htmlFor={`number-of-24V-drops-${psuIndex}`}>
+            <FormLabel className="form-label" htmlFor={`number-of-24V-drops-${psuIndex}`}>
               Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)
             </FormLabel>
             <FormInputText

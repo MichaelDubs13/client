@@ -87,6 +87,12 @@ const xpdpStore = create((set) => ({
             }
           })
     },
+    duplicateXpdp:(index) => {  
+      set((state) => {
+        const newXpdp = {...state.xpdps[index]}
+        return {xpdps: [...state.xpdps, newXpdp]};
+      })
+    },
     deleteXpdp:(index) => {  
       set((state) => {
         return {xpdps: [...state.xpdps.slice(0, index), ...state.xpdps.slice(index + 1)]};

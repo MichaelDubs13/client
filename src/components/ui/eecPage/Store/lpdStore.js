@@ -102,6 +102,12 @@ const lpdStore = create((set) => ({
         }
       })
     },
+    duplicateLpd:(index) => {  
+      set((state) => {
+        const newLpd = {...state.lpds[index]}
+        return {lpds: [...state.lpds, newLpd]};
+      })
+    },
     deleteLpd:(index) => {  
       set((state) => {
         return {lpds: [...state.lpds.slice(0, index), ...state.lpds.slice(index + 1)]};
