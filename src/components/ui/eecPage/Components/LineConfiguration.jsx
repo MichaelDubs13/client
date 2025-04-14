@@ -21,7 +21,7 @@ const LineConfiguration = () => {
     const tabs = [
         {
           id: 'tab-1',
-          label: `PDPs(${pdpStore.length})`,
+          label: `PDPs(${pdps.length})`,
           style:{fontSize:"18px"}
         },
         {
