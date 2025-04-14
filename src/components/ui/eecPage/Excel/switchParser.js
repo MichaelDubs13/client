@@ -60,6 +60,7 @@ const switchParser = {
                 inSwitch:inSwitch,
                 mfg:mfg,
                 mcp:{},
+                devices:[],
             }
             switchParser.createAdditionalParameters(networkSwitch);
             switches.push(networkSwitch);
