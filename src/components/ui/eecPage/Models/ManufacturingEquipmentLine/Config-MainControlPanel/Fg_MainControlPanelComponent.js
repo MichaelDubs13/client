@@ -7,12 +7,12 @@ import F_K_Grounding from "./f_K_Grounding/F_K_Grounding";
 
 
 export default class Fg_MainControlPanelComponent extends Component{
-    constructor(parent, mcp) {
+    constructor(parent,index, mcp) {
         super(parent);
         this.parent = parent;
         this._classPath = "Config-MainControlPanel.Mechatronic.fg_MainControlPanel";
         this._class = "fg_MainControlPanel";
-        this._name = "fg_MainControlPanel";
+        this._name = `fg_MainControlPanel${index > 1 ? index : ""}`;
         this._mcp = mcp;
         const mcpName = mcp.mcp_name.split('.')
         this._location = mcpName[1];

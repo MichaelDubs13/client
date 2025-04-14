@@ -66,7 +66,8 @@ const mcpParser = {
                 const eth_port1_target_location = item["ETH Port1 Target Location"];
                 const eth_port2_target_location = item["ETH Port2 Target Location"];
 
-                const plc_id = `${ProjectConfiguration.line}-${mcp_name}-PLC01`
+                const plc_id = `${ProjectConfiguration.line}-${mcp_name}-PLC01`;
+                const ports = [];
 
                 const mcp = {
                     //left side variables are from UI, right variables go to data model
@@ -86,7 +87,7 @@ const mcpParser = {
                     plc_portx1p2r_target_location: plc_portx1p2r_target_location,
                     plc_portx1p2r_target_dt: plc_portx1p2r_target_dt,
                     ked_plant_ip:ked_plant_ip, 
-                    ked_plc_to_plc_id: ked_plc_plc_ip,
+                    ked_plc_to_plc_ip: ked_plc_plc_ip,
                     ked_local_ip:ked_local_ip, 
                     ked_local_ip_secondar:ked_local_ip_secondary,
                     ked_port4_target_location: ked_port4_target_location,
@@ -114,6 +115,7 @@ const mcpParser = {
                     gb_Port3_CableLength: gb_Port3_CableLength,
                     gb_Port4_CableLength: gb_Port4_CableLength,
                     leth_number_of_ports: leth_numberOfDevices,
+                    ports:ports,
                     eth_plant_ip: eth_plant_ip,
                     eth_plc_to_plc_ip: eth_plc_to_plc_ip,
                     eth_local_ip: eth_local_ip,

@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx'
-import { xpdpConfiguration } from '../../../../store/eec/xpdpStore';
+import { xpdpConfiguration } from '../Store/xpdpStore';
 
 
 const xpdpParser = {
@@ -42,7 +42,7 @@ const xpdpParser = {
                        xf_size = "30kVA Transformer"
                    }
                }
-               const branchCircuit = xpdpConfiguration.createBranchCircuits();
+               const branchCircuit = xpdpConfiguration.initializeBranchCircuits();
                
                //ensure powerDrops is initialized before assignment
                this.powerDrops = this.powerDrops || {};

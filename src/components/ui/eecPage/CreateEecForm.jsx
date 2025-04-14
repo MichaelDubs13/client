@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {FormItem, FormLabel, FormInputText, Button, FormItemFileUpload, FormInputDropdown } from '@tesla/design-system-react';
+import {FormItem, FormLabel, FormInputText, Button, FormItemFileUpload } from '@tesla/design-system-react';
 import useAuthStore from '../../../store/authStore.js';
-import * as XLSX from 'xlsx'
 import ModelBuilder from "./Models/ModelBuilder";
 import Parser from './Excel/Parser.js';
 
@@ -13,13 +12,14 @@ const CreateEecForm = ({onSubmit}) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState(''); 
   const [imx, setIMX] = useState('');
-  
+
   useEffect(() => {
     if (isAuthenticated === true) {
       setUserEmail(user.email);
       setUserName(`${user.first_name} ${user.last_name}`);
     }
   }, [user]);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault()

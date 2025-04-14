@@ -16,6 +16,10 @@ export default class Fg_IOModule extends Component{
         if(targetIOModule){
             this._source_network_port = targetIOModule.local_switch_port
         }
+
+        this._plc_id = this._ioModule.mcp ? this._ioModule.mcp.plc_id : ""
+        console.log(this._ioModule.mcp)
+        console.log(this._ioModule.mcp.plc_id)
     }
 
     get Parameters(){
@@ -26,6 +30,7 @@ export default class Fg_IOModule extends Component{
             {name: "s_frmUI_IOModPSUSourceLocation", value: this._ioModule.source24VDC_location, type: "String"},
             {name: "s_frmUI_IOModPSUSourceDT", value: this._ioModule.source24VDC_dt, type: "String"},
             {name: "s_frmUI_IOModLocation", value: this._ioModule.target_device_location, type: "String"},
+            {name: "PLC_ID", value: this._plc_id, type: "String"},
         ];
     }
     build(){

@@ -12,7 +12,7 @@ export default class _f_DC_Distribution extends Component{
         this._psu = psu;
 
         //Needs to generate a page per 4 drops
-        this._numberOfSubDistribution = Math.ceil(psu.numberOfDrops / 4);
+        this._numberOfSubDistribution = Math.ceil(psu.pwrDrops.length / 4);
     }
     get Parameters(){
         return [

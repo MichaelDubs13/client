@@ -162,7 +162,7 @@ const deviceParser = {
             }
             return device;
         })
-        console.log(devices);
+        
         return devices;
     },
 

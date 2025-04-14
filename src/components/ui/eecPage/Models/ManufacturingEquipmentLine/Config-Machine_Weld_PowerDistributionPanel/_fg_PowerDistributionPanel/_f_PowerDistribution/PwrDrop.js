@@ -16,28 +16,28 @@ export default class PwrDrop extends Component {
     }
     
     build(){
-        for(let i = 0; i < this._pdp.numberOf250APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["250A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["250A"][i], 250, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf100APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["100A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["100A"][i], 100, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf70APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["70A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["70A"][i], 70, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf60APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["60A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["60A"][i], 60, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf40APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["40A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["40A"][i], 40, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf30APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["30A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["30A"][i], 30, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf20APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["20A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["20A"][i], 20, i+1);
         }
-        for(let i = 0; i < this._pdp.numberOf10APwrDrps; i++){
+        for(let i = 0; i < this._pdp.branchCircuit["10A"].length; i++){
             const pwrDrp = new BranchCircuit(this,this._pdp.branchCircuit["10A"][i], 10, i+1);
         }
     }

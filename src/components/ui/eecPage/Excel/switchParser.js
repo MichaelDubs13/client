@@ -126,16 +126,15 @@ const switchParser = {
         return results;
     },
     getMcp(switches, mcps){
-        switches.forEach(networkSwitch => {
-            if(networkSwitch.mcp_name){
-                const targetMcp = mcps.find(mcp => mcp.mcp_name);
+        switches = switches.map(networkSwitch => {
+            if(networkSwitch.mcpName){
+                const targetMcp = mcps.find(mcp => mcp.mcp_name == networkSwitch.mcpName);
                 if(targetMcp){
                     networkSwitch = {...networkSwitch, mcp:targetMcp};
                 }
-                
             }
+            return networkSwitch;
         })
-       
         return switches;
     },
 }

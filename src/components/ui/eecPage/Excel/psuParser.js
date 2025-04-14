@@ -1,5 +1,6 @@
 import * as XLSX from 'xlsx'
 import { splitIntoTwo } from './util';
+import { lpdConfiguration } from '../Store/lpdStore';
 
 const psuParser = {
     parse(workbook, worksheet){
@@ -21,7 +22,7 @@ const psuParser = {
             const psu_dt = psu_arr[1] 
             const partNumber = item["Part Number"];     
             const powerFedFrom = item["Power Fed from"];   
-            const supplyVoltage = item["Supply Voltage"];    
+            let supplyVoltage = item["Supply Voltage"];    
             const xpdpCBIndex = item["XPDP CB Index"];     
             const psu = {
                 lineside120AFLA:lineside120AFLA,
@@ -31,8 +32,8 @@ const psuParser = {
                 inputPowerCord:inputPowerCord,
                 inputPowerTee:inputPowerTee,
                 MFG:MFG,
-                numberOfDrops:numberOfDrops,
-                numberOfDevices:numberOfDevices,
+                numberOfDrops:numberOfDrops, //not used
+                numberOfDevices:numberOfDevices, //not used
                 psuLocationDt:psuLocationDt,
                 psu_location:psu_location,
                 psu_dt:psu_dt,
@@ -40,6 +41,7 @@ const psuParser = {
                 powerFedFrom:powerFedFrom,
                 supplyVoltage:supplyVoltage,
                 xpdpCBIndex:xpdpCBIndex,
+                cable_length:0,
                 pwrDrops:[],
                 device:{}
             }
@@ -48,7 +50,14 @@ const psuParser = {
 
         return psus;
     },
-
+    getSupplyVoltage(value){
+        var targetValue = lpdConfiguration.psuSupplyVoltageOptions.find(option => value.startsWith(option.value))
+        if(targetValue){
+            return targetValue;
+        }
+        
+        return "";
+    },
     getOrderedBranch(psus, devices){
         var results = []
 

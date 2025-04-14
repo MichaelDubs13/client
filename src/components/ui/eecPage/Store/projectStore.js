@@ -1,0 +1,42 @@
+import {create} from "zustand";
+
+const projectStore = create((set) => ({
+    plant:"",
+    shop:"",
+    line:"", 
+    installation_location:"",
+    installation_location_options:["UL", "EU"],
+
+    setPlant:(value)=>{
+        set({plant:value});        
+    },
+    setShop:(value)=>{
+        set({shop:value});
+    },
+    setLine:(value)=>{
+        set({line:value});
+    },
+    setinstallation_location:(value)=>{
+        set({installation_location:value});
+    },
+
+    setConfig:(data)=>{
+        set({plant:data.plant}); 
+        set({shop:data.shop});  
+        set({line:data.line});
+        set({installation_location:data.installation_location});
+    },
+
+    getConfig:()=>{
+        return {
+            plant:projectStore.plant,
+            shop:projectStore.shop,
+            line:projectStore.line,
+            installation_location:projectStore.installation_location,
+        }
+    }
+}));
+
+export {
+    projectStore,
+}

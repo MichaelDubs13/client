@@ -16,6 +16,7 @@ export default class Fg_24VPowerDistribution extends Component{
         this._name = `fg_24VPowerDistribution${index > 1 ? index : ""}`;
         this._branch = branch;
         this._locationDesignation = branch.psus[0].target_device_location
+        this._supplyVoltage = branch.psus[0].supplyVoltage;
         this.Balluff_CLS2_BAE0133_NumberOfPSU = 0
         this.Balluff_CLS2_BAE012P_NumberOfPSU = 0
         this.Balluf_BAE00FL_BAE00ET_NumberOfPSU = 0
@@ -35,7 +36,6 @@ export default class Fg_24VPowerDistribution extends Component{
         this.b_PSU_Selection_120_ = false;
         this.b_PSU_Selection_400_ = false;
         this.b_PSU_Selection_240_ = false;
-        this._PSUSupplyVoltage_ = 0;
 
         this._Balluff_CLS2_BAE0133 = [];
         this._Turck = [];
@@ -52,14 +52,12 @@ export default class Fg_24VPowerDistribution extends Component{
                     this.s_PSU_Selection_120_240 = `${psu.MFG}-${psu.partNumber}`;
                     this.s_PSU_Selection_480_400 = ``;
                     this.b_PSU_Selection_BAE0133 = true;
-                    this._PSUSupplyVoltage_ = "120";
                 }
             } else if(psu.MFG === "Turck"){
                 this._Turck.push(psu);
                 this.PSU_Selection_120 = ``;
                 this.s_PSU_Selection_120_240 = ``;
                 this.s_PSU_Selection_480_400 = `${psu.MFG}`;
-                this._PSUSupplyVoltage_ = "480";
             }
         })
         this.Balluff_CLS2_BAE0133_NumberOfPSU = this._Balluff_CLS2_BAE0133.length;
@@ -78,7 +76,7 @@ export default class Fg_24VPowerDistribution extends Component{
             {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this.numberOfBAE0133, type: "Integer"},
             {name: "LocationDesignation", value: this._locationDesignation, type: "String"},
             {name: "DeviceTag", value: this._branch.cb, type: "String"},
-            {name: "_PSUSupplyVoltage_", value: this._PSUSupplyVoltage_, type: "String"},
+            {name: "_PSUSupplyVoltage_", value: this._supplyVoltage, type: "String"},
             {name: "s_PSU_Selection_480_400", value: this.s_PSU_Selection_480_400, type: "String"},
             {name: "s_PSU_Selection_120_240", value: this.s_PSU_Selection_120_240, type: "String"},
 

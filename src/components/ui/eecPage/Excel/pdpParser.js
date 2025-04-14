@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx'
-import {pdpConfiguration} from '../../../../store/eec/pdpStore';
+import {pdpConfiguration} from '../Store/pdpStore';
 import { findClosestHigherNumber } from './util';
 
 const pdpParser = {
@@ -56,7 +56,7 @@ const pdpParser = {
             const spare70A = item["Spare 70A"];
             const spare100A = item["Spare 100A"];
             const spare250A = item["Spare 250A"];
-            const branchCircuit = pdpConfiguration.createBranchCircuits();
+            const branchCircuit = pdpConfiguration.initializeBranchCircuits();
             const hotPowerDrops = [] //only available in UI
             if(location){
                 const pdp = {name:name, amp:amp, FLA:FLA, location:location, 
