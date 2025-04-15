@@ -21,7 +21,7 @@ const McpConfiguration = ({mcp, index}) => {
             <InputTextItem title={"Plant name"} placeHolder={plant} readOnly={true} />
             <InputTextItem title={"Shop name"} placeHolder={shop} readOnly={true} />
             <InputTextItem title={"Manufacturing Line name (e.g., UBM1, DOR1)"} placeHolder={line} readOnly={true}/>
-            <InputTextItem title={"Location designation (e.g., MPDP01, WPDP01)"} placeHolder={mcp.location} setModelValue={setMcpValue} index={mcpIndex} property={"location"}/>
+            <InputTextItem title={"Location designation (e.g., MCP01, MCP02)"} placeHolder={mcp.location} setModelValue={setMcpValue} index={mcpIndex} property={"location"}/>
             <HeadingItem label={`Panel Mounting Location and Options`} size={18} margin={"20px"} open={false} children={<McpPanelItem mcp={mcp} index={index}/>}/>
             <HeadingItem label={`PLC01 Configuration parameters`} size={18} margin={"20px"} open={false} children={<PlcConfiguration mcp={mcp} index={index}/>}/>
             <HeadingItem label={`KED - Plant switch configuration parameters`} size={18} margin={"20px"} open={false} children={<KedConfiguration mcp={mcp} index={index}/>}/>

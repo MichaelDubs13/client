@@ -11,6 +11,7 @@ import { pdpStore } from "../Store/pdpStore";
 import { xpdpStore } from "../Store/xpdpStore";
 import { mcpStore } from "../Store/mcpStore";
 import { lpdStore } from "../Store/lpdStore";
+import { networkSwitchStore } from "../Store/networkSwitchStore";
 import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
 
 const LineConfiguration = () => {

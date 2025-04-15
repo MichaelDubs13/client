@@ -1,13 +1,14 @@
 import {create} from "zustand";
-import pdpParser from "../Excel/pdpParser";
+import switchParser from "../Excel/switchParser";
 
 const networkSwitchOptions = {
   // look at pdpStore for example of drop down list options
-}
+  deviceTypeSelectionOptions: [
+    { value: "SPARE", label: "SPARE" },
+    { value: "Device", label: "Device" },
+    { value: "Network Switch", label: "Network Switch" }
+  ],
 
-
-const networkSwitchConfiguration = {
-  // look at pdpStore for example of default values
   communicationFlowOptions: [
     { value: "In", label: "In" },
     { value: "Out", label: "Out" }
@@ -15,7 +16,7 @@ const networkSwitchConfiguration = {
 
   networkTypeOptions: [
     { value: "Local", label: "Local" },
-    { value: "Plant", label: "Plant" }
+    //{ value: "Plant", label: "Plant" }  // uncomment this when Plant is added to the network switch configuration within EEC
   ],
 
   switchTypeOptions: [
@@ -23,7 +24,12 @@ const networkSwitchConfiguration = {
     { value: "Unmanaged", label: "Unmanaged" }
   ],
 
-  /* ports_8Options: [
+  switchSpeedOptions: [
+    { value: "Gigabit", label: "Gigabit" },
+    { value: "Fast", label: "Fast" }
+  ],
+
+  ports_8Options: [
     { value: 0, label: 0 },
     { value: 8, label: 8 },
   ],
@@ -32,14 +38,20 @@ const networkSwitchConfiguration = {
     { value: 0, label: 0 },
     { value: 8, label: 8 },
     { value: 16, label: 16 },
-  ], */
+  ],
 
-  numberOfPortsOptions: [
+  ports_8or16or24Options: [
     { value: 0, label: 0 },
     { value: 8, label: 8 },
     { value: 16, label: 16 },
     { value: 24, label: 24 },
   ],
+}
+
+
+const networkSwitchConfiguration = {
+  // look at pdpStore for example of default values
+  
 
   createPort: () => {
     return {
@@ -68,9 +80,10 @@ const networkSwitchConfiguration = {
       localIP: "", // EEC variable name: Local_IP
       plantIP: "", // EEC variable name: Plant_IP
       switchType: "Managed", // EEC variable name: Switch_Type_Selection
-      power1InLocation: 0, // EEC variable name: PWR1_IN_Location
+      switchSpeed: "Gigabit", // EEC variable name: Switch_Speed_Selection
+      power1InLocation: "", // EEC variable name: PWR1_IN_Location
       power1InDT: "", // EEC variable name: PWR1_IN_DT
-      power2InLocation: 0, // EEC variable name: PWR2_IN_Location
+      power2InLocation: "", // EEC variable name: PWR2_IN_Location
       power2InDT: "", // EEC variable name: PWR2_IN_DT
       powerInLocation: "", // EEC variable name: PWR_IN_Location
       powerInDT: "", // EEC variable name: PWR_IN_DT
@@ -80,7 +93,7 @@ const networkSwitchConfiguration = {
       consuleName: "", // EEC variable name: Console_DT
       ports_8: 8, // EEC variable name: 8_ports
       ports_8or16: 16, // EEC variable name: 8or16_ports
-      ports_8or16or24: 24, // EEC variable name: 8or16or24_ports
+      ports_8or16or24: 8, // EEC variable name: 8or16or24_ports
       // below is an array example for the sub components under network switch
       ports:[],
   }
@@ -135,9 +148,25 @@ const networkSwitchStore = create((set) => ({
     },
 
     
-      // this is for sub components under network switch
-      // this would be for the ports in this case
-    setNumberOfPorts:(index, numberOfPorts)=>{
+    // this is for sub components under network switch
+    // this would be for the ports in this case
+    // need to set numberOfPorts equal to the value of ports_8, ports_8or16, or ports_8or16or24
+    
+    setNumberOfPorts:(index, numberOfPorts, networkType, switchType, switchSpeed, ports_8, ports_8or16, ports_8or16or24)=>{
+      // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
+      // this will be used to create the ports for the network switch
+      // check the values in priority order
+      if (networkType === "Local" && switchType === "Unmanaged") {
+        numberOfPorts = ports_8;
+      } else if (networkType === "Local" && switchType === "Managed") {
+        numberOfPorts = ports_8or16;
+      } else if (networkType === "Plant" && switchType === "Fast") {
+        numberOfPorts = ports_8or16;
+      } else if (networkType === "Plant" && switchSpeed === "Gigabit") {
+        numberOfPorts = ports_8or16or24;
+      }
+
+      // create the ports for the network switch
       var ports = [];
       for (let i = 0; i < numberOfPorts; i++) {
         var port = networkSwitchConfiguration.createPort();
