@@ -11,6 +11,7 @@ import { pdpStore } from "../Store/pdpStore";
 import { xpdpStore } from "../Store/xpdpStore";
 import { mcpStore } from "../Store/mcpStore";
 import { lpdStore } from "../Store/lpdStore";
+import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
 
 const LineConfiguration = () => {
     const [activeTab, setActiveTab] = useState('tab-1');
@@ -56,17 +57,14 @@ const LineConfiguration = () => {
       }
     return (
         <>
-            <Heading is="h2" style={{marginBottom:'20px'}}>Line Configuration Selections</Heading>
-            {/* <HeadingItem label={"Power Distribution Panel Configuration"} size={22} children={<PdpConfigurations/>}/>
-            <HeadingItem label={"120/208VAC Power Distribution Panel Configuration"} size={22} children={<XpdpConfigurations/>}/>
-            <HeadingItem label={"Main Control Panel Configuration"} size={22} children={<McpConfigurations/>}/>
-            <HeadingItem label={"24VDC Power Distribution Configuration"} size={22} children={<LpdConfigurations/>}/> */}
+            {/* <Heading is="h2" style={{marginBottom:'20px'}}>Configurations</Heading> */}
+            <ManufacturingLineConfiguration/>
             <TabList
                 animated
                 onTabChange={(e) => setActiveTab(e.currentTarget.id)}
                 selected={activeTab}
                 tabs={tabs}
-                style={{overflow:'hidden'}}
+                style={{overflow:'hidden', }}
                 variant="underline"
                 />
             {
