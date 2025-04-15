@@ -11,11 +11,7 @@ import { pdpStore } from "../Store/pdpStore";
 import { xpdpStore } from "../Store/xpdpStore";
 import { mcpStore } from "../Store/mcpStore";
 import { lpdStore } from "../Store/lpdStore";
-<<<<<<< HEAD
-import { networkSwitchStore } from "../Store/networkSwitchStore";
-=======
 import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
->>>>>>> c7a98b98fddd8658a0755fb45f83f383a3050c45
 
 const LineConfiguration = () => {
     // this is the data being used in the UI for the line configuration
