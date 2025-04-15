@@ -1,8 +1,8 @@
 import { iconChevron90, iconChevron180} from '@tesla/design-system-icons';
 import { Icon, TD } from '@tesla/design-system-react'
-import { useState } from "react";
+import { Children, useState } from "react";
 import "../../Eec.css";
-
+import PropTypes from 'prop-types';
 
 const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons}) => {
     const [expanded, setExpanded] = useState(open);
@@ -46,4 +46,14 @@ const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons})
         </div>           
     );
 };
+
+HeadingItem.prototype = {
+    headerIcon:PropTypes.string,
+    label:PropTypes.string,
+    size:PropTypes.number,
+    open:PropTypes.bool,
+    margin:PropTypes.string,
+    Children:PropTypes.element,
+    buttons:PropTypes.arrayOf(PropTypes.element),
+}
 export default HeadingItem;

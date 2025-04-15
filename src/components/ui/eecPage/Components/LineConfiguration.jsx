@@ -57,7 +57,6 @@ const LineConfiguration = () => {
       }
     return (
         <>
-            {/* <Heading is="h2" style={{marginBottom:'20px'}}>Configurations</Heading> */}
             <ManufacturingLineConfiguration/>
             <TabList
                 animated

@@ -5,15 +5,14 @@ import { Icon, Tooltip, TooltipWrapper, useTooltipState } from '@tesla/design-sy
 import { iconInfo } from '@tesla/design-system-icons';
 import ModalCreateEecForm from "./ModalCreateEecForm";
 import DownloadButton from "../libraryPage/DownloadButton";
-import ManufacturingLineConfiguration from "./Components/Project/ManufacturingLineConfiguration";
 import { projectStore } from "./Store/projectStore";
-import UploadToUIButton from "./UploadToUIButton";
 import { xpdpConfiguration, xpdpStore } from "./Store/xpdpStore";
 import { mcpConfiguration, mcpStore } from "./Store/mcpStore";
 import { lpdConfiguration, lpdStore } from "./Store/lpdStore";
 import {pdpStore, pdpConfiguration} from "./Store/pdpStore";
 import LoadButton from "./LoadButton";
 import SaveButton from "./SaveButton";
+import UploadButton from "./UploadButton";
 
 
 
@@ -86,7 +85,7 @@ const EecPage = () => {
                 Configurations  
             </h2>
             <div style={{display: "flex", justifyContent: "left", gap: "15px", alignContent:'center', alignItems:'center'}}>
-              <UploadToUIButton/>
+              <UploadButton/>
               <Button onClick={handleSumbit} style={{marginTop:'5px'}}>Generate</Button>
               <SaveButton/>
               <LoadButton/>
