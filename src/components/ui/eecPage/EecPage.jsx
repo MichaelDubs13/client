@@ -83,7 +83,7 @@ const EecPage = () => {
                 <DownloadButton label="Download EEC Template" filePath="Templates/Eec_Template.xlsx"/>
             </div>
             <h2>
-                Data Forms    
+                Configurations  
             </h2>
             <div style={{display: "flex", justifyContent: "left", gap: "15px", alignContent:'center', alignItems:'center'}}>
               <UploadToUIButton/>
@@ -92,7 +92,6 @@ const EecPage = () => {
               <LoadButton/>
             </div>
             
-            <ManufacturingLineConfiguration/>
             <LineConfiguration/>
           </div>
         </>

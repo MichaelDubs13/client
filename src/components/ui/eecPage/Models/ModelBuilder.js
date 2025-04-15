@@ -22,7 +22,7 @@ const ModelBuilder = {
         return ModelBuilder.doc;
     },
     
-    buildContent : (pdps, xpdps, mcps, branches, switches,devices, groupedIOModules, hmis, gates) => {
+    buildContent : (pdps, xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates) => {
         const manufacturingEquipmentLINE = new ManufacturingEquipmentLINE();
 
         if(pdps.length > 0){
@@ -40,8 +40,8 @@ const ModelBuilder = {
             fg_MainControlPanel.build();
         }
         
-        if(branches.length > 0){
-            const fg_24VDCPowerDistribution = new Fg_24VDC_PowerDistribution(manufacturingEquipmentLINE, branches);
+        if(lpds.length > 0){
+            const fg_24VDCPowerDistribution = new Fg_24VDC_PowerDistribution(manufacturingEquipmentLINE, lpds);
             fg_24VDCPowerDistribution.build();
         }
        
@@ -71,7 +71,7 @@ const ModelBuilder = {
         return node;
     },
 
-    buildIMX:(config, pdps,xpdps, mcps, branches, switches,devices, groupedIOModules, hmis, gates)=>{
+    buildIMX:(config, pdps,xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates)=>{
         ModelBuilder.doc = document.implementation.createDocument("", "", null);
         let imxElem = ModelBuilder.doc.createElement("imx");
         imxElem.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -92,7 +92,7 @@ const ModelBuilder = {
         libraryElem.appendChild(addElem);
         projectElem.appendChild(libraryElem);
 
-        const contentElem = ModelBuilder.buildContent(pdps,xpdps, mcps, branches, switches, devices, groupedIOModules, hmis, gates);
+        const contentElem = ModelBuilder.buildContent(pdps,xpdps, mcps, lpds, switches, devices, groupedIOModules, hmis, gates);
         //post process
         const pi = ModelBuilder.doc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
         ModelBuilder.doc.insertBefore(pi, ModelBuilder.doc.firstChild);

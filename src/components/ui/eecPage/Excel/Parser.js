@@ -39,7 +39,7 @@ export default class Parser {
         var psus = psuParser.parse(this._wb, this._psuWorksheet)
         psus = psuParser.getPwrDrops(psus, devices);
         psus = psuParser.getDevice(psus, devices);
-        var branches = psuParser.getOrderedBranch(psus, devices); //what to do with branches
+        var lpds = psuParser.getLpds(psus, devices); //what to do with branches
         
         const hmis = deviceParser.getHMIs(devices);
         const gates = deviceParser.getSafetyGates(devices);
@@ -58,7 +58,7 @@ export default class Parser {
         mcps = mcpParser.getDirectNetworkDevices(mcps, devices);
         mcps = mcpParser.getNetworkTopology(mcps);
         
-        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, branches:branches, 
+        return {config:config, pdps:pdps,xpdps:xpdps, mcps:mcps, lpds:lpds, 
             switches:networkTree,devices:devices, groupedIOModules:groupedIOModules,
             hmis:hmis, gates:gates }
         

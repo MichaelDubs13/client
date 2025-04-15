@@ -11,7 +11,11 @@ import { pdpStore } from "../Store/pdpStore";
 import { xpdpStore } from "../Store/xpdpStore";
 import { mcpStore } from "../Store/mcpStore";
 import { lpdStore } from "../Store/lpdStore";
+<<<<<<< HEAD
 import { networkSwitchStore } from "../Store/networkSwitchStore";
+=======
+import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
+>>>>>>> c7a98b98fddd8658a0755fb45f83f383a3050c45
 
 const LineConfiguration = () => {
     // this is the data being used in the UI for the line configuration
@@ -67,17 +71,14 @@ const LineConfiguration = () => {
       }
     return (
         <>
-            <Heading is="h2" style={{marginBottom:'20px'}}>Line Configuration Selections</Heading>
-            {/* <HeadingItem label={"Power Distribution Panel Configuration"} size={22} children={<PdpConfigurations/>}/>
-            <HeadingItem label={"120/208VAC Power Distribution Panel Configuration"} size={22} children={<XpdpConfigurations/>}/>
-            <HeadingItem label={"Main Control Panel Configuration"} size={22} children={<McpConfigurations/>}/>
-            <HeadingItem label={"24VDC Power Distribution Configuration"} size={22} children={<LpdConfigurations/>}/> */}
+            {/* <Heading is="h2" style={{marginBottom:'20px'}}>Configurations</Heading> */}
+            <ManufacturingLineConfiguration/>
             <TabList
                 animated
                 onTabChange={(e) => setActiveTab(e.currentTarget.id)}
                 selected={activeTab}
                 tabs={tabs}
-                style={{overflow:'hidden'}}
+                style={{overflow:'hidden', }}
                 variant="underline"
                 />
             {

@@ -41,12 +41,12 @@ const UploadToUIButton = () => {
         reader.onload = function(event) {
           var data = event.target.result;
           const excelParser = new Parser(data);
-          const {config,pdps, xpdps, mcps, branches, switches, devices, groupedIOModules, hmis, gates} = excelParser.parse();
+          const {config,pdps, xpdps, mcps, lpds, switches, devices, groupedIOModules, hmis, gates} = excelParser.parse();
           setConfig(config);
           setPdps(pdps);
           setXpdps(xpdps);
           setMcps(mcps);
-          setLpds(branches);
+          setLpds(lpds);
           
         }
         reader.readAsBinaryString(file)

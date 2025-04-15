@@ -58,7 +58,7 @@ const psuParser = {
         
         return "";
     },
-    getOrderedBranch(psus, devices){
+    getLpds(psus, devices){
         var results = []
 
          psus.forEach(psu => {
