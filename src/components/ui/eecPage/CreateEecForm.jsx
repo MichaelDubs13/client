@@ -3,6 +3,8 @@ import {FormItem, FormLabel, FormInputText, Button, FormItemFileUpload } from '@
 import useAuthStore from '../../../store/authStore.js';
 import ModelBuilder from "./Models/ModelBuilder";
 import Parser from './Excel/Parser.js';
+import PropTypes from 'prop-types';
+
 
 
 const CreateEecForm = ({onSubmit}) => {
@@ -92,5 +94,8 @@ const CreateEecForm = ({onSubmit}) => {
     </>
   );
 };
+CreateEecForm.prototype = {
+  onSubmit:PropTypes.func
+}
 
 export default CreateEecForm;

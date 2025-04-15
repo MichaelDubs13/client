@@ -8,7 +8,7 @@ import { lpdStore } from "./Store/lpdStore";
 import { projectStore } from "./Store/projectStore";
 
 
-const UploadToUIButton = () => {
+const UploadButton = () => {
   const [eecFile, setEecFile] = useState(null);
   const [eecPath, setEecPath] = useState("");
   const setConfig =  projectStore((state) => state.setConfig);
@@ -37,6 +37,7 @@ const UploadToUIButton = () => {
     }
     
     const parseExcel = async (file) =>{
+      if(!file) return;
       var reader = new FileReader();
         reader.onload = function(event) {
           var data = event.target.result;
@@ -69,4 +70,4 @@ const UploadToUIButton = () => {
   );
 };
 
-export default UploadToUIButton;
+export default UploadButton;
