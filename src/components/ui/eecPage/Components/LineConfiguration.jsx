@@ -2,8 +2,8 @@ import "../Eec.css";
 import McpConfigurations from "./MCPs/McpConfigurations";
 import PdpConfigurations from "./PDPs/PdpConfigurations";
 import XpdpConfigurations from "./XPDPs/XpdpConfigurations";
-import HeadingItem from "./Util/HeadingItem";
 import LpdConfigurations from "./LPDs/LpdConfigurations";
+import NetworkSwitchConfigurations from "./NetworkSwitches/NetworkSwitchConfigurations";
 import { Heading } from "@tesla/design-system-react";
 import { TabList} from "@tesla/design-system-react";
 import { useState } from "react";
@@ -14,12 +14,15 @@ import { lpdStore } from "../Store/lpdStore";
 import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
 
 const LineConfiguration = () => {
+    // this is the data being used in the UI for the line configuration
     const [activeTab, setActiveTab] = useState('tab-1');
     const pdps = pdpStore((state) => state.pdps);
     const xpdps = xpdpStore((state) => state.xpdps);
     const mcps = mcpStore((state) => state.mcps);
     const lpds = lpdStore((state) => state.lpds);
+    const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
     const tabs = [
+        // this defines the tabs for the line configuration
         {
           id: 'tab-1',
           label: `PDPs(${pdps.length})`,
@@ -40,6 +43,11 @@ const LineConfiguration = () => {
             label: `24VDC Power Distibution(${lpds.length})`,
             style:{fontSize:"18px"}
         },
+        {
+            id: 'tab-5',
+            label: `Network Switch(${networkSwitches.length})`,
+            style:{fontSize:"18px"}
+        },
       ];
       const renderSwitch = (param) => {
         switch(param) {
@@ -51,6 +59,8 @@ const LineConfiguration = () => {
                 return <McpConfigurations/>
             case 'tab-4':
                 return <LpdConfigurations/>
+            case 'tab-5':
+                return <NetworkSwitchConfigurations/>
             default:
                 return <PdpConfigurations/>
         }
