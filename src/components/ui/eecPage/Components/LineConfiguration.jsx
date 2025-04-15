@@ -4,7 +4,7 @@ import PdpConfigurations from "./PDPs/PdpConfigurations";
 import XpdpConfigurations from "./XPDPs/XpdpConfigurations";
 import LpdConfigurations from "./LPDs/LpdConfigurations";
 import NetworkSwitchConfigurations from "./NetworkSwitches/NetworkSwitchConfigurations";
-import { Heading } from "@tesla/design-system-react";
+import { networkSwitchStore } from "../Store/networkSwitchStore";
 import { TabList} from "@tesla/design-system-react";
 import { useState } from "react";
 import { pdpStore } from "../Store/pdpStore";
