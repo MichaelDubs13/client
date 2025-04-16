@@ -1,5 +1,6 @@
 import {create} from "zustand";
 import switchParser from "../Excel/switchParser";
+import { number } from "prop-types";
 
 const networkSwitchOptions = {
   // look at pdpStore for example of drop down list options
@@ -91,14 +92,36 @@ const networkSwitchConfiguration = {
       consoleEnable: false, // EEC variable name: Console_Output_Selection
       alarmName: "", // EEC variable name: Alarm_DT
       consuleName: "", // EEC variable name: Console_DT
-      ports_8: 8, // EEC variable name: 8_ports
+      ports_8: 0, // EEC variable name: 8_ports
       ports_8or16: 16, // EEC variable name: 8or16_ports
-      ports_8or16or24: 8, // EEC variable name: 8or16or24_ports
+      ports_8or16or24: 0, // EEC variable name: 8or16or24_ports
       // below is an array example for the sub components under network switch
-      ports:[],
+      ports:networkSwitchConfiguration.initializePorts(16),
   }
   },
-
+  initializePorts: (numberOfPorts) => {
+    var ports = [];
+    for (let i = 0; i < numberOfPorts; i++) {
+      var port = networkSwitchConfiguration.createPort();
+      ports.push(port)
+    }
+    return ports;
+  },
+  calculateNumberOfPorts: (numberOfPorts, networkSwitch) => {
+        // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
+        // this will be used to create the ports for the network switch
+        // check the values in priority order
+        if (networkSwitch.networkType === "Local" && networkSwitch.switchType === "Unmanaged") {
+          numberOfPorts = networkSwitch.ports_8;
+        } else if (networkSwitch.networkType === "Local" && networkSwitch.switchType === "Managed") {
+          numberOfPorts = networkSwitch.ports_8or16;
+        } else if (networkSwitch.networkType === "Plant" && networkSwitch.switchType === "Fast") {
+          numberOfPorts = networkSwitch.ports_8or16;
+        } else if (networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Gigabit") {
+          numberOfPorts = networkSwitch.ports_8or16or24;
+        }
+        return numberOfPorts;
+  }
 }
 const networkSwitchStore = create((set) => ({
     networkSwitches:[],
@@ -152,36 +175,26 @@ const networkSwitchStore = create((set) => ({
     // this would be for the ports in this case
     // need to set numberOfPorts equal to the value of ports_8, ports_8or16, or ports_8or16or24
     
-    setNumberOfPorts:(index, numberOfPorts, networkType, switchType, switchSpeed, ports_8, ports_8or16, ports_8or16or24)=>{
-      // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
-      // this will be used to create the ports for the network switch
-      // check the values in priority order
-      if (networkType === "Local" && switchType === "Unmanaged") {
-        numberOfPorts = ports_8;
-      } else if (networkType === "Local" && switchType === "Managed") {
-        numberOfPorts = ports_8or16;
-      } else if (networkType === "Plant" && switchType === "Fast") {
-        numberOfPorts = ports_8or16;
-      } else if (networkType === "Plant" && switchSpeed === "Gigabit") {
-        numberOfPorts = ports_8or16or24;
-      }
-
-      // create the ports for the network switch
-      var ports = [];
-      for (let i = 0; i < numberOfPorts; i++) {
-        var port = networkSwitchConfiguration.createPort();
-        ports.push(port)
-      }
-
+    setNumberOfPorts:(index, numberOfPorts)=>{
+     
       set((state) => {
+
         const newNetworkSwitches = [...state.networkSwitches];
-        newNetworkSwitches[index] = {...newNetworkSwitches[index], 
-          ports: ports,
-        };
+        newNetworkSwitches[index] = {...newNetworkSwitches[index]};
+       
+        // create the ports for the network switch
+        numberOfPorts = networkSwitchConfiguration.calculateNumberOfPorts(numberOfPorts, newNetworkSwitches[index]);
+        var ports = [];
+        for (let i = 0; i < numberOfPorts; i++) {
+          var port = networkSwitchConfiguration.createPort();
+          ports.push(port)
+        }
+
+        newNetworkSwitches[index].ports = ports;
         return { networkSwitches: newNetworkSwitches };
       });
     },
-    /* setPortValue:(indexObject, key, value)=>{
+    setPortValue:(indexObject, key, value)=>{
       const networkSwitchIndex = indexObject.networkSwitchIndex;
       const portIndex = indexObject.portIndex;
 
@@ -195,26 +208,9 @@ const networkSwitchStore = create((set) => ({
         };
         return { networkSwitches: newNetworkSwitches };
       });
-    }, */
-
-    setPortValue:(indexObject, key, value)=>{
-      set(state => ({
-        networkSwitches: state.networkSwitches.map((switchItem, switchIndex) => {
-          if (switchIndex === indexObject.networkSwitchIndex) {
-            return {
-              ...switchItem,
-              ports: switchItem.ports.map((port, portIndex) => {
-                if (portIndex === indexObject.portIndex) {
-                  return { ...port, [key]: value };
-                }
-                return port;
-              })
-            };
-          }
-          return switchItem;
-        })
-      }));
-    }
+    }, 
+    
+    
     
 }));
 
