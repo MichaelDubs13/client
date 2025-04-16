@@ -27,7 +27,7 @@ const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, ind
             setModelValue(reportedValue);
         }
         if(onChange){
-            onChange(event);
+            onChange(reportedValue);
         }
       };
 

@@ -15,8 +15,11 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
     const shop = projectStore((state) => state.shop);
     const line = projectStore((state) => state.line);
     const setNetworkSwitchValue = networkSwitchStore((state) => state.setNetworkSwitchValue);
+    const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);
     const networkSwitchIndex = {networkSwitchIndex:index}
-    
+    const setPorts = (value) =>{
+        setNumberOfPorts(index, value);
+    }
 
     return (
         
@@ -31,19 +34,19 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
                     
                     {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
                     <InputTextItem title={"Network switch is controlled by PLC ID"} placeHolder={networkSwitch.plcID} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"plcID"}/>
-                    <DropdownItem title={"Network type"} placeHolder={networkSwitch.networkType} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.networkTypeOptions} index={networkSwitchIndex} property={"networkType"} readOnly={true}/>
+                    <DropdownItem title={"Network type"} placeHolder={networkSwitch.networkType} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex} property={"networkType"}/>
                     <InputTextItem title={"Local IP address (e.g., 192.168.1.xt)"} placeHolder={networkSwitch.localIP} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"localIP"}/>
                     <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} placeHolder={networkSwitch.plantIP} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"plantIP"}/>
                     
                     {networkSwitch.networkType === "Local" && (
                         <>
-                            <DropdownItem title={"Switch type"} placeHolder={networkSwitch.switchType} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.switchTypeOptions} index={networkSwitchIndex} property={"switchType"}/>
+                            <DropdownItem title={"Switch type"} placeHolder={networkSwitch.switchType} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.switchTypeOptions} onChange={setPorts} index={networkSwitchIndex} property={"switchType"}/>
                         </>
                     )}
 
                     {networkSwitch.networkType === "Plant" && (
                         <>
-                            <DropdownItem title={"Switch speed"} placeHolder={networkSwitch.switchSpeed} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.switchSpeedOptions} index={networkSwitchIndex} property={"switchSpeed"}/>
+                            <DropdownItem title={"Switch speed"} placeHolder={networkSwitch.switchSpeed} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.switchSpeedOptions} onChange={setPorts} index={networkSwitchIndex} property={"switchSpeed"}/>
                         </>
                     )}
                     
@@ -79,19 +82,19 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
 
                     {networkSwitch.networkType === "Local" && networkSwitch.switchType === "Unmanaged" && (
                         <>
-                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8Options} index={networkSwitchIndex} property={"ports_8"}/>
+                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8Options} onChange={setPorts} index={networkSwitchIndex} property={"ports_8"}/>
                         </>
                     )}
 
                     {((networkSwitch.networkType === "Local" && networkSwitch.switchType === "Managed") || (networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Fast")) && (
                         <>
-                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8or16} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8or16Options} index={networkSwitchIndex} property={"ports_8or16"}/>
+                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8or16} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8or16Options} onChange={setPorts} index={networkSwitchIndex} property={"ports_8or16"}/>
                         </>
                     )}
                     {/* The below code is to be used when the network switch type is "Plant" and the switch type is "Managed" */}
                     {networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Gigabit" && (
                         <>
-                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8or16or24} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8or16or24Options} index={networkSwitchIndex} property={"ports_8or16or24"}/>
+                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8or16or24} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8or16or24Options} onChange={setPorts} index={networkSwitchIndex} property={"ports_8or16or24"}/>
                         </>
                     )}
 
