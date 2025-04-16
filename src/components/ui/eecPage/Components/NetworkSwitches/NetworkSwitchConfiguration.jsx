@@ -3,7 +3,7 @@ import { projectStore } from '../../Store/projectStore';
 import InputTextItem from '../Util/InputTextItem';
 import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
-import { NetworkSwitchPortConfiguration } from './NetworkSwitchPortConfiguration';
+import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
 
 import { NetworkSwitchPort } from './NetworkSwitchPort';
