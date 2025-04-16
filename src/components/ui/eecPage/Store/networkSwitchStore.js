@@ -47,6 +47,16 @@ const networkSwitchOptions = {
     { value: 16, label: 16 },
     { value: 24, label: 24 },
   ],
+
+  cableLengthOptions: [
+    { value: "TBD", label: "TBD" },
+    { value: 1.5, label: 1.5 },
+    { value: 3, label: 3 },
+    { value: 5, label: 5 },
+    { value: 10, label: 10 },
+    { value: 15, label: 15 },
+    { value: 20, label: 20 },
+  ],
 }
 
 
@@ -173,8 +183,6 @@ const networkSwitchStore = create((set) => ({
     
     // this is for sub components under network switch
     // this would be for the ports in this case
-    // need to set numberOfPorts equal to the value of ports_8, ports_8or16, or ports_8or16or24
-    
     setNumberOfPorts:(index, numberOfPorts)=>{
      
       set((state) => {

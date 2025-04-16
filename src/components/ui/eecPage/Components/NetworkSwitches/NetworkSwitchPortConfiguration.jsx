@@ -4,8 +4,6 @@ import "../../Eec.css";
 
 const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => {
     
-    
-    // Zi's original code
     var i = 0;
 
     return (
@@ -27,20 +25,5 @@ const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => 
             }
         </div>
     );
-
-    /* // code from chatbot
-    return (
-        <div>
-            {networkSwitch.ports.map((port, portIndex) => (
-                <NetworkSwitchPort 
-                    key={portIndex}
-                    networkSwitchIndex={networkSwitchIndex}
-                    portIndex={portIndex}
-                    port={port}
-                />
-            ))}
-        </div>
-    ); */
-    
 };
 export default NetworkSwitchPortConfiguration;

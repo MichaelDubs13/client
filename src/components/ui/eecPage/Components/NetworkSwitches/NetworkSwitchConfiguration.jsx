@@ -101,8 +101,6 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
                     {/* Input fields for each port */}
                     {/* Render all network switch ports */}
                     <NetworkSwitchPortConfiguration networkSwitch={networkSwitch} networkSwitchIndex={index}/>
-                    {/*<NetworkSwitchPortConfiguration networkSwitch={networkSwitch} index={index}/> */}
-
                     
                 </DataTable>
             </div>  
