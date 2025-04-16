@@ -181,7 +181,7 @@ const networkSwitchStore = create((set) => ({
         return { networkSwitches: newNetworkSwitches };
       });
     },
-    setPortValue:(indexObject, key, value)=>{
+    /* setPortValue:(indexObject, key, value)=>{
       const networkSwitchIndex = indexObject.networkSwitchIndex;
       const portIndex = indexObject.portIndex;
 
@@ -195,8 +195,26 @@ const networkSwitchStore = create((set) => ({
         };
         return { networkSwitches: newNetworkSwitches };
       });
-    },
+    }, */
 
+    setPortValue:(indexObject, key, value)=>{
+      set(state => ({
+        networkSwitches: state.networkSwitches.map((switchItem, switchIndex) => {
+          if (switchIndex === indexObject.networkSwitchIndex) {
+            return {
+              ...switchItem,
+              ports: switchItem.ports.map((port, portIndex) => {
+                if (portIndex === indexObject.portIndex) {
+                  return { ...port, [key]: value };
+                }
+                return port;
+              })
+            };
+          }
+          return switchItem;
+        })
+      }));
+    }
     
 }));
 

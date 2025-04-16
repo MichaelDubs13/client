@@ -3,7 +3,8 @@ import HeadingItem from '../Util/HeadingItem';
 import "../../Eec.css";
 
 const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => {
-    var i = 0;
+    
+    /* var i = 0;
 
     return (
         
@@ -11,7 +12,7 @@ const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => 
             {
                 networkSwitch.ports.map((port, index) => {
                     i=i+1;
-                    return <HeadingItem label={`Port ${index + 1}}`}
+                    return <HeadingItem label={`Port ${index + 1}`}
                     size={18} margin={"20px"}
                     open={true}
                     children={<NetworkSwitchPort
@@ -23,6 +24,21 @@ const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => 
                     />})
             }
         </div>
+    ); */
+
+    
+    return (
+        <div>
+            {networkSwitch.ports.map((port, portIndex) => (
+                <NetworkSwitchPort 
+                    key={portIndex}
+                    networkSwitchIndex={networkSwitchIndex}
+                    portIndex={portIndex}
+                    port={port}
+                />
+            ))}
+        </div>
     );
+    
 };
 export default NetworkSwitchPortConfiguration;
