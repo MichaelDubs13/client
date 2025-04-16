@@ -3,7 +3,17 @@ import { Icon, TD } from '@tesla/design-system-react'
 import { Children, useState } from "react";
 import "../../Eec.css";
 import PropTypes from 'prop-types';
-
+/**
+ * This is a collapsible heading component with optional actions buttons and heading icons
+ * @param {string} headerIcon - path to the headerIcon, if no value is given then an arrow is used for collpasible state
+ * @param {string} label - label to be displayed on the heading component
+ * @param {number} size - size of the label to be displayed on the heading component
+ * @param {boolean} open - default state of the heading component, true = default show children component, false = default collapsed
+ * @param {string} margin - margin to the left
+ * @param {JSX.Element} children - child component, shown only if the heading component is in uncollapsed state
+ * @param {arrayOf(JSX.Element)} buttons - an array of action buttons trailing the heading component
+ * @returns 
+ */
 const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons}) => {
     const [expanded, setExpanded] = useState(open);
 
