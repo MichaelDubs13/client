@@ -1,5 +1,6 @@
 import {create} from "zustand";
 import pdpParser from "../Excel/pdpParser";
+import { projectStore } from "./projectStore";
 
 const pdpOptions = {
   amperageOptions: [
@@ -89,9 +90,11 @@ const pdpConfiguration = {
    * @returns new pdp with default values
    */
   create: () => { 
+    const line = projectStore.getState().line;
     const pdp = {name:"", 
       amp:0, 
-      FLA:0, 
+      FLA:0,
+      line:line, 
       location:"", 
       enclosureSize:"",
       numberOfBusBar:0,

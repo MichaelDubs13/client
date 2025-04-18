@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import { projectStore } from "./projectStore";
 const xpdpOptions = {
   xfmrSizeOptions: [
     { value: "30kVA Transformer", label: "30kVA Transformer" },
@@ -29,6 +30,7 @@ const xpdpConfiguration = {
      return branchCircuit;
   },
   create: () => { 
+    const line = projectStore.getState().line;
     return {
       numberOfPwrDrop8A:"",
       numberOfPwrDrop15A:"",
@@ -38,6 +40,7 @@ const xpdpConfiguration = {
       xf_cable_length:"",
       fla_demand:"",
       fed_from:"",
+      line:line,
       location:"",
       notes:"",
       name:"",
@@ -46,6 +49,7 @@ const xpdpConfiguration = {
       spare20A1p:"",
       spare20A3p:"",
       xf_size:"",
+      xfmrLocation:"",
       branchCircuit:xpdpConfiguration.initializeBranchCircuits(),
     }  
   },

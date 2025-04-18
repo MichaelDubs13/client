@@ -1,4 +1,4 @@
-import { FormLabel, FormInputText, FormItem, FormInputDropdown } from '@tesla/design-system-react';
+import { FormLabel, FormItem, FormInputDropdown } from '@tesla/design-system-react';
 import { useState } from "react";
 import DropdownItem from '../Util/DropdownItem';
 import LpdPsuItem from './LpdPsuItem';
@@ -7,6 +7,8 @@ import InputTextItem from "../Util/InputTextItem";
 import { projectStore } from '../../Store/projectStore';
 import HeadingItem from '../Util/HeadingItem';
 import InputTextItemBasic from '../Util/InputTextItemBasic';
+import { lineStore } from '../../Store/lineStore';
+import LineLocationSelection from '../Common/LineLocationSelection';
 import "../../Eec.css";
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
@@ -16,6 +18,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     const line = projectStore((state) => state.line);
     const setLpdValue = lpdStore((state) => state.setLpdValue);
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
+    const lines = lineStore((state) => state.lines)   
     let absIndex = 0;
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
     [
@@ -90,8 +93,9 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                 onChange={handleSetpsuSelectionChange}
                 />
             </FormItem>
-            <InputTextItem title={"Enter the power source Line name: (e.g., UBM01)"} placeHolder={line} readOnly={true}/> 
-            <InputTextItem title={"Enter the power source location designation: (e.g., XPDP01)"} placeHolder={lpd.panel} setModelValue={setLpdValue} index={index} property={"panel"}/>
+            <LineLocationSelection item={lpd} index={index} setModelValue={setLpdValue} 
+                        lineTitle='Enter the power source Line name: (e.g., UBM01)'
+                        locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
             <InputTextItem title={"Enter the power source device tag: (e.g., CB01)"} placeHolder={lpd.cb} setModelValue={setLpdValue} index={index} property={"cb"}/>    
             <InputTextItemBasic title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                 data={lpd.psus.length} 

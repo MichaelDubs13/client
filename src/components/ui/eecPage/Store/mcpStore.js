@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import { projectStore } from "./projectStore";
 const mcpOptions = {
   cableLengthOptions: [
     { value: "NULL", label: "NULL" },
@@ -22,8 +23,10 @@ const mcpConfiguration = {
   },
 
   create: () => { 
+    const line = projectStore.getState().line;
     return {
       fla:"",
+      line:line,
       location:"",
       mcp_name:"",
       mcpMountingLocation: "",

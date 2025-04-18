@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import { FormItem, FormLabel, } from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
@@ -16,12 +16,13 @@ import CreatableSelect from 'react-select/creatable';
  * @returns 
  */
 const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onChange, index, property}) =>{
-    const [selectedOption, setSelectedOption] = useState(placeHolder);
+    const [selectedOption, setSelectedOption] = useState({label:placeHolder, value:placeHolder});
     const [alloptions, setAllOptions]=useState(options);
+    useEffect(() => {
+        setAllOptions(options);
+    }, [options]);
     
-    const handleOptionSelect = async (event) =>{
-        const reportedValue = event.value;
-        setSelectedOption(event.value);
+    const setValue = (reportedValue) => {
         if(property && index){
             setModelValue(index, property, reportedValue)
         } else if(property && !index){
@@ -29,7 +30,15 @@ const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onC
         }  else {
             setModelValue(reportedValue);
         }
+    }
 
+    const handleOptionSelect = async (event) =>{
+        if(!event) return;
+        
+        const reportedValue = event.value;
+        setSelectedOption(event.value);
+        setValue(reportedValue)
+        
         if(onChange){
             onChange(reportedValue);
         }
@@ -40,6 +49,7 @@ const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onC
           var newOption = {label:inputValue, value: inputValue};
           setAllOptions([...alloptions,newOption])
           setSelectedOption(newOption)
+          setValue(inputValue)
         }
     };
 
@@ -52,12 +62,13 @@ const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onC
                         <CreatableSelect 
                             selectOption
                             options={alloptions} 
-                            getOptionLabel={(option) => `${option.label}`}
-                            getOptionValue={(option) => `${option.value}`}
+                            getOptionLabel={(option) => option.label}
+                            getOptionValue={(option) => option.value}
                             onChange={handleOptionSelect}
                             onCreateOption={handleOptionCreation}
                             placeholder={placeHolder}
                             selected={selectedOption}
+                            value={selectedOption}
                         />
                     </div>
                 </FormItem>
