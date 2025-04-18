@@ -57,12 +57,12 @@ const lpdConfiguration = {
       device:{}
     }
   },
-  createDrop:(line, location)=>{
+  createDrop:(line)=>{
     return {
       psuSelection: "",
       outputPort: "",
       line: line,
-      location: location,
+      location: "",
       deviceTag: "",
       description: "",
       fla: "",
@@ -169,7 +169,7 @@ const lpdStore = create((set) => ({
 
         var drops = [];
         for (let i = 0; i < numberOfDrops; i++) {
-          var drop = lpdConfiguration.createDrop(psus[psuIndex].line, psus[psuIndex].location);
+          var drop = lpdConfiguration.createDrop(psus[psuIndex].line);
           drops.push(drop)
         }
         psus[psuIndex] = {...psus[psuIndex], pwrDrops:drops}

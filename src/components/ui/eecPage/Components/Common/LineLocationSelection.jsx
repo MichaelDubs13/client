@@ -9,6 +9,7 @@ const LineLocationSelection = ({
     item, index, setModelValue, 
     lineTitle = "Manufacturing Line name (e.g., UBM1, DOR1)", 
     locationTitle ="Location designation (e.g., MPDP01, WPDP01)", 
+    hideLocation,
     showPlantShop
 }) => {
     const plant = projectStore((state) => state.plant);
@@ -37,7 +38,10 @@ const LineLocationSelection = ({
                 </div>
             }
             <CreateableDropdownItem title={lineTitle} placeHolder={item.line} options={lines}  setModelValue={setModelValue} index={index} property={"line"}/>
-            <CreateableDropdownItem title={locationTitle} placeHolder={item.location} options={locationOptions} setModelValue={setModelValue} index={index} property={"location"}/>
+            {
+                !hideLocation &&
+                <CreateableDropdownItem title={locationTitle} placeHolder={item.location} options={locationOptions} setModelValue={setModelValue} index={index} property={"location"}/>
+            }
         </div>
     );
 };

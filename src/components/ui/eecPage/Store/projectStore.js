@@ -1,10 +1,10 @@
 import {create} from "zustand";
 
 const projectStore = create((set) => ({
-    plant:"",
-    shop:"",
-    line:"", 
-    installation_location:"",
+    plant:"PLANT1",
+    shop:"SHOP1",
+    line:"LINE1", 
+    installation_location:"UL",
     installation_location_options:["UL", "EU"],
 
     setPlant:(value)=>{

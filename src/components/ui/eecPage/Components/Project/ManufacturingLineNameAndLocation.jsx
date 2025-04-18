@@ -12,15 +12,19 @@ const ManufacturingLineNameAndLocation = () => {
     const setinstallation_location =  projectStore((state) => state.setinstallation_location);
     const installation_location_options =  projectStore((state) => state.installation_location_options);
     const getLineOptions = lineStore((state) => state.getLineOptions)
+    const plant = projectStore.getState().plant;
+    const shop = projectStore.getState().shop;
+    const line = projectStore.getState().line;
+    const installation_location = projectStore.getState().installation_location;
 
     
     return (
         
         <>  
-            <InputTextItem title={"Tesla GigaFactory Name"} placeHolder={"PLANT"} setModelValue={setPlant} readOnly={false} />
-            <InputTextItem title={"Manufacturing Shop Name"} placeHolder={"SHOP"} setModelValue={setShop} readOnly={false} />
-            <InputTextItem title={"Manufacturing Line Name"} placeHolder={"LINE"} setModelValue={setLine} onChange={getLineOptions}/>
-            <DropdownItem title={"InstallationLocation"} placeHolder={"UL"} setModelValue={setinstallation_location} options={installation_location_options}/>
+            <InputTextItem title={"Tesla GigaFactory Name"} placeHolder={plant} setModelValue={setPlant} readOnly={false} />
+            <InputTextItem title={"Manufacturing Shop Name"} placeHolder={shop} setModelValue={setShop} readOnly={false} />
+            <InputTextItem title={"Manufacturing Line Name"} placeHolder={line} setModelValue={setLine} onChange={getLineOptions}/>
+            <DropdownItem title={"InstallationLocation"} placeHolder={installation_location} setModelValue={setinstallation_location} options={installation_location_options}/>
         </>           
     );
 };

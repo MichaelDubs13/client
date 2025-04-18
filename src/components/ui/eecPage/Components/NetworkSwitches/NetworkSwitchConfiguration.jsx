@@ -4,7 +4,6 @@ import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
 import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
-import LineLocationSelection from '../Common/LineLocationSelection';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
 import "../../Eec.css";
@@ -22,8 +21,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
-                    <LineLocationSelection item={networkSwitch} index={networkSwitchIndex} setModelValue={setNetworkSwitchValue} showPlantShop={true}/>
-                    <InputTextItem title={"Network switch device tag (e.g., LETH01)"} placeHolder={networkSwitch.switchDT} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"switchDT"}/>
+                    <StationSelection title={"Network Switch Location (i.e., Station number) (e.g., 00010)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={index} property={"location"}/>      
+                    <DeviceSelection title={"Network switch device tag (e.g., LETH01)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"switchDT"} station={networkSwitch.location}/> 
                     
                     {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
                     <InputTextItem title={"Network switch is controlled by PLC ID"} placeHolder={networkSwitch.plcID} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"plcID"}/>

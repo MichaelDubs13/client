@@ -1,10 +1,11 @@
+import "../../Eec.css";
 import { lpdStore } from '../../Store/lpdStore';
 import { projectStore } from '../../Store/projectStore';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
-import "../../Eec.css";
 import { networkSwitchOptions } from '../../Store/networkSwitchStore';
-import LineLocationSelection from '../Common/LineLocationSelection';
+import DeviceSelection from "../Common/DeviceSelection";
+import StationSelection from "../Common/StationSelection";
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -42,11 +43,10 @@ import LineLocationSelection from '../Common/LineLocationSelection';
                 <DropdownItem title={"Select the output port of the PSU:"} placeHolder={drop.outputPort} setModelValue={setDropValue} options={outputPortOptions} index={index} property={"outputPort"}/>    
             </>
           )}
-
-          <LineLocationSelection item={drop} index={index} setModelValue={setDropValue}/>
-          <InputTextItem title={"Device Tag (e.g., MIO01)"} placeHolder={drop.deviceTag} setModelValue={setDropValue} index={index} property={"deviceTag"}/>    
+          <StationSelection title={"Location designation(i.e., Station number)"} item={drop} setModelValue={setDropValue} index={index} property={"location"}/>      
+          <DeviceSelection title={"Device Tag (e.g., MIO01)"} item={drop} setModelValue={setDropValue} index={index} property={"deviceTag"} station={drop.location}/>                                
           {
-            drop.deviceTag.startsWith("LETH") && 
+            drop.deviceTag?.startsWith("LETH") && 
             <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkSwitchOptions.networkPortOptions} 
                     setModelValue={setDropValue} index={index} property={"outputPort"}/>
           }
