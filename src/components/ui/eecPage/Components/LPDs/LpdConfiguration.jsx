@@ -1,24 +1,24 @@
 import { FormLabel, FormItem, FormInputDropdown } from '@tesla/design-system-react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropdownItem from '../Util/DropdownItem';
 import LpdPsuItem from './LpdPsuItem';
 import {lpdStore, lpdOptions} from "../../Store/lpdStore";
-import InputTextItem from "../Util/InputTextItem";
 import { projectStore } from '../../Store/projectStore';
 import HeadingItem from '../Util/HeadingItem';
 import InputTextItemBasic from '../Util/InputTextItemBasic';
-import { lineStore } from '../../Store/lineStore';
 import LineLocationSelection from '../Common/LineLocationSelection';
 import "../../Eec.css";
+import { lineStore } from '../../Store/lineStore';
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}
     const [psuSelection, setPsuSelection]=useState("");
     const [psuCascadingLimit, setPsuCascadingLimit]=useState("");
+    const getCbOptions = lineStore((state)=> state.getCbOptions)
     const line = projectStore((state) => state.line);
     const setLpdValue = lpdStore((state) => state.setLpdValue);
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
-    const lines = lineStore((state) => state.lines)   
+    const [cbOptions, setCbOptions] = useState([])
     let absIndex = 0;
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
     [
@@ -46,6 +46,10 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             setPsuCascadingLimit('maximum of 8');
         }
     }
+    useEffect(() => {
+        var options = getCbOptions(lpd.location)
+        setCbOptions(options);
+    }, [lpd.location]);
 
     // Initilize lpdPsuItems based on numberOfPsu and psuSelection
     // this was intended to limit the number of psu items based on the psuSelection
@@ -80,6 +84,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
         setLpdValue(index,"psu_selected", value)
     }
 
+
     return (
         
         <div>
@@ -96,7 +101,8 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             <LineLocationSelection item={lpd} index={index} setModelValue={setLpdValue} 
                         lineTitle='Enter the power source Line name: (e.g., UBM01)'
                         locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
-            <InputTextItem title={"Enter the power source device tag: (e.g., CB01)"} placeHolder={lpd.cb} setModelValue={setLpdValue} index={index} property={"cb"}/>    
+
+            <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} placeHolder={lpd.cb} options={cbOptions} setModelValue={setLpdValue} index={index} property={"cb"}/>    
             <InputTextItemBasic title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                 data={lpd.psus.length} 
                 onTypingFinished={handlePsuNumberChange}/>

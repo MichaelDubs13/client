@@ -1,3 +1,4 @@
+import "../../Eec.css";
 import {
   FormLabel,
   FormInputText,
@@ -9,9 +10,7 @@ import HeadingItem from '../Util/HeadingItem';
 import DropdownItem from '../Util/DropdownItem';
 import { lpdStore, lpdOptions } from '../../Store/lpdStore';
 import DeviceSelection from '../Common/DeviceSelection';
-import "../../Eec.css";
-import LineLocationSelection from '../Common/LineLocationSelection';
-import StationSelection from '../Common/StationSelection';
+
   
 const LpdPsuItem = ({ 
   psuIndex,
@@ -20,7 +19,6 @@ const LpdPsuItem = ({
   psu,
 }) => {   
   const index = {psuIndex:psuIndex, lpdIndex:lpdIndex}
-  const line = projectStore((state) => state.line);
   const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
   const setPsuValue =  lpdStore((state) => state.setPsuValue);
   let absIndex = 0;
@@ -32,9 +30,9 @@ const handleNumberOfDropsChange = (event) => {
 return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
-          <LineLocationSelection item={psu} setModelValue={setPsuValue} index={index}/>
-          <StationSelection title={"PSU Location (i.e., Station number) (e.g., 00010)"} item={psu} setModelValue={setPsuValue} index={index} property={"psu_location"}/>      
-          <DeviceSelection title={"PSU Device Tag (e.g., PSU01)"} item={psu} setModelValue={setPsuValue} index={index} property={"psu_dt"} station={psu.psu_location}/>                                
+          <DeviceSelection item={psu} setModelValue={setPsuValue} index={index} 
+            deviceTitle={"PSU Device Tag (e.g., PSU01)"} deviceProperty={"psu_dt"}
+            stationTitle={"PSU Location (i.e., Station number) (e.g., 00010)"} stationProperty={"psu_location"}/>                                
           {
             lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
             <>

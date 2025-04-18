@@ -223,7 +223,42 @@ const lineStore = create((set) => ({
             return {label:device, value:device}
         })
         return newDevices;
+    },
+
+    getCbOptions:(location)=>{
+        const pdps = pdpStore.getState().pdps;
+        const xpdps= xpdpStore.getState().xpdps;
+        var cbs = [];
+        pdps.forEach(pdp => {
+            if(pdp.location === location){
+                Object.keys(pdp.branchCircuit).forEach(key => {
+                    pdp.branchCircuit[key].forEach(drop => {
+                        if(drop.UI.CB_DT){
+                            cbs.push(drop.UI.CB_DT);
+                        }
+                    })
+                })
+            }
+        });
+        xpdps.forEach(pdp => {
+            if(pdp.location === location){
+                Object.keys(pdp.branchCircuit).forEach(key => {
+                    pdp.branchCircuit[key].forEach(drop => {
+                        if(drop.UI.CB_DT){
+                            cbs.push(drop.UI.CB_DT);
+                        }
+                    })
+                })
+            }
+        });
+        
+        cbs = cbs.sort().map(cb => {
+            return {label:cb, value:cb}
+        })
+
+        return cbs;
     }
+    
 }))
 
 export {

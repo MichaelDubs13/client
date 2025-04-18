@@ -1,5 +1,7 @@
 import {create} from "zustand";
 import { projectStore } from "./projectStore";
+import PdpConfiguration from "../Components/PDPs/PdpConfiguration";
+import { pdpConfiguration } from "./pdpStore";
 const xpdpOptions = {
   xfmrSizeOptions: [
     { value: "30kVA Transformer", label: "30kVA Transformer" },
@@ -7,18 +9,6 @@ const xpdpOptions = {
   ],
 }
 const xpdpConfiguration = {
-  createBranchCircuit: () => {
-    return {
-      PwrDrop_Spare: false,
-      DropType: "A-external",
-      PwrDrop_DescTxt: "",
-      dbl_Cable_Length: 0,
-      StrBox_DT: "",
-      TargetDevice_DT: "",
-      TargetDevice_FLA: 0,
-      StrBox_DT_FLA: 0,
-    }
-  },
   initializeBranchCircuits: () => {
     const branchCircuit = {
       "8A 1ph": [],
@@ -51,12 +41,16 @@ const xpdpConfiguration = {
       xf_size:"",
       xfmrLocation:"",
       branchCircuit:xpdpConfiguration.initializeBranchCircuits(),
+
+      UI:{
+        expanded:false,
+      }
     }  
   },
   createBranchCircuits:(numberOfDrps) => {
     var newPwrDrops = []
     for(let i=0; i<numberOfDrps; i++){
-        var newPwrDrop = xpdpConfiguration.createBranchCircuit();
+        var newPwrDrop = pdpConfiguration.createBranchCircuit();
         newPwrDrops.push(newPwrDrop);
     }
     return newPwrDrops;
@@ -113,7 +107,8 @@ const xpdpStore = create((set) => ({
       });
     },
     setNumberOfPowerDrps:(index, amperage, value)=>{
-      const branchCircuit  = xpdpConfiguration.createBranchCircuits(value);
+      var branchCircuit  = xpdpConfiguration.createBranchCircuits(value);
+      branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(branchCircuit);
       set((state) => {
         const newPdps = [...state.xpdps];
         newPdps[index] = {...newPdps[index], 

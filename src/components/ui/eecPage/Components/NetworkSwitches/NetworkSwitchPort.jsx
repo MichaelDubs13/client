@@ -4,7 +4,6 @@ import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import { networkSwitchStore } from '../../Store/networkSwitchStore';
 import { networkSwitchOptions } from "../../Store/networkSwitchStore";
-import StationSelection from "../Common/StationSelection";
 import DeviceSelection from "../Common/DeviceSelection";
 
 const NetworkSwitchPort = ({ 
@@ -23,8 +22,9 @@ const NetworkSwitchPort = ({
         <DropdownItem title={"Device type:"} placeHolder={port.deviceTypeSelection} options={networkSwitchOptions.deviceTypeSelectionOptions} setModelValue={setPortValue} index={index} property={"deviceTypeSelection"}/>
         {port.deviceTypeSelection === "Device" && 
           <>
-            <StationSelection title={"Device target location (i.e., Station number) (e.g., 00010)"} item={port} setModelValue={setPortValue} index={index} property={"targetLocation"}/>    
-            <DeviceSelection title={"Target device tag (e.g., RBC01)"} item={port} setModelValue={setPortValue} index={index} property={"targetDT"} station={port.targetLocation}/>    
+            <DeviceSelection item={port} setModelValue={setPortValue} index={index} 
+              deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
+              stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>    
             <DropdownItem title={"Cable length (m)"} placeHolder={port.targetCableLength} options={networkSwitchOptions.cableLengthOptions} setModelValue={setPortValue} index={index} property={"targetCableLength"}/>
             </>
         }
@@ -39,8 +39,9 @@ const NetworkSwitchPort = ({
             }
             {(port.communicationFlow === "In" && !port.cascadingSwitch) &&
               <>
-                <StationSelection title={"Device target location (i.e., Station number) (e.g., 00010)"} item={port} setModelValue={setPortValue} index={index} property={"targetLocation"}/>    
-                <DeviceSelection title={"Target device tag (e.g., RBC01)"} item={port} setModelValue={setPortValue} index={index} property={"targetDT"} station={port.targetLocation}/>    
+                <DeviceSelection item={port} setModelValue={setPortValue} index={index} 
+                  deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
+                  stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>    
               </>
             }
             {(port.communicationFlow === "Out" && port.cascadingSwitch) &&
@@ -51,9 +52,10 @@ const NetworkSwitchPort = ({
               </>
             }
             {(port.communicationFlow === "Out" && !port.cascadingSwitch) &&
-            <>
-                <StationSelection title={"Device target location (i.e., Station number) (e.g., 00010)"} item={port} setModelValue={setPortValue} index={index} property={"targetLocation"}/>    
-                <DeviceSelection title={"Target device tag (e.g., RBC01)"} item={port} setModelValue={setPortValue} index={index} property={"targetDT"} station={port.targetLocation}/>    
+            <>  
+                <DeviceSelection item={port} setModelValue={setPortValue} index={index} 
+                  deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
+                  stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>    
                 <DropdownItem title={"Cable length (m)"} placeHolder={port.targetCableLength} options={networkSwitchOptions.cableLengthOptions} setModelValue={setPortValue} index={index} property={"targetCableLength"}/>
               </>
             }

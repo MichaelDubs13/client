@@ -54,7 +54,10 @@ const lpdConfiguration = {
       supplyVoltage:"",
       xpdpCBIndex:0,
       pwrDrops:[],
-      device:{}
+      device:{},
+      UI:{
+        expanded:false,
+      }
     }
   },
   createDrop:(line)=>{
@@ -66,6 +69,9 @@ const lpdConfiguration = {
       deviceTag: "",
       description: "",
       fla: "",
+      UI:{
+        expanded:false,
+      }
     }
   },
   create: () => { 
@@ -74,6 +80,9 @@ const lpdConfiguration = {
           panel:"",
           psu_selected:"", //only used for UI
           psus:[],
+          UI:{
+            expanded:false,
+          }
     }
   },
   generateData: (lpds) => {

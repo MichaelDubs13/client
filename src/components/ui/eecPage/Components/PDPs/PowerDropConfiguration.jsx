@@ -7,12 +7,12 @@ import "../../Eec.css";
 const PowerDropConfiguration = ({pdp, index}) => {
     const setNumberOfPowerDrps = pdpStore((state) => state.setNumberOfPowerDrps);
     const setBranchCircuitValue =  pdpStore((state) => state.setBranchCircuitValue);
-    let absIndexCounter = 1; // Variable to keep track of absIndex across all power drops
     
     const handlePowerDropChange = (amperage) => (value) =>{
         const reportedValue = parseInt(value) || 0
         setNumberOfPowerDrps(index, amperage, reportedValue);
     }
+
     // Create array of power drop items for each amperage
     const renderPowerDrops = (amperage) => {
         var powerDropItems = []
@@ -20,18 +20,17 @@ const PowerDropConfiguration = ({pdp, index}) => {
 
         for(let i=0;i<branchCircuit.length;i++){
             powerDropItems.push(
-                <HeadingItem label={`${amperage} Branch circuit power drop ${i}: CB${absIndexCounter}`}
+                <HeadingItem label={`${amperage} Branch circuit power drop ${i}: ${branchCircuit[i].UI.CB_DT}`}
                     size={18} margin={"20px"} open={false}
                     headerIcon={"/powerdrop.png"}
                     children={<PowerDropItem 
                     key={`${amperage}-${i+1}`}
-                    amperage={(amperage)} 
+                    amperage={amperage} 
                     pdpIndex={index}
                     branchCircuitIndex={i}
                     setBranchCircuitValue={setBranchCircuitValue}
                     branchCircuit={branchCircuit[i]}/>}
             />)
-            absIndexCounter++
         }
         return powerDropItems;
     };
