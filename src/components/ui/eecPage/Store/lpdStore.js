@@ -54,18 +54,24 @@ const lpdConfiguration = {
       supplyVoltage:"",
       xpdpCBIndex:0,
       pwrDrops:[],
-      device:{}
+      device:{},
+      UI:{
+        expanded:false,
+      }
     }
   },
-  createDrop:(line, location)=>{
+  createDrop:(line)=>{
     return {
       psuSelection: "",
       outputPort: "",
       line: line,
-      location: location,
+      location: "",
       deviceTag: "",
       description: "",
       fla: "",
+      UI:{
+        expanded:false,
+      }
     }
   },
   create: () => { 
@@ -74,6 +80,9 @@ const lpdConfiguration = {
           panel:"",
           psu_selected:"", //only used for UI
           psus:[],
+          UI:{
+            expanded:false,
+          }
     }
   },
   generateData: (lpds) => {
@@ -169,7 +178,7 @@ const lpdStore = create((set) => ({
 
         var drops = [];
         for (let i = 0; i < numberOfDrops; i++) {
-          var drop = lpdConfiguration.createDrop(psus[psuIndex].line, psus[psuIndex].location);
+          var drop = lpdConfiguration.createDrop(psus[psuIndex].line);
           drops.push(drop)
         }
         psus[psuIndex] = {...psus[psuIndex], pwrDrops:drops}

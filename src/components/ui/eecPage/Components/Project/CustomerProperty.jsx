@@ -7,7 +7,7 @@ import DropdownItem from "../Util/DropdownItem";
 const CustomerProperty = () => {
     const setValue = customerStore((state) => state.setValue)
     const property = customerStore((state) => state.property)
-
+    
     return (
         
         <>  

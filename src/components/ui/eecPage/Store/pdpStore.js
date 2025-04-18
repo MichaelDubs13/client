@@ -42,6 +42,10 @@ const pdpConfiguration = {
       TargetDevice_DT: "",
       TargetDevice_FLA: 0,
       StrBox_DT_FLA: 0,
+      UI:{
+        CB_DT:"",
+        expanded:false,
+      }
     }
   },
 
@@ -62,6 +66,22 @@ const pdpConfiguration = {
         }
 
         return branchCircuit;
+  },
+
+  /**
+   * Update CB_DT value in the UI object, this should be called after CB creation, this is to generate a list a CB identifier for the PDP
+   * @param {*} branchCircuit all branchCircuits in a PDP
+   * @returns 
+   */
+  updateBranchCircuitCB_DT:(branchCircuit) => {
+    var i = 1;
+    Object.keys(branchCircuit).reverse().forEach(key => {
+      branchCircuit[key].forEach(drop => {
+        drop.UI.CB_DT = `CB${i}`;
+        i = i +1;
+      })
+    });
+    return branchCircuit;  
   },
   createBranchCircuits: (numberOfDrps) => {
     var newPwrDrops = []
@@ -111,6 +131,9 @@ const pdpConfiguration = {
       PwrMonitorEnable:false,
       Opt_HotPwrEnable:false,
       hotPowerDrops:[],
+      UI:{
+        expanded:false,
+      }
     }
 
     return pdp;
@@ -202,16 +225,22 @@ const pdpStore = create((set) => ({
      * @param {Object} indexObject json object containing index of target pdp and index of target branchCircuit
      * @param {String} key name of the parameter
      * @param {String} value value of the parameter
+     * @param {Boolean} isUI set value for UI object in the main object
      */
-    setBranchCircuitValue:(indexObject, key, value)=>{
+    setBranchCircuitValue:(indexObject, key, value, isUI)=>{
       const pdpIndex = indexObject.pdpIndex;
       const branchCircuitIndex = indexObject.branchCircuitIndex;
       const amperage = indexObject.amperage;
-
       set((state) => {
         const newPdps = [...state.pdps];
-        const branches = [...newPdps[pdpIndex].branchCircuit[amperage]]
-        const branch = {...newPdps[pdpIndex].branchCircuit[amperage][branchCircuitIndex], [key]:value}
+        const branches = newPdps[pdpIndex].branchCircuit[amperage];
+        var branch = newPdps[pdpIndex].branchCircuit[amperage][branchCircuitIndex];
+        if(isUI){
+          branch.UI[key] = value
+        } else {
+          branch[key] = value;
+        }
+        
         branches[branchCircuitIndex] = branch;
 
         newPdps[pdpIndex] = {...newPdps[pdpIndex], 
@@ -231,13 +260,11 @@ const pdpStore = create((set) => ({
      * @param {String} value numberOfBranchCircuit to be created
      */
     setNumberOfPowerDrps:(index, amperage, value)=>{
-      const branchCircuit  = pdpConfiguration.createBranchCircuits(value);
-
       set((state) => {
-        const newPdps = [...state.pdps];
-        newPdps[index] = {...newPdps[index], 
-          branchCircuit: {...newPdps[index].branchCircuit, [amperage]:branchCircuit},
-        };
+        var newPdps = [...state.pdps];
+        var branchCircuit  = pdpConfiguration.createBranchCircuits(value);
+        newPdps[index].branchCircuit[amperage] = branchCircuit;
+        branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
         return { pdps: newPdps };
       });
     },

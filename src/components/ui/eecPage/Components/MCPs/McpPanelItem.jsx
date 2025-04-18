@@ -15,8 +15,9 @@ const McpPanelItem = ({mcp, index}) => {
     return ( 
          <div>
             <StationSelection title={"MCP mounted in Station number (e.g., 00010)"} item={mcp} setModelValue={setMcpValue} index={mcpIndex} property={"mcpMountingLocation"}/>    
-            <StationSelection title={"MCP power source is from what location (i.e., Station number) (e.g., 00010)"} item={mcp} setModelValue={setMcpValue} index={mcpIndex} property={"psu_location"}/>    
-            <DeviceSelection title={"MCP power source is from what device (e.g., PSU01)"} item={mcp} setModelValue={setMcpValue} index={mcpIndex} property={"psu_location_dt"} station={mcp.psu_location}/>                                
+            <DeviceSelection item={mcp} setModelValue={setMcpValue} index={mcpIndex} 
+                deviceTitle={"MCP power source is from what device (e.g., PSU01)"} deviceProperty={"psu_location_dt"}
+                stationTitle={"MCP power source is from what location (i.e., Station number) (e.g., 00010)"} stationProperty={"psu_location"}/>                                
             <InputTextItem title={"UPS01 Local IP Address (e.g., 192.168.1.x)"} placeHolder={mcp.ups_ip} setModelValue={setMcpValue} index={mcpIndex} property={"ups_ip"}/>
             <CheckboxItem title={"PLC-to-PLC Ethernet switch required?"} placeHolder={mcp.plc_network_switch_required} setModelValue={setMcpValue} index={mcpIndex} property={"plc_network_switch_required"}/>
             {

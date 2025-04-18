@@ -77,6 +77,9 @@ const networkSwitchConfiguration = {
       connectedDevice: "", // EEC variable name: Connected_Device
       selectedSwitch: "", // EEC variable name: frmUI_NetworkSwitchSelection
       targetPort: "", // EEC varaible name: frmUI_DevicePortSelection
+      UI:{
+        expanded:false,
+      }
     }
   },
 
@@ -108,6 +111,9 @@ const networkSwitchConfiguration = {
       ports_8or16or24: 0, // EEC variable name: 8or16or24_ports
       // below is an array example for the sub components under network switch
       ports:networkSwitchConfiguration.initializePorts(16),
+      UI:{
+        expanded:false,
+      }
   }
   },
   

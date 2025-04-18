@@ -10,7 +10,6 @@ const PowerDropConfiguration = ({xpdp, index}) => {
     const setNumberOfPowerDrps = xpdpStore((state) => state.setNumberOfPowerDrps);
     const setBranchCircuitValue =  xpdpStore((state) => state.setBranchCircuitValue);
     const [numberOf1phDrops, setnumberOf1phDrops] = useState(0);
-    let absIndexCounter = 1; 
     
     useEffect(()=>{
         calculate1phDrops();
@@ -28,7 +27,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
         }
         setNumberOfPowerDrps(index, amperage, reportedValue);
     }
-   
+  
     // Create array of power drop items for each amperage
     const renderPowerDrops = (amperage) => {
         var powerDropItems = []
@@ -36,7 +35,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
 
         for(let i=0;i<branchCircuit.length;i++){
             powerDropItems.push(
-                <HeadingItem label={`${amperage} Branch circuit power drop ${i}: CB${absIndexCounter}`}
+                <HeadingItem label={`${amperage} Branch circuit power drop ${i}: ${branchCircuit[i].UI.CB_DT}`}
                     size={18} margin={"20px"} open={false}
                     headerIcon={"/powerdrop.png"}
                     children={<PowerDropItem 
@@ -47,7 +46,6 @@ const PowerDropConfiguration = ({xpdp, index}) => {
                     branchCircuitIndex={i}
                     branchCircuit={branchCircuit[i]}/>}
             />)
-            absIndexCounter++
         }
         return powerDropItems;
     };
@@ -59,6 +57,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
         var numberOfPwrDrop20A3p = renderPowerDrops("20A 3ph");
         return [...numberOfPwrDrop8A, ...numberOfPwrDrop15A, ...numberOfPwrDrop20A1p, ...numberOfPwrDrop20A3p]
     }
+
   
     return (
         

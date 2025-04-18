@@ -66,7 +66,7 @@ const customerStore = create((set) => ({
         set((state) => {
             const newProperty = {...state.property}
             newProperty[key] = value;
-            return {property: {newProperty}};
+            return {property: newProperty};
         })
     }
 }));

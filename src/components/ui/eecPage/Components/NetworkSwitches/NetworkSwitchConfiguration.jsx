@@ -1,10 +1,8 @@
-import StationSelection from '../Common/StationSelection';
 import InputTextItem from '../Util/InputTextItem';
 import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
 import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
-import LineLocationSelection from '../Common/LineLocationSelection';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
 import "../../Eec.css";
@@ -22,8 +20,9 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
-                    <LineLocationSelection item={networkSwitch} index={networkSwitchIndex} setModelValue={setNetworkSwitchValue} showPlantShop={true}/>
-                    <InputTextItem title={"Network switch device tag (e.g., LETH01)"} placeHolder={networkSwitch.switchDT} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"switchDT"}/>
+                    <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex}
+                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"}
+                        stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
                     
                     {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
                     <InputTextItem title={"Network switch is controlled by PLC ID"} placeHolder={networkSwitch.plcID} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"plcID"}/>
@@ -44,18 +43,21 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
                     )}
                     
                     {networkSwitch.switchType === "Managed" && (
-                        <>
-                            <StationSelection title={"Power 1 in location (e.g., 00010)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"power1InLocation"}/>    
-                            <DeviceSelection title={"Power 1 in device tag (e.g., PSU01)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"power1InDT"} station={networkSwitch.power1InLocation}/>                                
-                            <StationSelection title={"Power 2 in location (e.g., 00010)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"power2InLocation"}/>    
-                            <DeviceSelection title={"Power 2 in device tag (e.g., PSU02)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"power2InDT"} station={networkSwitch.power2InLocation}/>                                
+                        <>  
+                            <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} 
+                                deviceTitle={"Power 1 in device tag (e.g., PSU01)"}  deviceProperty={"power1InDT"}
+                                stationTitle={"Power 1 in location (e.g., 00010)"} stationProperty={"power1InLocation"}/>                                
+                            <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} 
+                                deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"power2InDT"}
+                                stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"power2InLocation"}/>                                
                         </>
                     )}
 
                     {networkSwitch.switchType === "Unmanaged" && (
                         <>
-                            <StationSelection title={"Power in location (e.g., 00010)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"powerInLocation"}/>  
-                            <DeviceSelection title={"Power in device tag (e.g., PSU01)"} item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"powerInDT"} station={networkSwitch.powerInLocation}/> 
+                            <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex}
+                                deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerInDT"}
+                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerInLocation"}/> 
                         </>
                     )}
                     

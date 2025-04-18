@@ -7,23 +7,6 @@ import { networkSwitchStore } from "./networkSwitchStore";
 import { projectStore } from "./projectStore";
 
 const lineConfiguration = {
-    createLine: (name) => {
-        return {
-            name:name,
-            locations: [],
-        }
-    },
-    createLocation: (name) => {
-        return {
-            name:name,
-            devices: [],
-        }
-    },
-    createDevice: (name) => {
-        return {
-            name:name,
-        }
-    },
     getLines:(array, lines) => {
         array.map((item) => {
             if(item.line){
@@ -79,33 +62,6 @@ const lineConfiguration = {
 const lineStore = create((set) => ({
     lines:[],
     stations:[],
-    addLine:(name)=>{
-        set((state) => {
-            const newLine = lineConfiguration.createLine(name);
-            return {lines: [...state.lines, newLine]};
-        })
-    },
-
-    addLocation:(name, index)=>{
-        set((state) => {
-            const newLocation = lineConfiguration.createLocation(name);
-            const newLines = {...state.lines}
-            newLines[index].locations = [...state.newLines[index].locations, newLocation]
-            return {lines: newLines};
-        })
-    },
-    addDevice:(name, index)=>{
-        const lineIndex = index.lineIndex
-        const locationIndex = index.locationIndex
-        set((state) => {
-            const newLines = {...state.lines}
-            const newLocation = newLines[lineIndex].locations[locationIndex];
-            const newDevice = lineConfiguration.createDevice(name);
-            newLocation.devices = {...state.newLocation.devices, newDevice}
-            
-            return {lines: newLines};
-        })
-    },
 
     getLineOptions:()=>{
         const pdps = pdpStore.getState().pdps;
@@ -204,6 +160,13 @@ const lineStore = create((set) => ({
 
         return newStations;
     },
+
+    /**
+     * get all devices created in the UI
+     * change this to auto parse
+     * @param {*} station 
+     * @returns 
+     */
     getDeviceOptions:(station)=>{
         const pdps = pdpStore.getState().pdps;
         const xpdps= xpdpStore.getState().xpdps;
@@ -222,9 +185,6 @@ const lineStore = create((set) => ({
             })
         })
 
-        keys = ["xfmrLocation",];
-        newDevices = lineConfiguration.getDevices(xpdps,newDevices,station,keys);
-
         keys=[{station:"StrBox_DT", device:"TargetDevice_DT"}]
         xpdps.forEach(pdp => {
             Object.keys(pdp.branchCircuit).forEach(key => {
@@ -240,9 +200,17 @@ const lineStore = create((set) => ({
             newDevices = lineConfiguration.getDevices(lpd.psus, newDevices,station, keys);
         })
 
+        keys=[{station:"location", device:"deviceTag"},]
+        lpds.forEach(lpd => {
+            lpd.psus.forEach(psu => {
+                newDevices = lineConfiguration.getDevices(psu.pwrDrops, newDevices,station, keys);
+            })
+        })
+
         keys = [{station:"power1InLocation", device:"power1InDT"},
             {station:"power2InLocation", device:"power2InDT"},
             {station:"powerInLocation", device:"powerInDT"},
+            {station:"location", device:"switchDT"},
         ]
         newDevices = lineConfiguration.getDevices(networkSwitches, newDevices, station, keys);
 
@@ -255,7 +223,42 @@ const lineStore = create((set) => ({
             return {label:device, value:device}
         })
         return newDevices;
+    },
+
+    getCbOptions:(location)=>{
+        const pdps = pdpStore.getState().pdps;
+        const xpdps= xpdpStore.getState().xpdps;
+        var cbs = [];
+        pdps.forEach(pdp => {
+            if(pdp.location === location){
+                Object.keys(pdp.branchCircuit).forEach(key => {
+                    pdp.branchCircuit[key].forEach(drop => {
+                        if(drop.UI.CB_DT){
+                            cbs.push(drop.UI.CB_DT);
+                        }
+                    })
+                })
+            }
+        });
+        xpdps.forEach(pdp => {
+            if(pdp.location === location){
+                Object.keys(pdp.branchCircuit).forEach(key => {
+                    pdp.branchCircuit[key].forEach(drop => {
+                        if(drop.UI.CB_DT){
+                            cbs.push(drop.UI.CB_DT);
+                        }
+                    })
+                })
+            }
+        });
+        
+        cbs = cbs.sort().map(cb => {
+            return {label:cb, value:cb}
+        })
+
+        return cbs;
     }
+    
 }))
 
 export {

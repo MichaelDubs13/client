@@ -18,7 +18,10 @@ const mcpConfiguration = {
       targetLocation: "",
       targetDT: "",
       targetPort: "",
-      targetCableLength: "NULL"
+      targetCableLength: "NULL",
+      UI:{
+        expanded:false,
+      }
     }
   },
 
@@ -80,6 +83,9 @@ const mcpConfiguration = {
       direct_network_devices:[],
       connected_network_devices:[],
       ports:[],
+      UI:{
+        expanded:false,
+      }
   }
   },
   generateData: (mcps) => {

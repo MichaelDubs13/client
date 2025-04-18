@@ -1,10 +1,9 @@
+import "../../Eec.css";
 import { lpdStore } from '../../Store/lpdStore';
-import { projectStore } from '../../Store/projectStore';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
-import "../../Eec.css";
 import { networkSwitchOptions } from '../../Store/networkSwitchStore';
-import LineLocationSelection from '../Common/LineLocationSelection';
+import DeviceSelection from "../Common/DeviceSelection";
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -14,7 +13,6 @@ import LineLocationSelection from '../Common/LineLocationSelection';
     lpd,
     psu,
   }) => {
-    const line = projectStore((state) => state.line);
     const setDropValue = lpdStore((state) => state.setDropValue);
     const index = {lpdIndex:lpdIndex,psuIndex:psuIndex,dropIndex:dropIndex }
     const outputPortBrandOptions = ['Turck', 'Puls', 'Balluff-BAE0133']
@@ -33,6 +31,10 @@ import LineLocationSelection from '../Common/LineLocationSelection';
         {value: "XD2", label: "XD2"},
         {value: "XD3", label: "XD3"},
     ] : []
+
+    const getDropPortOptions = () => {
+
+    }
   
     return (
       <div className="lpd-psu-drop-item">
@@ -41,12 +43,12 @@ import LineLocationSelection from '../Common/LineLocationSelection';
             <>
                 <DropdownItem title={"Select the output port of the PSU:"} placeHolder={drop.outputPort} setModelValue={setDropValue} options={outputPortOptions} index={index} property={"outputPort"}/>    
             </>
-          )}
-
-          <LineLocationSelection item={drop} index={index} setModelValue={setDropValue}/>
-          <InputTextItem title={"Device Tag (e.g., MIO01)"} placeHolder={drop.deviceTag} setModelValue={setDropValue} index={index} property={"deviceTag"}/>    
+          )}     
+          <DeviceSelection item={drop} setModelValue={setDropValue} index={index} 
+              deviceTitle={"Device Tag (e.g., MIO01)"} deviceProperty={"deviceTag"}
+              stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}/>                                
           {
-            drop.deviceTag.startsWith("LETH") && 
+            drop.deviceTag?.startsWith("LETH") && 
             <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkSwitchOptions.networkPortOptions} 
                     setModelValue={setDropValue} index={index} property={"outputPort"}/>
           }
