@@ -3,6 +3,8 @@ import {mcpStore} from "../../Store/mcpStore";
 import CheckboxItem from "../Util/CheckboxItem";
 import HeadingItem from "../Util/HeadingItem";
 import EthConfiguration from "./EthConfiguration";
+import StationSelection from "../Common/StationSelection";
+import DeviceSelection from "../Common/DeviceSelection";
 import "../../Eec.css";
 
 
@@ -12,9 +14,9 @@ const McpPanelItem = ({mcp, index}) => {
 
     return ( 
          <div>
-            <InputTextItem title={"MCP mounted in Station number (e.g., 00010)"} placeHolder={mcp.mcpMountingLocation} setModelValue={setMcpValue} index={mcpIndex} property={"mcpMountingLocation"}/>
-            <InputTextItem title={"MCP power source is from what location (i.e., Station number) (e.g., 00010)"} placeHolder={mcp.psu_location} setModelValue={setMcpValue} index={mcpIndex} property={"psu_location"}/>
-            <InputTextItem title={"MCP power source is from what device (e.g., PSU01)"} placeHolder={mcp.psu_location_dt} setModelValue={setMcpValue} index={mcpIndex} property={"psu_location_dt"}/>
+            <StationSelection title={"MCP mounted in Station number (e.g., 00010)"} item={mcp} setModelValue={setMcpValue} index={mcpIndex} property={"mcpMountingLocation"}/>    
+            <StationSelection title={"MCP power source is from what location (i.e., Station number) (e.g., 00010)"} item={mcp} setModelValue={setMcpValue} index={mcpIndex} property={"psu_location"}/>    
+            <DeviceSelection title={"MCP power source is from what device (e.g., PSU01)"} item={mcp} setModelValue={setMcpValue} index={mcpIndex} property={"psu_location_dt"} station={mcp.psu_location}/>                                
             <InputTextItem title={"UPS01 Local IP Address (e.g., 192.168.1.x)"} placeHolder={mcp.ups_ip} setModelValue={setMcpValue} index={mcpIndex} property={"ups_ip"}/>
             <CheckboxItem title={"PLC-to-PLC Ethernet switch required?"} placeHolder={mcp.plc_network_switch_required} setModelValue={setMcpValue} index={mcpIndex} property={"plc_network_switch_required"}/>
             {

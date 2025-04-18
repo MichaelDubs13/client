@@ -3,6 +3,8 @@ import { projectStore } from '../../Store/projectStore';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import "../../Eec.css";
+import { networkSwitchOptions } from '../../Store/networkSwitchStore';
+import LineLocationSelection from '../Common/LineLocationSelection';
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -31,26 +33,24 @@ import "../../Eec.css";
         {value: "XD2", label: "XD2"},
         {value: "XD3", label: "XD3"},
     ] : []
-    
+  
     return (
       <div className="lpd-psu-drop-item">
         <div className="lpd-psu-drop-settings">
         {outputPortBrandOptions.includes(lpd.psu_selection) && (
             <>
-                {/* PSU output port */}
                 <DropdownItem title={"Select the output port of the PSU:"} placeHolder={drop.outputPort} setModelValue={setDropValue} options={outputPortOptions} index={index} property={"outputPort"}/>    
             </>
           )}
 
-          {/* Drop: Target Line */}
-          <InputTextItem title={"Manufacturing Line name (e.g., UBM1, DOR1)"} placeHolder={line} readOnly={true}/>
-          {/* Drop: Target Location */}
-          <InputTextItem title={"Location designation (i.e., Station number) (e.g., 00010)"} placeHolder={drop.location} setModelValue={setDropValue} index={index} property={"location"}/>    
-          {/* Drop: Target DT */}
+          <LineLocationSelection item={drop} index={index} setModelValue={setDropValue}/>
           <InputTextItem title={"Device Tag (e.g., MIO01)"} placeHolder={drop.deviceTag} setModelValue={setDropValue} index={index} property={"deviceTag"}/>    
-          {/* Drop: Description */}
+          {
+            drop.deviceTag.startsWith("LETH") && 
+            <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkSwitchOptions.networkPortOptions} 
+                    setModelValue={setDropValue} index={index} property={"outputPort"}/>
+          }
           <InputTextItem title={"Enter the description of the target device"} placeHolder={drop.description} setModelValue={setDropValue} index={index} property={"description"}/>    
-          {/* Drop: FLA */}
           <InputTextItem title={"FLA"} placeHolder={drop.fla} setModelValue={setDropValue} index={index} property={"fla"}/>              
         </div>
       </div>

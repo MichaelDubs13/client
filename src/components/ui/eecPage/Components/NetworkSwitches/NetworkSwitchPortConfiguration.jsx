@@ -14,6 +14,7 @@ const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => 
                     i=i+1;
                     return <HeadingItem label={`Port ${index + 1}`}
                     size={18} margin={"20px"}
+                    headerIcon={"/networkPort.png"}
                     open={true}
                     children={<NetworkSwitchPort
                         key={`${port}-${index}`}

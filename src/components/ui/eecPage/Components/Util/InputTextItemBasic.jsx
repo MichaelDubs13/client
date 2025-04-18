@@ -15,7 +15,7 @@ const InputTextItemBasic = ({title, data, onTypingFinished, onChange}) =>{
     const [value, setValue] = useState(data);
     const [finishedInput, setFinishedInput] = useState('');
     const [typingTimeout, setTypingTimeout] = useState(0);
-    const delayTime = 1000; 
+    const delayTime = 500; 
 
     useEffect(() => {
         if (finishedInput) {

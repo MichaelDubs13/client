@@ -14,6 +14,7 @@ const projectStore = create((set) => ({
         set({shop:value});
     },
     setLine:(value)=>{
+        console.log(value)
         set({line:value});
     },
     setinstallation_location:(value)=>{

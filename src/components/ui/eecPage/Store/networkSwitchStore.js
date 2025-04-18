@@ -1,9 +1,10 @@
 import {create} from "zustand";
-import switchParser from "../Excel/switchParser";
-import { number } from "prop-types";
 
 const networkSwitchOptions = {
-  // look at pdpStore for example of drop down list options
+  networkPortOptions:[
+    { value: "SPARE", label: "SPARE" },
+  ],
+
   deviceTypeSelectionOptions: [
     { value: "SPARE", label: "SPARE" },
     { value: "Device", label: "Device" },

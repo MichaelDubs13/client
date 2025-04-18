@@ -16,33 +16,21 @@ import PropTypes from "prop-types";
  */
 const InputTextItem = ({title, placeHolder, readOnly, setModelValue, onChange, index, property}) =>{
     const [value, setValue] = useState(placeHolder);
-    const [finishedInput, setFinishedInput] = useState('');
-    const [typingTimeout, setTypingTimeout] = useState(0);
-    const delayTime = 1000; 
-
-    useEffect(() => {
-        if (finishedInput) {
-            if(property){
-                setModelValue(index, property, value)
-            } else {
-                setModelValue(value);
-            }
-        }
-      }, [finishedInput]);
       
     const handleValueChange = (event)=> {
         const reportedValue = event.target.value;
         setValue(reportedValue);
-        clearTimeout(typingTimeout);
-        setTypingTimeout(
-        setTimeout(() => {
-            setFinishedInput(event.target.value);
-        }, delayTime)
-        );
-        
-        if(onChange){
-            onChange(event);
+        if(property && index){
+            setModelValue(index, property, reportedValue)
+        } else if(property && !index){
+            setModelValue(reportedValue, property);
+        }  else {
+            setModelValue(reportedValue);
         }
+        if(onChange){
+            onChange(reportedValue);
+        }
+        
     }
 
     return (

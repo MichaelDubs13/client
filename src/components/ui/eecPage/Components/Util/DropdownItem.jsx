@@ -21,9 +21,11 @@ const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, ind
     const handleOptionSelect = async (event) =>{
         const reportedValue = event.value;
         setSelectedOption(event.value);
-        if(property){
+        if(property && index){
             setModelValue(index, property, reportedValue)
-        } else {
+        } else if(property && !index){
+            setModelValue(reportedValue, property);
+        }  else {
             setModelValue(reportedValue);
         }
         if(onChange){

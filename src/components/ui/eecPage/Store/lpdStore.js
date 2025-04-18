@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import { projectStore } from "./projectStore";
 const lpdOptions = {
   psuSupplyVoltageOptions: [
     { value: "120", label: "120V" },
@@ -34,12 +35,13 @@ const lpdOptions = {
 }
 const lpdConfiguration = {
   
-  createPsu: () => {
+  createPsu: (line) => {
     return {
       lineside120AFLA:"",
       branchBreaker:"",
       branchOrder:"",
       fla:"",
+      line:line,
       inputPowerCord:"",
       inputPowerTee:"",
       MFG:"",
@@ -55,12 +57,12 @@ const lpdConfiguration = {
       device:{}
     }
   },
-  createDrop:()=>{
+  createDrop:(line, location)=>{
     return {
       psuSelection: "",
       outputPort: "",
-      line: "",
-      location: "",
+      line: line,
+      location: location,
       deviceTag: "",
       description: "",
       fla: "",
@@ -127,7 +129,7 @@ const lpdStore = create((set) => ({
         const diff = numberOfPsus - newLpds[index].psus.length
         if(diff > 0){
           for (let i = 0; i < diff; i++) {
-            var psu = lpdConfiguration.createPsu();
+            var psu = lpdConfiguration.createPsu(newLpds[index].line);
             newLpds[index] = {...newLpds[index], 
               psus: [...newLpds[index].psus, psu],
             };
@@ -141,20 +143,35 @@ const lpdStore = create((set) => ({
         return { lpds: newLpds };
       })
     },
-    
+    setPsuValue:(indexObject, key, value)=>{
+      const lpdIndex = indexObject.lpdIndex;
+      const psuIndex = indexObject.psuIndex;
+
+      set((state) => {
+        const newLpds = [...state.lpds];
+        const psus = newLpds[lpdIndex].psus;
+        psus[psuIndex] = {...psus[psuIndex], [key]:value}
+
+        newLpds[lpdIndex] = {...newLpds[lpdIndex], 
+          psus:psus
+        };
+        return { lpds: newLpds };
+      });
+    },
 
     setNumberOfDrops:(index, numberOfDrops)=>{
       const lpdIndex = index.lpdIndex;
       const psuIndex = index.psuIndex;
-      var drops = [];
-      for (let i = 0; i < numberOfDrops; i++) {
-        var drop = lpdConfiguration.createDrop();
-        drops.push(drop)
-      }
 
       set((state) => {
         const newLpds = [...state.lpds];
-        const psus = [...newLpds[lpdIndex].psus]
+        const psus = newLpds[lpdIndex].psus;
+
+        var drops = [];
+        for (let i = 0; i < numberOfDrops; i++) {
+          var drop = lpdConfiguration.createDrop(psus[psuIndex].line, psus[psuIndex].location);
+          drops.push(drop)
+        }
         psus[psuIndex] = {...psus[psuIndex], pwrDrops:drops}
 
         newLpds[lpdIndex] = {...newLpds[lpdIndex], 
@@ -170,13 +187,14 @@ const lpdStore = create((set) => ({
 
       set((state) => {
         const newLpds = [...state.lpds];
-        const psus = [...newLpds[lpdIndex].psus]
-        const pwrDrops = {...psus[psuIndex].pwrDrops}
-        pwrDrops[dropIndex] = {...psus[psuIndex].pwrDrops[dropIndex], [key]: value}
+        const psus = newLpds[lpdIndex].psus;
+        const pwrDrops = psus[psuIndex].pwrDrops;
+        pwrDrops[dropIndex] = {...pwrDrops[dropIndex], [key]: value}
 
         newLpds[lpdIndex] = {...newLpds[lpdIndex], 
           psus:psus
         };
+        console.log(psus)        
         return { lpds: newLpds };
       });
     },
