@@ -110,6 +110,11 @@ const networkSwitchConfiguration = {
       ports:networkSwitchConfiguration.initializePorts(16),
   }
   },
+  
+  generateData: (networkSwitches) => {
+    return networkSwitches;
+  },
+
   initializePorts: (numberOfPorts) => {
     var ports = [];
     for (let i = 0; i < numberOfPorts; i++) {

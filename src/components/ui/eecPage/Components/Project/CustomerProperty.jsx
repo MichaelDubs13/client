@@ -1,6 +1,7 @@
 import "../../Eec.css";
 import InputTextItem from "../Util/InputTextItem";
-import { customerStore } from "../../Store/customerStore";
+import { customerOptions, customerStore } from "../../Store/customerStore";
+import DropdownItem from "../Util/DropdownItem";
 
 
 const CustomerProperty = () => {
@@ -13,13 +14,13 @@ const CustomerProperty = () => {
             <InputTextItem title={"Tesla SharePoint Project Links"} placeHolder={property.TeslaProjectSharePointLink} setModelValue={setValue} property={"TeslaProjectSharePointLink"}/>
             <InputTextItem title={"Project Descriptions"} placeHolder={property.ProjectDescription_10011} setModelValue={setValue} property={"ProjectDescription_10011"}/>
             <InputTextItem title={"Project Type"} placeHolder={property.ProjectType_10031} setModelValue={setValue} property={"ProjectType_10031"}/>
-            <InputTextItem title={"Revision Status"} placeHolder={property.TeslaProjectRevStatus} setModelValue={setValue} property={"TeslaProjectRevStatus"}/>
+            <DropdownItem title={"Revision Status"} placeHolder={property.TeslaProjectRevStatus} setModelValue={setValue} options={customerOptions.teslaProjectRevStatusOptions} property={"TeslaProjectRevStatus"}/>
             <InputTextItem title={"Revision number"} placeHolder={property.TeslaProjectRevNo} setModelValue={setValue} property={"TeslaProjectRevNo"}/>
             <InputTextItem title={"Drawing number"} placeHolder={property.TeslaProjectDWGno} setModelValue={setValue} property={"TeslaProjectDWGno"}/>
             <InputTextItem title={"Approved date"} placeHolder={property.TeslaProjectApprovedDate} setModelValue={setValue} property={"TeslaProjectApprovedDate"}/>
             <InputTextItem title={"Manufacturing data"} placeHolder={property.ManufacturingDate_10042} setModelValue={setValue} property={"ManufacturingDate_10042"}/>
-            <InputTextItem title={"Voltage"} placeHolder={property.TeslaProjectVoltage} setModelValue={setValue} property={"TeslaProjectVoltage"}/>
-            <InputTextItem title={"Voltage frequency"} placeHolder={property.TeslaProjectVoltageFreq} setModelValue={setValue} property={"TeslaProjectVoltageFreq"}/>
+            <DropdownItem title={"Voltage"} placeHolder={property.TeslaProjectVoltage} setModelValue={setValue} options={customerOptions.teslaProjectVoltageOptions} property={"TeslaProjectVoltage"}/>
+            <DropdownItem title={"Voltage frequency"} placeHolder={property.TeslaProjectVoltageFreq} setModelValue={setValue} options={customerOptions.teslaProjectVoltageFreqOptions} property={"TeslaProjectVoltageFreq"}/>
             <InputTextItem title={"Full load current (FLA)"} placeHolder={property.TeslaProjectFullLoadCurrent} setModelValue={setValue} property={"TeslaProjectFullLoadCurrent"}/>
             <InputTextItem title={"Short Circuit Current Rating (SCCR)"} placeHolder={property.TeslaProjectSCCR} setModelValue={setValue} property={"TeslaProjectSCCR"}/>
             <InputTextItem title={"PLC System"} placeHolder={property.TeslaProjectPLCsystem} setModelValue={setValue} property={"TeslaProjectPLCsystem"}/>

@@ -27,7 +27,7 @@ const PdpConfiguration = ({pdp, index}) => {
                     <LineLocationSelection item={pdp} index={pdpIndex} setModelValue={setPdpValue} showPlantShop={true}/>
                     <DropdownItem title={"Main disconnect amperage"} placeHolder={pdp.amp} setModelValue={setPdpValue} options={pdpOptions.amperageOptions} index={pdpIndex} property={"amp"}/>
                     <DropdownItem title={"Enclosure size"} placeHolder={pdp.enclosureSize} setModelValue={setPdpValue} options={pdpOptions.enclosureSizeOptions} index={pdpIndex} property={"enclosureSize"}/>
-                    <InputTextItem title={"Enclosure nameplate FLA"} placeHolder={pdp.FLA} setModelValue={setPdpValue} index={pdpIndex} property={"FLA"}/>
+                    <InputTextItem title={"Enclosure nameplate FLA (e.g., 275 A)"} placeHolder={pdp.FLA} setModelValue={setPdpValue} index={pdpIndex} property={"FLA"}/>
                     <CheckboxItem title={"Power monitor enable"} placeHolder={pdp.PwrMonitorEnable} setModelValue={setPdpValue} index={pdpIndex} property={"PwrMonitorEnable"}/>
                     <CheckboxItem title={"Surge protection enable"} placeHolder={pdp.Opt_SurgeProtectionDevice} setModelValue={setPdpValue} index={pdpIndex} property={"Opt_SurgeProtectionDevice"}/>
                     <CheckboxItem title={"Hot Power enable"} placeHolder={pdp.Opt_HotPwrEnable} setModelValue={setPdpValue} index={pdpIndex} property={"Opt_HotPwrEnable"} onChange={handleSetOpt_HotPwrChange}/>

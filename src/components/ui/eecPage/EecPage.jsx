@@ -13,6 +13,8 @@ import {pdpStore, pdpConfiguration} from "./Store/pdpStore";
 import LoadButton from "./LoadButton";
 import SaveButton from "./SaveButton";
 import UploadButton from "./UploadButton";
+import { networkSwitchConfiguration, networkSwitchStore } from "./Store/networkSwitchStore";
+
 
 
 
@@ -22,6 +24,7 @@ const EecPage = () => {
     const xpdps = xpdpStore((state) => state.xpdps);
     const mcps = mcpStore((state) => state.mcps);
     const lpds = lpdStore((state) => state.lpds);
+    const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
     const {
       open: openTool,
       handlers: handlersTool,
@@ -35,12 +38,12 @@ const EecPage = () => {
       const validatedXpdps =xpdpConfiguration.generateData(xpdps);
       const validatedMcps =mcpConfiguration.generateData(mcps);
       const validatedLpds = lpdConfiguration.generateData(lpds);
-      var switches =[]
+      const validatedNetworkSwitches = networkSwitchConfiguration.generateData(networkSwitches);
       var devices = []
       var groupedIOModules = []
       var hmis = []
       var gates = []
-      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, switches, devices, groupedIOModules, hmis, gates);
+      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, groupedIOModules, hmis, gates);
       downloadXML(imx, "generated_imx.imx");
     }
 

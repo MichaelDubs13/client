@@ -92,11 +92,11 @@ const pdpConfiguration = {
   create: () => { 
     const line = projectStore.getState().line;
     const pdp = {name:"", 
-      amp:0, 
+      amp:"400A", 
       FLA:0,
       line:line, 
       location:"", 
-      enclosureSize:"",
+      enclosureSize:"1000x1800x500(WHD)",
       numberOfBusBar:0,
       branchCircuit:pdpConfiguration.initializeBranchCircuits(),
       spare10A:0,
