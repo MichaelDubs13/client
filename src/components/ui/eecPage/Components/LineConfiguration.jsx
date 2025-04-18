@@ -12,6 +12,7 @@ import { xpdpStore } from "../Store/xpdpStore";
 import { mcpStore } from "../Store/mcpStore";
 import { lpdStore } from "../Store/lpdStore";
 import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
+import CustomerConfiguration from "./Project/CustomerConfiguration";
 
 const LineConfiguration = () => {
     // this is the data being used in the UI for the line configuration
@@ -68,6 +69,7 @@ const LineConfiguration = () => {
     return (
         <>
             <ManufacturingLineConfiguration/>
+            <CustomerConfiguration/>
             <TabList
                 animated
                 onTabChange={(e) => setActiveTab(e.currentTarget.id)}

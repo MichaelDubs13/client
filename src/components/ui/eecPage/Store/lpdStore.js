@@ -141,7 +141,21 @@ const lpdStore = create((set) => ({
         return { lpds: newLpds };
       })
     },
-    
+    setPsuValue:(indexObject, key, value)=>{
+      const lpdIndex = indexObject.lpdIndex;
+      const psuIndex = indexObject.psuIndex;
+
+      set((state) => {
+        const newLpds = [...state.lpds];
+        const psus = newLpds[lpdIndex].psus;
+        psus[psuIndex] = {...psus[psuIndex], [key]:value}
+
+        newLpds[lpdIndex] = {...newLpds[lpdIndex], 
+          psus:psus
+        };
+        return { lpds: newLpds };
+      });
+    },
 
     setNumberOfDrops:(index, numberOfDrops)=>{
       const lpdIndex = index.lpdIndex;
@@ -154,7 +168,7 @@ const lpdStore = create((set) => ({
 
       set((state) => {
         const newLpds = [...state.lpds];
-        const psus = [...newLpds[lpdIndex].psus]
+        const psus = newLpds[lpdIndex].psus;
         psus[psuIndex] = {...psus[psuIndex], pwrDrops:drops}
 
         newLpds[lpdIndex] = {...newLpds[lpdIndex], 
@@ -170,13 +184,14 @@ const lpdStore = create((set) => ({
 
       set((state) => {
         const newLpds = [...state.lpds];
-        const psus = [...newLpds[lpdIndex].psus]
-        const pwrDrops = {...psus[psuIndex].pwrDrops}
-        pwrDrops[dropIndex] = {...psus[psuIndex].pwrDrops[dropIndex], [key]: value}
+        const psus = newLpds[lpdIndex].psus;
+        const pwrDrops = psus[psuIndex].pwrDrops;
+        pwrDrops[dropIndex] = {...pwrDrops[dropIndex], [key]: value}
 
         newLpds[lpdIndex] = {...newLpds[lpdIndex], 
           psus:psus
         };
+        console.log(psus)        
         return { lpds: newLpds };
       });
     },

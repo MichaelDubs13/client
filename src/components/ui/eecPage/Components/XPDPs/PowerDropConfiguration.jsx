@@ -1,6 +1,6 @@
 import { xpdpStore } from '../../Store/xpdpStore';
 import { FormLabel, FormInputText,  FormItem,  } from '@tesla/design-system-react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../Eec.css";
 import PowerDropItem from '../PDPs/PowerDropItem';
 import HeadingItem from "../Util/HeadingItem";
@@ -12,6 +12,10 @@ const PowerDropConfiguration = ({xpdp, index}) => {
     const [numberOf1phDrops, setnumberOf1phDrops] = useState(0);
     let absIndexCounter = 1; 
     
+    useEffect(()=>{
+        calculate1phDrops();
+    }, [xpdp.branchCircuit]);
+
     const calculate1phDrops = () => {
         const total1phDrops = xpdp.branchCircuit["8A 1ph"].length + xpdp.branchCircuit["15A 1ph"].length + xpdp.branchCircuit["20A 1ph"].length
         setnumberOf1phDrops(total1phDrops);
@@ -23,7 +27,6 @@ const PowerDropConfiguration = ({xpdp, index}) => {
             reportedValue = 2;
         }
         setNumberOfPowerDrps(index, amperage, reportedValue);
-        calculate1phDrops();
     }
    
     // Create array of power drop items for each amperage

@@ -3,6 +3,7 @@ import { projectStore } from '../../Store/projectStore';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import "../../Eec.css";
+import { networkSwitchOptions } from '../../Store/networkSwitchStore';
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -31,7 +32,7 @@ import "../../Eec.css";
         {value: "XD2", label: "XD2"},
         {value: "XD3", label: "XD3"},
     ] : []
-    
+  
     return (
       <div className="lpd-psu-drop-item">
         <div className="lpd-psu-drop-settings">
@@ -48,6 +49,11 @@ import "../../Eec.css";
           <InputTextItem title={"Location designation (i.e., Station number) (e.g., 00010)"} placeHolder={drop.location} setModelValue={setDropValue} index={index} property={"location"}/>    
           {/* Drop: Target DT */}
           <InputTextItem title={"Device Tag (e.g., MIO01)"} placeHolder={drop.deviceTag} setModelValue={setDropValue} index={index} property={"deviceTag"}/>    
+          {
+            drop.deviceTag.startsWith("LETH") && 
+            <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkSwitchOptions.networkPortOptions} 
+                    setModelValue={setDropValue} index={index} property={"outputPort"}/>
+          }
           {/* Drop: Description */}
           <InputTextItem title={"Enter the description of the target device"} placeHolder={drop.description} setModelValue={setDropValue} index={index} property={"description"}/>    
           {/* Drop: FLA */}

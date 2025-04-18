@@ -1,8 +1,8 @@
 import { useState} from "react";
-import { FormItem, FormLabel, FormInputDropdown } from '@tesla/design-system-react';
+import { FormItem, FormLabel, } from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
-
+import CreatableSelect from 'react-select/creatable';
 
 /**
  * This Dropdown component is used to set values in objects from the stores and updates the UI
@@ -15,9 +15,10 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, index, property}) =>{
+const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onChange, index, property}) =>{
     const [selectedOption, setSelectedOption] = useState(placeHolder);
-
+    const [alloptions, setAllOptions]=useState(options);
+    
     const handleOptionSelect = async (event) =>{
         const reportedValue = event.value;
         setSelectedOption(event.value);
@@ -28,26 +29,37 @@ const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, ind
         }  else {
             setModelValue(reportedValue);
         }
+
         if(onChange){
             onChange(reportedValue);
         }
-      };
+    };
 
+    const handleOptionCreation = (inputValue) => {
+        if(inputValue){
+          var newOption = {label:inputValue, value: inputValue};
+          setAllOptions([...alloptions,newOption])
+          setSelectedOption(newOption)
+        }
+    };
 
     return (
         <>
             {                
-                <FormItem className="form-item" style={{display:"flex"}}>
+                <FormItem className="form-item">
                     <FormLabel className="form-label"  htmlFor="context">{title}</FormLabel>
-                    <FormInputDropdown
-                    id="dropdown"
-                    label="dropdown"
-                    onOptionSelect={handleOptionSelect}
-                    options={options}
-                    placeholder={placeHolder}
-                    selected={selectedOption}
-                    style={{ marginBottom: "5px"}}
-                  ></FormInputDropdown>
+                    <div style={{ marginBottom: "5px", width:'700px'}}>
+                        <CreatableSelect 
+                            selectOption
+                            options={alloptions} 
+                            getOptionLabel={(option) => `${option.label}`}
+                            getOptionValue={(option) => `${option.value}`}
+                            onChange={handleOptionSelect}
+                            onCreateOption={handleOptionCreation}
+                            placeholder={placeHolder}
+                            selected={selectedOption}
+                        />
+                    </div>
                 </FormItem>
             }
                 
@@ -57,7 +69,7 @@ const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, ind
     );
 }
 
-DropdownItem.prototype = {
+CreateableDropdownItem.prototype = {
     title:PropTypes.string.isRequired,
     placeHolder:PropTypes.string.isRequired,
     options:PropTypes.array.isRequired,
@@ -67,4 +79,4 @@ DropdownItem.prototype = {
     property:PropTypes.string
 }
 
-export default DropdownItem;
+export default CreateableDropdownItem;

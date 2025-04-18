@@ -1,10 +1,10 @@
 import "../../Eec.css";
-import ManufacturingLineNameAndLocation from "./ManufacturingLineNameAndLocation";
+import CustomerProperty from "./CustomerProperty";
 import { IconTrigger } from '@tesla/design-system-react';
 import { useState } from "react";
 
 
-const ManufacturingLineConfiguration = () => {
+const CustomerConfiguration = () => {
    const [pressed, setPressed] = useState(false);
 
     return (
@@ -12,19 +12,19 @@ const ManufacturingLineConfiguration = () => {
         <div>
         
              <IconTrigger
-             style={{marginTop:'50px'}}
-                label="Manufacturing Line Configurations"
+             style={{marginTop:'10px'}}
+                label="Customer Configurations"
                 onClick={() => setPressed(!pressed)}
                 pressed={pressed}
                 invertColors
                 rotate
                 />
             {
-                pressed && <ManufacturingLineNameAndLocation/>
+                pressed && <CustomerProperty/>
                 
             }
            
         </div>           
     );
 };
-export default ManufacturingLineConfiguration;
+export default CustomerConfiguration;

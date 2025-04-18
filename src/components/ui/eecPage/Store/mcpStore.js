@@ -147,7 +147,7 @@ const mcpStore = create((set) => ({
 
       set((state) => {
         const newMcps = [...state.mcps];
-        const ports = [...newMcps[mcpIndex].ports]
+        const ports = newMcps[mcpIndex].ports;
         ports[portIndex] = {...ports[portIndex], [key]:value}
 
         newMcps[mcpIndex] = {...newMcps[mcpIndex], 
