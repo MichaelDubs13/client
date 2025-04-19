@@ -7,6 +7,9 @@ import { networkSwitchStore } from "./networkSwitchStore";
 import { projectStore } from "./projectStore";
 
 const lineConfiguration = {
+    getDeviceFullName:(location, device)=>{
+        return `+${location}-${device}`;
+    },
     getLines:(array, lines) => {
         array.map((item) => {
             if(item.line){
@@ -142,10 +145,10 @@ const lineStore = create((set) => ({
             newStations = lineConfiguration.getStations(lpd.psus, newStations,keys);
         })
 
-        keys =["power1InLocation", "power2InLocation", "powerInLocation"];
+        keys =["power1InLocation", "power2InLocation", "powerInLocation", "location"];
         newStations = lineConfiguration.getStations(networkSwitches, newStations,keys);
 
-        keys =["targetLocation"];
+        keys =["targetLocation", ];
         networkSwitches.forEach(networkSwitch => {
             newStations = lineConfiguration.getStations(networkSwitch.ports, newStations,keys);
         })

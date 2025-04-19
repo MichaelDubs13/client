@@ -85,7 +85,7 @@ const mcpConfiguration = {
       ports:[],
       UI:{
         expanded:false,
-      }
+      },
   }
   },
   generateData: (mcps) => {

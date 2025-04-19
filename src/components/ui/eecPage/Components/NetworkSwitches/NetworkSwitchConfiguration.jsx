@@ -6,13 +6,25 @@ import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwi
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
 import "../../Eec.css";
+import { lpdStore, lpdConfiguration } from '../../Store/lpdStore';
 
 const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
     const setNetworkSwitchValue = networkSwitchStore((state) => state.setNetworkSwitchValue);
     const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);
     const networkSwitchIndex = {networkSwitchIndex:index}
     const setPorts = (value) =>{
-        setNumberOfPorts(index, value);
+        setNumberOfPorts(index, value);   
+    }
+
+    const handleDeviceChange = (value) => {
+        if(networkSwitch.location && value){
+            const drop = lpdConfiguration.getDrop(networkSwitch.location, value)
+            if(drop){                
+                setNetworkSwitchValue(networkSwitchIndex, "power1InDT", drop.UI.parent.psu_dt);
+                setNetworkSwitchValue(networkSwitchIndex, "power1InLocation", drop.UI.parent.psu_location);
+            }
+        }
+        
     }
 
     return (
@@ -21,7 +33,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
                     <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex}
-                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"}
+                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"} onDeviceChange={handleDeviceChange}
                         stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
                     
                     {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}

@@ -2,7 +2,7 @@ import "../../Eec.css";
 import { lpdStore } from '../../Store/lpdStore';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
-import { networkSwitchOptions } from '../../Store/networkSwitchStore';
+import { networkSwitchOptions, networkSwitchConfiguration } from '../../Store/networkSwitchStore';
 import DeviceSelection from "../Common/DeviceSelection";
   
   const LpdPsuDropItem = ({ 
@@ -31,10 +31,7 @@ import DeviceSelection from "../Common/DeviceSelection";
         {value: "XD2", label: "XD2"},
         {value: "XD3", label: "XD3"},
     ] : []
-
-    const getDropPortOptions = () => {
-
-    }
+    const networkPortOptions = networkSwitchConfiguration.getNetworkDropPortOptions(16)
   
     return (
       <div className="lpd-psu-drop-item">
@@ -49,7 +46,7 @@ import DeviceSelection from "../Common/DeviceSelection";
               stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}/>                                
           {
             drop.deviceTag?.startsWith("LETH") && 
-            <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkSwitchOptions.networkPortOptions} 
+            <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkPortOptions} 
                     setModelValue={setDropValue} index={index} property={"outputPort"}/>
           }
           <InputTextItem title={"Enter the description of the target device"} placeHolder={drop.description} setModelValue={setDropValue} index={index} property={"description"}/>    

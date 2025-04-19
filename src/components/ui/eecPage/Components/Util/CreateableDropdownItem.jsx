@@ -21,6 +21,10 @@ const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onC
     useEffect(() => {
         setAllOptions(options);
     }, [options]);
+
+    useEffect(() => {
+        setSelectedOption({label:placeHolder, value:placeHolder});
+    }, [placeHolder]);
     
     const setValue = (reportedValue) => {
         if(property && index){

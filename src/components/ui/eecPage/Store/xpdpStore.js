@@ -14,7 +14,7 @@ const xpdpConfiguration = {
       "8A 1ph": [],
       "15A 1ph": [],
       "20A 1ph": [],
-      "20A 3ph": []
+      "20A 3ph": [],
      }
 
      return branchCircuit;
