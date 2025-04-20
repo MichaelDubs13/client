@@ -1,3 +1,4 @@
+import "../../Eec.css";
 import { FormLabel, FormItem, FormInputDropdown } from '@tesla/design-system-react';
 import { useState, useEffect } from "react";
 import DropdownItem from '../Util/DropdownItem';
@@ -7,17 +8,19 @@ import { projectStore } from '../../Store/projectStore';
 import HeadingItem from '../Util/HeadingItem';
 import InputTextItemBasic from '../Util/InputTextItemBasic';
 import LineLocationSelection from '../Common/LineLocationSelection';
-import "../../Eec.css";
 import { lineStore } from '../../Store/lineStore';
+import { pdpStore } from '../../Store/pdpStore';
+import { xpdpStore } from '../../Store/xpdpStore';
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
-    const index = {lpdIndex:lpdIndex}
-    const [psuSelection, setPsuSelection]=useState("");
+    const index = {lpdIndex:lpdIndex}    
     const [psuCascadingLimit, setPsuCascadingLimit]=useState("");
     const getCbOptions = lineStore((state)=> state.getCbOptions)
     const line = projectStore((state) => state.line);
     const setLpdValue = lpdStore((state) => state.setLpdValue);
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
+    const pdps = pdpStore((state) => state.pdps);
+    const xpdps = xpdpStore((state) => state.xpdps);
     const [cbOptions, setCbOptions] = useState([])
     let absIndex = 0;
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
@@ -48,6 +51,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     }
     useEffect(() => {
         var options = getCbOptions(lpd.location)
+        console.log(options)
         setCbOptions(options);
     }, [lpd.location]);
 
@@ -79,30 +83,41 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     }
     const handleSetpsuSelectionChange = (event)=> {
         const value = event.value;
-        setPsuSelection(value);
         getpsuCascadingLimit(value);
-        setLpdValue(index,"psu_selected", value)
     }
 
+    const handleDropChange = (value) => {
+        if(lpd.location && lpd.line && value){
+            for(let i=0;i<pdps.length;i++){
+                var cb = pdps[i].getCB(lpd.location, value);
+                if(cb){
+                    cb.setDataValue("targetDevice", lpd.data.id)
+                    return;
+                }
+            }
+            for(let i=0;i<xpdps.length;i++){
+                var cb = xpdps[i].getCB(lpd.location, value);
+                if(cb){
+                    cb.setDataValue("targetDevice", lpd.data.id)
+                    return;
+                }
+            }
+        }
+    }
 
     return (
         
         <div>
-            <DropdownItem title={"Select the supply voltage for the PSU(s):"} placeHolder={lpd.supplyVoltage} options={lpdOptions.psuSupplyVoltageOptions} setModelValue={setLpdValue} index={index} property={"supplyVoltage"}/>
-            <FormItem className="form-item">
-                <FormLabel className="form-label" htmlFor="context">Select the PSU:</FormLabel>
-                <FormInputDropdown
-                id="context"
-                value={psuSelection}
-                options={psuOptions}
-                onChange={handleSetpsuSelectionChange}
-                />
-            </FormItem>
-            <LineLocationSelection item={lpd} index={index} setModelValue={setLpdValue} 
+            <DropdownItem title={"Select the supply voltage for the PSU(s):"} item={lpd} property={"supplyVoltage"} 
+                options={lpdOptions.psuSupplyVoltageOptions} index={index}/>
+            <DropdownItem title={"Select the PSU:"} item={lpd} property={"psu_selected"} 
+                options={psuOptions} index={index} onChange={handleSetpsuSelectionChange}/>
+            <LineLocationSelection item={lpd} index={index}
                         lineTitle='Enter the power source Line name: (e.g., UBM01)'
                         locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
 
-            <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} placeHolder={lpd.cb} options={cbOptions} setModelValue={setLpdValue} index={index} property={"cb"}/>    
+            <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"cb"} 
+                options={cbOptions} index={index} onChange={handleDropChange}/>    
             <InputTextItemBasic title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                 data={lpd.psus.length} 
                 onTypingFinished={handlePsuNumberChange}/>
@@ -110,9 +125,9 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             {
                 lpd.psus.map((psu,index) => {
                     absIndex++;
-                    return <HeadingItem label={`24VDC Power Supply ${absIndex}: ++${line}+${psu.psu_location}-${psu.psu_dt} | ${psuSelection}`} 
+                    return <HeadingItem label={`24VDC Power Supply ${absIndex}: ++${line}+${psu.psu_location}-${psu.psu_dt} | ${lpd.selected_psu}`} 
                     size={18} margin={"20px"} open={false} 
-                    headerIcon={"/psu.png"}
+                    headerIcon={psu.UI.icon}
                     children={<LpdPsuItem lpdIndex={lpdIndex} psuIndex={index} psu={psu} lpd={lpd}/>}/>
                 })
             }

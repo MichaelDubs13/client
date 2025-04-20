@@ -21,7 +21,13 @@ const mcpConfiguration = {
       targetCableLength: "NULL",
       UI:{
         expanded:false,
-      }
+      },
+      data:{
+        type:'lethPort',
+      },
+      setValue: function(indexObject, key, value){
+        mcpStore.getState().setPortValue(indexObject, key, value);
+      },
     }
   },
 
@@ -85,6 +91,13 @@ const mcpConfiguration = {
       ports:[],
       UI:{
         expanded:false,
+        icon:"/panel.png",
+      },
+      data:{
+        type:'mcp',
+      },
+      setValue: function(indexObject, key, value){
+        mcpStore.getState().setMcpValue(indexObject, key, value);
       },
   }
   },

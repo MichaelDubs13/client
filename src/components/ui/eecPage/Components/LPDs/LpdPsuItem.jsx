@@ -4,7 +4,6 @@ import {
   FormInputText,
   FormItem,
 } from '@tesla/design-system-react';
-import { projectStore } from '../../Store/projectStore';
 import LpdPsuDropItem from './LpdPsuDropItem';
 import HeadingItem from '../Util/HeadingItem';
 import DropdownItem from '../Util/DropdownItem';
@@ -18,10 +17,9 @@ const LpdPsuItem = ({
   lpd,
   psu,
 }) => {   
-  const index = {psuIndex:psuIndex, lpdIndex:lpdIndex}
-  const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
-  const setPsuValue =  lpdStore((state) => state.setPsuValue);
-  let absIndex = 0;
+const index = {psuIndex:psuIndex, lpdIndex:lpdIndex}
+const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
+let absIndex = 0;
 const handleNumberOfDropsChange = (event) => {
     const value = event.target.value;
     setNumberOfDrops(index,value)
@@ -30,14 +28,15 @@ const handleNumberOfDropsChange = (event) => {
 return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
-          <DeviceSelection item={psu} setModelValue={setPsuValue} index={index} 
+          <DeviceSelection item={psu} index={index} 
             deviceTitle={"PSU Device Tag (e.g., PSU01)"} deviceProperty={"psu_dt"}
             stationTitle={"PSU Location (i.e., Station number) (e.g., 00010)"} stationProperty={"psu_location"}/>                                
           {
             lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
             <>
                 {/* PSU-to-PSU cable length */}
-                <DropdownItem title={"Enter the cable length to the next cascaded PSU (m)"} placeHolder={psu.cable_length} options={lpdOptions.psuToPsuCableLengthOptions} setModelValue={setPsuValue} index={index} property={"cable_length"}/>    
+                <DropdownItem title={"Enter the cable length to the next cascaded PSU (m)"} item={psu} property={"cable_length"}
+                   options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
             </>
           )}
           {/* Number of 24V drops */}
@@ -58,7 +57,7 @@ return (
                 absIndex++
                 return <HeadingItem label={`24VDC field power drop ${absIndex}`} 
                 size={18} margin={"20px"} open={false} 
-                headerIcon={"/powerdrop.png"}
+                headerIcon={drop.UI.icon}
                 children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} drop={drop} lpd={lpd} psu={psu}/>}/>
                 
               })

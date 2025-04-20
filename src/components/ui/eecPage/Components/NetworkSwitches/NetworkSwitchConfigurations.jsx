@@ -57,7 +57,7 @@ const NetworkSwitchConfigurations = () => {
                     networkSwitches.map((networkSwitch, index) => {
                         return <HeadingItem label={`${index+1}:Network Switch ++${line}+${networkSwitch.location}-${networkSwitch.switchDT} Parameters`} 
                                 size={18} margin={"20px"} open={false}
-                                headerIcon={"/panel.png"}
+                                headerIcon={networkSwitch.UI.icon}
                                 children={<NetworkSwitchConfiguration networkSwitch={networkSwitch} index={index}/>}
                                 buttons={[<DeleteButton onClick={() => handleDeleteItem(index)} />,
                                     <DuplicateButton onClick={()=>handleDuplicateItem(index)}/>,

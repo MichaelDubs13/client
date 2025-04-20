@@ -37,7 +37,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
             powerDropItems.push(
                 <HeadingItem label={`${amperage} Branch circuit power drop ${i}: ${branchCircuit[i].UI.CB_DT}`}
                     size={18} margin={"20px"} open={false}
-                    headerIcon={"/powerdrop.png"}
+                    headerIcon={branchCircuit[i].UI.icon}
                     children={<PowerDropItem 
                     key={`${amperage}-${i+1}`}
                     amperage={(amperage)} 

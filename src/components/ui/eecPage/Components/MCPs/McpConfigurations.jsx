@@ -53,7 +53,7 @@ const McpConfigurations = () => {
                         const location = mcp.location
                         return <HeadingItem label={`Main Control Panel ++${line}+${location} Parameters:`} 
                                 size={18} margin={"20px"} open={false}
-                                headerIcon={"/panel.png"}
+                                headerIcon={mcp.UI.icon}
                                 children={<McpConfiguration mcp={mcp} index={index}/>}
                                 buttons={[<DeleteButton onClick={() => handleDeleteItem(index)}/>,
                                     <DuplicateButton onClick={()=>handleDuplicateItem(index)}/>,

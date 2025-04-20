@@ -5,7 +5,7 @@ import "../../Eec.css";
 
 
 const DeviceSelection = ({
-    item, index, setModelValue, 
+    item, index,  
     lineTitle = "Manufacturing Line name (e.g., UBM1, DOR1)", 
     stationTitle, stationProperty,
     deviceTitle, deviceProperty,
@@ -28,8 +28,6 @@ const DeviceSelection = ({
 
     useEffect(() => {
         var deviceOptions = getDeviceOptions(item[stationProperty]);
-        console.log(item[deviceProperty])
-        console.log(item[stationProperty])
         setDeviceOptions(deviceOptions)
     }, [item[deviceProperty], item[stationProperty], item.line]);
 
@@ -38,9 +36,9 @@ const DeviceSelection = ({
     return (
         
         <div>
-            <CreateableDropdownItem title={lineTitle} placeHolder={item.line} options={lines}  setModelValue={setModelValue} index={index} property={"line"}/>
-            <CreateableDropdownItem title={stationTitle} placeHolder={item[stationProperty]} options={stations} setModelValue={setModelValue} index={index} property={stationProperty} onChange={onStationChange}/>
-            <CreateableDropdownItem title={deviceTitle} placeHolder={item[deviceProperty]} options={deviceOptions} setModelValue={setModelValue} index={index} property={deviceProperty} onChange={onDeviceChange}/>
+            <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index}/>
+            <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} options={stations} index={index} onChange={onStationChange}/>
+            <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} options={deviceOptions} index={index} onChange={onDeviceChange}/>
         </div>
     );
 };

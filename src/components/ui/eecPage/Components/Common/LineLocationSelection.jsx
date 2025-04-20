@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import CreateableDropdownItem from '../Util/CreateableDropdownItem';
-import "../../Eec.css";
 import { lineStore } from '../../Store/lineStore';
 import { projectStore } from '../../Store/projectStore';
 import InputTextItem from '../Util/InputTextItem';
+import "../../Eec.css";
 
 const LineLocationSelection = ({
-    item, index, setModelValue, 
+    item, index,
     lineTitle = "Manufacturing Line name (e.g., UBM1, DOR1)", 
     locationTitle ="Location designation (e.g., MPDP01, WPDP01)", 
     onLocationChange,
@@ -39,8 +39,8 @@ const LineLocationSelection = ({
                     <InputTextItem title={"Shop name"} placeHolder={shop} readOnly={true} />
                 </div>
             }
-            <CreateableDropdownItem title={lineTitle} placeHolder={item.line} options={lines}  setModelValue={setModelValue} index={index} property={"line"} onChange={onLineChange}/>
-            <CreateableDropdownItem title={locationTitle} placeHolder={item.location} options={locationOptions} setModelValue={setModelValue} index={index} property={"location"} onChange={onLocationChange}/>
+            <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={onLineChange}/>
+            <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} onChange={onLocationChange}/>
         </div>
     );
 };

@@ -1,12 +1,7 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import LineConfiguration from "../Components/LineConfiguration";
 
 const networkSwitchOptions = {
-  networkPortOptions:[
-    { value: "SPARE", label: "SPARE" },
-  ],
-
   deviceTypeSelectionOptions: [
     { value: "SPARE", label: "SPARE" },
     { value: "Device", label: "Device" },
@@ -104,7 +99,14 @@ const networkSwitchConfiguration = {
       targetPort: "", // EEC varaible name: frmUI_DevicePortSelection
       UI:{
         expanded:false,
-      }
+        icon:"/networkPort.png"
+      },
+      data:{
+        type:'networkPort',
+      },
+      setValue: function(indexObject, key, value){
+        networkSwitchStore.getState().setPortValue(indexObject, key, value);
+      },
     }
   },
 
@@ -134,10 +136,16 @@ const networkSwitchConfiguration = {
       ports_8: 0, // EEC variable name: 8_ports
       ports_8or16: 16, // EEC variable name: 8or16_ports
       ports_8or16or24: 0, // EEC variable name: 8or16or24_ports
-      // below is an array example for the sub components under network switch
       ports:networkSwitchConfiguration.initializePorts(16),
       UI:{
         expanded:false,
+        icon:"/networkSwitch.png"
+      },
+      data:{
+        type:'networkSwitch',
+      },
+      setValue: function(indexObject, key, value){
+        networkSwitchStore.getState().setNetworkSwitchValue(indexObject, key, value);
       },
 
       getFullName: function() {
@@ -254,10 +262,9 @@ const networkSwitchStore = create((set,get) => ({
   },
 
     
-    // this is for sub components under network switch
-    // this would be for the ports in this case
-    setNumberOfPorts:(index, numberOfPorts)=>{
-     
+  // this is for sub components under network switch
+  // this would be for the ports in this case
+  setNumberOfPorts:(index, numberOfPorts)=>{
       set((state) => {
 
         const newNetworkSwitches = [...state.networkSwitches];

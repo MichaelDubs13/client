@@ -59,7 +59,29 @@ const lineConfiguration = {
             });
         })
         return devices;
-    },    
+    },
+    
+    getDeviceById:(id)=>{
+        const pdps = pdpStore.getState().pdps;
+        const xpdps= xpdpStore.getState().xpdps;
+        const mcps = mcpStore.getState().mcps;
+        const lpds = lpdStore.getState().lpds;
+        const networkSwitches = networkSwitchStore.getState().networkSwitches;
+
+        for(let i=0;i<pdps.length;i++){
+            if(pdps[i].data.id === id) return pdps[i];
+            var foundItem = pdps[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+        
+        for(let i=0;i<lpds.length;i++){
+            console.log(lpds[i].data.id)
+            console.log(id)
+            if(lpds[i].data.id === id) return lpds[i];
+            var foundItem = lpds[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+    }
 
 }
 const lineStore = create((set) => ({

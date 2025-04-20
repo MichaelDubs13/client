@@ -1,8 +1,7 @@
 import "../../Eec.css";
-import { lpdStore } from '../../Store/lpdStore';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
-import { networkSwitchOptions, networkSwitchConfiguration } from '../../Store/networkSwitchStore';
+import { networkSwitchConfiguration } from '../../Store/networkSwitchStore';
 import DeviceSelection from "../Common/DeviceSelection";
   
   const LpdPsuDropItem = ({ 
@@ -13,7 +12,6 @@ import DeviceSelection from "../Common/DeviceSelection";
     lpd,
     psu,
   }) => {
-    const setDropValue = lpdStore((state) => state.setDropValue);
     const index = {lpdIndex:lpdIndex,psuIndex:psuIndex,dropIndex:dropIndex }
     const outputPortBrandOptions = ['Turck', 'Puls', 'Balluff-BAE0133']
     const outputPortOptions = lpd.psu_selection === 'Balluff-BAE0133' ?
@@ -38,19 +36,19 @@ import DeviceSelection from "../Common/DeviceSelection";
         <div className="lpd-psu-drop-settings">
         {outputPortBrandOptions.includes(lpd.psu_selection) && (
             <>
-                <DropdownItem title={"Select the output port of the PSU:"} placeHolder={drop.outputPort} setModelValue={setDropValue} options={outputPortOptions} index={index} property={"outputPort"}/>    
+                <DropdownItem title={"Select the output port of the PSU:"} item={lpd} property={"outputPort"} options={outputPortOptions} index={index}/>    
             </>
           )}     
-          <DeviceSelection item={drop} setModelValue={setDropValue} index={index} 
+          <DeviceSelection item={drop} index={index} 
               deviceTitle={"Device Tag (e.g., MIO01)"} deviceProperty={"deviceTag"}
               stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}/>                                
           {
             drop.deviceTag?.startsWith("LETH") && 
-            <DropdownItem title={"Enter the device port to be connected to"} placeHolder={drop.outputPort} options={networkPortOptions} 
-                    setModelValue={setDropValue} index={index} property={"outputPort"}/>
+            <DropdownItem title={"Enter the device port to be connected to"} item={lpd} property={"outputPort"}
+              options={networkPortOptions} index={index}/>
           }
-          <InputTextItem title={"Enter the description of the target device"} placeHolder={drop.description} setModelValue={setDropValue} index={index} property={"description"}/>    
-          <InputTextItem title={"FLA"} placeHolder={drop.fla} setModelValue={setDropValue} index={index} property={"fla"}/>              
+          <InputTextItem title={"Enter the description of the target device"} item={lpd} index={index} property={"description"}/>    
+          <InputTextItem title={"FLA"} item={lpd} index={index} property={"fla"}/>              
         </div>
       </div>
     );

@@ -1,5 +1,7 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
+import { v4 as uuidv4 } from 'uuid';
+import {formatToTwoDigits} from './util'
 
 const lpdOptions = {
   psuSupplyVoltageOptions: [
@@ -35,6 +37,16 @@ const lpdOptions = {
   ],
 }
 const lpdConfiguration = {
+  getItemById:(lpd, id) =>{
+    for(let i=0;i<lpd.psus.length;i++){
+      const psu = lpd.psus[i];
+      if(psu.data.id === id){   
+        return psu;
+      }
+    }
+
+    return null;
+  },
   getDrop:(location, device, port) => {
     const lpds = lpdStore.getState().lpds;
     for(let i=0;i<lpds.length;i++){
@@ -44,7 +56,7 @@ const lpdConfiguration = {
 
     return null;
   },
-  createPsu: (line) => {
+  createPsu: (line, parent) => {
     const psu = {
       lineside120AFLA:"",
       branchBreaker:"",
@@ -66,6 +78,15 @@ const lpdConfiguration = {
       device:{},
       UI:{
         expanded:false,
+        icon:"/psu.png",
+      },
+      data:{
+        type:'psu',
+        id:uuidv4(),
+        parent:parent,
+      },
+      setValue: function(indexObject, key, value){
+        lpdStore.getState().setPsuValue(indexObject, key, value);
       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.psu_location, this.psu_dt);
@@ -74,6 +95,20 @@ const lpdConfiguration = {
         var drop = this.pwrDrops.find(drop => drop.location === location && drop.deviceTag === device);
         return drop;
       },
+      getIndex: function(){
+        const lpds = lpdStore.getState().lpds;
+        const lpdIndex = lpds.findIndex(lpd => lpd.data.id === parent.data.id)
+        const index = lpds[lpdIndex].psus.findIndex(psu => psu.data.id === this.data.id)
+        console.log(index)
+        return index;
+      },
+      getNodeData: function(){
+        return [
+          this.psu_location,
+          this.psu_dt,
+          this.MFG,
+        ]
+      }
     }
     return psu;
   },
@@ -89,29 +124,61 @@ const lpdConfiguration = {
       UI:{
         expanded:false,
         parent:parent,
+        icon:"/powerdrop.png",
+      },
+      data:{
+        type:'powerDrop',
+        id:uuidv4(),
+      },
+      setValue: function(indexObject, key, value){
+        lpdStore.getState().setDropValue(indexObject, key, value);
       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location, this.description);
       },
+      getNodeData: function(){
+        return [
+
+        ]
+      }
     }
   },
   create: () => { 
-      return {
-          cb:"",
-          panel:"",
-          psu_selected:"", //only used for UI
-          psus:[],
-          UI:{
-            expanded:false,
-          },
-          getDrop: function(location, device, port){
-            for(let i=0;i<this.psus.length;i++){
-              const drop = this.psus[i].getDrop(location, device, port);
-              if(drop) return drop;
-            }
-
-            return null;
-          },
+    return {
+      cb:"",
+      panel:"",
+      psu_selected:"", //only used for UI
+      psus:[],
+      UI:{
+        expanded:false,
+        icon:"/psuGroup.png",
+      },
+      data:{
+        type:'lpd',
+        id:uuidv4(),
+      },
+      setValue: function(indexObject, key, value){
+        lpdStore.getState().setLpdValue(indexObject, key, value);
+      },
+      getDrop: function(location, device, port){
+        for(let i=0;i<this.psus.length;i++){
+          const drop = this.psus[i].getDrop(location, device, port);
+          if(drop) return drop;
+        }
+        return null;
+      },
+      getIndex: function(){
+        const lpds = lpdStore.getState().lpds;
+        return lpds.findIndex(lpd => lpd.data.id === this.data.id)
+      },
+      getItemById: function(id){
+        return lpdConfiguration.getItemById(this, id);
+      },
+      getNodeData: function(){
+        return [
+          this.psu_selected,
+        ]
+      }
     }
   },
   generateData: (lpds) => {
@@ -167,7 +234,7 @@ const lpdStore = create((set) => ({
         const diff = numberOfPsus - newLpds[index].psus.length
         if(diff > 0){
           for (let i = 0; i < diff; i++) {
-            var psu = lpdConfiguration.createPsu(newLpds[index].line);
+            var psu = lpdConfiguration.createPsu(newLpds[index].line, newLpds[index]);
             newLpds[index] = {...newLpds[index], 
               psus: [...newLpds[index].psus, psu],
             };
@@ -178,6 +245,7 @@ const lpdStore = create((set) => ({
               psus: psus,
             };
         }
+        console.log(newLpds)
         return { lpds: newLpds };
       })
     },

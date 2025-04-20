@@ -56,7 +56,7 @@ const PdpConfigurations = () => {
                     pdps.map((pdp, index) => {
                         return <HeadingItem label={`${index+1}:Power Distribution Panel ++${line}+${pdp.location} Parameters`} 
                                 size={18} margin={"20px"} open={false}
-                                headerIcon={"/panel.png"}
+                                headerIcon={pdp.UI.icon}
                                 children={<PdpConfiguration pdp={pdp} index={index}/>}
                                 buttons={[<DeleteButton onClick={() => handleDeleteItem(index)} />,
                                     <DuplicateButton onClick={()=>handleDuplicateItem(index)}/>,

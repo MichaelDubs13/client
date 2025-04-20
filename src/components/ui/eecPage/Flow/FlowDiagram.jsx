@@ -48,7 +48,7 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
       sourcePosition: isHorizontal ? 'right' : 'bottom',
       position: {
         x: nodeWithPosition.x - node.width / 2,
-        y: nodeWithPosition.y - node.height / 2,
+        y: nodeWithPosition.y - node.height / 2 + node.layer * 300,
       },
     };
 
@@ -99,7 +99,7 @@ const Flow = ({initialNodes, initialEdges, treeData}) => {
   }
 
   return (
-    <div style={{ width: '50vw', height: '50vh' }}>
+    <div style={{ width: '75vw', height: '75vh' }}>
             <ReactFlow
                 nodeTypes={nodeTypes}
                 nodes={layoutedNodes}

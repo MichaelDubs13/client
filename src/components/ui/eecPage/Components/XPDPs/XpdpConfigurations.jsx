@@ -52,7 +52,7 @@ const XpdpConfigurations = () => {
                 xpdps.map((xpdp, index) => {
                     return <HeadingItem label={`120/208VAC Power Distribution Panel ++${line}+${xpdp.location} Parameters`}
                     size={18} margin={"20px"} open={false}
-                    headerIcon={"/panel.png"}
+                    headerIcon={xpdp.UI.icon}
                     children={<XpdpConfiguration xpdp={xpdp} xpdpIndex={index}/>} 
                     buttons={[<DeleteButton onClick={() => handleDeleteItem(index)}/>,
                         <DuplicateButton onClick={()=>handleDuplicateItem(index)}/>,

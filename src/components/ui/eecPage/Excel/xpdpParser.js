@@ -87,7 +87,7 @@ const xpdpParser = {
                     const arr = sourceDevice.ac_primary_power_branch_size.split(" ")
                     if(arr.length > 2){
                         const branchSize = arr[2]
-                        const branch = xpdpParser.createBranchCircuit(sourceDevice);
+                        const branch = xpdpParser.createBranchCircuit(sourceDevice,xpdp, branchSize);
                         xpdp.branchCircuit[branchSize].push(branch);
                     }
                 }
@@ -97,8 +97,8 @@ const xpdpParser = {
         })        
         return xpdps;
     },
-    createBranchCircuit:(sourceDevice)=>{
-        const branch = xpdpConfiguration.createBranchCircuit();
+    createBranchCircuit:(sourceDevice, parent, amperage)=>{
+        const branch = xpdpConfiguration.createBranchCircuit(parent, amperage);
         branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
         branch.TargetDevice_DT = sourceDevice.device_dt;
         branch.StrBox_DT = sourceDevice.station;
@@ -110,7 +110,7 @@ const xpdpParser = {
         const numberOfEmptyPwrDrps = numberOfPwrDrps - pdp.branchCircuit[key].length;
         if(numberOfEmptyPwrDrps > 0)
         for(let i = 0; i < numberOfEmptyPwrDrps; i++){
-            var branch =  xpdpConfiguration.createBranchCircuit();
+            var branch =  xpdpConfiguration.createBranchCircuit(pdp, key);
             pdp.branchCircuit[key].push(branch);
         }
     },
