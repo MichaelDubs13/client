@@ -38,9 +38,7 @@ const pdpConfiguration = {
       const key = keys[i];
       for(let j=0;j<branchCircuit[key].length;j++){
         const drop = branchCircuit[key][j];
-        if(drop.data.id === id){   
-          return drop;
-        }
+        if(drop.data.id === id)return drop;
       }
     }
 
@@ -53,9 +51,7 @@ const pdpConfiguration = {
       const key = keys[i];
       for(let j=0;j<branchCircuit[key].length;j++){
         const drop = branchCircuit[key][j];
-        if(drop.UI.CB_DT === cb_dt){   
-          return drop;
-        }
+        if(drop.UI.CB_DT === cb_dt) return drop;
       }
     }
 

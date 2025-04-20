@@ -1,5 +1,7 @@
 import {create} from "zustand";
 import { projectStore } from "./projectStore";
+import { v4 as uuidv4 } from 'uuid';
+import {formatToTwoDigits} from './util'
 const mcpOptions = {
   cableLengthOptions: [
     { value: "NULL", label: "NULL" },
@@ -12,7 +14,17 @@ const mcpOptions = {
   ],
 }
 const mcpConfiguration = {
-  
+  //fetch child component by id
+  getItemById:( mcp, id) =>{
+    for(let i=0;i<mcp.ports.length;i++){
+      const port = mcp.ports[i];
+        if(port.data.id === id){   
+          return port;
+        }
+    }
+
+    return null;
+  },
   createLethPort: () => {
     return {
       targetLocation: "",
@@ -24,19 +36,24 @@ const mcpConfiguration = {
       },
       data:{
         type:'lethPort',
+        id:uuidv4(),
       },
       setValue: function(indexObject, key, value){
         mcpStore.getState().setPortValue(indexObject, key, value);
       },
+      getNodeData: function(){
+        return [
+        ]
+      }
     }
   },
 
-  create: () => { 
+  create: (location) => { 
     const line = projectStore.getState().line;
     return {
       fla:"",
       line:line,
-      location:"",
+      location:location,
       mcp_name:"",
       mcpMountingLocation: "",
       psu_location:"",
@@ -95,10 +112,23 @@ const mcpConfiguration = {
       },
       data:{
         type:'mcp',
+        id:uuidv4(),
       },
       setValue: function(indexObject, key, value){
         mcpStore.getState().setMcpValue(indexObject, key, value);
       },
+      getIndex: function(){
+        const mcps = mcpStore.getState().mcps;
+        return mcps.findIndex(mcp => mcp.data.id === this.data.id)
+      },
+      getItemById: function(id){
+        return mcpConfiguration.getItemById(this, id);
+      },
+      getNodeData: function(){
+        return [
+          this.location,
+        ]
+      }
   }
   },
   generateData: (mcps) => {
@@ -116,7 +146,8 @@ const mcpStore = create((set) => ({
           if(diff > 0){
             const mcps = [];
             for (let i = 0; i < diff; i++) {
-              var mcp = mcpConfiguration.create();
+              const location = `MCP${formatToTwoDigits(i+1)}`
+              var mcp = mcpConfiguration.create(location);
               mcps.push(mcp);
             } 
             return {mcps:[...state.mcps, ...mcps]} 

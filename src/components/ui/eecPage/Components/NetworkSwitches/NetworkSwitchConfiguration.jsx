@@ -20,8 +20,9 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
         if(networkSwitch.location && value){
             const drop = lpdConfiguration.getDrop(networkSwitch.location, value)
             if(drop){                
-                setNetworkSwitchValue(networkSwitchIndex, "power1InDT", drop.UI.parent.psu_dt);
-                setNetworkSwitchValue(networkSwitchIndex, "power1InLocation", drop.UI.parent.psu_location);
+                setNetworkSwitchValue(networkSwitchIndex, "power1InDT", drop.data.parent.psu_dt);
+                setNetworkSwitchValue(networkSwitchIndex, "power1InLocation", drop.data.parent.psu_location);
+                drop.setDataValue("targetDevice", networkSwitch.data.id)
             }
         }
     }

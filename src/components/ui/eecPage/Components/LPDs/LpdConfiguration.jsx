@@ -1,5 +1,4 @@
 import "../../Eec.css";
-import { FormLabel, FormItem, FormInputDropdown } from '@tesla/design-system-react';
 import { useState, useEffect } from "react";
 import DropdownItem from '../Util/DropdownItem';
 import LpdPsuItem from './LpdPsuItem';

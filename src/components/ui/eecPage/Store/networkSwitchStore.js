@@ -1,5 +1,7 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
+import { v4 as uuidv4 } from 'uuid';
+import {formatToTwoDigits} from './util'
 
 const networkSwitchOptions = {
   deviceTypeSelectionOptions: [
@@ -59,6 +61,17 @@ const networkSwitchOptions = {
 
 
 const networkSwitchConfiguration = {
+   //fetch child component by id
+   getItemById:( networkSwtich, id) =>{
+    for(let i=0;i<networkSwtich.ports.length;i++){
+      const port = networkSwtich.ports[i];
+        if(port.data.id === id){   
+          return port;
+        }
+    }
+
+    return null;
+  },
   getNetworkSwitchOptions:(networkSwitches)=>{
     const networkSwitchOptions = networkSwitches.map((networkSwitch => {
         const value = lineConfiguration.getDeviceFullName(networkSwitch.location, networkSwitch.switchDT);
@@ -103,10 +116,16 @@ const networkSwitchConfiguration = {
       },
       data:{
         type:'networkPort',
+        id:uuidv4(),
       },
       setValue: function(indexObject, key, value){
         networkSwitchStore.getState().setPortValue(indexObject, key, value);
       },
+      getNodeData: function(){
+        return [
+          this.deviceTypeSelection,
+        ]
+      }
     }
   },
 
@@ -143,17 +162,28 @@ const networkSwitchConfiguration = {
       },
       data:{
         type:'networkSwitch',
+        id:uuidv4(),
       },
       setValue: function(indexObject, key, value){
         networkSwitchStore.getState().setNetworkSwitchValue(indexObject, key, value);
       },
-
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location, this.switchDT);
       },
-
       getPortOptions: function() {
         return networkSwitchConfiguration.getNetworkDropPortOptions(this.ports.length, this.networkType, this.switchType);
+      },
+      getIndex: function(){
+        const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        return networkSwitches.findIndex(networkSwitch => networkSwitch.data.id === this.data.id)
+      },
+      getItemById: function(id){
+        return networkSwitchConfiguration.getItemById(this, id);
+      },
+      getNodeData: function(){
+        return [
+          this.switchDT,
+        ]
       }
     }
    

@@ -14,9 +14,7 @@ const xpdpConfiguration = {
   getCB:(branchCircuit, cb_dt) =>{
     Object.keys(branchCircuit).reverse().forEach(key => {
       branchCircuit[key].forEach(drop => {
-        if(drop.UI.CB_DT = cb_dt){
-          return drop;
-        }
+        if(drop.UI.CB_DT = cb_dt) return drop;
       })
     });
 
@@ -54,10 +52,10 @@ const xpdpConfiguration = {
         xpdpStore.getState().setBranchCircuitValue(indexObject, key, value, false);
       },
       setDataValue: function(key, value){
-        const xpdps = xpdpStore.getState().xpdps;
+        const pdps = xpdpStore.getState().pdps;
         const pdpIndex = this.data.parent.getIndex();
         const amperage = this.data.amperage;
-        const branchCircuitIndex = Array.from(xpdps[pdpIndex].branchCircuit[amperage]).indexOf(this);
+        const branchCircuitIndex = Array.from(pdps[pdpIndex].branchCircuit[amperage]).indexOf(this);
         const indexObject = {
           pdpIndex:pdpIndex,
           branchCircuitIndex:branchCircuitIndex,
@@ -124,6 +122,9 @@ const xpdpConfiguration = {
       getIndex: function(){
         const xpdps = xpdpStore.getState().xpdps;
         return xpdps.findIndex(pdp => pdp.data.id === this.data.id)
+      },
+      getItemById: function(id){
+        return pdpConfiguration.getItemById(this, id);
       },
       getNodeData: function(){
         return [

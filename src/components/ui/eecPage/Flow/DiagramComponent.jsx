@@ -3,6 +3,7 @@ import FlowDiagram from "./FlowDiagram";
 import { pdpStore } from "../Store/pdpStore";
 import { lineConfiguration } from "../Store/lineStore";
 import { lpdStore } from "../Store/lpdStore";
+import { xpdpStore } from "../Store/xpdpStore";
 
 const DiagramComponent = ()=> {
     const [isLoading, setIsLoading] = useState(false);
@@ -10,14 +11,15 @@ const DiagramComponent = ()=> {
     const [edges, setEdges] = useState([]);
     const [tree, setTree] = useState([]);
     const pdps = pdpStore((state) => state.pdps);
+    const xpdps = xpdpStore((state) => state.xpdps);
     const lpds = lpdStore((state) => state.lpds);
     const position = { x: 0, y: 0 };
     useEffect(()=>{
         const fetchData = async () =>{
             setIsLoading(true);
-            var tree = CreateTree(pdps);
+            var tree = CreateTree(pdps, xpdps);
             setTree(tree);
-            const {nodes: nodes, edges: edges} = CreateNodes(tree);
+            const {nodes: nodes, edges: edges} = CreateNodes(pdps, xpdps);
             setNodes(nodes);
             setEdges(edges);
             setIsLoading(false);
@@ -27,15 +29,7 @@ const DiagramComponent = ()=> {
     }, []);
 
 
-    const CreateNodes = (tree) => {
-        // const nodeNum = 2;
-        // const nodeStart_X = nodeNum * 200 / 2;
-
-        const {nodes: nodes, edges: edges} = CreateNodeLayer(tree)
-        return {nodes: nodes, edges: edges} ;
-    }
-
-    const CreateNodeLayer = (pdps) => {
+    const CreateNodes = (pdps, xpdps) => {
         var nodes = [];
         var edges = [];
         var nodeWidth = 400;
@@ -44,7 +38,11 @@ const DiagramComponent = ()=> {
         pdps.forEach(pdp => {
             createPdpNodes(pdp, layer, nodeWidth, nodeHeight, nodes, edges)
         })
-        console.log(lpds);
+
+        xpdps.forEach(pdp => {
+            createPdpNodes(pdp, layer, nodeWidth, nodeHeight, nodes, edges)
+        })
+
         console.log(nodes)
         console.log(edges)
         return {nodes:nodes, edges: edges};
@@ -61,6 +59,9 @@ const DiagramComponent = ()=> {
             case "pdp":
                 node = createPdpNode(item, layer, nodeWidth, nodeHeight);
                 break;
+            case "xpdp":
+                node = createXpdpNode(item, layer, nodeWidth, nodeHeight);
+                break;
             case "cb":
                 node = createBranchCircuitNode(item, layer, nodeWidth, nodeHeight);
                 break;
@@ -73,16 +74,23 @@ const DiagramComponent = ()=> {
         return node;
     }
 
-    const createDeviceNodes = (item, parent, layer, nodeWidth, nodeHeight)=>{
+    const createDeviceNodes = (item, parentNode, layer, nodeWidth, nodeHeight)=>{
         var result = {nodes:[], edges:[]}
         if(!item) return result
         if (Object.keys(item).length === 0) return {nodes:nodes, edges:edges}
         switch(item.data.type) {
             case "lpd":
-                var lpd = createLpdNodes(item, parent, layer, nodeWidth, nodeHeight);
+                var lpd = createLpdNodes(item, parentNode, layer, nodeWidth, nodeHeight);
                 result.nodes.push(...lpd.nodes)
                 result.edges.push(...lpd.edges)
                 break;
+            case "networkSwitch":
+                var networkSwitchNode = createNetworkSwitchNode(item, layer, nodeWidth, nodeHeight);
+                var source = parentNode.id;
+                var target = networkSwitchNode.id;
+                var edge = { id: `${source}=>${target}`, source: source, target: target};
+                result.nodes.push(networkSwitchNode)
+                result.edges.push(edge);
             default:
               // code block
         }
@@ -109,7 +117,7 @@ const DiagramComponent = ()=> {
         });
     }
 
-    const createTargetDeviceNode = (item, parent, layer, nodeWidth, nodeHeight, nodes, edges) => {
+    const createTargetDeviceNode = (item, parentNode, layer, nodeWidth, nodeHeight, nodes, edges) => {
         if(!item) return;
         if (Object.keys(item).length === 0) return;
         if(!item.data.targetDevice) return;
@@ -118,7 +126,7 @@ const DiagramComponent = ()=> {
         var targetDevice = lineConfiguration.getDeviceById(targetDeviceId);
         if(!targetDevice) return;
 
-        var device = createDeviceNodes(targetDevice,parent, layer, nodeWidth, nodeHeight);
+        var device = createDeviceNodes(targetDevice,parentNode, layer, nodeWidth, nodeHeight);
         nodes.push(...device.nodes)
         edges.push(...device.edges);
     }
@@ -133,20 +141,35 @@ const DiagramComponent = ()=> {
         var target = lpdNode.id;
         var edge = { id: `${source}=>${target}`, source: source, target: target};
         edges.push(edge);
-        layer++;
+        const psuLayer = layer + 1;
+        const dropLayer = psuLayer + 1;
         lpd.psus.forEach(psu => {
-            var psuNode = createPsuNode(psu, lpd, layer, nodeWidth, nodeHeight)
+            var psuNode = createPsuNode(psu, lpd, psuLayer, nodeWidth, nodeHeight)
             nodes.push(psuNode);
 
             var source = lpdNode.id;
             var target = psuNode.id;
             var edge = { id: `${source}=>${target}`, source: source, target: target};
             edges.push(edge);
+
+            psu.pwrDrops.forEach(drop => {
+                createTargetDeviceNode(drop, psuNode, dropLayer, nodeWidth, nodeHeight, nodes, edges)
+            })
         })
         return {nodes:nodes, edges:edges}
     }
     
     const createPdpNode = (pdp, layer, nodeWidth, nodeHeight)=>{
+        const index = pdp.getIndex();
+        const key = `${pdp.line}+${pdp.location}+${index}`;
+        const icon = pdp.UI.icon;
+        const target = `${key}_${layer}`;
+        const label = [key, ...pdp.getNodeData()];
+        var node =   { id: target, data: { label: label, icon: icon }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        return node;
+    }
+
+    const createXpdpNode = (pdp, layer, nodeWidth, nodeHeight)=>{
         const index = pdp.getIndex();
         const key = `${pdp.line}+${pdp.location}+${index}`;
         const icon = pdp.UI.icon;
@@ -186,8 +209,18 @@ const DiagramComponent = ()=> {
         return node;
     }
 
-    const CreateTree = (pdps) => {
-        var tree = pdps;
+    const createNetworkSwitchNode = (networkSwitch,layer, nodeWidth, nodeHeight)=>{
+        const index = networkSwitch.getIndex();
+        const key = `${networkSwitch.location}_${networkSwitch.switchDT}_${index}`;
+        const icon = networkSwitch.UI.icon;
+        const target = `${key}_${layer}`;
+        const label = [key,...networkSwitch.getNodeData()];
+        var node =   { id: target, data: { label: label, icon: icon, }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        return node;
+    }
+
+    const CreateTree = (pdps, xpdps) => {
+        var tree = pdps.concat(xpdps)
         return tree;
     }
 

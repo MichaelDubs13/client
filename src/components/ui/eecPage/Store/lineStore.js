@@ -73,12 +73,28 @@ const lineConfiguration = {
             var foundItem = pdps[i].getItemById(id);
             if(foundItem) return foundItem;
         }
-        
+
+        for(let i=0;i<xpdps.length;i++){
+            if(xpdps[i].data.id === id) return xpdps[i];
+            var foundItem = xpdps[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<mcps.length;i++){
+            if(mcps[i].data.id === id) return mcps[i];
+            var foundItem = mcps[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
         for(let i=0;i<lpds.length;i++){
-            console.log(lpds[i].data.id)
-            console.log(id)
             if(lpds[i].data.id === id) return lpds[i];
             var foundItem = lpds[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<networkSwitches.length;i++){
+            if(networkSwitches[i].data.id === id) return networkSwitches[i];
+            var foundItem = networkSwitches[i].getItemById(id);
             if(foundItem) return foundItem;
         }
     }
