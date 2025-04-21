@@ -3,6 +3,11 @@ import {create} from "zustand";
 
 const hmiOptions = {
   // example of dropdown options for the HMI parameters
+  hmiScreenSizeOptions:[
+    { value: "15in", label: "15in" },
+    { value: "22in", label: "22in" },
+  ],
+  
   mountingTypeOptions:[
     { value: "Flange at Bottom", label: "Flange at Bottom" },
     { value: "Round Tube", label: "Round Tube" },
@@ -102,13 +107,12 @@ const hmiConfiguration = {
     return extensionUnitPositions;
   },
   calculateNumberOfExtensionUnitPositions: (numberOfExtensionUnitPositions, hmi) => {
-    // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
-    // this will be used to create the ports for the network switch
-    // check the values in priority order
+    // set the numberOfExtensionUnitPositions to the value of 8 or 12
+    // this will be used to create the Extension Unit Positions for the HMI's extension unit
     if (hmi.hmiScreenSize === "15in") {
       numberOfExtensionUnitPositions = 8;
     } else if (hmi.hmiScreenSize === "22in") {
-      numberOfExtensionUnitPositions = 16;
+      numberOfExtensionUnitPositions = 12;
     }
     return numberOfExtensionUnitPositions;
   }

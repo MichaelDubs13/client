@@ -5,6 +5,7 @@ import ExtensionUnitConfiguration from './ExtensionUnitConfiguration';
 import { hmiStore, hmiOptions } from '../../Store/hmiStore';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
+import LineLocationSelection from '../Common/LineLocationSelection';
 import "../../Eec.css";
 
 const HmiConfiguration = ({hmi, index}) => {
@@ -20,10 +21,7 @@ const HmiConfiguration = ({hmi, index}) => {
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
-                    <DeviceSelection item={hmi} setModelValue={setHmiValue} index={hmiIndex}
-                        deviceTitle={"HMI device tag (e.g., HMI01)"}  deviceProperty={"hmiDT"}
-                        stationTitle={"HMI Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}
-                        lineTitle={"Enter the Manufacturing Line this HMI is assigned to (e.g., UBM1)"} lineProperty={"line"}/> 
+                    <LineLocationSelection item={hmi} index={hmiIndex} showPlantShop={true}/>
                     
                     {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
                     <DropdownItem title={"HMI is controlled by PLC ID"} placeHolder={hmi.plcID} setModelValue={setHmiValue} index={hmiIndex} property={"plcID"}/>
