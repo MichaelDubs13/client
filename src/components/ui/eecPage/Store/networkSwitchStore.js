@@ -102,6 +102,7 @@ const networkSwitchConfiguration = {
     return {
       // change this to the values for the network switch ports
       deviceTypeSelection: "SPARE", // EEC variable name: Device_Type_Selection
+      line:'',
       targetLocation: "", // EEC variable name: Target_Location
       targetDT: "", // EEC variable name: NotPLC_Connection_DT
       targetCableLength: "TBD", // EEC variable name: Cable_Length_Selection
@@ -221,7 +222,13 @@ const networkSwitchConfiguration = {
 const networkSwitchStore = create((set,get) => ({
     networkSwitches:[],
     networkSwitchesOptions:[],
-
+    /**
+         * Replace current networkSwitches objects with input networkSwitches objects, this is used to set pdp data from excel sheet/save files
+         * @param {Array} networkSwitches 
+         */
+    setNetworkSwitches: (networkSwitches) => {
+      set({networkSwitches:networkSwitches});
+    },
     setNetworkSwitchesOptions:(networkSwitches)=>{
       var networkSwitchesOptions= networkSwitchConfiguration.getNetworkSwitchOptions(networkSwitches);
       set({networkSwitchesOptions:networkSwitchesOptions});

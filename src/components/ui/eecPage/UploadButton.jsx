@@ -6,6 +6,7 @@ import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
 import { lpdStore } from "./Store/lpdStore";
 import { projectStore } from "./Store/projectStore";
+import { networkSwitchStore } from "./Store/networkSwitchStore";
 
 
 const UploadButton = () => {
@@ -16,6 +17,7 @@ const UploadButton = () => {
   const setXpdps =  xpdpStore((state) => state.setXpdps);
   const setMcps =  mcpStore((state) => state.setMcps);
   const setLpds =  lpdStore((state) => state.setLpds);
+  const setNetworkSwitches = networkSwitchStore((state)=>state.setNetworkSwitches)
   const { toasts, addToast } = useToastContainerState();
   
 
@@ -48,7 +50,7 @@ const UploadButton = () => {
           setXpdps(xpdps);
           setMcps(mcps);
           setLpds(lpds);
-          
+          setNetworkSwitches(switches);
         }
         reader.readAsBinaryString(file)
     }

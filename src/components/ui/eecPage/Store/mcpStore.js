@@ -54,7 +54,7 @@ const mcpConfiguration = {
       fla:"",
       line:line,
       location:location,
-      mcp_name:"",
+      mcp_name:location,
       mcpMountingLocation: "",
       psu_location:"",
       psu_location_dt:"",

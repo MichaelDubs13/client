@@ -10,43 +10,25 @@ export default class C_PwrDrop extends Component{
         this._class = "c_PwrDrop";
         this._name = "c_PwrDrop";
         this._xpdp = xpdp;
-        this.numberOfPwrDrop8A = this._xpdp.numberOfPwrDrop8A ? this._xpdp.numberOfPwrDrop8A : 0;
-        this.numberOfPwrDrop15A = this._xpdp.numberOfPwrDrop15A ? this._xpdp.numberOfPwrDrop15A : 0;
-        this.numberOfPwrDrop20A1p = this._xpdp.numberOfPwrDrop20A1p ? this._xpdp.numberOfPwrDrop20A1p : 0;
-        this.numberOfPwrDrop20A3p = this._xpdp.numberOfPwrDrop20A3p ? this._xpdp.numberOfPwrDrop20A3p : 0;
     }
-
-    getNumberOf1phaseDevices(){
-        return this._xpdp.numberOfPwrDrop8A + 
-                this._xpdp.numberOfPwrDrop15A + 
-                this._xpdp.numberOfPwrDrop20A1p
+    get Parameters(){
+        return [
+            ];
     }
-    getNumberOf3phaseDevices(){
-        return this._xpdp.numberOfPwrDrop20A3p;
-    }
-
-    // get Parameters(){
-    //     return [{name: "i_xNumberOfBusBars", value: 0, type: "Integer"},
-    //         {name: "i_NumberOf1phDevices", value: this.getNumberOf1phaseDevices(), type: "Integer"},
-    //         {name: "i_MaxNumberOf1phDevicesPerDinRail", value: 0, type: "Integer"},
-    //         {name: "i_NumberOf3phDevices", value: this.getNumberOf3phaseDevices(), type: "Integer"},
-    //         {name: "s_PowerDropVoltage", value: 0, type: "Integer"},
-    //         ];
-    // }
     build(){
-        for(let i = 0; i < this._xpdp.numberOfPwrDrop8A; i++){
+        for(let i = 0; i < this._xpdp.branchCircuit["8A 1ph"].length; i++){
             const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["8A 1ph"][i],i+1,8,1,this._xpdp);
             pwrDrp.build();        
         }
-        for(let i = 0; i < this._xpdp.numberOfPwrDrop15A; i++){
+        for(let i = 0; i < this._xpdp.branchCircuit["15A 1ph"].length; i++){
             const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["15A 1ph"][i],i+1,15,1, this._xpdp);
             pwrDrp.build();        
         }
-        for(let i = 0; i < this._xpdp.numberOfPwrDrop20A1p; i++){
+        for(let i = 0; i < this._xpdp.branchCircuit["20A 1ph"].length; i++){
             const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["20A 1ph"][i],i+1,20,1, this._xpdp);
             pwrDrp.build();        
         }
-        for(let i = 0; i < this._xpdp.numberOfPwrDrop20A3p; i++){
+        for(let i = 0; i < this._xpdp.branchCircuit["20A 3ph"].length; i++){
             const pwrDrp = new C_BranchCircuit(this,this._xpdp.branchCircuit["20A 3ph"][i],i+1,20,3, this._xpdp);
             pwrDrp.build();        
         }

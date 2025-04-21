@@ -6,6 +6,7 @@ import mcpParser from './mcpParser';
 import psuParser from './psuParser';
 import switchParser from './switchParser';
 import cableParser from './cableParser';
+import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 
 export default class Parser {
     constructor(data) {
@@ -20,16 +21,11 @@ export default class Parser {
         this._mcpWorksheet = "MCP";
         this._networkWorksheet = "Network";
         this._ios = "IO";
-        this.powerDrops = {
-            "8A 1ph": 0,
-            "15A 1ph": 0,
-            "20A 1ph": 0,
-            "20A 3ph": 0
-        };
     }
 
     parse(){
         const config = this.parseProjectSheet();
+        ProjectConfiguration.set(config);
         let pdps = pdpParser.parse(this._wb, this._pdpWorksheet)
         let xpdps = xpdpParser.parse(this._wb, this._xpdpWorksheet)
         let mcps = mcpParser.parse(this._wb, this._mcpWorksheet)

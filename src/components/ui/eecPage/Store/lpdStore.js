@@ -167,6 +167,9 @@ const lpdConfiguration = {
     return {
       cb:"",
       panel:"",
+      line:"",
+      location:"",
+      supplyVoltage:"",
       psu_selected:"", //only used for UI
       psus:[],
       UI:{

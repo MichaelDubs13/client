@@ -31,6 +31,7 @@ const xpdpConfiguration = {
       DropType: "A-external",
       PwrDrop_DescTxt: "",
       dbl_Cable_Length: 0,
+      line:"",
       StrBox_DT: "",
       TargetDevice_DT: "",
       TargetDevice_FLA: 0,

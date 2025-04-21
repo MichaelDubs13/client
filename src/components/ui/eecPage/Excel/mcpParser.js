@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx'
 import { findClosestHigherNumber, splitIntoTwo } from './util';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
+import { mcpConfiguration } from '../Store/mcpStore';
 
 
 const mcpParser = {
@@ -68,64 +69,61 @@ const mcpParser = {
 
                 const plc_id = `${ProjectConfiguration.line}-${mcp_name}-PLC01`;
                 const ports = [];
-
-                const mcp = {
-                    //left side variables are from UI, right variables go to data model
-                    fla:fla, //not needed, to be removed
-                    location:location,
-                    mcp_name:mcp_name,
-                    mcpMountingLocation: mcpMountingLocation,
-                    psu_location:psu_location,
-                    psu_location_dt:psu_location_dt,
-                    ups_ip: ups_ipAddress,
-                    plc_network_switch_required:isPlcToPlcSwRequired,
-                    plc_plant_ip:plc_local_x3_ip,
-                    plc_to_plc_ip:plc_plc_ip,
-                    plc_local_ip:plc_local_x1_ip,
-                    plc_local_ip_secondary: plc_local_ip_secondary,
-                    plc_id: plc_id,
-                    plc_portx1p2r_target_location: plc_portx1p2r_target_location,
-                    plc_portx1p2r_target_dt: plc_portx1p2r_target_dt,
-                    ked_plant_ip:ked_plant_ip, 
-                    ked_plc_to_plc_ip: ked_plc_plc_ip,
-                    ked_local_ip:ked_local_ip, 
-                    ked_local_ip_secondar:ked_local_ip_secondary,
-                    ked_port4_target_location: ked_port4_target_location,
-                    ked_port4_target_dt: ked_port4_target_dt,
-                    ked_port5_target_location: ked_port5_target_location,
-                    ked_port5_target_dt: ked_port5_target_dt,
-                    leth_plant_ip: leth_plant_ip,
-                    leth_plc_to_plc_ip: leth_plc_plc_ip,
-                    leth_local_ip:leth_sw_ip, 
-                    leth_local_ip_secondary:leth_sw_ip_secondary,
-                    leth_sw_type:leth_sw_type,
-                    leth_port2:leth_port2,
-                    leth_port3:leth_port3,
-                    leth_port4:leth_port4,
-                    leth_port2_target_location: leth_port2_target_location,
-                    leth_port3_target_location: leth_port3_target_location,
-                    leth_port4_target_location: leth_port4_target_location,
-                    leth_port2_target_dt: leth_port2_target_dt,
-                    leth_port3_target_dt: leth_port3_target_dt,
-                    leth_port4_target_dt: leth_port4_target_dt,
-                    leth_port2_target_port: leth_port2_target_port,
-                    leth_port3_target_port: leth_port3_target_port,
-                    leth_port4_target_port: leth_port4_target_port,
-                    gb_Port2_CableLength: gb_Port2_CableLength,
-                    gb_Port3_CableLength: gb_Port3_CableLength,
-                    gb_Port4_CableLength: gb_Port4_CableLength,
-                    leth_number_of_ports: leth_numberOfDevices,
-                    ports:ports,
-                    eth_plant_ip: eth_plant_ip,
-                    eth_plc_to_plc_ip: eth_plc_to_plc_ip,
-                    eth_local_ip: eth_local_ip,
-                    eth_local_ip_secondary: eth_local_ip_secondary,
-                    eth_port1_target_location: eth_port1_target_location,
-                    eth_port2_target_location: eth_port2_target_location,
-                    b_PLC_ETH:b_PLC_ETH,
-                    direct_network_devices:[],
-                    connected_network_devices:[],
-                }
+                const mcp = mcpConfiguration.create(mcp_name)
+                mcp.fla=fla;
+                mcp.location=mcp_name;
+                mcp.mcp_name=mcp_name;
+                mcp.mcpMountingLocation=location;
+                mcp.psu_location=psu_location;
+                mcp.psu_location_dt=psu_location_dt;
+                mcp.ups_ip=ups_ipAddress;
+                mcp.plc_network_switch_required=isPlcToPlcSwRequired;
+                mcp.plc_plant_ip=plc_local_x3_ip;
+                mcp.plc_to_plc_ip=plc_plc_ip;
+                mcp.plc_local_ip=plc_local_x1_ip;
+                mcp.plc_local_ip_secondary=plc_local_ip_secondary;
+                mcp.plc_id=plc_id;
+                mcp.plc_portx1p2r_target_location=plc_portx1p2r_target_location;
+                mcp.plc_portx1p2r_target_dt=plc_portx1p2r_target_dt;
+                mcp.ked_plant_ip=ked_plant_ip;
+                mcp.ked_plc_to_plc_ip=ked_plc_plc_ip;
+                mcp.ked_local_ip=ked_local_ip;
+                mcp.ked_local_ip_secondar=ked_local_ip_secondary;
+                mcp.ked_port4_target_location=ked_port4_target_location;
+                mcp.ked_port4_target_dt=ked_port4_target_dt;
+                mcp.ked_port5_target_location=ked_port5_target_location;
+                mcp.ked_port5_target_dt=ked_port5_target_dt;
+                mcp.leth_plant_ip=leth_plant_ip;
+                mcp.leth_plc_to_plc_ip=leth_plc_plc_ip;
+                mcp.leth_local_ip=leth_sw_ip;
+                mcp.leth_local_ip_secondary=leth_sw_ip_secondary;
+                mcp.leth_sw_type=leth_sw_type;
+                mcp.leth_port2=leth_port2;
+                mcp.leth_port3=leth_port3;
+                mcp.leth_port4=leth_port4;
+                mcp.leth_port2_target_location=leth_port2_target_location;
+                mcp.leth_port3_target_location=leth_port3_target_location;
+                mcp.leth_port4_target_location=leth_port4_target_location;
+                mcp.leth_port2_target_dt=leth_port2_target_dt;
+                mcp.leth_port3_target_dt=leth_port3_target_dt;
+                mcp.leth_port4_target_dt=leth_port4_target_dt;
+                mcp.leth_port2_target_port=leth_port2_target_port;
+                mcp.leth_port3_target_port=leth_port3_target_port;
+                mcp.leth_port4_target_port=leth_port4_target_port;
+                mcp.gb_Port2_CableLength=gb_Port2_CableLength;
+                mcp.gb_Port3_CableLength=gb_Port3_CableLength;
+                mcp.gb_Port4_CableLength=gb_Port4_CableLength;
+                mcp.leth_number_of_ports=leth_numberOfDevices;
+                mcp.eth_plant_ip=eth_plant_ip;
+                mcp.eth_plc_to_plc_ip=eth_plc_to_plc_ip;
+                mcp.eth_local_ip=eth_local_ip;
+                mcp.eth_local_ip_secondary=eth_local_ip_secondary;
+                mcp.eth_port1_target_location=eth_port1_target_location;
+                mcp.eth_port2_target_location=eth_port2_target_location;
+                mcp.b_PLC_ETH=b_PLC_ETH;
+                mcp.ports=ports;
+                mcp.direct_network_devices=[];
+                mcp.connected_network_devices=[];
 
                 //validation
                 //name must not include -
@@ -187,7 +185,6 @@ const mcpParser = {
                 mcp.connected_network_devices = [...directNetworkSwitches, ...mcp.connected_network_devices]
             })
         })
-
         return mcps;
     },
 

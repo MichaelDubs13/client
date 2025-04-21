@@ -1,5 +1,7 @@
 import * as XLSX from 'xlsx'
 import { splitIntoTwo } from './util';
+import { networkSwitchConfiguration } from '../Store/networkSwitchStore';
+import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 
 
 const switchParser = {
@@ -15,8 +17,8 @@ const switchParser = {
             consoleOutput = consoleOutput == "Y";
             let consoleTag = item["Console Tag"];  
 
-            const localIp = item["Local IP"];  
-            const plantIp = item["Plant IP"];  
+            const localIP = item["Local IP"];  
+            const plantIP = item["Plant IP"];  
             const mcpName = item["MCP Name"];  
             const networkType = item["Network Type"];  
             const psu_location_dt = item["PSU 1 Location-DT"];
@@ -38,30 +40,30 @@ const switchParser = {
             const inPort = item["in port"];  
             const inSwitch = item["in switch"];  
             const mfg = switchParser.getMFG(switchType);
-            const networkSwitch = {
-                fla:fla,
-                alarmOutput:alarmOutput,
-                alarmTag:alarmTag,
-                consoleOutput:consoleOutput,
-                consoleTag:consoleTag,
-                localIp:localIp,
-                plantIp:plantIp,
-                mcpName:mcpName,
-                networkType:networkType,
-                psu_location_dt:psu_location_dt,
-                psu_location:psu_location,
-                psu_dt:psu_dt,
-                portCount:portCount,
-                switch_location_dt:switch_location_dt,
-                switch_location:switch_location,
-                switch_dt:switch_dt,
-                switchType:switchType,
-                inPort:inPort,
-                inSwitch:inSwitch,
-                mfg:mfg,
-                mcp:{},
-                devices:[],
-            }
+            const networkSwitch = networkSwitchConfiguration.create();
+            networkSwitch.fla=fla;
+            networkSwitch.alarmOutput=alarmOutput;
+            networkSwitch.alarmTag=alarmTag;
+            networkSwitch.consoleOutput=consoleOutput;
+            networkSwitch.consoleTag=consoleTag;
+            networkSwitch.localIP=localIP;
+            networkSwitch.plantIP=plantIP;
+            networkSwitch.mcpName=mcpName;
+            networkSwitch.networkType=networkType;
+            networkSwitch.psu_location_dt=psu_location_dt;
+            networkSwitch.psu_location=psu_location;
+            networkSwitch.psu_dt=psu_dt;
+            networkSwitch.portCount=portCount;
+            networkSwitch.switch_location_dt=switch_location_dt;
+            networkSwitch.line = ProjectConfiguration.line;
+            networkSwitch.location=switch_location;
+            networkSwitch.switchDT=switch_dt;
+            networkSwitch.switchType=switchType;
+            networkSwitch.inPort=inPort;
+            networkSwitch.inSwitch=inSwitch;
+            networkSwitch.mfg=mfg;
+            networkSwitch.mcp={};
+            networkSwitch.devices=[];
             switchParser.createAdditionalParameters(networkSwitch);
             switches.push(networkSwitch);
         })
@@ -109,10 +111,7 @@ const switchParser = {
 
     getMFG(type){
         //need to complete this list
-        if(type === "6GK5216-0HA00-2AS6")
-        {
-            return "Siemens";
-        }
+        if(type === "6GK5216-0HA00-2AS6")return "Siemens";
 
         return "";
     },
@@ -121,6 +120,17 @@ const switchParser = {
         switches.forEach(networkSwitch => {
             let connectedDevices = devices.filter(device => device.local_network_direct === networkSwitch.switch_location_dt);
             networkSwitch = {...networkSwitch, "devices": connectedDevices}
+            const ports = [];
+            connectedDevices.forEach(device => {
+                const port = networkSwitchConfiguration.createPort();
+                port.targetLocation = device.target_device_location;
+                port.targetDT = device.device_dt;
+                port.line = ProjectConfiguration.line
+                device.device_dt.startsWith('LETH') ? port.deviceTypeSelection = 'Network Switch' : port.deviceTypeSelection = 'Device';
+                port.targetCableLength = device.local_cable_length;
+                ports.push(port);
+            })
+            networkSwitch.ports = ports;
             results.push(networkSwitch);
         })
 

@@ -36,7 +36,7 @@ import DeviceSelection from "../Common/DeviceSelection";
         <div className="lpd-psu-drop-settings">
         {outputPortBrandOptions.includes(lpd.psu_selection) && (
             <>
-                <DropdownItem title={"Select the output port of the PSU:"} item={lpd} property={"outputPort"} options={outputPortOptions} index={index}/>    
+                <DropdownItem title={"Select the output port of the PSU:"} item={drop} property={"outputPort"} options={outputPortOptions} index={index}/>    
             </>
           )}     
           <DeviceSelection item={drop} index={index} 
@@ -44,11 +44,11 @@ import DeviceSelection from "../Common/DeviceSelection";
               stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}/>                                
           {
             drop.deviceTag?.startsWith("LETH") && 
-            <DropdownItem title={"Enter the device port to be connected to"} item={lpd} property={"outputPort"}
+            <DropdownItem title={"Enter the device port to be connected to"} item={drop} property={"outputPort"} //need to check with michael on this
               options={networkPortOptions} index={index}/>
           }
-          <InputTextItem title={"Enter the description of the target device"} item={lpd} index={index} property={"description"}/>    
-          <InputTextItem title={"FLA"} item={lpd} index={index} property={"fla"}/>              
+          <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
+          <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"}/>              
         </div>
       </div>
     );

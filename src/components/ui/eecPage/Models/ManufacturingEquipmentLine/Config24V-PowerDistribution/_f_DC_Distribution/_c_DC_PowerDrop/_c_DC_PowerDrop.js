@@ -14,7 +14,7 @@ export default class _c_DC_PowerDrop extends Component{
             {name: "_s_DropLocation_", value: this._powerDropDevice.target_device_location_dt, type: "String"},
             {name: "_s_DropName_", value: this._powerDropDevice.device_dt, type: "String"},
             {name: "DC_PowerDrop_FLA", value: this._powerDropDevice.fla, type: "Double"},
-            {name: "DescriptionTargetDevice", value: "", type: "String"}, //what is this
+            {name: "DescriptionTargetDevice", value: this._powerDropDevice.description, type: "String"}, //what is this
         ];
     }
 

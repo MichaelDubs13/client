@@ -24,10 +24,10 @@ export default class F_Network_SwitchConfig extends Component{
             {name: "PWR_IN_DT", value: this._networkSwitch.pwr_in_dt, type: "String"}, //for Balluf
             {name: "PWR1_IN_Location", value: this._networkSwitch.pwr1_in_location, type: "String"}, //for Siemens
             {name: "PWR1_IN_DT", value: this._networkSwitch.pwr1_in_dt, type: "String"}, //for Siemens
-            {name: "Switch_Location", value: this._networkSwitch.switch_location, type: "String"},
-            {name: "Local_IP", value: this._networkSwitch.localIp, type: "String"},
+            {name: "Local_IP", value: this._networkSwitch.localIP, type: "String"},
             {name: "Network_Type_Selection", value: this._networkSwitch.networkType, type: "String"},
-            {name: "Switch_DT", value: this._networkSwitch.switch_dt, type: "String"},
+            {name: "Switch_Location", value: this._networkSwitch.location, type: "String"},
+            {name: "Switch_DT", value: this._networkSwitch.switchDT, type: "String"},
             {name: "Switch_Type_Selection", value: this._networkSwitch.managedtype, type: "String"}, //if siemens then managed if its balluf then unmanaged
             {name: "Ethernet_Speed_Selection", value: "Gigabit", type: "String"},
             {name: "Alarm_DT", value: this._networkSwitch.alarmTag, type: "String"}, //for Siemens 
