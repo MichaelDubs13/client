@@ -5,7 +5,7 @@ import { lineStore } from '../../Store/lineStore';
 
 
 const StationSelection = ({
-    item, index, setModelValue, 
+    item, index, 
     title,
     property,
 }) => {
@@ -21,7 +21,7 @@ const StationSelection = ({
     return (
         
         <div>
-           <CreateableDropdownItem title={title} placeHolder={item[property]} options={stations} setModelValue={setModelValue} index={index} property={property}/>
+           <CreateableDropdownItem title={title} item={item} property={property} options={stations} index={index}/>
         </div>
     );
 };

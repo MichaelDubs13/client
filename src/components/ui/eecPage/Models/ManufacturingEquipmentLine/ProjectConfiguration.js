@@ -1,8 +1,8 @@
 export default class ProjectConfiguration {
-    static plant
-    static shop
-    static line 
-    static installation_location
+    static plant = "PLANT1"
+    static shop = "SHOP1"
+    static line = "LINE1"
+    static installation_location = "UL"
 
     static set(config){
         ProjectConfiguration.plant = config.plant;

@@ -15,8 +15,8 @@ import SaveButton from "./SaveButton";
 import UploadButton from "./UploadButton";
 import { networkSwitchConfiguration, networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiConfiguration, hmiStore } from "./Store/hmiStore";
-
-
+import DiagramComponent from "./Flow/DiagramComponent";
+import HeadingItem from "./Components/Util/HeadingItem";
 
 
 const EecPage = () => {
@@ -86,6 +86,14 @@ const EecPage = () => {
             <div style={{display: "flex", justifyContent: "left", gap: "15px"}}>
                 <ModalCreateEecForm/>
                 <DownloadButton label="Download EEC Template" filePath="Templates/Eec_Template.xlsx"/>
+            </div>
+            <h2>
+                Diagram
+            </h2>
+            <div>
+                <HeadingItem label={`One-Line Diagram`} 
+                  size={18} margin={"20px"} open={false}
+                  children={<DiagramComponent/>}/>
             </div>
             <h2>
                 Configurations  

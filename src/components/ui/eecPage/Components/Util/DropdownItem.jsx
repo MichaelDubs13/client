@@ -15,19 +15,23 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, index, property}) =>{
+const DropdownItem = ({title, item, property, placeHolder, options, setModelValue, onChange, index}) =>{
     const [selectedOption, setSelectedOption] = useState(placeHolder);
+    const defaultValue = item ? item[property] : placeHolder;
+    const setPropertyValue = item? item.setValue : setModelValue;
 
     const handleOptionSelect = async (event) =>{
         const reportedValue = event.value;
         setSelectedOption(event.value);
+
         if(property && index){
-            setModelValue(index, property, reportedValue)
+            setPropertyValue(index, property, reportedValue)
         } else if(property && !index){
-            setModelValue(reportedValue, property);
+            setPropertyValue(reportedValue, property);
         }  else {
-            setModelValue(reportedValue);
+            setPropertyValue(reportedValue);
         }
+
         if(onChange){
             onChange(reportedValue);
         }
@@ -44,7 +48,7 @@ const DropdownItem = ({title, placeHolder, options, setModelValue, onChange, ind
                     label="dropdown"
                     onOptionSelect={handleOptionSelect}
                     options={options}
-                    placeholder={placeHolder}
+                    placeholder={defaultValue}
                     selected={selectedOption}
                     style={{ marginBottom: "5px"}}
                   ></FormInputDropdown>

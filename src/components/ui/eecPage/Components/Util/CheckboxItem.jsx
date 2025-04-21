@@ -13,17 +13,21 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CheckboxItem = ({title, placeHolder, setModelValue, onChange, index, property}) =>{
+const CheckboxItem = ({title, item, property, placeHolder, setModelValue, onChange, index}) =>{
     const [value, setValue] = useState(placeHolder);
+    const defaultValue = item ? item[property] : placeHolder;
+    const setPropertyValue = item? item.setValue : setModelValue;
 
     const handleValueChange = (event)=> {
         const reportedValue = !value;
-        
         setValue(reportedValue);
-        if(property){
-            setModelValue(index, property, reportedValue)
-        } else {
-            setModelValue(reportedValue);
+       
+        if(property && index){
+            setPropertyValue(index, property, reportedValue)
+        } else if(property && !index){
+            setPropertyValue(reportedValue, property);
+        }  else {
+            setPropertyValue(reportedValue);
         }
         
         if(onChange){
@@ -37,7 +41,7 @@ const CheckboxItem = ({title, placeHolder, setModelValue, onChange, index, prope
                 <FormItem className="form-item" >
                     <FormLabel className="form-label" htmlFor="context">{title}</FormLabel>
                     <FormInputCheckbox id="context" type="checkbox" 
-                    checked={value} 
+                    checked={defaultValue} 
                     onChange={handleValueChange}/>
                 </FormItem>
             }

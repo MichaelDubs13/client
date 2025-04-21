@@ -14,24 +14,28 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const InputTextItem = ({title, placeHolder, readOnly, setModelValue, onChange, index, property}) =>{
+const InputTextItem = ({title, item, property, placeHolder, readOnly, setModelValue, onChange, index}) =>{
     const [value, setValue] = useState(placeHolder);
+    const defaultValue = item ? item[property] : placeHolder;
+    const setPropertyValue = item? item.setValue : setModelValue;
       
     const handleValueChange = (event)=> {
         const reportedValue = event.target.value;
         setValue(reportedValue);
+
         if(property && index){
-            setModelValue(index, property, reportedValue)
+            setPropertyValue(index, property, reportedValue)
         } else if(property && !index){
-            setModelValue(reportedValue, property);
+            setPropertyValue(reportedValue, property);
         }  else {
-            setModelValue(reportedValue);
+            setPropertyValue(reportedValue);
         }
+        
         if(onChange){
             onChange(reportedValue);
         }
-        
     }
+
 
     return (
         <>
@@ -41,7 +45,7 @@ const InputTextItem = ({title, placeHolder, readOnly, setModelValue, onChange, i
                     <FormInputText
                     id="context"
                     readOnly={readOnly}
-                    placeholder={placeHolder}
+                    placeholder={defaultValue}
                     value={value}
                     onChange={handleValueChange}/>
                 </FormItem>

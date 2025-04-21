@@ -52,7 +52,7 @@ const LpdConfigurations = () => {
                         absIndex++;
                         return <HeadingItem label={`24V Field mounted Power Supply Unit (PSU) Configuration, Group ${absIndex}`} 
                             size={18} margin={"20px"} open={false} 
-                            headerIcon={"/psuGroup.png"}
+                            headerIcon={lpd.UI.icon}
                             children={<LpdConfiguration lpd={lpd} lpdIndex={index}/>}
                             buttons={[<DeleteButton onClick={() => handleDeleteItem(index)} />,
                                 <DuplicateButton onClick={()=>handleDuplicateItem(index)}/>,

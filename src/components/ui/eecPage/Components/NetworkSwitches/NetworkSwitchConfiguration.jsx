@@ -5,6 +5,7 @@ import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
+import { lpdConfiguration } from '../../Store/lpdStore';
 import "../../Eec.css";
 
 const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
@@ -12,7 +13,18 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
     const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);
     const networkSwitchIndex = {networkSwitchIndex:index}
     const setPorts = (value) =>{
-        setNumberOfPorts(index, value);
+        setNumberOfPorts(index, value);   
+    }
+
+    const handleDeviceChange = (value) => {
+        if(networkSwitch.location && value){
+            const drop = lpdConfiguration.getDrop(networkSwitch.location, value)
+            if(drop){                
+                setNetworkSwitchValue(networkSwitchIndex, "power1InDT", drop.data.parent.psu_dt);
+                setNetworkSwitchValue(networkSwitchIndex, "power1InLocation", drop.data.parent.psu_location);
+                drop.setDataValue("targetDevice", networkSwitch.data.id)
+            }
+        }
     }
 
     return (
@@ -20,34 +32,34 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
-                    <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex}
-                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"}
+                    <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
+                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"} onDeviceChange={handleDeviceChange}
                         stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
                     
                     {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
-                    <InputTextItem title={"Network switch is controlled by PLC ID"} placeHolder={networkSwitch.plcID} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"plcID"}/>
-                    <DropdownItem title={"Network type"} placeHolder={networkSwitch.networkType} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex} property={"networkType"}/>
-                    <InputTextItem title={"Local IP address (e.g., 192.168.1.xt)"} placeHolder={networkSwitch.localIP} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"localIP"}/>
-                    <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} placeHolder={networkSwitch.plantIP} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"plantIP"}/>
+                    <InputTextItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} index={networkSwitchIndex} property={"plcID"}/>
+                    <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
+                    <InputTextItem title={"Local IP address (e.g., 192.168.1.xt)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"}/>
+                    <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={networkSwitch} index={networkSwitchIndex} property={"plantIP"}/>
                     
                     {networkSwitch.networkType === "Local" && (
                         <>
-                            <DropdownItem title={"Switch type"} placeHolder={networkSwitch.switchType} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.switchTypeOptions} onChange={setPorts} index={networkSwitchIndex} property={"switchType"}/>
+                            <DropdownItem title={"Switch type"} item={networkSwitch} property={"switchType"} options={networkSwitchOptions.switchTypeOptions} onChange={setPorts} index={networkSwitchIndex} />
                         </>
                     )}
 
                     {networkSwitch.networkType === "Plant" && (
                         <>
-                            <DropdownItem title={"Switch speed"} placeHolder={networkSwitch.switchSpeed} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.switchSpeedOptions} onChange={setPorts} index={networkSwitchIndex} property={"switchSpeed"}/>
+                            <DropdownItem title={"Switch speed"} item={networkSwitch} property={"switchSpeed"} options={networkSwitchOptions.switchSpeedOptions} onChange={setPorts} index={networkSwitchIndex}/>
                         </>
                     )}
                     
                     {networkSwitch.switchType === "Managed" && (
                         <>  
-                            <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} 
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 deviceTitle={"Power 1 in device tag (e.g., PSU01)"}  deviceProperty={"power1InDT"}
                                 stationTitle={"Power 1 in location (e.g., 00010)"} stationProperty={"power1InLocation"}/>                                
-                            <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} 
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"power2InDT"}
                                 stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"power2InLocation"}/>                                
                         </>
@@ -55,41 +67,42 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
 
                     {networkSwitch.switchType === "Unmanaged" && (
                         <>
-                            <DeviceSelection item={networkSwitch} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex}
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
                                 deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerInDT"}
                                 stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerInLocation"}/> 
                         </>
                     )}
                     
-                    <CheckboxItem title={"Alarm output enable"} placeHolder={networkSwitch.alarmEnable} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"alarmEnable"}/>
+                    <CheckboxItem title={"Alarm output enable"} item={networkSwitch} property={"alarmEnable"} index={networkSwitchIndex}/>
                     {networkSwitch.alarmEnable && (
                         <>
-                            <InputTextItem title={"Alarm device tag (e.g., ALARM)"} placeHolder={networkSwitch.alarmName} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"alarmName"}/>
+                            <InputTextItem title={"Alarm device tag (e.g., ALARM)"} item={networkSwitch} property={"alarmName"} index={networkSwitchIndex} />
                         </>
                     )}
                     
-                    <CheckboxItem title={"Console output enable"} placeHolder={networkSwitch.consoleEnable} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"consoleEnable"}/>
+                    <CheckboxItem title={"Console output enable"} item={networkSwitch} property={"consoleEnable"}  index={networkSwitchIndex}/>
                     {networkSwitch.consoleEnable && (
                         <>
-                            <InputTextItem title={"Console device tag (e.g., CONSOLE)"} placeHolder={networkSwitch.consuleName} setModelValue={setNetworkSwitchValue} index={networkSwitchIndex} property={"consuleName"}/>
+                            <InputTextItem title={"Console device tag (e.g., CONSOLE)"} item={networkSwitch} property={"consuleName"} index={networkSwitchIndex}/>
                         </>
                     )}
 
                     {networkSwitch.networkType === "Local" && networkSwitch.switchType === "Unmanaged" && (
                         <>
-                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8Options} onChange={setPorts} index={networkSwitchIndex} property={"ports_8"}/>
+                            <DropdownItem title={"Number of ports"} item={networkSwitch} property={"ports_8"} options={networkSwitchOptions.ports_8Options} onChange={setPorts} index={networkSwitchIndex}/>
                         </>
                     )}
 
-                    {((networkSwitch.networkType === "Local" && networkSwitch.switchType === "Managed") || (networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Fast")) && (
+                    {((networkSwitch.networkType === "Local" && networkSwitch.switchType === "Managed") || 
+                        (networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Fast")) && (
                         <>
-                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8or16} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8or16Options} onChange={setPorts} index={networkSwitchIndex} property={"ports_8or16"}/>
+                            <DropdownItem title={"Number of ports"} item={networkSwitch} property={"ports_8or16"} options={networkSwitchOptions.ports_8or16Options} onChange={setPorts} index={networkSwitchIndex}/>
                         </>
                     )}
                     {/* The below code is to be used when the network switch type is "Plant" and the switch type is "Managed" */}
                     {networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Gigabit" && (
                         <>
-                            <DropdownItem title={"Number of ports"} placeHolder={networkSwitch.ports_8or16or24} setModelValue={setNetworkSwitchValue} options={networkSwitchOptions.ports_8or16or24Options} onChange={setPorts} index={networkSwitchIndex} property={"ports_8or16or24"}/>
+                            <DropdownItem title={"Number of ports"} item={networkSwitch} property={"ports_8or16or24"} options={networkSwitchOptions.ports_8or16or24Options} onChange={setPorts} index={networkSwitchIndex}/>
                         </>
                     )}
 

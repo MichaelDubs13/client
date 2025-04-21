@@ -12,10 +12,10 @@ const McpLethPorts = ({
       <div className="com-drop-item">
         <div className="com-drop-header">
           <h7>Port {portIndex+5}</h7>
-          <InputTextItem title={"Target device location (e.g., 00010)"} placeHolder={port.targetLocation} setModelValue={setPortValue} index={index} property={"targetLocation"}/>
-          <InputTextItem title={"Target device tag (e.g., RBC01)"} placeHolder={port.targetDT} setModelValue={setPortValue} index={index} property={"targetDT"}/>
-          <InputTextItem title={"Target device Port"} placeHolder={port.targetPort} setModelValue={setPortValue} index={index} property={"targetPort"}/>
-          <InputTextItem title={"Target cable length"} placeHolder={port.targetCableLength} setModelValue={setPortValue} index={index} property={"targetCableLength"}/>
+          <InputTextItem title={"Target device location (e.g., 00010)"} item={mcp} index={index} property={"targetLocation"}/>
+          <InputTextItem title={"Target device tag (e.g., RBC01)"} item={mcp} index={index} property={"targetDT"}/>
+          <InputTextItem title={"Target device Port"} item={mcp} index={index} property={"targetPort"}/>
+          <InputTextItem title={"Target cable length"} item={mcp} index={index} property={"targetCableLength"}/>
         </div>
       </div>
     );

@@ -1,6 +1,9 @@
 import {create} from "zustand";
 import pdpParser from "../Excel/pdpParser";
 import { projectStore } from "./projectStore";
+import { v4 as uuidv4 } from 'uuid';
+import {formatToTwoDigits} from './util'
+
 
 const pdpOptions = {
   amperageOptions: [
@@ -28,23 +31,80 @@ const pdpOptions = {
 
 
 const pdpConfiguration = {
+  getItemById:(pdp, id) =>{
+    const branchCircuit = pdp.branchCircuit;
+    const keys = Object.keys(branchCircuit).reverse();
+    for(let i=0;i<keys.length;i++){
+      const key = keys[i];
+      for(let j=0;j<branchCircuit[key].length;j++){
+        const drop = branchCircuit[key][j];
+        if(drop.data.id === id)return drop;
+      }
+    }
+
+    return null;
+  },
+  
+  getCB:(branchCircuit, cb_dt) =>{
+    const keys = Object.keys(branchCircuit).reverse();
+    for(let i=0;i<keys.length;i++){
+      const key = keys[i];
+      for(let j=0;j<branchCircuit[key].length;j++){
+        const drop = branchCircuit[key][j];
+        if(drop.UI.CB_DT === cb_dt) return drop;
+      }
+    }
+
+    return null;
+  },
+  
   /**
    * creates a new branch circuit with default values
    * @returns 
    */
-  createBranchCircuit: () => {
+  createBranchCircuit: (parent, amperage) => {
     return {
       PwrDrop_Spare: false,
       DropType: "A-external",
       PwrDrop_DescTxt: "",
       dbl_Cable_Length: 0,
+      line:"",
       StrBox_DT: "",
       TargetDevice_DT: "",
       TargetDevice_FLA: 0,
       StrBox_DT_FLA: 0,
       UI:{
-        CB_DT:"",
         expanded:false,
+        CB_DT:"",
+        icon:"/powerdrop.png",
+      },
+
+      data:{
+        type:'cb',
+        parent:parent,
+        amperage:amperage,
+        targetDevice:'',
+        id:uuidv4(),
+      },
+      setValue: function(indexObject, key, value){
+        pdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, false);
+      },
+      setDataValue: function(key, value){
+        const pdps = pdpStore.getState().pdps;
+        const pdpIndex = this.data.parent.getIndex();
+        const amperage = this.data.amperage;
+        const branchCircuitIndex = Array.from(pdps[pdpIndex].branchCircuit[amperage]).indexOf(this);
+        const indexObject = {
+          pdpIndex:pdpIndex,
+          branchCircuitIndex:branchCircuitIndex,
+          amperage:amperage,
+        }
+        pdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, true);
+      },
+      getNodeData: function(){
+        return [
+          this.data.amperage,
+        ]
       }
     }
   },
@@ -83,10 +143,10 @@ const pdpConfiguration = {
     });
     return branchCircuit;  
   },
-  createBranchCircuits: (numberOfDrps) => {
+  createBranchCircuits: (numberOfDrps, parent, amperage) => {
     var newPwrDrops = []
     for(let i=0; i<numberOfDrps; i++){
-        var newPwrDrop = pdpConfiguration.createBranchCircuit();
+        var newPwrDrop = pdpConfiguration.createBranchCircuit(parent, amperage);
         newPwrDrops.push(newPwrDrop);
     }
     return newPwrDrops;
@@ -102,6 +162,18 @@ const pdpConfiguration = {
       HotPwrDrp_Target_Location: "",
       HotPwrDrp_Target_DT: "",
       HotPwrDrp_Target_Desc: "",
+      data:{
+        type:'hotPower',
+        id:uuidv4(),
+      },
+      setValue: function(indexObject, key, value){
+        pdpStore.getState().setHotPowerValue(indexObject, key, value);
+      },
+      getNodeData: function(){
+        return [
+          
+        ]
+      }
     }
   },
 
@@ -109,13 +181,14 @@ const pdpConfiguration = {
    * creates a new pdp object with default values, all default values should be specified here
    * @returns new pdp with default values
    */
-  create: () => { 
+  create: (location) => { 
     const line = projectStore.getState().line;
-    const pdp = {name:"", 
+    const pdp = {
+      name:location, 
       amp:"400A", 
       FLA:0,
       line:line, 
-      location:"", 
+      location:location, 
       enclosureSize:"1000x1800x500(WHD)",
       numberOfBusBar:0,
       branchCircuit:pdpConfiguration.initializeBranchCircuits(),
@@ -133,6 +206,36 @@ const pdpConfiguration = {
       hotPowerDrops:[],
       UI:{
         expanded:false,
+        icon:"/panel.png",
+      },
+      data:{
+        type:'pdp',
+        id:uuidv4(),
+      },
+      setValue: function(indexObject, key, value){
+        pdpStore.getState().setPdpValue(indexObject, key, value);
+      },
+      getCB: function(location, cb_dt){
+          if(this.location === location){
+            const cb = pdpConfiguration.getCB(this.branchCircuit, cb_dt);
+            return cb;
+          }
+          return null;
+      },
+      getIndex: function(){
+        const pdps = pdpStore.getState().pdps;
+        return pdps.findIndex(pdp => pdp.data.id === this.data.id)
+      },
+      getItemById: function(id){
+        return pdpConfiguration.getItemById(this, id);
+      },
+      getNodeData: function(){
+        return [
+          this.location,
+          this.amp,
+          this.FLA,
+          this.enclosureSize,
+        ]
       }
     }
 
@@ -171,7 +274,8 @@ const pdpStore = create((set) => ({
         if(diff > 0){
           const pdps = []
           for (let i = 0; i < diff; i++) {
-            var pdp = pdpConfiguration.create();
+            const location = `PDP${formatToTwoDigits(i+1)}`
+            var pdp = pdpConfiguration.create(location);
             pdps.push(pdp);
           }  
           return {pdps:[...state.pdps, ...pdps]}
@@ -227,7 +331,7 @@ const pdpStore = create((set) => ({
      * @param {String} value value of the parameter
      * @param {Boolean} isUI set value for UI object in the main object
      */
-    setBranchCircuitValue:(indexObject, key, value, isUI)=>{
+    setBranchCircuitValue:(indexObject, key, value, isUI, isData)=>{
       const pdpIndex = indexObject.pdpIndex;
       const branchCircuitIndex = indexObject.branchCircuitIndex;
       const amperage = indexObject.amperage;
@@ -237,10 +341,11 @@ const pdpStore = create((set) => ({
         var branch = newPdps[pdpIndex].branchCircuit[amperage][branchCircuitIndex];
         if(isUI){
           branch.UI[key] = value
+        } else if(isData){
+          branch.data[key] = value
         } else {
           branch[key] = value;
         }
-        
         branches[branchCircuitIndex] = branch;
 
         newPdps[pdpIndex] = {...newPdps[pdpIndex], 
@@ -262,7 +367,7 @@ const pdpStore = create((set) => ({
     setNumberOfPowerDrps:(index, amperage, value)=>{
       set((state) => {
         var newPdps = [...state.pdps];
-        var branchCircuit  = pdpConfiguration.createBranchCircuits(value);
+        var branchCircuit  = pdpConfiguration.createBranchCircuits(value, newPdps[index], amperage);
         newPdps[index].branchCircuit[amperage] = branchCircuit;
         branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
         return { pdps: newPdps };

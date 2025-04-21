@@ -7,6 +7,9 @@ import { networkSwitchStore } from "./networkSwitchStore";
 import { projectStore } from "./projectStore";
 
 const lineConfiguration = {
+    getDeviceFullName:(location, device)=>{
+        return `+${location}-${device}`;
+    },
     getLines:(array, lines) => {
         array.map((item) => {
             if(item.line){
@@ -56,7 +59,45 @@ const lineConfiguration = {
             });
         })
         return devices;
-    },    
+    },
+    
+    getDeviceById:(id)=>{
+        const pdps = pdpStore.getState().pdps;
+        const xpdps= xpdpStore.getState().xpdps;
+        const mcps = mcpStore.getState().mcps;
+        const lpds = lpdStore.getState().lpds;
+        const networkSwitches = networkSwitchStore.getState().networkSwitches;
+
+        for(let i=0;i<pdps.length;i++){
+            if(pdps[i].data.id === id) return pdps[i];
+            var foundItem = pdps[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<xpdps.length;i++){
+            if(xpdps[i].data.id === id) return xpdps[i];
+            var foundItem = xpdps[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<mcps.length;i++){
+            if(mcps[i].data.id === id) return mcps[i];
+            var foundItem = mcps[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<lpds.length;i++){
+            if(lpds[i].data.id === id) return lpds[i];
+            var foundItem = lpds[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<networkSwitches.length;i++){
+            if(networkSwitches[i].data.id === id) return networkSwitches[i];
+            var foundItem = networkSwitches[i].getItemById(id);
+            if(foundItem) return foundItem;
+        }
+    }
 
 }
 const lineStore = create((set) => ({
@@ -142,10 +183,10 @@ const lineStore = create((set) => ({
             newStations = lineConfiguration.getStations(lpd.psus, newStations,keys);
         })
 
-        keys =["power1InLocation", "power2InLocation", "powerInLocation"];
+        keys =["power1InLocation", "power2InLocation", "powerInLocation", "location"];
         newStations = lineConfiguration.getStations(networkSwitches, newStations,keys);
 
-        keys =["targetLocation"];
+        keys =["targetLocation", ];
         networkSwitches.forEach(networkSwitch => {
             newStations = lineConfiguration.getStations(networkSwitch.ports, newStations,keys);
         })

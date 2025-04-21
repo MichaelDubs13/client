@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx'
 import {pdpConfiguration} from '../Store/pdpStore';
 import { findClosestHigherNumber } from './util';
+import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 
 const pdpParser = {
     enclosureSizeOptions: ["800x1400x500", "1000x1800x500"],
@@ -12,9 +13,7 @@ const pdpParser = {
             const name = item["PDP name"];
             var enclosureSize = item["Enclosure Size"];
             enclosureSize = pdpParser.getEnclosureSize(enclosureSize);
-
             const numberOfBusBar = pdpParser.getNumberOfBusBar(enclosureSize);
-
             var amp = item["Amperage"];
             if(amp){
                 amp = findClosestHigherNumber(pdpParser.ampOptions, amp)
@@ -30,24 +29,6 @@ const pdpParser = {
                 }
             }
 
-            let numberOf10APwrDrps = item["Number of 10A Power Drops"];
-            let numberOf20APwrDrps = item["Number of 20A Power Drops"];
-            let numberOf30APwrDrps = item["Number of 30A Power Drops"];
-            let numberOf40APwrDrps = item["Number of 40A Power Drops"];
-            let numberOf60APwrDrps = item["Number of 60A Power Drops"];
-            let numberOf70APwrDrps = item["Number of 70A Power Drops"];
-            let numberOf100APwrDrps = item["Number of 100A Power Drops"];
-            let numberOf250APwrDrps = item["Number of 250A Power Drops"];
-
-            numberOf10APwrDrps = numberOf10APwrDrps ? numberOf10APwrDrps : 0;
-            numberOf20APwrDrps = numberOf20APwrDrps ? numberOf20APwrDrps : 0;
-            numberOf30APwrDrps = numberOf30APwrDrps ? numberOf30APwrDrps : 0;
-            numberOf40APwrDrps = numberOf40APwrDrps ? numberOf40APwrDrps : 0;
-            numberOf60APwrDrps = numberOf60APwrDrps ? numberOf60APwrDrps : 0;
-            numberOf70APwrDrps = numberOf70APwrDrps ? numberOf70APwrDrps : 0;
-            numberOf100APwrDrps = numberOf100APwrDrps ? numberOf100APwrDrps : 0;
-            numberOf250APwrDrps = numberOf250APwrDrps ? numberOf250APwrDrps : 0;
-
             const spare10A = item["Spare 10A"];
             const spare20A = item["Spare 20A"];
             const spare30A = item["Spare 30A"];
@@ -58,32 +39,27 @@ const pdpParser = {
             const spare250A = item["Spare 250A"];
             const branchCircuit = pdpConfiguration.initializeBranchCircuits();
             const hotPowerDrops = [] //only available in UI
-            if(location){
-                const pdp = {name:name, amp:amp, FLA:FLA, location:location, 
-                    enclosureSize:enclosureSize,
-                    numberOfBusBar:numberOfBusBar,
-                    numberOf10APwrDrps:numberOf10APwrDrps, 
-                    numberOf20APwrDrps:numberOf20APwrDrps,
-                    numberOf30APwrDrps:numberOf30APwrDrps,
-                    numberOf40APwrDrps:numberOf40APwrDrps,
-                    numberOf60APwrDrps:numberOf60APwrDrps,
-                    numberOf70APwrDrps:numberOf70APwrDrps,
-                    numberOf100APwrDrps:numberOf100APwrDrps,
-                    numberOf250APwrDrps:numberOf250APwrDrps,
-                    spare10A:spare10A,
-                    spare20A:spare20A,
-                    spare30A:spare30A,
-                    spare40A:spare40A,
-                    spare60A:spare60A,
-                    spare70A:spare70A,
-                    spare100A:spare100A,
-                    spare250A:spare250A,
-                    Opt_SurgeProtectionDevice:false,
-                    PwrMonitorEnable:false,
-                    Opt_HotPwrEnable:false,
-                    branchCircuit:branchCircuit,
-                    hotPowerDrops:hotPowerDrops,
-                }
+            if(name){
+                const pdp = pdpConfiguration.create(name);
+                pdp.name =name;
+                pdp.amp = amp;
+                pdp.FLA = FLA; 
+                pdp.location = name; //location is name of the PDP eg:MPDP
+                pdp.enclosureSize=enclosureSize;
+                pdp.numberOfBusBar=numberOfBusBar;
+                pdp.spare10A=spare10A;
+                pdp.spare20A=spare20A;
+                pdp.spare30A=spare30A;
+                pdp.spare40A=spare40A;
+                pdp.spare60A=spare60A;
+                pdp.spare70A=spare70A;
+                pdp.spare100A=spare100A;
+                pdp.spare250A=spare250A;
+                pdp.Opt_SurgeProtectionDevice=false
+                pdp.PwrMonitorEnable=false;
+                pdp.Opt_HotPwrEnable=false;
+                pdp.branchCircuit=branchCircuit;
+                pdp.hotPowerDrops=hotPowerDrops;
                 pdps.push(pdp);
             }
         })
@@ -119,43 +95,28 @@ const pdpParser = {
                     const arr = sourceDevice.ac_primary_power_branch_size.split(" ")
                     if(arr.length > 2){
                         const branchSize = arr[2]
-                        const branch = pdpParser.createBranchCircuit(sourceDevice);
+                        const branch = pdpParser.createBranchCircuit(sourceDevice, pdp, branchSize);
                         pdp.branchCircuit[branchSize].push(branch);
                     }
                 }
             }
-            pdpParser.fillEmptyBranchCircuits(pdp);
+            pdpConfiguration.updateBranchCircuitCB_DT(pdp.branchCircuit)
             pdpParser.calculateAllBranchFLA(pdp);
         })        
         return pdps;
     },
-    createBranchCircuit:(sourceDevice)=>{
-        const branch = pdpConfiguration.createBranchCircuit();
+    createBranchCircuit:(sourceDevice, pdp, amperage)=>{
+        const branch = pdpConfiguration.createBranchCircuit(pdp, amperage);
         branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
+        branch.line=ProjectConfiguration.line;
         branch.TargetDevice_DT = sourceDevice.device_dt;
-        branch.StrBox_DT = sourceDevice.station;
+        branch.StrBox_DT = sourceDevice.target_device_location;
         branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
         branch.DropType = sourceDevice.ac_secondary_power_drop_type;
+        branch.PwrDrop_DescTxt = sourceDevice.target_device_function_text;
         return branch;
     },
-    fillEmptyBranchCircuit: (numberOfPwrDrps, pdp, key)=>{
-        const numberOfEmptyPwrDrps = numberOfPwrDrps - pdp.branchCircuit[key].length;
-        if(numberOfEmptyPwrDrps > 0)
-        for(let i = 0; i < numberOfEmptyPwrDrps; i++){
-            var branch =  pdpConfiguration.createBranchCircuit();
-            pdp.branchCircuit[key].push(branch);
-        }
-    },
-    fillEmptyBranchCircuits:(pdp) => {
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf250APwrDrps, pdp, "250A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf100APwrDrps, pdp, "100A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf70APwrDrps, pdp, "70A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf60APwrDrps, pdp, "60A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf40APwrDrps, pdp, "40A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf30APwrDrps, pdp, "30A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf20APwrDrps, pdp, "20A");
-        pdpParser.fillEmptyBranchCircuit(pdp.numberOf10APwrDrps, pdp, "10A");
-    },
+  
     calculateBranchFLA:(branchCircuits)=>{
         var fla = 0;
         branchCircuits.forEach(branchCircuit => {

@@ -6,7 +6,6 @@ import "../../Eec.css";
 
 const PowerDropConfiguration = ({pdp, index}) => {
     const setNumberOfPowerDrps = pdpStore((state) => state.setNumberOfPowerDrps);
-    const setBranchCircuitValue =  pdpStore((state) => state.setBranchCircuitValue);
     
     const handlePowerDropChange = (amperage) => (value) =>{
         const reportedValue = parseInt(value) || 0
@@ -22,13 +21,12 @@ const PowerDropConfiguration = ({pdp, index}) => {
             powerDropItems.push(
                 <HeadingItem label={`${amperage} Branch circuit power drop ${i}: ${branchCircuit[i].UI.CB_DT}`}
                     size={18} margin={"20px"} open={false}
-                    headerIcon={"/powerdrop.png"}
+                    headerIcon={branchCircuit[i].UI.icon}
                     children={<PowerDropItem 
                     key={`${amperage}-${i+1}`}
                     amperage={amperage} 
                     pdpIndex={index}
                     branchCircuitIndex={i}
-                    setBranchCircuitValue={setBranchCircuitValue}
                     branchCircuit={branchCircuit[i]}/>}
             />)
         }

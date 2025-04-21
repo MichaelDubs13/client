@@ -15,20 +15,27 @@ import CreatableSelect from 'react-select/creatable';
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onChange, index, property}) =>{
+const CreateableDropdownItem = ({title, item, property, placeHolder, options, setModelValue, onChange, index}) =>{
     const [selectedOption, setSelectedOption] = useState({label:placeHolder, value:placeHolder});
     const [alloptions, setAllOptions]=useState(options);
+    const defaultValue = item ? item[property] : placeHolder;
+    const setPropertyValue = item? item.setValue : setModelValue;
+
     useEffect(() => {
         setAllOptions(options);
     }, [options]);
+
+    useEffect(() => {
+        setSelectedOption({label:defaultValue, value:defaultValue});
+    }, [defaultValue]);
     
     const setValue = (reportedValue) => {
         if(property && index){
-            setModelValue(index, property, reportedValue)
+            setPropertyValue(index, property, reportedValue)
         } else if(property && !index){
-            setModelValue(reportedValue, property);
+            setPropertyValue(reportedValue, property);
         }  else {
-            setModelValue(reportedValue);
+            setPropertyValue(reportedValue);
         }
     }
 
@@ -66,7 +73,7 @@ const CreateableDropdownItem = ({title, placeHolder, options, setModelValue, onC
                             getOptionValue={(option) => option.value}
                             onChange={handleOptionSelect}
                             onCreateOption={handleOptionCreation}
-                            placeholder={placeHolder}
+                            placeholder={defaultValue}
                             selected={selectedOption}
                             value={selectedOption}
                         />

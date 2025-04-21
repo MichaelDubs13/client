@@ -16,10 +16,10 @@ export default class C_Siemens_Switch extends Component{
         return [
             {name: "6GK5208_0HA00_2AS6", value: this._networkSwitch.is6GK5208_0HA00_2AS6, type: "Boolean"},
             {name: "6GK5216_0HA00_2AS6", value: this._networkSwitch.is6GK5216_0HA00_2AS6, type: "Boolean"},
-            {name: "Switch_DT", value: this._networkSwitch.switch_dt, type: "String"},
-            {name: "Switch_Location", value: this._networkSwitch.switch_location, type: "String"},
-            {name: "Local_IP", value: this._networkSwitch.localIp, type: "String"},
-            {name: "Plant_IP", value: this._networkSwitch.plantIp, type: "String"},
+            {name: "Switch_DT", value: this._networkSwitch.switchDT, type: "String"},
+            {name: "Switch_Location", value: this._networkSwitch.location, type: "String"},
+            {name: "Local_IP", value: this._networkSwitch.localIP, type: "String"},
+            {name: "Plant_IP", value: this._networkSwitch.plantIP, type: "String"},
         ];
     }
 
