@@ -3,8 +3,35 @@ import {create} from "zustand";
 
 const hmiOptions = {
   // example of dropdown options for the HMI parameters
-  networkPortOptions:[
+  mountingTypeOptions:[
+    { value: "Flange at Bottom", label: "Flange at Bottom" },
+    { value: "Round Tube", label: "Round Tube" },
+  ],
+
+  hmiVersionOptions:[
+    { value: "V16", label: "V16" },
+    { value: "V17", label: "V17" },
+  ],
+  
+  rfidPositionOptions:[
+    { value: "Left", label: "Left" },
+    { value: "Right", label: "Right" },
+  ],
+
+  buttonSelectionOptions:[
     { value: "SPARE", label: "SPARE" },
+    { value: "Emergency Stop", label: "Emergency Stop" },
+    { value: "Illuminated Pushbutton", label: "Illuminated Pushbutton" },
+    { value: "Key-operated Switch", label: "Key-operated Switch" },
+    { value: "Safety KeySwitch", label: "Safety KeySwitch" },
+    { value: "Selector Switch", label: "Selector Switch" },
+    { value: "RFID Reader", label: "RFID Reader" },
+  ],
+
+  numberOfExtensionUnitPositionsOptions:[
+    { value: 0, label: "0" },
+    { value: 8, label: "8" },
+    { value: 12, Label: "12" },
   ],
 
   
@@ -19,15 +46,7 @@ const hmiConfiguration = {
   createExtensionUnitPosition: () => {
     return {
       // change this to the values for the network switch ports
-      deviceTypeSelection: "SPARE", // EEC variable name: Device_Type_Selection
-      targetLocation: "", // EEC variable name: Target_Location
-      targetDT: "", // EEC variable name: NotPLC_Connection_DT
-      targetCableLength: "TBD", // EEC variable name: Cable_Length_Selection
-      communicationFlow: "Out", // EEC variable name: Interruption_InOrOut
-      cascadingSwitch: false, // EEC variable name: Switch_Cascading
-      connectedDevice: "", // EEC variable name: Connected_Device
-      selectedSwitch: "", // EEC variable name: frmUI_NetworkSwitchSelection
-      targetPort: "", // EEC varaible name: frmUI_DevicePortSelection
+      buttonSelection: "SPARE", // EEC variable name: frmUI_ButtonSelection
     }
   },
 
@@ -37,7 +56,7 @@ const hmiConfiguration = {
       // below is the first variable example
       line: "", // EEC variable name: HMI_Line
       location:"", // EEC variable name: HMI_Location
-      switchDT: "", // EEC variable name: HMI_DT
+      hmiDT: "", // EEC variable name: HMI_DT
       plcID: "", // EEC variable name: PLC_ID
       localIP: "", // EEC variable name: Local_IP
       plantIP: "", // EEC variable name: Plant_IP
@@ -63,7 +82,7 @@ const hmiConfiguration = {
       ethernetOutDevicePort: "", // EEC variable name: HMI_ETHOut_DevicePort
 
       // this is the number of extension unit positions for the HMI
-      numberOfExtensionUnitPositions: 0, // EEC variable name: ???
+      numberOfExtensionUnitPositions: 8, // EEC variable name: ???
       // change this for the subcomponent of the Extension unit positions
       extensionUnitPositions:hmiConfiguration.initializeExtensionUnitPositions(8),
   }
@@ -81,6 +100,17 @@ const hmiConfiguration = {
       extensionUnitPositions.push(extensionUnitPosition)
     }
     return extensionUnitPositions;
+  },
+  calculateNumberOfExtensionUnitPositions: (numberOfExtensionUnitPositions, hmi) => {
+    // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
+    // this will be used to create the ports for the network switch
+    // check the values in priority order
+    if (hmi.hmiScreenSize === "15in") {
+      numberOfExtensionUnitPositions = 8;
+    } else if (hmi.hmiScreenSize === "22in") {
+      numberOfExtensionUnitPositions = 16;
+    }
+    return numberOfExtensionUnitPositions;
   }
 }
 const hmiStore = create((set) => ({
@@ -133,7 +163,7 @@ const hmiStore = create((set) => ({
     
     // this is for sub components under HMIs
     // this would be for the Extension Units
-    setNumberOfExtensionUnitPoistions:(index, numberOfExtensionUnitPositions)=>{
+    setNumberOfExtensionUnitPositions:(index, numberOfExtensionUnitPositions)=>{
      
       set((state) => {
 

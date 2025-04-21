@@ -5,6 +5,8 @@ import XpdpConfigurations from "./XPDPs/XpdpConfigurations";
 import LpdConfigurations from "./LPDs/LpdConfigurations";
 import NetworkSwitchConfigurations from "./NetworkSwitches/NetworkSwitchConfigurations";
 import { networkSwitchStore } from "../Store/networkSwitchStore";
+import HmiInstances from "./HMIs/HmiInstances";
+import { hmiStore } from "../Store/hmiStore";
 import { TabList} from "@tesla/design-system-react";
 import { useState } from "react";
 import { pdpStore } from "../Store/pdpStore";
@@ -22,6 +24,7 @@ const LineConfiguration = () => {
     const mcps = mcpStore((state) => state.mcps);
     const lpds = lpdStore((state) => state.lpds);
     const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
+    const hmis = hmiStore((state) => state.hmis);
     const tabs = [
         // this defines the tabs for the line configuration
         {
@@ -49,6 +52,11 @@ const LineConfiguration = () => {
             label: `Network Switch(${networkSwitches.length})`,
             style:{fontSize:"18px"}
         },
+        {
+            id: 'tab-6',
+            label: `HMI(${hmis.length})`,
+            style:{fontSize:"18px"}
+        },
       ];
       const renderSwitch = (param) => {
         switch(param) {
@@ -62,6 +70,8 @@ const LineConfiguration = () => {
                 return <LpdConfigurations/>
             case 'tab-5':
                 return <NetworkSwitchConfigurations/>
+            case 'tab-6':
+                return <HmiInstances/>
             default:
                 return <PdpConfigurations/>
         }

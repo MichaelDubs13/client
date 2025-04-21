@@ -14,6 +14,7 @@ import LoadButton from "./LoadButton";
 import SaveButton from "./SaveButton";
 import UploadButton from "./UploadButton";
 import { networkSwitchConfiguration, networkSwitchStore } from "./Store/networkSwitchStore";
+import { hmiConfiguration, hmiStore } from "./Store/hmiStore";
 
 
 
@@ -25,6 +26,7 @@ const EecPage = () => {
     const mcps = mcpStore((state) => state.mcps);
     const lpds = lpdStore((state) => state.lpds);
     const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
+    const hmis = hmiStore((state) => state.hmis);
     const {
       open: openTool,
       handlers: handlersTool,
@@ -39,11 +41,12 @@ const EecPage = () => {
       const validatedMcps =mcpConfiguration.generateData(mcps);
       const validatedLpds = lpdConfiguration.generateData(lpds);
       const validatedNetworkSwitches = networkSwitchConfiguration.generateData(networkSwitches);
+      var validatedHmis = hmiConfiguration.generateData(hmis);
       var devices = []
       var groupedIOModules = []
       var hmis = []
       var gates = []
-      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, groupedIOModules, hmis, gates);
+      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, groupedIOModules, validatedHmis, gates);
       downloadXML(imx, "generated_imx.imx");
     }
 
