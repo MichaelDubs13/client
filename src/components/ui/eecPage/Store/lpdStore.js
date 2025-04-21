@@ -97,7 +97,7 @@ const lpdConfiguration = {
       },
       getIndex: function(){
         const lpds = lpdStore.getState().lpds;
-        const lpdIndex = lpds.findIndex(lpd => lpd.data.id === parent.data.id)
+        const lpdIndex = lpds.findIndex(lpd => lpd.data.id === this.data.parent.data.id)
         const index = lpds[lpdIndex].psus.findIndex(psu => psu.data.id === this.data.id)
         return index;
       },

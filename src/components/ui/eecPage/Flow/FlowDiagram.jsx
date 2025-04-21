@@ -92,7 +92,7 @@ const Flow = ({initialNodes, initialEdges, treeData}) => {
   }  
 
   const handeNodeClick = async (event)=>{
-    var targetNode = layoutedNodes.find(node => node.data.label.includes(event))
+    var targetNode = layoutedNodes.find(node => node.data.key.includes(event))
     if(targetNode){
         setCenter(targetNode.position.x, targetNode.position.y + 200, { duration: 800, });
     }

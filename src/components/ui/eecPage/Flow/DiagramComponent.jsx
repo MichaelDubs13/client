@@ -42,7 +42,7 @@ const DiagramComponent = ()=> {
         xpdps.forEach(pdp => {
             createPdpNodes(pdp, layer, nodeWidth, nodeHeight, nodes, edges)
         })
-
+        console.log(pdps)
         console.log(nodes)
         console.log(edges)
         return {nodes:nodes, edges: edges};
@@ -123,6 +123,8 @@ const DiagramComponent = ()=> {
         if(!item.data.targetDevice) return;
 
         const targetDeviceId = item.data.targetDevice;
+        if(!targetDeviceId) return;
+        
         var targetDevice = lineConfiguration.getDeviceById(targetDeviceId);
         if(!targetDevice) return;
 
@@ -165,7 +167,7 @@ const DiagramComponent = ()=> {
         const icon = pdp.UI.icon;
         const target = `${key}_${layer}`;
         const label = [key, ...pdp.getNodeData()];
-        var node =   { id: target, data: { label: label, icon: icon }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        var node =   { id: target, data: { label: label, icon: icon, key:pdp.location }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
         return node;
     }
 
@@ -175,7 +177,7 @@ const DiagramComponent = ()=> {
         const icon = pdp.UI.icon;
         const target = `${key}_${layer}`;
         const label = [key, ...pdp.getNodeData()];
-        var node =   { id: target, data: { label: label, icon: icon }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        var node =   { id: target, data: { label: label, icon: icon, key:pdp.location }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
         return node;
     }
 
@@ -185,7 +187,7 @@ const DiagramComponent = ()=> {
         const icon = branchCircuit.UI.icon;
         const target = `${key}_${layer}`;
         const label = [key, ...branchCircuit.getNodeData()];
-        var node =   { id: target, data: { label: label, icon: icon }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        var node =   { id: target, data: { label: label, icon: icon, key:"" }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
         return node;
     }
 
@@ -195,7 +197,7 @@ const DiagramComponent = ()=> {
         const icon = lpd.UI.icon;
         const target = `${key}_${layer}`;
         const label = [key, ...lpd.getNodeData()]
-        var node =   { id: target, data: { label: label, icon: icon}, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        var node =   { id: target, data: { label: label, icon: icon, key:""}, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
         return node;
     }
 
@@ -205,7 +207,7 @@ const DiagramComponent = ()=> {
         const icon = psu.UI.icon;
         const target = `${key}_${layer}`;
         const label = [key,...psu.getNodeData()];
-        var node =   { id: target, data: { label: label, icon: icon, }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        var node =   { id: target, data: { label: label, icon: icon,key:"" }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
         return node;
     }
 
@@ -215,7 +217,7 @@ const DiagramComponent = ()=> {
         const icon = networkSwitch.UI.icon;
         const target = `${key}_${layer}`;
         const label = [key,...networkSwitch.getNodeData()];
-        var node =   { id: target, data: { label: label, icon: icon, }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
+        var node =   { id: target, data: { label: label, icon: icon, key:networkSwitch.location }, type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
         return node;
     }
 

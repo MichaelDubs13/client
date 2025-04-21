@@ -35,7 +35,10 @@ export default class Parser {
         var psus = psuParser.parse(this._wb, this._psuWorksheet)
         psus = psuParser.getPwrDrops(psus, devices);
         psus = psuParser.getDevice(psus, devices);
-        var lpds = psuParser.getLpds(psus, devices); //what to do with branches
+        pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
+        xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
+        //must create branchBreakers on pdps before creating lpds
+        var lpds = psuParser.getLpds(psus, devices, pdps, xpdps); 
         
         const hmis = deviceParser.getHMIs(devices);
         const gates = deviceParser.getSafetyGates(devices);
@@ -43,8 +46,6 @@ export default class Parser {
         const cables = cableParser.parse(this._wb, this._cablesWorksheet);
         deviceParser.addIO(groupedIOModules, cables, devices);
 
-        pdps = pdpParser.createPdpBranchCircuit(pdps, devices)
-        xpdps = xpdpParser.createXpdpBranchCircuit(xpdps, devices)
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
         switches = switchParser.getMcp(switches, mcps);
         var networkTree = switchParser.createNetworkTree(devices, switches);

@@ -124,7 +124,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             {
                 lpd.psus.map((psu,index) => {
                     absIndex++;
-                    return <HeadingItem label={`24VDC Power Supply ${absIndex}: ++${line}+${psu.psu_location}-${psu.psu_dt} | ${lpd.selected_psu}`} 
+                    return <HeadingItem label={`24VDC Power Supply ${absIndex}: ++${line}+${psu.psu_location}-${psu.psu_dt} | ${lpd.psu_selected}`} 
                     size={18} margin={"20px"} open={false} 
                     headerIcon={psu.UI.icon}
                     children={<LpdPsuItem lpdIndex={lpdIndex} psuIndex={index} psu={psu} lpd={lpd}/>}/>

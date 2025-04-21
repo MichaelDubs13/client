@@ -2,6 +2,7 @@ import * as XLSX from 'xlsx'
 import { splitIntoTwo } from './util';
 import { lpdConfiguration } from '../Store/lpdStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
+import { pdpConfiguration } from '../Store/pdpStore';
 
 const psuParser = {
     parse(workbook, worksheet){
@@ -51,30 +52,29 @@ const psuParser = {
         if(targetValue) return targetValue;
         return "";
     },
-    getLpds(psus, devices){
+    getLpds(psus, devices, pdps, xpdps){
         var results = []
 
          psus.forEach(psu => {
             var psuDevice = devices.find(device => device.target_device_location_dt === psu.psuLocationDt)
             if(psuDevice){
                 if(psu.branchBreaker){
-                    psuParser.addToBranch(psu.branchBreaker, psuDevice.ac_primary_connection_source, psu, results);
+                    psuParser.addToBranch(psu.branchBreaker, psuDevice.ac_primary_connection_source, psu, results, pdps, xpdps);
                 } else if(psu.powerFedFrom){
                     var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
                     if(sourcePsu){
-                        psuParser.addToBranch(sourcePsu.branchBreaker, psu, results);
+                        psuParser.addToBranch(sourcePsu.branchBreaker, psu, results, pdps, xpdps);
                     }
                 } else {
-                    psuParser.addToBranch(0, psuDevice.ac_primary_connection_source, psu, results);
+                    psuParser.addToBranch(0, psuDevice.ac_primary_connection_source, psu, results, pdps, xpdps);
                 }}
             }
-            
         )
-
+        
         return results;
     },
 
-    addToBranch(cb, panel, psu, results){
+    addToBranch(cb, panel, psu, results, pdps, xpdps){
         var foundGroup = results.find(group => group.cb === cb && group.panel === panel)
         if(foundGroup){
             foundGroup.psus.push(psu)
@@ -89,9 +89,20 @@ const psuParser = {
             group.line = ProjectConfiguration.line;
             group.location = panel //panel = location
             psu.data.parent = group;
+            
+            psuParser.setTargetCb(group, pdps, xpdps, panel, cb)
+
             results.push(group)
         }
         return results;
+    },
+    setTargetCb(group, pdps, xpdps, panel, cb){
+        let pdp = pdps.find(i => i.location === panel);
+        if(!pdp) pdp=xpdps.find(i => i.location === panel);
+        if(!pdp) return null;
+        var brancCircuit = pdpConfiguration.getCB(pdp.branchCircuit, cb);
+        if(!brancCircuit) return null;
+        brancCircuit.data.targetDevice = group.data.id
     },
 
     getPwrDrops(psus, devices){
@@ -103,6 +114,7 @@ const psuParser = {
                 drop.location = device.target_device_location_dt;
                 drop.deviceTag = device.device_dt;
                 drop.fla = device.fla;
+                drop.description = device.target_device_function_text;
                 drops.push(drop);
             })
             psu.pwrDrops = drops;

@@ -113,6 +113,7 @@ const pdpParser = {
         branch.StrBox_DT = sourceDevice.target_device_location;
         branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
         branch.DropType = sourceDevice.ac_secondary_power_drop_type;
+        branch.PwrDrop_DescTxt = sourceDevice.target_device_function_text;
         return branch;
     },
   
