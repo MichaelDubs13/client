@@ -90,6 +90,9 @@ const hmiConfiguration = {
       numberOfExtensionUnitPositions: 8, // EEC variable name: ???
       // change this for the subcomponent of the Extension unit positions
       extensionUnitPositions:hmiConfiguration.initializeExtensionUnitPositions(8),
+      setValue: function(indexObject, key, value){
+        hmiStore.getState().setHmiValue(indexObject, key, value);
+      },
   }
   },
   
@@ -148,7 +151,7 @@ const hmiStore = create((set) => ({
         return {hmis: [...state.hmis.slice(0, index), ...state.hmis.slice(index + 1)]};
       })
     },
-  duplicateHmis:(index) => {  
+    duplicateHmis:(index) => {  
       set((state) => {
         const newHmi = {...state.hmis[index]}
         return {hmis: [...state.hmis, newHmi]};
