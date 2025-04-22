@@ -104,6 +104,7 @@ const pdpConfiguration = {
       getNodeData: function(){
         return [
           this.data.amperage,
+          `${this.TargetDevice_FLA}`,
         ]
       }
     }

@@ -47,8 +47,7 @@ const lpdConfiguration = {
 
     return null;
   },
-  getDrop:(location, device, port) => {
-    const lpds = lpdStore.getState().lpds;
+  getDrop:(lpds,location, device, port) => {
     for(let i=0;i<lpds.length;i++){
       const drop = lpds[i].getDrop(location, device, port);
       if(drop) return drop;
@@ -150,7 +149,6 @@ const lpdConfiguration = {
           psuIndex:psuIndex,
           dropIndex:dropIndex,
         }
-        console.log(indexObject)
         lpdStore.getState().setDropValue(indexObject, key, value,false, true);
       },
       getFullName: function() {
@@ -158,7 +156,7 @@ const lpdConfiguration = {
       },
       getNodeData: function(){
         return [
-
+          `${this.fla}A`,
         ]
       }
     }

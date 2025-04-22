@@ -48,6 +48,7 @@ export default class Parser {
 
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
         switches = switchParser.getMcp(switches, mcps);
+        switches = switchParser.setSourcePwrDrops(switches, lpds);
         var networkTree = switchParser.createNetworkTree(devices, switches);
 
         mcps = mcpParser.getNetworkPorts(mcps, devices);

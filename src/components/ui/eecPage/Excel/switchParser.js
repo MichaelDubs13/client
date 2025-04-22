@@ -2,6 +2,7 @@ import * as XLSX from 'xlsx'
 import { splitIntoTwo } from './util';
 import { networkSwitchConfiguration } from '../Store/networkSwitchStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
+import { lpdConfiguration } from '../Store/lpdStore';
 
 
 const switchParser = {
@@ -65,9 +66,22 @@ const switchParser = {
             networkSwitch.mcp={};
             networkSwitch.devices=[];
             switchParser.createAdditionalParameters(networkSwitch);
+            
             switches.push(networkSwitch);
         })
         return switches;
+    },
+
+    setSourcePwrDrops(networkSwitches, lpds){
+        networkSwitches.forEach(networkSwitch => {
+            switchParser.setSourcePwrDrop(networkSwitch, lpds);
+        })
+        return networkSwitches;
+    },
+    setSourcePwrDrop(networkSwitch, lpds){
+        var drop = lpdConfiguration.getDrop(lpds, networkSwitch.location, networkSwitch.switchDT)
+        if(!drop) return null;
+        drop.data.targetDevice = networkSwitch.data.id
     },
 
     createAdditionalParameters(networkSwitch){
@@ -111,7 +125,7 @@ const switchParser = {
 
     getMFG(type){
         //need to complete this list
-        if(type === "6GK5216-0HA00-2AS6")return "Siemens";
+        if(type === "6GK5216-0HA00-2AS6") return "Siemens";
 
         return "";
     },

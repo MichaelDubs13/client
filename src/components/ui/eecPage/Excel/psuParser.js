@@ -90,13 +90,13 @@ const psuParser = {
             group.location = panel //panel = location
             psu.data.parent = group;
             
-            psuParser.setTargetCb(group, pdps, xpdps, panel, cb)
+            psuParser.setSourceCb(group, pdps, xpdps, panel, cb)
 
             results.push(group)
         }
         return results;
     },
-    setTargetCb(group, pdps, xpdps, panel, cb){
+    setSourceCb(group, pdps, xpdps, panel, cb){
         let pdp = pdps.find(i => i.location === panel);
         if(!pdp) pdp=xpdps.find(i => i.location === panel);
         if(!pdp) return null;
@@ -111,7 +111,7 @@ const psuParser = {
             const drops = [];
             directDevices.forEach(device => {
                 const drop = lpdConfiguration.createDrop(ProjectConfiguration.line, psu);
-                drop.location = device.target_device_location_dt;
+                drop.location = device.target_device_location;
                 drop.deviceTag = device.device_dt;
                 drop.fla = device.fla;
                 drop.description = device.target_device_function_text;

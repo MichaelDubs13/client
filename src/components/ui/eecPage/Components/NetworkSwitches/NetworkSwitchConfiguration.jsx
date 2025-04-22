@@ -5,12 +5,13 @@ import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
-import { lpdConfiguration } from '../../Store/lpdStore';
+import { lpdConfiguration, lpdStore } from '../../Store/lpdStore';
 import "../../Eec.css";
 
 const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
     const setNetworkSwitchValue = networkSwitchStore((state) => state.setNetworkSwitchValue);
     const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);
+    const lpds = lpdStore((state)=> state.lpds);
     const networkSwitchIndex = {networkSwitchIndex:index}
     const setPorts = (value) =>{
         setNumberOfPorts(index, value);   
@@ -18,7 +19,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
 
     const handleDeviceChange = (value) => {
         if(networkSwitch.location && value){
-            const drop = lpdConfiguration.getDrop(networkSwitch.location, value)
+            const drop = lpdConfiguration.getDrop(lpds, networkSwitch.location, value)
             if(drop){                
                 setNetworkSwitchValue(networkSwitchIndex, "power1InDT", drop.data.parent.psu_dt);
                 setNetworkSwitchValue(networkSwitchIndex, "power1InLocation", drop.data.parent.psu_location);

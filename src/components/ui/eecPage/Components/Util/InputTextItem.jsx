@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FormItem, FormLabel, FormInputText} from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";

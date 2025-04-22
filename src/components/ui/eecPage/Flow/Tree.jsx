@@ -7,7 +7,7 @@ const Tree = ({ treeData, handleNodeClick }) => {
       <ul>
         {
             treeData.map((item, i)=>{
-                return <TreeNode label={item.location} children={item} handleNodeClick={handleNodeClick} />
+                return <TreeNode label={item.data.key} children={item.children} handleNodeClick={handleNodeClick} />
             })
         }
   
