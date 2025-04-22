@@ -19,19 +19,6 @@ const ExtensionUnitPositions = ({
   return (
     <div className="extension-unit-position">
       <div className="extension-unit-position-settings">
-        {/*If statement to determine which position the RFID Reader is located within the Extension Unit */}
-        {((hmiIndex.rfidPosition === "Right" && (extensionUnitPositionIndex.Last() === index || extensionUnitPositionIndex.Last() - 1 === index)) ||
-          (hmiIndex.rfidPosition === "Left" && (extensionUnitPositionIndex.First() === index || extensionUnitPositionIndex.First() + 1 === index))) ? (
-            <DropdownItem
-              title={"Button type:"}
-              placeHolder={extensionUnitPosition.buttonSelection}
-              options={hmiOptions.buttonSelectionOptions}
-              setModelValue={setExtensionUnitPositionValue}
-              value={"RFID Reader"}
-              index={index}
-              property={"buttonSelection"}
-            />
-          ) : (
             <DropdownItem
               title={"Button type:"}
               placeHolder={extensionUnitPosition.buttonSelection}
@@ -40,7 +27,6 @@ const ExtensionUnitPositions = ({
               index={index}
               property={"buttonSelection"}
             />
-          )}
       </div>
     </div>
   );

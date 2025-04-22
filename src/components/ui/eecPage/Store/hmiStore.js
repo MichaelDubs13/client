@@ -1,5 +1,7 @@
 import { number } from "prop-types";
 import {create} from "zustand";
+import { lineConfiguration } from "./lineStore";
+import { v4 as uuidv4 } from 'uuid';
 
 const hmiOptions = {
   // example of dropdown options for the HMI parameters
@@ -36,7 +38,7 @@ const hmiOptions = {
   numberOfExtensionUnitPositionsOptions:[
     { value: 0, label: "0" },
     { value: 8, label: "8" },
-    { value: 12, Label: "12" },
+    { value: 12, label: "12" },
   ],
 
   
@@ -44,7 +46,25 @@ const hmiOptions = {
 
 
 const hmiConfiguration = {
-  // look at pdpStore for example of default values
+  //fetch child component by id
+  getItemById:( hmi, id) =>{
+    for(let i=0;i<hmi.extensionUnitPositions.length;i++){
+      const extensionUnitPosition = hmi.extensionUnitPositions[i];
+        if(extensionUnitPosition.data.id === id){   
+          return extensionUnitPosition;
+        }
+    }
+
+    return null;
+  },
+  getHmiOptions:(hmis)=>{
+    const hmiOptions = hmis.map((hmi => {
+        const value = lineConfiguration.getDeviceFullName(hmi.location, hmi.hmiDT);
+        return {label:value, value:value}
+    }))
+
+    return hmiOptions;
+  },
   
 
   // change this to the HMI extension unit positions
@@ -52,49 +72,79 @@ const hmiConfiguration = {
     return {
       // change this to the values for the network switch ports
       buttonSelection: "SPARE", // EEC variable name: frmUI_ButtonSelection
+      setValue: function(indexObject, key, value){
+        hmiStore.getState().setExtensionUnitPositionValue(indexObject, key, value);
+      },
     }
   },
 
   create: () => { 
-    return {
-      // this is where the variables for the network switch are defined going to the data model
-      // below is the first variable example
-      line: "", // EEC variable name: HMI_Line
-      location:"", // EEC variable name: HMI_Location
-      hmiDT: "", // EEC variable name: HMI_DT
-      plcID: "", // EEC variable name: PLC_ID
-      localIP: "", // EEC variable name: Local_IP
-      plantIP: "", // EEC variable name: Plant_IP
-      powerInLine: "", // EEC variable name: HMI_PwrIn_Line
-      powerInLocation: "", // EEC variable name: HMI_PwrIn_Station
-      powerInDT: "", // EEC variable name: HMI_PwrIn_DT
-      ethernetCascadingFrom: false, // EEC variable name: HMI_CascadingFrom
-      ethernetInLine: "", // EEC variable name: HMI_NetworkIn_Line
-      ethernetInLocation: "", // EEC variable name: HMI_ETHIn_Station
-      ethernetInDT: "", // EEC variable name: HMI_ETHIn_DT
-      ethernetInDevicePort: "", // EEC variable name: HMI_ETHIn_DevicePort
-      ethernetCascadingTo: false, // EEC variable name: HMI_CascadingTo
-      ethernetCascadingToOutside: false, // EEC variable name: HMI_CascadingTo_Outside
-      hmiScreenSize: "22in", // EEC variable name: HMI_ScreenSize
-      mountingType: "Flange at Bottom", // EEC variable name: Mounting_Selection
-      hmiVersion: "V17", // EEC variable name: Version_Selection
-      rfidPosition: "Right", // EEC variable name: RFID_Side
+      var hmi = {
+        // this is where the variables for the network switch are defined going to the data model
+        // below is the first variable example
+        line: "", // EEC variable name: HMI_Line
+        location:"", // EEC variable name: HMI_Location
+        hmiDT: "", // EEC variable name: HMI_DT
+        plcID: "", // EEC variable name: PLC_ID
+        localIP: "", // EEC variable name: Local_IP
+        plantIP: "", // EEC variable name: Plant_IP
+        powerInLine: "", // EEC variable name: HMI_PwrIn_Line
+        powerInLocation: "", // EEC variable name: HMI_PwrIn_Station
+        powerInDT: "", // EEC variable name: HMI_PwrIn_DT
+        ethernetCascadingFrom: false, // EEC variable name: HMI_CascadingFrom
+        ethernetInLine: "", // EEC variable name: HMI_NetworkIn_Line
+        ethernetInLocation: "", // EEC variable name: HMI_ETHIn_Station
+        ethernetInDT: "", // EEC variable name: HMI_ETHIn_DT
+        ethernetInDevicePort: "", // EEC variable name: HMI_ETHIn_DevicePort
+        ethernetCascadingTo: false, // EEC variable name: HMI_CascadingTo
+        ethernetCascadingToOutside: false, // EEC variable name: HMI_CascadingTo_Outside
+        hmiScreenSize: "22in", // EEC variable name: HMI_ScreenSize
+        mountingType: "Flange at Bottom", // EEC variable name: Mounting_Selection
+        hmiVersion: "V17", // EEC variable name: Version_Selection
+        rfidPosition: "Right", // EEC variable name: RFID_Side
 
-      hmiCascadingToSelection: "", // EEC variable name: frmUI_HMI_Selection
-      ethernetOutLine: "", // EEC variable name: HMI_ETHOut_Line
-      ethernetOutLocation: "", // EEC variable name: HMI_ETHOut_Station
-      ethernetOutDT: "", // EEC variable name: HMI_ETHOut_DT
-      ethernetOutDevicePort: "", // EEC variable name: HMI_ETHOut_DevicePort
+        hmiCascadingToSelection: "", // EEC variable name: frmUI_HMI_Selection
+        ethernetOutLine: "", // EEC variable name: HMI_ETHOut_Line
+        ethernetOutLocation: "", // EEC variable name: HMI_ETHOut_Station
+        ethernetOutDT: "", // EEC variable name: HMI_ETHOut_DT
+        ethernetOutDevicePort: "", // EEC variable name: HMI_ETHOut_DevicePort
 
-      // this is the number of extension unit positions for the HMI
-      numberOfExtensionUnitPositions: 8, // EEC variable name: ???
-      // change this for the subcomponent of the Extension unit positions
-      extensionUnitPositions:hmiConfiguration.initializeExtensionUnitPositions(8),
-      setValue: function(indexObject, key, value){
-        hmiStore.getState().setHmiValue(indexObject, key, value);
-      },
-  }
-  },
+        // this is the number of extension unit positions for the HMI
+        numberOfExtensionUnitPositions: 8, // EEC variable name: ???
+        // change this for the subcomponent of the Extension unit positions
+        extensionUnitPositions:hmiConfiguration.initializeExtensionUnitPositions(8),
+        /* setValue: function(indexObject, key, value){
+          hmiStore.getState().setHmiValue(indexObject, key, value); */
+        UI:{
+          expanded:false,
+          icon: "/panel.png"
+        },
+        data:{
+          type:'hmi',
+          id:uuidv4(),
+        },
+        setValue: function(indexObject, key, value){
+          hmiStore.getState().setHmiValue(indexObject, key, value);
+        },
+        getFullName: function() {
+          return lineConfiguration.getDeviceFullName(this.location, this.hmiDT);
+        },
+        getIndex: function(){
+          const hmis = hmiStore.getState().hmis;
+          return hmis.findIndex(hmi => hmi.data.id === this.data.id)
+        },
+        getItemById: function(id){
+          return hmiConfiguration.getItemById(this, id);
+        },
+        getNodeData: function(){
+          return [
+            this.hmiDT,
+          ]
+        }
+      }
+      
+      return hmi;
+    },
   
   generateData: (hmis) => {
     return hmis;
@@ -120,52 +170,85 @@ const hmiConfiguration = {
     return numberOfExtensionUnitPositions;
   }
 }
-const hmiStore = create((set) => ({
-    hmis:[],
-    setHmis: (hmis) => {
-      set({hmis:hmis});
-    },    
-    addHmis: (numberOfHmi) => {
-      set((state) => {
-        const diff = numberOfHmi - [...state.hmis].length
-        if(diff > 0){
-          const hmis = []
-          for (let i = 0; i < diff; i++) {
-            var hmi = hmiConfiguration.create();
-            hmis.push(hmi);
-          }  
-          return {hmis:[...state.hmis, ...hmis]}
-        } else if(diff < 0) {
-            let newHmis = [...state.hmis];
-            newHmis = newHmis.slice(0, newHmis.length + diff);
-            return {hmis:newHmis}
-        } else {
-          
-          return {hmis:[...state.hmis]}
-        }
-      })
-    },
 
-    deleteHmi:(index) => {  
-      set((state) => {
-        return {hmis: [...state.hmis.slice(0, index), ...state.hmis.slice(index + 1)]};
-      })
-    },
-    duplicateHmis:(index) => {  
-      set((state) => {
-        const newHmi = {...state.hmis[index]}
-        return {hmis: [...state.hmis, newHmi]};
-      })
-    },
-
-    setHmiValue:(indexObject, key, value)=>{
-      const index = indexObject.hmiIndex
-      set((state) => {
-        const newHmis = [...state.hmis];
-        newHmis[index] = {...newHmis[index], [key]: value};
-        return { hmis: newHmis };
-      });
-    },
+    const hmiStore = create((set,get) => ({
+        hmis:[],
+        hmisOptions:[],
+        /**
+             * Replace current HMIs objects with input HMIs objects, this is used to set pdp data from excel sheet/save files
+             * @param {Array} hmis 
+             */
+        setHmis: (hmis) => {
+          set({hmis:hmis});
+        },
+        setHmisOptions:(hmis)=>{
+          var hmisOptions= hmiConfiguration.getHmiOptions(hmis);
+          set({hmisOptions:hmisOptions});
+        },
+        /**
+         * Set HMIs and update hmiOptions
+         * @param {*} hmis 
+         */
+        setHmis: (hmis) => {
+          set({hmis:hmis});
+          get().setHmisOptions(hmis);
+        },
+        /**
+         * Update HMIs and update hmiOptions
+         * @param {*} numberOfHmi 
+         */    
+        addHmis: (numberOfHmi) => {
+          set((state) => {
+            const diff = numberOfHmi - [...state.hmis].length
+            if(diff > 0){
+              const hmis = []
+              for (let i = 0; i < diff; i++) {
+                var hmi = hmiConfiguration.create();
+                hmis.push(hmi);
+              }
+              let newHmis =[...state.hmis, ...hmis]  
+              get().setHmisOptions(newHmis);
+              return {hmis:newHmis}
+            } else if(diff < 0) {
+              let newHmis = [...state.hmis];
+              newHmis = newHmis.slice(0, newHmis.length + diff);
+              get().setHmisOptions(newHmis);
+              return {hmis:newHmis}
+            } else {
+              return {hmis:[...state.hmis]}
+            }
+          })    
+        },
+    
+      /**
+       * Update HMI by index and update hmiOptions
+       * @param {*} index 
+       */
+      deleteHmi:(index) => {  
+        set((state) => {
+          let newHmis = [...state.hmis.slice(0, index), ...state.hmis.slice(index + 1)];
+          get().setHmisOptions(newHmis); 
+          return {hmis: newHmis};
+        })
+      },
+      duplicateHmis:(index) => {  
+        set((state) => {
+          const newHmi = {...state.hmis[index]}
+          const newHmis = [...state.hmis, newHmi]
+          get().setHmisOptions(newHmis); 
+          return {hmis: newHmis};
+        })
+      },
+    
+      setHmiValue:(indexObject, key, value)=>{
+        const index = indexObject.hmiIndex
+        set((state) => {
+          const newHmis = [...state.hmis];
+          newHmis[index] = {...newHmis[index], [key]: value};
+          get().setHmisOptions(newHmis);
+          return { hmis: newHmis };
+        });
+      },
 
     
     // this is for sub components under HMIs
@@ -186,13 +269,14 @@ const hmiStore = create((set) => ({
         }
 
         newHmis[index].extensionUnitPositions = extensionUnitPositions;
+        console.log(newHmis);
         return { hmis: newHmis };
       });
     },
     setExtensionUnitPositionValue:(indexObject, key, value)=>{
       const hmiIndex = indexObject.hmiIndex;
       const extensionUnitPositionIndex = indexObject.extensionUnitPositionIndex;
-
+  
       set((state) => {
         const newHmis = [...state.hmis];
         const extensionUnitPositions = [...newHmis[hmiIndex].extensionUnitPositions]
@@ -201,6 +285,7 @@ const hmiStore = create((set) => ({
         newHmis[hmiIndex] = {...newHmis[hmiIndex], 
           extensionUnitPositions:extensionUnitPositions
         };
+        console.log(newHmis);
         return { hmis: newHmis };
       });
     }, 
