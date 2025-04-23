@@ -6,19 +6,31 @@ import { hmiStore, hmiOptions } from '../../Store/hmiStore';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
 import { lpdConfiguration, lpdStore } from '../../Store/lpdStore';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import "../../Eec.css";
+import { lineStore } from '../../Store/lineStore';
+import { mcpStore } from '../../Store/mcpStore';
 
 const HmiConfiguration = ({hmi, index}) => {
+    const mcps = mcpStore((state)=>state.mcps)
     const setHmiValue = hmiStore((state) => state.sethmiValue);
     const hmisOptions = hmiStore((state) => state.hmisOptions);
     const setNumberOfExtensionUnitPositions = hmiStore((state) => state.setNumberOfExtensionUnitPositions);
     const setExtensionUnitPositionValue = hmiStore((state) => state.setExtensionUnitPositionValue);
     const lpds = lpdStore((state)=> state.lpds);
+    const getPlcOptions = lineStore((state)=> state.getPlcOptions)
+    const plcs = lineStore((state)=> state.plcs)
     const hmiIndex = {hmiIndex:index}
     const setExtensionUnitPositions = (value) =>{
         setNumberOfExtensionUnitPositions(index, value);
     }
+
+    useEffect(() => {
+        getPlcOptions();
+        if(mcps.length === 1){
+            hmi.setValue(hmiIndex, "plcID", mcps[0].getPlc())
+        }
+    }, [mcps]);
 
     const handleDeviceChange = (value) => {
         if(hmi.location && value){
@@ -49,13 +61,10 @@ const HmiConfiguration = ({hmi, index}) => {
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
-                    {/* <LineLocationSelection item={hmi} index={hmiIndex} showPlantShop={true}/> */}
                     <DeviceSelection item={hmi} index={hmiIndex}
                         deviceTitle={"HMI device tag (e.g., HMI01)"}  deviceProperty={"hmiDT"} onDeviceChange={handleDeviceChange}
                         stationTitle={"HMI Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
-
-                    {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
-                    <DropdownItem title={"HMI is controlled by PLC ID"} item={hmi} index={hmiIndex} property={"plcID"}/>
+                    <DropdownItem title={"HMI is controlled by PLC ID"} item={hmi} options={plcs} index={hmiIndex} property={"plcID"}/>
                     <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={hmi} index={hmiIndex} property={"localIP"}/>
                     <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={hmi} index={hmiIndex} property={"plantIP"}/>
                     

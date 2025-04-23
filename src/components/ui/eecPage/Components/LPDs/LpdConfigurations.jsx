@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { lpdStore } from "../../Store/lpdStore";
-import { FormLabel, FormItem, Button, FormInputText, Heading} from '@tesla/design-system-react';
+import { Heading} from '@tesla/design-system-react';
 import LpdConfiguration from "./LpdConfiguration";
 import HeadingItem from "../Util/HeadingItem";
 import DeleteButton from "../Util/DeleteButton";
 import DuplicateButton from "../Util/DuplicateButton";
+import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import "../../Eec.css";
 
 const LpdConfigurations = () => {
@@ -12,16 +13,8 @@ const LpdConfigurations = () => {
     const addLpd =  lpdStore((state) => state.addLpd);
     const deleteLpd =  lpdStore((state) => state.deleteLpd);
     const duplicateLpd = lpdStore((state) => state.duplicateLpd);
-    const [numberOfLcps, setNumberOfLcps] = useState(lpds.length);
     let absIndex = 0;
 
-    const handleSumbit = (event) => {
-        event.preventDefault();    
-        addLpd(numberOfLcps);
-    }
-    const handleValueChange = (event)=> {
-        setNumberOfLcps(event.target.value)
-    }
     const handleDeleteItem = (index) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
             deleteLpd(index)
@@ -37,16 +30,7 @@ const LpdConfigurations = () => {
         <>
             <div>
                 <Heading is="h4">24VDC Power Distribution Configuration</Heading>
-                <FormItem className="form-set-item">
-                    <FormLabel className="form-set-label"
-                        htmlFor="context">Consider cascading 24VDC power supplies as a group. Enter the number of cascading groups required for this project:</FormLabel>
-                    <FormInputText
-                    id="context"
-                    className="form-set-input"
-                    value={numberOfLcps}
-                    onChange={handleValueChange}/>
-                    <Button variant='secondary' style={{marginLeft:"10px"}} onClick={handleSumbit}>Set</Button>
-                </FormItem>                        
+                <SetItemsNumberInputBox title={"Consider cascading 24VDC power supplies as a group. Enter the number of cascading groups required for this project:"} items={lpds} addItems={addLpd}/>                         
                 {   
                     lpds.map((lpd, index) => {
                         absIndex++;

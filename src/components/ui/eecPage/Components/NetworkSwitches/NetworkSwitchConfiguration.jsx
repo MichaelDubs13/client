@@ -7,12 +7,25 @@ import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
 import { lpdConfiguration, lpdStore } from '../../Store/lpdStore';
 import "../../Eec.css";
+import { mcpStore } from '../../Store/mcpStore';
+import { useEffect } from 'react';
+import { lineStore } from '../../Store/lineStore';
 
 const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
+    const mcps = mcpStore((state)=> state.mcps);
+    const plcs = lineStore((state)=> state.plcs);
+    const getPlcOptions = lineStore((state)=> state.getPlcOptions);
     const setNetworkSwitchValue = networkSwitchStore((state) => state.setNetworkSwitchValue);
     const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);
     const lpds = lpdStore((state)=> state.lpds);
     const networkSwitchIndex = {networkSwitchIndex:index}
+    useEffect(() => {
+            getPlcOptions();
+            if(mcps.length === 1){
+                networkSwitch.setValue(networkSwitchIndex, "plcID", mcps[0].getPlc())
+            }
+    }, [mcps]);
+    
     const setPorts = (value) =>{
         setNumberOfPorts(index, value);   
     }
@@ -37,9 +50,9 @@ const NetworkSwitchConfiguration = ({networkSwitch, index}) => {
                         deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"} onDeviceChange={handleDeviceChange}
                         stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
                     
-                    {/* the PLC ID is to be a dropdown list of all the PLC IDs defined within the MCP configurations */}
-                    <InputTextItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} index={networkSwitchIndex} property={"plcID"}/>
-                    <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
+                    <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
+                    <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} 
+                        options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
                     <InputTextItem title={"Local IP address (e.g., 192.168.1.xt)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"}/>
                     <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={networkSwitch} index={networkSwitchIndex} property={"plantIP"}/>
                     
