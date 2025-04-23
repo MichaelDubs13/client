@@ -7,6 +7,8 @@ import NetworkSwitchConfigurations from "./NetworkSwitches/NetworkSwitchConfigur
 import { networkSwitchStore } from "../Store/networkSwitchStore";
 import HmiInstances from "./HMIs/HmiInstances";
 import { hmiStore } from "../Store/hmiStore";
+import SafetyGateLocationCount from "./SafetyGateSwitches/SafetyGateLocationCount";
+import { safetyGateOptions } from "../Store/safetyGateStore";
 import { TabList} from "@tesla/design-system-react";
 import { useState } from "react";
 import { pdpStore } from "../Store/pdpStore";
@@ -25,6 +27,7 @@ const LineConfiguration = () => {
     const lpds = lpdStore((state) => state.lpds);
     const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
     const hmis = hmiStore((state) => state.hmis);
+    const safetyGates = safetyGateOptions((state) => state.safetyGates);
     const tabs = [
         // this defines the tabs for the line configuration
         {
@@ -57,6 +60,11 @@ const LineConfiguration = () => {
             label: `HMI(${hmis.length})`,
             style:{fontSize:"18px"}
         },
+        {
+            id: 'tab-7',
+            label: `Safety Gate Switch(${safetyGates.length})`,
+            style:{fontSize:"18px"}
+        },
       ];
       const renderSwitch = (param) => {
         switch(param) {
@@ -72,6 +80,8 @@ const LineConfiguration = () => {
                 return <NetworkSwitchConfigurations/>
             case 'tab-6':
                 return <HmiInstances/>
+            case 'tab-7':
+                return <SafetyGateLocationCount/>
             default:
                 return <PdpConfigurations/>
         }
