@@ -1,11 +1,11 @@
-import { useState } from "react";
 import {mcpStore} from "../../Store/mcpStore";
-import { FormLabel, FormItem, Button, FormInputText, Heading} from '@tesla/design-system-react';
+import { Heading} from '@tesla/design-system-react';
 import HeadingItem from "../Util/HeadingItem";
 import { projectStore } from "../../Store/projectStore";
 import McpConfiguration from "./McpConfiguration";
 import DeleteButton from "../Util/DeleteButton";
 import DuplicateButton from "../Util/DuplicateButton";
+import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import "../../Eec.css";
 
 const McpConfigurations = () => {    
@@ -14,16 +14,7 @@ const McpConfigurations = () => {
     const addMcp =  mcpStore((state) => state.addMcp);
     const deleteMcp =  mcpStore((state) => state.deleteMcp);
     const duplicateMcp = mcpStore((state) => state.duplicateMcp);
-    const [numberOfMcps, setNumberOfMcps] = useState(mcps.length);
 
-    const handleSumbit = (event) => {
-        event.preventDefault();    
-        addMcp(numberOfMcps);
-    }
-    
-    const handleValueChange = (event)=> {
-        setNumberOfMcps(event.target.value);
-    }
     const handleDeleteItem = (index) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
             deleteMcp(index)
@@ -39,15 +30,7 @@ const McpConfigurations = () => {
         <>
             <div>
                 <Heading is="h4">Main Control Panel Configuration</Heading>
-                <FormItem className="form-set-item">
-                    <FormLabel className="form-set-label" htmlFor="context">Enter the number of Main Control Panels required for this line:</FormLabel>
-                    <FormInputText
-                    id="context"
-                    className="form-set-input"
-                    value={numberOfMcps}
-                    onChange={handleValueChange}/>
-                    <Button variant='secondary' style={{marginLeft:"10px"}} onClick={handleSumbit}>Set</Button>
-                </FormItem>                        
+                <SetItemsNumberInputBox title={"Enter the number of Main Control Panels required for this line:"} items={mcps} addItems={addMcp}/>                                                      
                 {   
                     mcps.map((mcp, index) => {
                         const location = mcp.location

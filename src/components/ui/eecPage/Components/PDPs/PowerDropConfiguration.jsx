@@ -43,7 +43,6 @@ const PowerDropConfiguration = ({pdp, index}) => {
         var powerDrops20A = renderPowerDrops("20A"); 
         var powerDrops10A = renderPowerDrops("10A");
         return [...powerDrops250A, ...powerDrops100A, ...powerDrops70A, ...powerDrops60A, ...powerDrops40A, ...powerDrops30A, ...powerDrops20A, ...powerDrops10A]
-        
     }
 
     return (

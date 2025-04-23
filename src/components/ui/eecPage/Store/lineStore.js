@@ -103,6 +103,7 @@ const lineConfiguration = {
 const lineStore = create((set) => ({
     lines:[],
     stations:[],
+    plcs:[],
 
     getLineOptions:()=>{
         const pdps = pdpStore.getState().pdps;
@@ -126,7 +127,16 @@ const lineStore = create((set) => ({
             return {lines: newLines};
         })
     },
-
+    getPlcOptions:()=>{
+        const mcps = mcpStore.getState().mcps;
+        const plcOptions = mcps.map((mcp) => {
+            return {label:mcp.getPlc(), value:mcp.getPlc()}
+        })
+        set((state) => {
+            return {plcs: plcOptions};
+        })
+        return plcOptions;
+    },
     getLocationOptions:(line)=>{
         const pdps = pdpStore.getState().pdps;
         const xpdps= xpdpStore.getState().xpdps;

@@ -128,6 +128,9 @@ const mcpConfiguration = {
         return [
           this.location,
         ]
+      },
+      getPlc: function(){
+        return `${this.location}_PLC01`;
       }
   }
   },
@@ -179,8 +182,9 @@ const mcpStore = create((set) => ({
         return { mcps: newMcps };
       });
     },
-    setNumberOfLethPorts:(index, numberOfPorts)=>{
+    setNumberOfLethPorts:(indexObject, numberOfPorts)=>{
       var ports = [];
+      const mcpIndex = indexObject.mcpIndex
       for (let i = 0; i < numberOfPorts; i++) {
         var port = mcpConfiguration.createLethPort();
         ports.push(port)
@@ -188,9 +192,10 @@ const mcpStore = create((set) => ({
 
       set((state) => {
         const newMcps = [...state.mcps];
-        newMcps[index] = {...newMcps[index], 
+        newMcps[mcpIndex] = {...newMcps[mcpIndex], 
           ports: ports,
         };
+        console.log(newMcps);
         return { mcps: newMcps };
       });
     },

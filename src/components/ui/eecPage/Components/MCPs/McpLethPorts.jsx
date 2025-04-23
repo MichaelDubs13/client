@@ -1,4 +1,6 @@
-import InputTextItem from "../Util/InputTextItem";
+import DeviceSelection from "../Common/DeviceSelection";
+import DropdownItem from "../Util/DropdownItem";
+import { networkSwitchConfiguration, networkSwitchOptions } from "../../Store/networkSwitchStore";
 import "../../Eec.css";
 
 const McpLethPorts = ({ 
@@ -6,16 +8,18 @@ const McpLethPorts = ({
     portIndex,
     port,
 }) => {
-  const index = {mcpIndex:mcpIndex, portIndex:portIndex}
-  const setPortValue = mcpStore((state) => state.setPortValue);
+  const index = {mcpIndex:mcpIndex, portIndex:portIndex};
+  const portOptions = networkSwitchConfiguration.getNetworkDropPortOptions(8, 'Local', 'Unmanaged');
+  
   return (
       <div className="com-drop-item">
         <div className="com-drop-header">
           <h7>Port {portIndex+5}</h7>
-          <InputTextItem title={"Target device location (e.g., 00010)"} item={mcp} index={index} property={"targetLocation"}/>
-          <InputTextItem title={"Target device tag (e.g., RBC01)"} item={mcp} index={index} property={"targetDT"}/>
-          <InputTextItem title={"Target device Port"} item={mcp} index={index} property={"targetPort"}/>
-          <InputTextItem title={"Target cable length"} item={mcp} index={index} property={"targetCableLength"}/>
+          <DeviceSelection item={port} index={index} 
+              deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
+              stationTitle={"Target device location (e.g., 00010)"} stationProperty={"targetLocation"}/>    
+          <DropdownItem title={"Select the port on the target switch this is connected to:"} item={port} property={"targetPort"} options={portOptions} index={index}/>
+          <DropdownItem title={"Cable length (m)"} item={port} property={"targetCableLength"}  options={networkSwitchOptions.cableLengthOptions} index={index}/>
         </div>
       </div>
     );

@@ -45,10 +45,9 @@ const EecPage = () => {
       const validatedMcps =mcpConfiguration.generateData(mcps);
       const validatedLpds = lpdConfiguration.generateData(lpds);
       const validatedNetworkSwitches = networkSwitchConfiguration.generateData(networkSwitches);
-      var validatedHmis = hmiConfiguration.generateData(hmis);
+      const validatedHmis = hmiConfiguration.generateData(hmis);
       var devices = []
       var groupedIOModules = []
-      var hmis = []
       var gates = []
       var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, groupedIOModules, validatedHmis, gates);
       downloadXML(imx, "generated_imx.imx");
