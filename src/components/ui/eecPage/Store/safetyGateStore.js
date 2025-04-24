@@ -40,13 +40,13 @@ const safetyGateConfiguration = {
     return safetyGateOptions;
   },
 
-  createSafetyGateSwitch: (parent) => {
+  createSafetyGateSwitch: (number, parent) => {
     return {
       // this is where the variables for the network switch are defined going to the data model
         // below is the first variable example
         line: parent.line, // EEC variable name: safetyGate_Line
         location:parent.location, // EEC variable name: MountingLocation
-        safetyGateDT: "", // EEC variable name: GateSwitch_DT\
+        safetyGateDT: `GS${formatToTwoDigits(number)}`, // EEC variable name: GateSwitch_DT\
         safetyGateSwitchType: "PROFINET", // EEC variable name: GateSwitch_Type
         safetyGateSwitchHandle: "Right", // EEC variable name: GateSwitch_HandleSide
         plcID: "", // EEC variable name: PLC_ID
@@ -224,7 +224,7 @@ const safetyGateStore = create((set,get) => ({
         const diff = numberOfSafetyGateSwitches - newSafetyGates[index].safetyGateSwitches.length
         if(diff > 0){
           for (let i = 0; i < diff; i++) {
-            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(newSafetyGates[index]);
+            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(i+1,newSafetyGates[index]);
             newSafetyGates[index] = {...newSafetyGates[index], 
               safetyGateSwitches: [...newSafetyGates[index].safetyGateSwitches, safetyGateSwitch],
             };

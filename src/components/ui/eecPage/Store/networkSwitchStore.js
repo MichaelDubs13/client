@@ -132,13 +132,13 @@ const networkSwitchConfiguration = {
     }
   },
 
-  create: () => { 
+  create: (number) => { 
     var networkSwitch = {
        // this is where the variables for the network switch are defined going to the data model
       // below is the first variable example
       line: projectStore.getState().line, // EEC variable name: Switch_Line
       location:"", // EEC variable name: Switch_Location
-      switchDT: "", // EEC variable name: Switch_DT
+      switchDT: `LETH${formatToTwoDigits(number)}`, // EEC variable name: Switch_DT
       plcID: "", // EEC variable name: PLC_ID
       networkType: "Local", // EEC variable name: Network_Type_Selection
       localIP: "", // EEC variable name: Local_IP
@@ -253,7 +253,7 @@ const networkSwitchStore = create((set,get) => ({
         if(diff > 0){
           const networkSwitches = []
           for (let i = 0; i < diff; i++) {
-            var networkSwitch = networkSwitchConfiguration.create();
+            var networkSwitch = networkSwitchConfiguration.create(i+1);
             networkSwitches.push(networkSwitch);
           }
           let newNetworkSwitches =[...state.networkSwitches, ...networkSwitches]  

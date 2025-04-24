@@ -40,7 +40,7 @@ const SafetyGateSwitchConfiguration = ({
       <div className="safety-gate-switch-settings">
         <DeviceSelection item={safetyGateSwitch} index={index} 
             stationTitle={"Safety Gate Switches Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}
-            deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}/>
+            deviceTitle={"Target device tag (e.g., GS01)"} deviceProperty={"safetyGateDT"}/>
         <DropdownItem title={"Gate switch type:"} item={safetyGateSwitch} property={"safetyGateSwitchType"} options={safetyGateOptions.gateSwitchTypeOptions} index={index}/>
         <DropdownItem title={"Left or Right handed gate switch?"} item={safetyGateSwitch} property={"safetyGateSwitchHandle"} options={safetyGateOptions.gateSwitchHandleOptions} index={index}/>
         <DropdownItem title={"Safety Gate Switch controlled by PLC ID:"} item={safetyGateSwitch} property={"plcID"} options={plcs} index={index}/>
