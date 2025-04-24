@@ -1,4 +1,4 @@
-import { number } from "prop-types";
+import { projectStore } from "./projectStore";
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
 import { v4 as uuidv4 } from 'uuid';
@@ -82,7 +82,7 @@ const hmiConfiguration = {
       var hmi = {
         // this is where the variables for the network switch are defined going to the data model
         // below is the first variable example
-        line: "", // EEC variable name: HMI_Line
+        line: projectStore.getState().line, // EEC variable name: HMI_Line
         location:"", // EEC variable name: HMI_Location
         hmiDT: "", // EEC variable name: HMI_DT
         plcID: "", // EEC variable name: PLC_ID

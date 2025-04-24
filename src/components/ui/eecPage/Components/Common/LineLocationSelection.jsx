@@ -27,9 +27,6 @@ const LineLocationSelection = ({
         setLocationOptions(locations);
     }, [item.line]);
     
-
-    
-
     return (
         
         <div>

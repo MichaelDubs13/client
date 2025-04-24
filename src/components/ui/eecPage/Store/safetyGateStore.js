@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
 import { v4 as uuidv4 } from 'uuid';
+import { projectStore } from "./projectStore";
 import {formatToTwoDigits} from './util'
 
 const safetyGateOptions = {
@@ -18,7 +19,7 @@ const safetyGateOptions = {
 }
 
 
-const safetyGateInstance = {
+const safetyGateConfiguration = {
    //fetch child component by id
    getItemById:( safetyGate, id) =>{
     for(let i=0;i<safetyGate.safetyGateSwitches.length;i++){
@@ -39,12 +40,12 @@ const safetyGateInstance = {
     return safetyGateOptions;
   },
 
-  createSafetyGateSwitch: () => {
+  createSafetyGateSwitch: (parent) => {
     return {
       // this is where the variables for the network switch are defined going to the data model
         // below is the first variable example
-        line: "", // EEC variable name: safetyGate_Line
-        location:"", // EEC variable name: MountingLocation
+        line: parent.line, // EEC variable name: safetyGate_Line
+        location:parent.location, // EEC variable name: MountingLocation
         safetyGateDT: "", // EEC variable name: GateSwitch_DT\
         safetyGateSwitchType: "PROFINET", // EEC variable name: GateSwitch_Type
         safetyGateSwitchHandle: "Right", // EEC variable name: GateSwitch_HandleSide
@@ -77,6 +78,7 @@ const safetyGateInstance = {
         icon:"/safetyGateSwitch.png"
       },
       data:{
+        parent:parent,
         type:'safetyGateSwitch',
         id:uuidv4(),
       },
@@ -95,20 +97,19 @@ const safetyGateInstance = {
     var safetyGate = {
        // this is where the variables for the safety gate switch instances are defined going to the data model
       // below is the first variable example
-      line: "", // EEC variable name: Switch_Line
+      line: projectStore.getState().line, // EEC variable name: Switch_Line
       location:"", // EEC variable name: Switch_Location
-      
-      safetyGateSwitches:safetyGateInstance.initializeSafetyGateSwitches(0),
+      safetyGateSwitches:[],
       UI:{
         expanded:false,
-        icon:"/safetGateSwitch.png"
+        icon:"/safetyGate.png"
       },
       data:{
         type:'safetyGate',
         id:uuidv4(),
       },
       setValue: function(indexObject, key, value){
-        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value);
+        safetyGateStore.getState().setSafetyGateValue(indexObject, key, value);
       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location, this.switchDT);
@@ -118,7 +119,7 @@ const safetyGateInstance = {
         return safetyGates.findIndex(safetyGate => safetyGate.data.id === this.data.id)
       },
       getItemById: function(id){
-        return safetyGateInstance.getItemById(this, id);
+        return safetyGateConfiguration.getItemById(this, id);
       },
       getNodeData: function(){
         return [
@@ -134,14 +135,6 @@ const safetyGateInstance = {
     return safetyGates;
   },
 
-  initializeSafetyGateSwitches: (numberOfSafetyGateSwitches) => {
-    var safetyGateSwitches = [];
-    for (let i = 0; i < numberOfSafetyGateSwitches; i++) {
-      var safetyGateSwitch = safetyGateInstance.createSafetyGateSwitch();
-      safetyGateSwitches.push(safetyGateSwitch)
-    }
-    return safetyGateSwitches;
-  }
 }
   
 const safetyGateStore = create((set,get) => ({
@@ -155,7 +148,7 @@ const safetyGateStore = create((set,get) => ({
       set({safetyGates:safetyGates});
     },
     setSafetyGatesOptions:(safetyGates)=>{
-      var safetyGatesOptions= safetyGateInstance.getSafetyGateOptions(safetyGates);
+      var safetyGatesOptions= safetyGateConfiguration.getSafetyGateOptions(safetyGates);
       set({safetyGatesOptions:safetyGatesOptions});
     },
     /**
@@ -176,16 +169,14 @@ const safetyGateStore = create((set,get) => ({
         if(diff > 0){
           const safetyGates = []
           for (let i = 0; i < diff; i++) {
-            var safetyGate = safetyGateInstance.create();
+            var safetyGate = safetyGateConfiguration.create();
             safetyGates.push(safetyGate);
           }
-          let newSafetyGates =[...state.safetyGates, ...safetyGates]  
-          get().setSafetyGatesOptions(newSafetyGates);
+          let newSafetyGates =[...state.safetyGates, ...safetyGates] 
           return {safetyGates:newSafetyGates}
         } else if(diff < 0) {
           let newSafetyGates = [...state.safetyGates];
           newSafetyGates = newSafetyGates.slice(0, newSafetyGates.length + diff);
-          get().setSafetyGatesOptions(newSafetyGates);
           return {safetyGates:newSafetyGates}
         } else {
           return {safetyGates:[...state.safetyGates]}
@@ -228,18 +219,22 @@ const safetyGateStore = create((set,get) => ({
   // this would be for the safety gate switches in this case
   setNumberOfSafetyGateSwitches:(index, numberOfSafetyGateSwitches)=>{
       set((state) => {
-
         const newSafetyGates = [...state.safetyGates];
-        newSafetyGates[index] = {...newSafetyGates[index]};
-       
-        // create the safety gate switches for the safety gate instance
-        numberOfSafetyGateSwitches = safetyGateInstance.calculateNumberOfSafetyGateSwitches(numberOfSafetyGateSwitches, newSafetyGates[index]);
-        var safetyGateSwitches = [];
-        for (let i = 0; i < numberOfSafetyGateSwitches; i++) {
-          var safetyGateSwitch = safetyGateInstance.createSafetyGateSwitch();
-          safetyGateSwitches.push(safetyGateSwitch)
+        
+        const diff = numberOfSafetyGateSwitches - newSafetyGates[index].safetyGateSwitches.length
+        if(diff > 0){
+          for (let i = 0; i < diff; i++) {
+            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(newSafetyGates[index]);
+            newSafetyGates[index] = {...newSafetyGates[index], 
+              safetyGateSwitches: [...newSafetyGates[index].safetyGateSwitches, safetyGateSwitch],
+            };
+          }  
+        } else if(diff < 0) {
+            const safetyGateSwitches = newSafetyGates[index].safetyGateSwitches.slice(0, newSafetyGates[index].safetyGateSwitches.length + diff);
+            newSafetyGates[index] = {...newSafetyGates[index], 
+              safetyGateSwitches: safetyGateSwitches,
+            };
         }
-        newSafetyGates[index].safetyGateSwitches = safetyGateSwitches;
         return { safetyGates: newSafetyGates };
       });
     },
@@ -262,6 +257,6 @@ const safetyGateStore = create((set,get) => ({
 
 export {
   safetyGateStore,
-  safetyGateInstance,
+  safetyGateConfiguration,
   safetyGateOptions
 }

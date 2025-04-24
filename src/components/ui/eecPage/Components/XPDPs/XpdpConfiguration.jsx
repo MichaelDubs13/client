@@ -3,7 +3,7 @@ import DropdownItem from "../Util/DropdownItem";
 import InputTextItem from "../Util/InputTextItem";
 import PowerDropConfiguration from "./PowerDropConfiguration";
 import LineLocationSelection from "../Common/LineLocationSelection";
-import StationSelection from "../Common/StationSelection";
+import LineStationSelection from "../Common/LineStationSelection";
 import "../../Eec.css";
 
 const XpdpConfiguration = ({xpdp, xpdpIndex}) => {
@@ -13,8 +13,8 @@ const XpdpConfiguration = ({xpdp, xpdpIndex}) => {
         <div>
             <div>
                 <LineLocationSelection item={xpdp} index={index} showPlantShop={true}/>
-                <StationSelection title={"Location designation in which the Transformer is physically located: (i.e., Station number) (e.g., 00010)"} 
-                    item={xpdp} index={index} property={"xfmrLocation"}/>    
+                <LineStationSelection stationTitle={"Location designation in which the Transformer is physically located: (i.e., Station number) (e.g., 00010)"} 
+                    item={xpdp} index={index} stationProperty={"xfmrLocation"}/>    
                 <InputTextItem title={"Enter the cable length from the Transformer to the XPDP maind disconnect (m):"} item={xpdp} index={index} property={"xf_cable_length"}/>
                 <DropdownItem title={"Transformer size:"} item={xpdp} property={"xf_size"}
                     options={xpdpOptions.xfmrSizeOptions} index={index} />

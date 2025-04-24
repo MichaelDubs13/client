@@ -1,5 +1,6 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
+import { projectStore } from "./projectStore";
 import { v4 as uuidv4 } from 'uuid';
 import {formatToTwoDigits} from './util'
 
@@ -165,7 +166,7 @@ const lpdConfiguration = {
     return {
       cb:"",
       panel:"",
-      line:"",
+      line:projectStore.getState().line,
       location:"",
       supplyVoltage:"",
       psu_selected:"", //only used for UI
@@ -266,7 +267,6 @@ const lpdStore = create((set) => ({
               psus: psus,
             };
         }
-        console.log(newLpds)
         return { lpds: newLpds };
       })
     },

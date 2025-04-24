@@ -1,17 +1,12 @@
 import { pdpStore } from '../../Store/pdpStore';
-import InputTextItemBasic from '../Util/InputTextItemBasic';
+import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
 import PowerDropItem from './PowerDropItem';
 import HeadingItem from '../Util/HeadingItem';
 import "../../Eec.css";
 
 const PowerDropConfiguration = ({pdp, index}) => {
     const setNumberOfPowerDrps = pdpStore((state) => state.setNumberOfPowerDrps);
-    
-    const handlePowerDropChange = (amperage) => (value) =>{
-        const reportedValue = parseInt(value) || 0
-        setNumberOfPowerDrps(index, amperage, reportedValue);
-    }
-
+ 
     // Create array of power drop items for each amperage
     const renderPowerDrops = (amperage) => {
         var powerDropItems = []
@@ -50,8 +45,8 @@ const PowerDropConfiguration = ({pdp, index}) => {
         <div>
             {/* Input fields for each amperage */}
             {Object.keys(pdp.branchCircuit).reverse().map(amperage => (
-                <InputTextItemBasic title={`${amperage} Power Drops`} data={pdp.branchCircuit[amperage].length} 
-                onTypingFinished={handlePowerDropChange(amperage)}/>
+                <SetItemsNumberInputBox title={`${amperage} Power Drops`} 
+                    items={pdp.branchCircuit[amperage]} addItems={setNumberOfPowerDrps} index={index} property={amperage}/>   
             ))}
 
             {

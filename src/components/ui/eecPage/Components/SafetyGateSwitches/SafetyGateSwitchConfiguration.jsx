@@ -5,16 +5,27 @@ import InputTextItem from '../Util/InputTextItem';
 import { safetyGateStore, safetyGateOptions } from "../../Store/safetyGateStore";
 import DeviceSelection from "../Common/DeviceSelection";
 import { useEffect, useState } from "react";
+import { mcpStore } from "../../Store/mcpStore";
+import { lineStore } from "../../Store/lineStore";
 
 const SafetyGateSwitchConfiguration = ({ 
   safetyGateIndex,
   safetyGateSwitchIndex,
   safetyGateSwitch,
 }) => {
+  const mcps = mcpStore((state)=>state.mcps)
   const safetyGates = safetyGateStore((state) => state.safetyGates);
   const safetyGatesOptions = safetyGateStore((state) => state.safetyGatesOptions);
   const index = {safetyGateIndex:safetyGateIndex, safetyGateSwitchIndex:safetyGateSwitchIndex};
   const [safetyGateSwitchOptions, setSafetyGateSwitchOptions] = useState([]) 
+  const getPlcOptions = lineStore((state)=> state.getPlcOptions)
+  const plcs = lineStore((state)=> state.plcs)
+  useEffect(() => {
+    getPlcOptions();
+    if(mcps.length === 1){
+      safetyGateSwitch.setValue(index, "plcID", mcps[0].getPlc())
+    }
+}, [mcps]);
 
   useEffect(() => {
     const targetGateSwitch = safetyGates.find(safetyGate => safetyGate.getFullName() === safetyGateSwitch.selectedGateSwitch);
@@ -28,10 +39,11 @@ const SafetyGateSwitchConfiguration = ({
     <div className="safety-gate-switch-configuration">
       <div className="safety-gate-switch-settings">
         <DeviceSelection item={safetyGateSwitch} index={index} 
+            stationTitle={"Safety Gate Switches Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}
             deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}/>
         <DropdownItem title={"Gate switch type:"} item={safetyGateSwitch} property={"safetyGateSwitchType"} options={safetyGateOptions.gateSwitchTypeOptions} index={index}/>
         <DropdownItem title={"Left or Right handed gate switch?"} item={safetyGateSwitch} property={"safetyGateSwitchHandle"} options={safetyGateOptions.gateSwitchHandleOptions} index={index}/>
-        <InputTextItem title={"Safety Gate Switch controlled by PLC ID:"} item={safetyGateSwitch} property={"plcID"} index={index}/>
+        <DropdownItem title={"Safety Gate Switch controlled by PLC ID:"} item={safetyGateSwitch} property={"plcID"} options={plcs} index={index}/>
         <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={safetyGateSwitch} property={"localIP"} index={index}/>
         <CheckboxItem title={"Check if this gate switch gets power and/or network from another gate switch in this configuration:"} item={safetyGateSwitch} property={"gateSwitchCascadingFrom"} index={index}/>
         {!safetyGateSwitch.gateSwitchCascadingFrom &&

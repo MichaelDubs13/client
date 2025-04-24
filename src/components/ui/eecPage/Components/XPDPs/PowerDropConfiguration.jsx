@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import "../../Eec.css";
 import PowerDropItem from '../PDPs/PowerDropItem';
 import HeadingItem from "../Util/HeadingItem";
-import InputTextItemBasic from '../Util/InputTextItemBasic';
+import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
 
 const PowerDropConfiguration = ({xpdp, index}) => {
     const setNumberOfPowerDrps = xpdpStore((state) => state.setNumberOfPowerDrps);
@@ -18,15 +18,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
     const calculate1phDrops = () => {
         const total1phDrops = xpdp.branchCircuit["8A 1ph"].length + xpdp.branchCircuit["15A 1ph"].length + xpdp.branchCircuit["20A 1ph"].length
         setnumberOf1phDrops(total1phDrops);
-    }
-
-    const handlePowerDropChange = (amperage) => (value) =>{
-        let reportedValue = parseInt(value) || 0;
-        if (amperage === "20A 3ph" && reportedValue > 2) {
-            reportedValue = 2;
-        }
-        setNumberOfPowerDrps(index, amperage, reportedValue);
-    }
+    }   
   
     // Create array of power drop items for each amperage
     const renderPowerDrops = (amperage) => {
@@ -64,8 +56,8 @@ const PowerDropConfiguration = ({xpdp, index}) => {
         <div>
             {/* Input fields for each amperage */}
             {Object.keys(xpdp.branchCircuit).reverse().map(amperage => (
-                <InputTextItemBasic title={`Number of ${amperage} power drops:`} data={xpdp.branchCircuit[amperage].length} 
-                onTypingFinished={handlePowerDropChange(amperage)}/>
+                <SetItemsNumberInputBox title={`Number of ${amperage} power drops:`} 
+                items={xpdp.branchCircuit[amperage]} addItems={setNumberOfPowerDrps} index={index} property={amperage}/>   
             ))}
             
              {/* Read-only field for total number of drops */}

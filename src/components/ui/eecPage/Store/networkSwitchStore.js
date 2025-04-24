@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
 import { v4 as uuidv4 } from 'uuid';
+import { projectStore } from "./projectStore";
 import {formatToTwoDigits} from './util'
 
 const networkSwitchOptions = {
@@ -98,11 +99,11 @@ const networkSwitchConfiguration = {
     return ports;
   },
 
-  createPort: () => {
+  createPort: (parent) => {
     return {
       // change this to the values for the network switch ports
       deviceTypeSelection: "SPARE", // EEC variable name: Device_Type_Selection
-      line:'',
+      line:parent.line,
       targetLocation: "", // EEC variable name: Target_Location
       targetDT: "", // EEC variable name: NotPLC_Connection_DT
       targetCableLength: "TBD", // EEC variable name: Cable_Length_Selection
@@ -117,6 +118,7 @@ const networkSwitchConfiguration = {
       },
       data:{
         type:'networkPort',
+        parent:parent,
         id:uuidv4(),
       },
       setValue: function(indexObject, key, value){
@@ -134,7 +136,7 @@ const networkSwitchConfiguration = {
     var networkSwitch = {
        // this is where the variables for the network switch are defined going to the data model
       // below is the first variable example
-      line: "", // EEC variable name: Switch_Line
+      line: projectStore.getState().line, // EEC variable name: Switch_Line
       location:"", // EEC variable name: Switch_Location
       switchDT: "", // EEC variable name: Switch_DT
       plcID: "", // EEC variable name: PLC_ID
@@ -156,7 +158,7 @@ const networkSwitchConfiguration = {
       ports_8: 0, // EEC variable name: 8_ports
       ports_8or16: 16, // EEC variable name: 8or16_ports
       ports_8or16or24: 0, // EEC variable name: 8or16or24_ports
-      ports:networkSwitchConfiguration.initializePorts(16),
+      ports:[],
       UI:{
         expanded:false,
         icon:"/networkSwitch.png"
@@ -187,7 +189,7 @@ const networkSwitchConfiguration = {
         ]
       }
     }
-   
+    networkSwitch.ports = networkSwitchConfiguration.initializePorts(16, networkSwitch);
     return networkSwitch;
   },
   
@@ -195,10 +197,10 @@ const networkSwitchConfiguration = {
     return networkSwitches;
   },
 
-  initializePorts: (numberOfPorts) => {
+  initializePorts: (numberOfPorts, parent) => {
     var ports = [];
     for (let i = 0; i < numberOfPorts; i++) {
-      var port = networkSwitchConfiguration.createPort();
+      var port = networkSwitchConfiguration.createPort(parent);
       ports.push(port)
     }
     return ports;
@@ -311,7 +313,7 @@ const networkSwitchStore = create((set,get) => ({
         numberOfPorts = networkSwitchConfiguration.calculateNumberOfPorts(numberOfPorts, newNetworkSwitches[index]);
         var ports = [];
         for (let i = 0; i < numberOfPorts; i++) {
-          var port = networkSwitchConfiguration.createPort();
+          var port = networkSwitchConfiguration.createPort(newNetworkSwitches[index]);
           ports.push(port)
         }
         newNetworkSwitches[index].ports = ports;

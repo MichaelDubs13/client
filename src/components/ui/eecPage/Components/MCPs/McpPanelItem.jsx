@@ -3,7 +3,7 @@ import {mcpStore} from "../../Store/mcpStore";
 import CheckboxItem from "../Util/CheckboxItem";
 import HeadingItem from "../Util/HeadingItem";
 import EthConfiguration from "./EthConfiguration";
-import StationSelection from "../Common/StationSelection";
+import LineStationSelection from "../Common/LineStationSelection";
 import DeviceSelection from "../Common/DeviceSelection";
 import "../../Eec.css";
 
@@ -14,7 +14,7 @@ const McpPanelItem = ({mcp, index}) => {
 
     return ( 
          <div>
-            <StationSelection title={"MCP mounted in Station number (e.g., 00010)"} item={mcp} index={mcpIndex} property={"mcpMountingLocation"}/>    
+            <LineStationSelection stationTitle={"MCP mounted in Station number (e.g., 00010)"} item={mcp} index={mcpIndex} stationProperty={"mcpMountingLocation"}/>    
             <DeviceSelection item={mcp} index={mcpIndex} 
                 deviceTitle={"MCP power source is from what device (e.g., PSU01)"} deviceProperty={"psu_location_dt"}
                 stationTitle={"MCP power source is from what location (i.e., Station number) (e.g., 00010)"} stationProperty={"psu_location"}/>                                

@@ -5,7 +5,7 @@ import LpdPsuItem from './LpdPsuItem';
 import {lpdStore, lpdOptions} from "../../Store/lpdStore";
 import { projectStore } from '../../Store/projectStore';
 import HeadingItem from '../Util/HeadingItem';
-import InputTextItemBasic from '../Util/InputTextItemBasic';
+import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import LineLocationSelection from '../Common/LineLocationSelection';
 import { lineStore } from '../../Store/lineStore';
 import { pdpStore } from '../../Store/pdpStore';
@@ -16,7 +16,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     const [psuCascadingLimit, setPsuCascadingLimit]=useState("");
     const getCbOptions = lineStore((state)=> state.getCbOptions)
     const line = projectStore((state) => state.line);
-    const setLpdValue = lpdStore((state) => state.setLpdValue);
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
     const pdps = pdpStore((state) => state.pdps);
     const xpdps = xpdpStore((state) => state.xpdps);
@@ -76,10 +75,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     //     setLpdPsuItems(InitializePsuItems());
     // }, [psuSelection, numberOfPsu]);
 
-
-    const handlePsuNumberChange = (value)=> {
-        setNumberOfPsus(lpdIndex, value)
-    }
     const handleSetpsuSelectionChange = (event)=> {
         const value = event.value;
         getpsuCascadingLimit(value);
@@ -116,10 +111,9 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                         locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
 
             <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"cb"} 
-                options={cbOptions} index={index} onChange={handleDropChange}/>    
-            <InputTextItemBasic title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
-                data={lpd.psus.length} 
-                onTypingFinished={handlePsuNumberChange}/>
+                options={cbOptions} index={index} onChange={handleDropChange}/>
+            <SetItemsNumberInputBox title={"Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})"} 
+                    items={lpd.psus} addItems={setNumberOfPsus} index={lpdIndex}/>          
 
             {
                 lpd.psus.map((psu,index) => {

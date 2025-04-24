@@ -1,5 +1,5 @@
-import {  useState } from "react";
-import { FormLabel, FormItem, Button, FormInputText, Heading, } from '@tesla/design-system-react';
+import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
+import { Heading, } from '@tesla/design-system-react';
 import { safetyGateStore } from "../../Store/safetyGateStore";
 import SafetyGateInstances from "./SafetyGateInstances";
 import HeadingItem from "../Util/HeadingItem";
@@ -15,16 +15,6 @@ const SafetyGateLocationCount = () => {
     const addSafetyGates =  safetyGateStore((state) => state.addSafetyGates);
     const deleteSafetyGate =  safetyGateStore((state) => state.deleteSafetyGate);
     const duplicateSafetyGate =  safetyGateStore((state) => state.duplicateSafetyGate);
-    const [numberOfSafetyGates, setNumberOfSafetyGates] = useState(safetyGates.length);
-
-    const handleSumbit = (event) => {
-        event.preventDefault(); 
-        addSafetyGates(numberOfSafetyGates); 
-    }
-    
-    const handleValueChange = (event)=> {
-        setNumberOfSafetyGates(event.target.value);
-    }    
 
     const handleDeleteItem = (index) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
@@ -42,16 +32,8 @@ const SafetyGateLocationCount = () => {
         <>
              <div>
                 <Heading is="h4">Safety Gate Switch Configuration</Heading>
-                <FormItem className="form-set-item">
-                    <FormLabel className="form-set-label" htmlFor="context">Enter the number of LOCATIONs (i.e., Station numbers) in which Safety Gate Switches are required for this LINE:</FormLabel>
-                    <FormInputText
-                        id="context"
-                        className="form-set-input"
-                        value={numberOfSafetyGates}
-                        placeholder={safetyGates.length}
-                        onChange={handleValueChange}/>
-                    <Button variant='secondary' style={{marginLeft:"10px", marginTop:'10px'}} onClick={handleSumbit}>Set</Button>
-                </FormItem>                        
+                <SetItemsNumberInputBox title={"Enter the number of LOCATIONs (i.e., Station numbers) in which Safety Gate Switches are required for this LINE:"} 
+                    items={safetyGates} addItems={addSafetyGates}/>                                     
                 
                 {   
                     safetyGates.map((safetyGate, index) => {
