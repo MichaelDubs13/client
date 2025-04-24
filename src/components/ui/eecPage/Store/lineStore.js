@@ -4,6 +4,8 @@ import { xpdpStore } from "./xpdpStore";
 import { mcpStore } from "./mcpStore";
 import { lpdStore } from "./lpdStore";
 import { networkSwitchStore } from "./networkSwitchStore";
+import { hmiStore } from "./hmiStore";
+import { safetyGateStore } from "./safetyGateStore";
 import { projectStore } from "./projectStore";
 
 const lineConfiguration = {
@@ -110,6 +112,8 @@ const lineStore = create((set) => ({
         const xpdps= xpdpStore.getState().xpdps;
         const mcps = mcpStore.getState().mcps;
         const lpds = lpdStore.getState().lpds;
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
         const line = projectStore.getState().line;
 
@@ -119,6 +123,8 @@ const lineStore = create((set) => ({
         newLines = lineConfiguration.getLines(mcps, newLines);
         newLines = lineConfiguration.getLines(lpds, newLines);
         newLines = lineConfiguration.getLines(networkSwitches, newLines);
+        newLines = lineConfiguration.getLines(hmis, newLines);
+        newLines = lineConfiguration.getLines(safetyGates, newLines);
 
         newLines = newLines.map((line) => {
             return {label:line, value:line}
@@ -143,6 +149,8 @@ const lineStore = create((set) => ({
         const mcps = mcpStore.getState().mcps;
         const lpds = lpdStore.getState().lpds;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
         
         var newLocations = []
         newLocations = lineConfiguration.getLocations(pdps, line, newLocations);
@@ -150,6 +158,8 @@ const lineStore = create((set) => ({
         newLocations = lineConfiguration.getLocations(mcps, line, newLocations);
         newLocations = lineConfiguration.getLocations(lpds, line, newLocations);
         newLocations = lineConfiguration.getLocations(networkSwitches, line, newLocations);
+        newLocations = lineConfiguration.getLocations(hmis, line, newLocations);
+        newLocations = lineConfiguration.getLocations(safetyGates, line, newLocations);
         
         newLocations = newLocations.map((location) => {
             return {label:location, value:location}
@@ -163,6 +173,8 @@ const lineStore = create((set) => ({
         const mcps = mcpStore.getState().mcps;
         const lpds = lpdStore.getState().lpds;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
         
         var newStations = []
         var keys = [];
@@ -199,6 +211,16 @@ const lineStore = create((set) => ({
         keys =["targetLocation", ];
         networkSwitches.forEach(networkSwitch => {
             newStations = lineConfiguration.getStations(networkSwitch.ports, newStations,keys);
+        })
+
+        keys = ["location",];
+        newStations = lineConfiguration.getStations(hmis,newStations,keys);
+
+        keys = ["location",];
+        newStations = lineConfiguration.getStations(safetyGates,newStations,keys);
+
+        safetyGates.forEach(safetyGate => {
+            newStations = lineConfiguration.getStations(safetyGate.safetyGateSwitches, newStations,keys);
         })
         
         newStations = newStations.map((station) => {
