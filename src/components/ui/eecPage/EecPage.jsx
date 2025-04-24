@@ -19,6 +19,8 @@ import HeadingItem from "./Components/Util/HeadingItem";
 import { useState } from "react";
 import ElectricalDiagram from "./Flow/ElectricalDiagram";
 import NetworkDiagram from "./Flow/NetworkDiagram";
+import Grid from "./Components/Util/Grid";
+
 
 
 const EecPage = () => {
@@ -125,7 +127,8 @@ const EecPage = () => {
               <SaveButton/>
               <LoadButton/>
             </div>
-            
+
+            {/* <Grid/> */}
             <LineConfiguration/>
           </div>
         </>
