@@ -3,17 +3,13 @@ import f_MountingLocation_Config from "./_fg_Safety_GateSwitches/_f_MountingLoca
 
 
 export default class Fg_Safety_GateSwitches extends Component{
-    constructor(parent, gates) {
+    constructor(parent, gateGroups) {
         super(parent);
         this.parent = parent;
         this._isProjectPath = true;
         this._class = "fg_Safety_GateSwitches.fg_Safety_GateSwitches";
         this._name = "fg_Safety_GateSwitches";
-        let gateGroups = Object.groupBy(gates, ({ target_device_location }) => target_device_location)
-        this._gateGroups = Object.keys(gateGroups).map(key => {
-            return {gates:gateGroups[key], target_device_location:key}
-        });
-        this._gateGroups = this._gateGroups.filter(group => group.target_device_location != "undefined")
+        this._gateGroups = gateGroups.filter(group => group.location != "undefined")
         console.log(this._gateGroups)
     }
 
@@ -26,7 +22,7 @@ export default class Fg_Safety_GateSwitches extends Component{
     build(){
       
         for(let i=0;i<this._gateGroups.length;i++){
-            const mountingLocationConfig = new f_MountingLocation_Config(this,i+1, this._gateGroups[i].gates, this._gateGroups[i].target_device_location, this._gateGroups.length);
+            const mountingLocationConfig = new f_MountingLocation_Config(this,i+1, this._gateGroups[i]);
             mountingLocationConfig.build();
         }
     }

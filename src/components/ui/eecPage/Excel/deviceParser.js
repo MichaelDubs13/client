@@ -1,5 +1,9 @@
 import * as XLSX from 'xlsx'
 import { filterItemsByStartsOptions, getCableLength, splitIntoTwo } from './util';
+import HmiConfiguration from '../Components/HMIs/HmiConfiguration';
+import { hmiConfiguration } from '../Store/hmiStore';
+import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
+import { safetyGateConfiguration } from '../Store/safetyGateStore';
 
 
 const deviceParser = {
@@ -196,52 +200,122 @@ const deviceParser = {
     getHMIs(devices){
         const hmiFilterOptions = ["HMI", ]
         let hmis = filterItemsByStartsOptions(hmiFilterOptions, devices, "device_dt")
-        hmis = deviceParser.getHMIParameters(hmis)
+        hmis = deviceParser.createHmiStoreObjects(hmis)
         return hmis
     },
-    getHMIParameters(hmis){
-        hmis = hmis.map(hmi => {
-                let screen_size = "22in" //size options 22in, 15in
-                let mounting = "Round Tube" //options Round Tube, Flange at Bottom
-                let version = "V17" //options V16, V17
-                let rfid_side = "Left" //options Left, Right
-                if(hmi.partnumber === "6AV7264-3TS44-0AA0"){
-                    screen_size = "22in";
-                    hmi = {...hmi, screen_size:screen_size, mounting:mounting, version:version, rfid_side:rfid_side};
-                    return hmi;
-                } else {
-                    hmi = {...hmi, screen_size:screen_size, mounting:mounting, version:version, rfid_side:rfid_side};
-                    return hmi;
-                }
-        })
+    createHmiStoreObjects(devices){
+        var results = [];
+        for(let i=0;i<devices.length;i++){
+            const device = devices[i];
+            const hmiObject = hmiConfiguration.create();
+            hmiObject.line = ProjectConfiguration.line;
+            hmiObject.location = device.target_device_location;
+            hmiObject.hmiDT = device.device_dt;
+            hmiObject.localIP = device.localip;
+            hmiObject.plantIP = device.plant_ip;
+            hmiObject.plcID = `${device.mcp_name}_PLC01`
+            hmiObject.powerInLine = ProjectConfiguration.line;
+            hmiObject.powerInLocation = device.source24VDC_location;
+            hmiObject.powerInDT = device.source24VDC_dt;
+            hmiObject.ethernetCascadingFrom = false;
+            hmiObject.ethernetInLine = ProjectConfiguration.line;
+            hmiObject.ethernetInLocation = device.local_network_source_location;
+            hmiObject.ethernetInDT = device.local_network_source_dt;
+            hmiObject.ethernetInDevicePort = device.local_switch_port;
+            hmiObject.ethernetCascadingTo = false;
+            hmiObject.ethernetCascadingToOutside = false;
+            hmiObject.hmiCascadingToSelection = false;
+            hmiObject.ethernetOutLine = ProjectConfiguration.line;;
+            hmiObject.ethernetOutLocation = '';
+            hmiObject.ethernetOutDT = '';
+            hmiObject.ethernetOutDevicePort = '';
+            hmiObject.hmiScreenSize = deviceParser.getHmiSize(device.partnumber)
+            hmiObject.mountingType = "Flange at Bottom";
+            hmiObject.hmiVersion = "V17";
+            hmiObject.rfidPosition = "Right";
+        
+            results.push(hmiObject)
+        }
+       
+        return results
+    },
 
-        return hmis
+    getHmiSize(partNumber){
+        let screen_size = "22in" //size options 22in, 15in
+        if(partNumber === "6AV7264-3TS44-0AA0"){
+            return screen_size;
+        } else {
+            return screen_size
+        }
     },
     getSafetyGates(devices){
         const gatesFilterOptions = ["GS", ]
         let gates = filterItemsByStartsOptions(gatesFilterOptions, devices, "device_dt")        
-        gates = deviceParser.getGateParameters(gates);
+        gates = deviceParser.createGateStoreObjects(gates);
         return gates
     },
-    getGateParameters(gates){
-        gates = gates.map(gate => {
-                let communication_type = "PROFINET" //Hardwired, Ethernet, PROFINET
-                let handleside = "Left" //Left, Right
-                if(gate.mfg === "Euchner"){
-                    communication_type = "PROFINET"
-                    if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-L-168720"){
-                        handleside = "Left" 
-                    } else if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-R-168719"){
-                        handleside = "Right" 
-                    }
-                    return gate = {...gate, communication_type:communication_type, handleside:handleside};
-                } else {
-                    return gate = {...gate, communication_type:communication_type, handleside:handleside};
-                }
-        })
 
-        return gates
+    createGateStoreObjects(devices){
+        var results = [];
+        let groupedDevices = Object.groupBy(devices, ({target_device_location}) => target_device_location);
+        Object.keys(groupedDevices).forEach(key => {
+            var group = safetyGateConfiguration.create();
+            group.location = key;
+            const gates = []
+            for(let i=0;i<groupedDevices[key].length;i++){
+                const device = groupedDevices[key][i];
+                const gateObject = safetyGateConfiguration.createSafetyGateSwitch(group)
+                gateObject.safetyGateDT = device.device_dt;
+                gateObject.localIP = device.localip;
+                gateObject.plcID = `${device.mcp_name}_PLC01`
+                gateObject.gateSwitchCascadingFrom = false;
+                gateObject.powerSourceLine = ProjectConfiguration.line;
+                gateObject.powerSourceLocation = device.source24VDC_location;
+                gateObject.powerSourceDT = device.source24VDC_dt;
+                gateObject.ethernetSourceLine = ProjectConfiguration.line;
+                gateObject.ethernetSourceLocation = device.local_network_source_location;
+                gateObject.ethernetSourceDT = device.local_network_source_dt;
+                gateObject.ethernetSourceDevicePort = device.local_switch_port;
+                gateObject.safetyGateCascadingTo = false;
+                gateObject.safetyGateCascadingToSelection = "";
+                gateObject.safetyGateCascadingToOutside = false;
+                gateObject.powerTargetLine = ProjectConfiguration.line;
+                gateObject.powerTargetLocation = "";
+                gateObject.powerTargetDT = "";
+                gateObject.ethernetTargetLine = ProjectConfiguration.line;;
+                gateObject.ethernetTargetLocation = '';
+                gateObject.ethernetTargetDT = '';
+                gateObject.ethernetTargetDevicePort = '';
+                gateObject.safetyGateSwitchType = deviceParser.getGateSwitchType(device);
+                gateObject.safetyGateSwitchHandle = deviceParser.getGateSwitchHandle(device);
+                gates.push(gateObject)
+            }
+            group.safetyGateSwitches = gates;
+            results.push(group);
+        })
+       
+        return results
     },
+
+    getGateSwitchType(gate){
+        if(gate.mfg === "Euchner"){
+            return "PROFINET";
+        }
+        return "PROFINET";
+    },
+
+    getGateSwitchHandle(gate){
+        if(gate.mfg === "Euchner"){
+            if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-L-168720"){
+                return "Left" ;
+            } else if(gate.partnumber === "MGB2-L1HEB-PN-U-S4-CA-R-168719"){
+                return "Right"; 
+            }
+        }
+
+        return 'Left';
+    },
+
     getGroupedIOModules(devices){
         let groups =[];
         const ioModuleFilterOptions = ["SIO", "MIO"]
@@ -293,7 +367,6 @@ const deviceParser = {
                 }
             })
         }
-        console.log(groups)
     }
     
     

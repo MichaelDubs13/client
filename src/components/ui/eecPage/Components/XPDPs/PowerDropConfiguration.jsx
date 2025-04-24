@@ -62,12 +62,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
             
              {/* Read-only field for total number of drops */}
              <FormItem className="form-item">
-                    <FormLabel className="form-label" htmlFor="context">Total number of 1ph power drops (not to exceed 24):</FormLabel>
-                    <FormInputText
-                    id="context"
-                    value={numberOf1phDrops}
-                    readOnly
-                    />
+                    <FormLabel className="form-label" htmlFor="context">Total number of 1ph power drops (not to exceed 24): {numberOf1phDrops}</FormLabel>
             </FormItem> 
 
             {

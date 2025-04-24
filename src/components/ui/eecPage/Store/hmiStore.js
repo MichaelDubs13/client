@@ -79,13 +79,13 @@ const hmiConfiguration = {
     }
   },
 
-  create: (number) => { 
+  create: (hmiNumber) => { 
       var hmi = {
         // this is where the variables for the network switch are defined going to the data model
         // below is the first variable example
         line: projectStore.getState().line, // EEC variable name: HMI_Line
         location:"", // EEC variable name: HMI_Location
-        hmiDT: `HMI${formatToTwoDigits(number)}`, // EEC variable name: HMI_DT
+        hmiDT: hmiNumber ? `HMI${formatToTwoDigits(hmiNumber)}` : '', // EEC variable name: HMI_DT
         plcID: "", // EEC variable name: PLC_ID
         localIP: "", // EEC variable name: Local_IP
         plantIP: "", // EEC variable name: Plant_IP
@@ -169,14 +169,14 @@ const hmiConfiguration = {
       numberOfExtensionUnitPositions = 12;
     }
     return numberOfExtensionUnitPositions;
+   }
   }
-}
 
     const hmiStore = create((set,get) => ({
         hmis:[],
         hmisOptions:[],
         /**
-             * Replace current HMIs objects with input HMIs objects, this is used to set pdp data from excel sheet/save files
+             * Replace current HMIs objects with input HMIs objects, this is used to set HMI data from excel sheet/save files
              * @param {Array} hmis 
              */
         setHmis: (hmis) => {
