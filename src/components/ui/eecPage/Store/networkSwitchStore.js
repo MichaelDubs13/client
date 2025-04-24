@@ -62,9 +62,9 @@ const networkSwitchOptions = {
 
 const networkSwitchConfiguration = {
    //fetch child component by id
-   getItemById:( networkSwtich, id) =>{
-    for(let i=0;i<networkSwtich.ports.length;i++){
-      const port = networkSwtich.ports[i];
+   getItemById:( networkSwitch, id) =>{
+    for(let i=0;i<networkSwitch.ports.length;i++){
+      const port = networkSwitch.ports[i];
         if(port.data.id === id){   
           return port;
         }
