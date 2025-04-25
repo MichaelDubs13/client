@@ -16,6 +16,7 @@ import UploadButton from "./UploadButton";
 import { networkSwitchConfiguration, networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiConfiguration, hmiStore } from "./Store/hmiStore";
 import { safetyGateConfiguration, safetyGateStore } from "./Store/safetyGateStore";
+import { ioModuleGroupConfiguration, ioModuleStore } from "./Store/ioModuleStore";
 import HeadingItem from "./Components/Util/HeadingItem";
 import { useState } from "react";
 import ElectricalDiagram from "./Flow/ElectricalDiagram";
@@ -34,6 +35,7 @@ const EecPage = () => {
     const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
     const hmis = hmiStore((state) => state.hmis);
     const safetyGates = safetyGateStore((state) => state.safetyGates);
+    const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
     const {
       open: openTool,
       handlers: handlersTool,
@@ -50,9 +52,9 @@ const EecPage = () => {
       const validatedNetworkSwitches = networkSwitchConfiguration.generateData(networkSwitches);
       const validatedHmis = hmiConfiguration.generateData(hmis);
       const validatedSafetyGates = safetyGateConfiguration.generateData(safetyGates);
+      const validatedIOModules = ioModuleGroupConfiguration.generateData(ioModuleGroups);
       var devices = []
-      var groupedIOModules = []
-      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, groupedIOModules, validatedHmis, validatedSafetyGates);
+      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
       downloadXML(imx, "generated_imx.imx");
     }
 

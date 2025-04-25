@@ -9,6 +9,8 @@ import HmiInstances from "./HMIs/HmiInstances";
 import { hmiStore } from "../Store/hmiStore";
 import SafetyGateLocationCount from "./SafetyGateSwitches/SafetyGateLocationCount";
 import { safetyGateStore } from "../Store/safetyGateStore";
+import IO_ModuleCascadingCollection from "./IO_Modules/IO_ModuleCascadingCollection";
+import { ioModuleStore } from "../Store/ioModuleStore";
 import { TabList} from "@tesla/design-system-react";
 import { useState } from "react";
 import { pdpStore } from "../Store/pdpStore";
@@ -28,6 +30,7 @@ const LineConfiguration = () => {
     const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
     const hmis = hmiStore((state) => state.hmis);
     const safetyGates = safetyGateStore((state) => state.safetyGates);
+    const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
     const tabs = [
         // this defines the tabs for the line configuration
         {
@@ -65,6 +68,11 @@ const LineConfiguration = () => {
             label: `Safety Gate Switch(${safetyGates.length})`,
             style:{fontSize:"18px"}
         },
+        {
+            id: 'tab-8',
+            label: `IO Module(${ioModuleGroups.length})`,
+            style:{fontSize:"18px"}
+        },
       ];
       const renderSwitch = (param) => {
         switch(param) {
@@ -82,6 +90,8 @@ const LineConfiguration = () => {
                 return <HmiInstances/>
             case 'tab-7':
                 return <SafetyGateLocationCount/>
+            case 'tab-8':
+                return <IO_ModuleCascadingCollection/>
             default:
                 return <PdpConfigurations/>
         }
