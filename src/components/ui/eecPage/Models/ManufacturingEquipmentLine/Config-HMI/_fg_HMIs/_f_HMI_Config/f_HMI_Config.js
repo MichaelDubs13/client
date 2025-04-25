@@ -10,28 +10,30 @@ export default class f_HMI_Config extends Component{
         this._class = `f_HMI_Config`;
         this._name = `f_HMI_Config${index > 1 ? index : ""}`;
         this._hmi = hmi;
-        this._plc_id = hmi.mcp.plc_id ? hmi.mcp.plc_id : "";
     }
 
     get Parameters(){
         return [
-            {name: "HMI_Location", value: this._hmi.target_device_location, type: "String"},
-            {name: "HMI_DT", value: this._hmi.device_dt, type: "String"},
-            {name: "Local_IP", value: this._hmi.localip, type: "String"},
+            {name: "HMI_Line", value: this._hmi.line, type: "String"},
+            {name: "HMI_Location", value: this._hmi.location, type: "String"},
+            {name: "HMI_DT", value: this._hmi.hmiDT, type: "String"},
+            {name: "Local_IP", value: this._hmi.localIP, type: "String"},
             {name: "Plant_IP", value: this._hmi.plant_ip, type: "String"},
-            {name: "PLC_ID", value: this._plc_id, type: "String"},
+            {name: "PLC_ID", value: this._hmi.plcID, type: "String"},
+            {name: "HMI_PwrIn_Line", value: this._hmi.powerInLine, type: "String"},
             {name: "HMI_PWRIn_Station", value: this._hmi.source24VDC_location, type: "String"},
             {name: "HMI_PWRIn_DT", value: this._hmi.source24VDC_dt, type: "String"},
-            {name: "HMI_CascadingFrom", value: false, type: "Boolean"}, //if the network direct is another HMI then true, else false
-            {name: "HMI_ETHIn_Station", value: this._hmi.local_network_source_location, type: "String"},
-            {name: "HMI_ETHIn_DT", value: this._hmi.local_network_source_dt, type: "String"},
-            {name: "HMI_ETHIn_DevicePort", value: this._hmi.local_switch_port, type: "String"},
-            {name: "HMI_CascadingTo", value: false, type: "Boolean"}, //if upstream network is a HMI then true, else false
-            {name: "HMI_CascadingTo_Outside", value: false, type: "Boolean"},
-            {name: "HMI_ScreenSize", value: this._hmi.screen_size, type: "String"},
-            {name: "Mounting_Selection", value: this._hmi.mounting, type: "String"},
-            {name: "Version_Selection", value: this._hmi.version, type: "String"},
-            {name: "RFID_Side", value: this._hmi.rfid_side, type: "String"},
+            {name: "HMI_CascadingFrom", value: this._hmi.ethernetCascadingFrom, type: "Boolean"}, //if the network direct is another HMI then true, else false
+            {name: "HMI_NetworkIn_Line", value: this._hmi.ethernetInLine, type: "String"},
+            {name: "HMI_ETHIn_Station", value: this._hmi.ethernetInLocation, type: "String"},
+            {name: "HMI_ETHIn_DT", value: this._hmi.ethernetInDT, type: "String"},
+            {name: "HMI_ETHIn_DevicePort", value: this._hmi.ethernetInDevicePort, type: "String"},
+            {name: "HMI_CascadingTo", value: this._hmi.ethernetCascadingTo, type: "Boolean"}, //if upstream network is a HMI then true, else false
+            {name: "HMI_CascadingTo_Outside", value: this._hmi.ethernetCascadingToOutside, type: "Boolean"},
+            {name: "HMI_ScreenSize", value: this._hmi.hmiScreenSize, type: "String"},
+            {name: "Mounting_Selection", value: this._hmi.mountingType, type: "String"},
+            {name: "Version_Selection", value: this._hmi.hmiVersion, type: "String"},
+            {name: "RFID_Side", value: this._hmi.rfidPosition, type: "String"},
         ];
     }
     build(){

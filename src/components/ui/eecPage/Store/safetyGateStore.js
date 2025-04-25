@@ -40,13 +40,13 @@ const safetyGateConfiguration = {
     return safetyGateOptions;
   },
 
-  createSafetyGateSwitch: (number, parent) => {
+  createSafetyGateSwitch: (parent, number) => {
     return {
       // this is where the variables for the network switch are defined going to the data model
         // below is the first variable example
         line: parent.line, // EEC variable name: safetyGate_Line
         location:parent.location, // EEC variable name: MountingLocation
-        safetyGateDT: `GS${formatToTwoDigits(number)}`, // EEC variable name: GateSwitch_DT\
+        safetyGateDT: number? `GS${formatToTwoDigits(number)}`:'', // EEC variable name: GateSwitch_DT\
         safetyGateSwitchType: "PROFINET", // EEC variable name: GateSwitch_Type
         safetyGateSwitchHandle: "Right", // EEC variable name: GateSwitch_HandleSide
         plcID: "", // EEC variable name: PLC_ID
@@ -55,7 +55,7 @@ const safetyGateConfiguration = {
 
         powerSourceLine: "", // EEC variable name: PowerLine ***needs to be created in EEC
         powerSourceLocation: "", // EEC variable name: PowerStation
-        powerSouceDT: "", // EEC variable name: PowerDT
+        powerSourceDT: "", // EEC variable name: PowerDT
         
         ethernetSourceLine: "", // EEC variable name: EthernetLine ***needs to be created in EEC
         ethernetSourceLocation: "", // EEC variable name: EthernetStation
@@ -224,7 +224,7 @@ const safetyGateStore = create((set,get) => ({
         const diff = numberOfSafetyGateSwitches - newSafetyGates[index].safetyGateSwitches.length
         if(diff > 0){
           for (let i = 0; i < diff; i++) {
-            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(i+1,newSafetyGates[index]);
+            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(newSafetyGates[index], i+1);
             newSafetyGates[index] = {...newSafetyGates[index], 
               safetyGateSwitches: [...newSafetyGates[index].safetyGateSwitches, safetyGateSwitch],
             };

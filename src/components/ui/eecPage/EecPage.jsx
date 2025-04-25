@@ -64,7 +64,7 @@ const EecPage = () => {
       const blob = new Blob([fileData], { type: "text/xml" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.download = "xmlDoc";
+      link.download = "xmlDoc.imx";
       link.href = url;
       link.click();
     }

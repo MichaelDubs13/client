@@ -7,6 +7,8 @@ import { mcpStore } from "./Store/mcpStore";
 import { lpdStore } from "./Store/lpdStore";
 import { projectStore } from "./Store/projectStore";
 import { networkSwitchStore } from "./Store/networkSwitchStore";
+import { hmiStore } from "./Store/hmiStore";
+import { safetyGateStore } from "./Store/safetyGateStore";
 
 
 const UploadButton = () => {
@@ -17,6 +19,8 @@ const UploadButton = () => {
   const setXpdps =  xpdpStore((state) => state.setXpdps);
   const setMcps =  mcpStore((state) => state.setMcps);
   const setLpds =  lpdStore((state) => state.setLpds);
+  const setHmis = hmiStore((state)=>state.setHmis);
+  const setSafetyGates = safetyGateStore((state)=>state.setSafetyGates)
   const setNetworkSwitches = networkSwitchStore((state)=>state.setNetworkSwitches)
   const { toasts, addToast } = useToastContainerState();
   
@@ -51,6 +55,8 @@ const UploadButton = () => {
           setMcps(mcps);
           setLpds(lpds);
           setNetworkSwitches(switches);
+          setHmis(hmis);
+          setSafetyGates(gates);
         }
         reader.readAsBinaryString(file)
     }
