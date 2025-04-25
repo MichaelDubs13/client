@@ -37,7 +37,7 @@ const SafetyGateLocationCount = () => {
                 
                 {   
                     safetyGates.map((safetyGate, index) => {
-                        return <HeadingItem label={`${index+1}:The group of Safety Gate Switches within ++${line}+${safetyGate.location}`} 
+                        return <HeadingItem label={`${index+1}:Safety Gate Switches in: ++${line}+${safetyGate.location}`} 
                                 size={18} margin={"20px"} open={false}
                                 headerIcon={safetyGate.UI.icon}
                                 children={<SafetyGateInstances safetyGate={safetyGate} index={index}/>}

@@ -13,8 +13,8 @@ const pdpOptions = {
   ],
 
   enclosureSizeOptions:[
-    { value: "800x1400x500(WHD)", label: "800(W) x 1400(H) x 500(D)" },
-    { value: "1000x1800x500(WHD)", label: "1000(W) x 1800(H) x 500(D)" }
+    { value: "800x1400x500(WHD)", label: "800x1400x500(WHD)" },
+    { value: "1000x1800x500(WHD)", label: "1000x1800x500(WHD)" }
   ],
 
   hotPwrDropTypeOptions: [
@@ -23,9 +23,9 @@ const pdpOptions = {
   ],
 
   dropTypeOptions: [
-    { value: "A-external", label: "A - External" },
-    { value: "B-internal", label: "B - Internal" },
-    { value: "C-spare", label: "C - Spare" }
+    { value: "A-external", label: "A-external" },
+    { value: "B-internal", label: "B-internal" },
+    { value: "C-spare", label: "C-spare" }
   ],
 }
 
