@@ -44,8 +44,8 @@ const safetyGateConfiguration = {
     return {
       // this is where the variables for the network switch are defined going to the data model
         // below is the first variable example
-        line: parent.line, // EEC variable name: safetyGate_Line
-        location:parent.location, // EEC variable name: MountingLocation
+        line: parent?.line, // EEC variable name: safetyGate_Line
+        location:parent?.location, // EEC variable name: MountingLocation
         safetyGateDT: number? `GS${formatToTwoDigits(number)}`:'', // EEC variable name: GateSwitch_DT\
         safetyGateSwitchType: "PROFINET", // EEC variable name: GateSwitch_Type
         safetyGateSwitchHandle: "Right", // EEC variable name: GateSwitch_HandleSide
@@ -138,12 +138,36 @@ const safetyGateConfiguration = {
 }
   
 const safetyGateStore = create((set,get) => ({
+    wipSafetyGateSwitch:{},
     safetyGates:[],
     safetyGatesOptions:[],
+    setWipSafetyGateSwitch: (gate) => {
+      set({wipSafetyGateSwitch:gate});
+    },
+    addWipSafetyGateSwitch: () => {
+      set((state) => {
+        const newGate = {...state.wipSafetyGateSwitch}
+        let newSafetyGates = [...state.safetyGates]
+        const index = newSafetyGates.findIndex(group => group.location === newGate.location && group.line === newGate.line);
+        if(index > 0){
+          newGate.data.parent = newSafetyGates[index];
+          newSafetyGates[index].safetyGateSwitches = [...newSafetyGates[index].safetyGateSwitches,newGate ]
+        } else {
+          const newSafetyGate = safetyGateConfiguration.create();
+          newSafetyGate.line = newGate.line;
+          newSafetyGate.location = newGate.location;
+          newGate.data.parent = newSafetyGate;
+          newSafetyGate.safetyGateSwitches.push(newGate);
+          newSafetyGates = [...newSafetyGates, newSafetyGate]
+        }
+        
+        return {safetyGates:newSafetyGates}
+      })    
+    },
     /**
-         * Replace current safetyGates objects with input safetyGates objects, this is used to set pdp data from excel sheet/save files
-         * @param {Array} safetyGates 
-         */
+     * Replace current safetyGates objects with input safetyGates objects, this is used to set pdp data from excel sheet/save files
+     * @param {Array} safetyGates 
+     */
     setSafetyGates: (safetyGates) => {
       set({safetyGates:safetyGates});
     },
@@ -224,7 +248,7 @@ const safetyGateStore = create((set,get) => ({
         const diff = numberOfSafetyGateSwitches - newSafetyGates[index].safetyGateSwitches.length
         if(diff > 0){
           for (let i = 0; i < diff; i++) {
-            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(newSafetyGates[index], i+1);
+            var safetyGateSwitch = safetyGateConfiguration.createSafetyGateSwitch(newSafetyGates[index], i+1+newSafetyGates[index].safetyGateSwitches.length);
             newSafetyGates[index] = {...newSafetyGates[index], 
               safetyGateSwitches: [...newSafetyGates[index].safetyGateSwitches, safetyGateSwitch],
             };
@@ -241,18 +265,23 @@ const safetyGateStore = create((set,get) => ({
     setSafetyGateSwitchValue:(indexObject, key, value)=>{
       const safetyGateIndex = indexObject.safetyGateIndex;
       const safetyGateSwitchIndex = indexObject.safetyGateSwitchIndex;
+      if(Object.keys(indexObject).length > 0){
+        set((state) => {
+          const newSafetyGates = [...state.safetyGates];
+          const safetyGateSwitches = [...newSafetyGates[safetyGateIndex].safetyGateSwitches]
+          safetyGateSwitches[safetyGateSwitchIndex] = {...safetyGateSwitches[safetyGateSwitchIndex], [key]:value}
 
-      set((state) => {
-        const newSafetyGates = [...state.safetyGates];
-        const safetyGateSwitches = [...newSafetyGates[safetyGateIndex].safetyGateSwitches]
-        safetyGateSwitches[safetyGateSwitchIndex] = {...safetyGateSwitches[safetyGateSwitchIndex], [key]:value}
-
-        newSafetyGates[safetyGateIndex] = {...newSafetyGates[safetyGateIndex], 
-          safetyGateSwitches:safetyGateSwitches
-        };
-        return { safetyGates: newSafetyGates };
-      });
-    }, 
+          newSafetyGates[safetyGateIndex] = {...newSafetyGates[safetyGateIndex], 
+            safetyGateSwitches:safetyGateSwitches
+          };
+          return { safetyGates: newSafetyGates };
+        });
+      } else {
+        set((state) => {
+          const newSafetyGateSwitch = {...state.wipSafetyGateSwitch, [key]: value};
+          return { wipSafetyGateSwitch: newSafetyGateSwitch };
+        });
+      }},
 }));
 
 export {

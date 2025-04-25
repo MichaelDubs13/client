@@ -1,30 +1,19 @@
 import {  useState } from "react";
-import { FormLabel, FormItem, Button, FormInputText, Heading, } from '@tesla/design-system-react';
+import { Heading, } from '@tesla/design-system-react';
+import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import { hmiStore } from "../../Store/hmiStore";
 import HmiConfiguration from "./HmiConfiguration";
 import HeadingItem from "../Util/HeadingItem";
-import { projectStore } from "../../Store/projectStore";
-import "../../Eec.css";
 import DeleteButton from "../Util/DeleteButton";
 import DuplicateButton from "../Util/DuplicateButton";
+import "../../Eec.css";
 
 const HmiInstances = () => {
     // this is the data being used in the UI for the HMI
-    const line = projectStore((state) => state.line);
     const hmis = hmiStore((state) => state.hmis);
     const addHmis =  hmiStore((state) => state.addHmis);
     const deleteHmi =  hmiStore((state) => state.deleteHmi);
     const duplicateHmi =  hmiStore((state) => state.duplicateHmi);
-    const [numberOfHmis, setNumberOfHmis] = useState(hmis.length);
-
-    const handleSumbit = (event) => {
-        event.preventDefault(); 
-        addHmis(numberOfHmis); 
-    }
-    
-    const handleValueChange = (event)=> {
-        setNumberOfHmis(event.target.value);
-    }    
 
     const handleDeleteItem = (index) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
@@ -41,18 +30,9 @@ const HmiInstances = () => {
     return (
         <>
              <div>
-                <Heading is="h4">HMI Configuration</Heading>
-                <FormItem className="form-set-item">
-                    <FormLabel className="form-set-label" htmlFor="context">Enter the number of HMIs required for this line:</FormLabel>
-                    <FormInputText
-                        id="context"
-                        className="form-set-input"
-                        value={numberOfHmis}
-                        placeholder={hmis.length}
-                        onChange={handleValueChange}/>
-                    <Button variant='secondary' style={{marginLeft:"10px", marginTop:'10px'}} onClick={handleSumbit}>Set</Button>
-                </FormItem>                        
-                
+                <Heading is="h4">HMI Configuration</Heading>                       
+                <SetItemsNumberInputBox title={"Enter the number of HMIs required for this line:"} 
+                    items={hmis} addItems={addHmis}/> 
                 {   
                     hmis.map((hmi, index) => {
                         return <HeadingItem label={`${index+1}:HMI ++${hmi.line}+${hmi.location}-${hmi.hmiDT} Parameters`} 

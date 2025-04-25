@@ -102,7 +102,7 @@ const xpdpConfiguration = {
       spare15A:"",
       spare20A1p:"",
       spare20A3p:"",
-      xf_size:"",
+      xf_size:"30kVA Transformer",
       xfmrLocation:"",
       branchCircuit:xpdpConfiguration.initializeBranchCircuits(),
       UI:{
@@ -162,7 +162,7 @@ const xpdpStore = create((set) => ({
           if(diff > 0){
             const xpdps = []
             for (let i = 0; i < diff; i++) {
-              const location = `XPDP${formatToTwoDigits(i+1)}`
+              const location = `XPDP${formatToTwoDigits(i+1+[...state.xpdps].length)}`
               var xpdp = xpdpConfiguration.create(location);
               xpdps.push(xpdp)
             }

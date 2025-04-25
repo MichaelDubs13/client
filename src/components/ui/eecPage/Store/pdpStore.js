@@ -276,7 +276,7 @@ const pdpStore = create((set) => ({
         if(diff > 0){
           const pdps = []
           for (let i = 0; i < diff; i++) {
-            const location = `PDP${formatToTwoDigits(i+1)}`
+            const location = `PDP${formatToTwoDigits(i+1+[...state.pdps].length)}`
             var pdp = pdpConfiguration.create(location);
             pdps.push(pdp);
           }  

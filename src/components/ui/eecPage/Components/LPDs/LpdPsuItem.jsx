@@ -1,16 +1,11 @@
 import "../../Eec.css";
-import {
-  FormLabel,
-  FormInputText,
-  FormItem,
-} from '@tesla/design-system-react';
+import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import LpdPsuDropItem from './LpdPsuDropItem';
 import HeadingItem from '../Util/HeadingItem';
 import DropdownItem from '../Util/DropdownItem';
 import { lpdStore, lpdOptions } from '../../Store/lpdStore';
 import DeviceSelection from '../Common/DeviceSelection';
 
-  
 const LpdPsuItem = ({ 
   psuIndex,
   lpdIndex,
@@ -20,10 +15,6 @@ const LpdPsuItem = ({
 const index = {psuIndex:psuIndex, lpdIndex:lpdIndex}
 const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
 let absIndex = 0;
-const handleNumberOfDropsChange = (event) => {
-    const value = event.target.value;
-    setNumberOfDrops(index,value)
-}
 
 return (
       <div className="lpd-psu-item">
@@ -40,17 +31,8 @@ return (
             </>
           )}
           {/* Number of 24V drops */}
-          <FormItem className="form-item">
-            <FormLabel className="form-label" htmlFor={`number-of-24V-drops-${psuIndex}`}>
-              Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)
-            </FormLabel>
-            <FormInputText
-              id={`number-of-24V-drops-${psuIndex}`}
-              value={psu.pwrDrops.length}
-              onChange={handleNumberOfDropsChange}
-            />
-          </FormItem>
-
+          <SetItemsNumberInputBox title={"Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)"} 
+                    items={psu.pwrDrops} addItems={setNumberOfDrops} index={index}/>          
           {/* Cascading PSUs within this configuration */}
            {
               psu.pwrDrops.map((drop, index) => {

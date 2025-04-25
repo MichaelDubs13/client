@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CheckboxItem = ({title, item, property, placeHolder, setModelValue, onChange, index}) =>{
+const CheckboxItem = ({title, item, property, placeHolder, setModelValue, onChange, index, createNew}) =>{
     const [value, setValue] = useState(placeHolder);
     const defaultValue = item ? item[property] : placeHolder;
     const setPropertyValue = item? item.setValue : setModelValue;
@@ -22,13 +22,18 @@ const CheckboxItem = ({title, item, property, placeHolder, setModelValue, onChan
         const reportedValue = !value;
         setValue(reportedValue);
        
-        if(property && index){
-            setPropertyValue(index, property, reportedValue)
-        } else if(property && !index){
-            setPropertyValue(reportedValue, property);
-        }  else {
-            setPropertyValue(reportedValue);
+        if(!createNew){
+            if(property && index){
+                setPropertyValue(index, property, reportedValue)
+            } else if(property && !index){
+                setPropertyValue(reportedValue, property);
+            }  else {
+                setPropertyValue(reportedValue);
+            }
+        } else {
+            item[property] = reportedValue;
         }
+       
         
         if(onChange){
             onChange(reportedValue);

@@ -13,7 +13,7 @@ const CustomerConfiguration = () => {
         
              <IconTrigger
              style={{marginTop:'10px'}}
-                label="Customer Configurations"
+                label="Project Property"
                 onClick={() => setPressed(!pressed)}
                 pressed={pressed}
                 invertColors

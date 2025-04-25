@@ -8,7 +8,14 @@ import { hmiStore } from "./hmiStore";
 import { safetyGateStore } from "./safetyGateStore";
 import { projectStore } from "./projectStore";
 
+const lineOptions = {
+    addDeviceOptions:['LETH','HMI',"GS"]
+}
+
 const lineConfiguration = {
+    networkSwitchIndicator:'LETH',
+    hmiIndicator:'HMI',
+    gateIndicator:'GS',
     getDeviceFullName:(location, device)=>{
         return `+${location}-${device}`;
     },
@@ -62,7 +69,38 @@ const lineConfiguration = {
         })
         return devices;
     },
-    
+
+    getDeviceByName:(name, location, line)=>{
+        const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
+
+        for(let i=0;i<networkSwitches.length;i++){
+            if(networkSwitches[i].line != line) continue;
+            if(networkSwitches[i].location != location) continue;
+            if(networkSwitches[i].switchDT != name) continue;
+            var foundItem = networkSwitches[i]
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<hmis.length;i++){
+            if(hmis[i].line != line) continue;
+            if(hmis[i].location != location) continue;
+            if(hmis[i].hmiDT != name) continue;
+            var foundItem = hmis[i]
+            if(foundItem) return foundItem;
+        }
+
+        for(let i=0;i<safetyGates.length;i++){
+            if(safetyGates[i].line != line) continue;
+            if(safetyGates[i].location != location) continue;
+            for(let j=0;j<safetyGates[i].safetyGateSwitches.length;j++){
+                if(safetyGates[i].safetyGateSwitches[j].safetyGateDT === name){
+                    return safetyGates[i].safetyGateSwitches[j];
+                }
+            }
+        }
+    },
     getDeviceById:(id)=>{
         const pdps = pdpStore.getState().pdps;
         const xpdps= xpdpStore.getState().xpdps;
@@ -337,4 +375,5 @@ const lineStore = create((set) => ({
 export {
     lineStore,
     lineConfiguration,
+    lineOptions,
 }

@@ -172,13 +172,24 @@ const hmiConfiguration = {
    }
   }
 
-    const hmiStore = create((set,get) => ({
+  const hmiStore = create((set,get) => ({
+        wipHmi:{},
         hmis:[],
         hmisOptions:[],
+        setWipHmi: (hmi) => {
+          set({wipHmi:hmi});
+        },
+        addWipHmi: () => {
+          set((state) => {
+            const newHmi = {...state.wipHmi}
+            const newHmis = [...state.hmis, newHmi]
+            return {hmis:newHmis}
+          })    
+        },
         /**
-             * Replace current HMIs objects with input HMIs objects, this is used to set HMI data from excel sheet/save files
-             * @param {Array} hmis 
-             */
+         * Replace current HMIs objects with input HMIs objects, this is used to set HMI data from excel sheet/save files
+         * @param {Array} hmis 
+         */
         setHmis: (hmis) => {
           set({hmis:hmis});
         },
@@ -204,7 +215,7 @@ const hmiConfiguration = {
             if(diff > 0){
               const hmis = []
               for (let i = 0; i < diff; i++) {
-                var hmi = hmiConfiguration.create(i+1);
+                var hmi = hmiConfiguration.create(i+1+[...state.hmis].length);
                 hmis.push(hmi);
               }
               let newHmis =[...state.hmis, ...hmis]  
@@ -243,12 +254,19 @@ const hmiConfiguration = {
     
       setHmiValue:(indexObject, key, value)=>{
         const index = indexObject.hmiIndex
-        set((state) => {
-          const newHmis = [...state.hmis];
-          newHmis[index] = {...newHmis[index], [key]: value};
-          get().setHmisOptions(newHmis);
-          return { hmis: newHmis };
-        });
+        if(Object.keys(indexObject).length > 0){
+          set((state) => {
+            const newHmis = [...state.hmis];
+            newHmis[index] = {...newHmis[index], [key]: value};
+            get().setHmisOptions(newHmis);
+            return { hmis: newHmis };
+          });
+        }else {
+          set((state) => {
+            const newHmi = {...state.wipHmi, [key]: value};
+            return { wipHmi: newHmi };
+          });
+        }
       },
 
     

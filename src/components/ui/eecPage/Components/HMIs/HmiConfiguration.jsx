@@ -11,7 +11,7 @@ import "../../Eec.css";
 import { lineStore } from '../../Store/lineStore';
 import { mcpStore } from '../../Store/mcpStore';
 
-const HmiConfiguration = ({hmi, index}) => {
+const HmiConfiguration = ({hmi, index, createNew}) => {
     const mcps = mcpStore((state)=>state.mcps)
     const setHmiValue = hmiStore((state) => state.sethmiValue);
     const hmisOptions = hmiStore((state) => state.hmisOptions);
@@ -20,7 +20,7 @@ const HmiConfiguration = ({hmi, index}) => {
     const lpds = lpdStore((state)=> state.lpds);
     const getPlcOptions = lineStore((state)=> state.getPlcOptions)
     const plcs = lineStore((state)=> state.plcs)
-    const hmiIndex = {hmiIndex:index}
+    const hmiIndex = createNew? {}: {hmiIndex:index}
     const setExtensionUnitPositions = (value) =>{
         setNumberOfExtensionUnitPositions(index, value);
     }

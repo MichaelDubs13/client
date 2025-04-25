@@ -62,9 +62,9 @@ const mcpConfiguration = {
       plc_network_switch_required:false,
       plc_plant_ip:"",
       plc_to_plc_ip:"",
-      plc_local_ip:"",
+      plc_local_ip:"192.168.1.2",
       plc_local_ip_secondary: "",
-      plc_id: "",
+      plc_id: `${line}-${location}-PLC01`,
       plc_portx1p2r_target_location: "",
       plc_portx1p2r_target_dt: "",
       ked_plant_ip:"", 
@@ -130,7 +130,7 @@ const mcpConfiguration = {
         ]
       },
       getPlc: function(){
-        return `${this.location}_PLC01`;
+        return `${this.line}-${this.location}-PLC01`;
       }
   }
   },
@@ -149,7 +149,7 @@ const mcpStore = create((set) => ({
           if(diff > 0){
             const mcps = [];
             for (let i = 0; i < diff; i++) {
-              const location = `MCP${formatToTwoDigits(i+1)}`
+              const location = `MCP${formatToTwoDigits(i+1+[...state.mcps].length)}`
               var mcp = mcpConfiguration.create(location);
               mcps.push(mcp);
             } 

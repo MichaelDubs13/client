@@ -32,7 +32,8 @@ const NetworkSwitchPort = ({
           <>
             <DeviceSelection item={port} index={index} 
               deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
-              stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>    
+              stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
+              networkSource={port} canCreateDevice={true}/>    
             <DropdownItem title={"Cable length (m)"} item={port} property={"targetCableLength"} options={networkSwitchOptions.cableLengthOptions} index={index}/>
             </>
         }
@@ -49,7 +50,8 @@ const NetworkSwitchPort = ({
               <>
                 <DeviceSelection item={port} index={index} 
                   deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
-                  stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>    
+                  stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
+                  networkSource={port} canCreateDevice={true}/>    
               </>
             }
             {(port.communicationFlow === "Out" && port.cascadingSwitch) &&
@@ -63,7 +65,8 @@ const NetworkSwitchPort = ({
             <>  
                 <DeviceSelection item={port} index={index} 
                   deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
-                  stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>    
+                  stationTitle={"Device target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
+                  networkSource={port} canCreateDevice={true}/>    
                 <DropdownItem title={"Cable length (m)"} item={port} property={"targetCableLength"}  options={networkSwitchOptions.cableLengthOptions} index={index}/>
               </>
             }

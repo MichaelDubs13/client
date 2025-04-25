@@ -103,7 +103,7 @@ const networkSwitchConfiguration = {
     return {
       // change this to the values for the network switch ports
       deviceTypeSelection: "SPARE", // EEC variable name: Device_Type_Selection
-      line:parent.line,
+      line:parent?.line,
       targetLocation: "", // EEC variable name: Target_Location
       targetDT: "", // EEC variable name: NotPLC_Connection_DT
       targetCableLength: "TBD", // EEC variable name: Cable_Length_Selection
@@ -138,7 +138,7 @@ const networkSwitchConfiguration = {
       // below is the first variable example
       line: projectStore.getState().line, // EEC variable name: Switch_Line
       location:"", // EEC variable name: Switch_Location
-      switchDT: `LETH${formatToTwoDigits(number)}`, // EEC variable name: Switch_DT
+      switchDT: number ? `LETH${formatToTwoDigits(number)}` : '', // EEC variable name: Switch_DT
       plcID: "", // EEC variable name: PLC_ID
       networkType: "Local", // EEC variable name: Network_Type_Selection
       localIP: "", // EEC variable name: Local_IP
@@ -222,12 +222,14 @@ const networkSwitchConfiguration = {
   }
 }
 const networkSwitchStore = create((set,get) => ({
+    wipNetworkSwitch:{},
     networkSwitches:[],
     networkSwitchesOptions:[],
+
     /**
-         * Replace current networkSwitches objects with input networkSwitches objects, this is used to set pdp data from excel sheet/save files
-         * @param {Array} networkSwitches 
-         */
+     * Replace current networkSwitches objects with input networkSwitches objects, this is used to set pdp data from excel sheet/save files
+     * @param {Array} networkSwitches 
+     */
     setNetworkSwitches: (networkSwitches) => {
       set({networkSwitches:networkSwitches});
     },
@@ -253,7 +255,7 @@ const networkSwitchStore = create((set,get) => ({
         if(diff > 0){
           const networkSwitches = []
           for (let i = 0; i < diff; i++) {
-            var networkSwitch = networkSwitchConfiguration.create(i+1);
+            var networkSwitch = networkSwitchConfiguration.create(i+1+[...state.networkSwitches].length);
             networkSwitches.push(networkSwitch);
           }
           let newNetworkSwitches =[...state.networkSwitches, ...networkSwitches]  
@@ -267,6 +269,20 @@ const networkSwitchStore = create((set,get) => ({
         } else {
           return {networkSwitches:[...state.networkSwitches]}
         }
+      })    
+    },
+    setWipNetworkSwitch: (networkSwitch) => {
+      set({wipNetworkSwitch:networkSwitch});
+    },
+    /**
+     * Add an WIP networkSwitch to main object array
+     * @param {*} networkSwitch 
+     */
+    addWipNetworkSwitch: () => {
+      set((state) => {
+        const newNetworkSwitch = {...state.wipNetworkSwitch}
+        const newNetworkSwitches = [...state.networkSwitches, newNetworkSwitch]
+        return {networkSwitches:newNetworkSwitches}
       })    
     },
 
@@ -292,12 +308,20 @@ const networkSwitchStore = create((set,get) => ({
 
   setNetworkSwitchValue:(indexObject, key, value)=>{
     const index = indexObject.networkSwitchIndex
-    set((state) => {
-      const newNetworkSwitches = [...state.networkSwitches];
-      newNetworkSwitches[index] = {...newNetworkSwitches[index], [key]: value};
-      get().setNetworkSwitchesOptions(newNetworkSwitches);
-      return { networkSwitches: newNetworkSwitches };
-    });
+    
+    if(Object.keys(indexObject).length > 0){
+      set((state) => {
+        const newNetworkSwitches = [...state.networkSwitches];
+        newNetworkSwitches[index] = {...newNetworkSwitches[index], [key]: value};
+        get().setNetworkSwitchesOptions(newNetworkSwitches);
+        return { networkSwitches: newNetworkSwitches };
+      });
+    } else {
+      set((state) => {
+        const newNetworkSwitch = {...state.wipNetworkSwitch, [key]: value};
+        return { wipNetworkSwitch: newNetworkSwitch };
+      });
+    }
   },
 
     

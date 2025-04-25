@@ -56,7 +56,7 @@ const lpdConfiguration = {
 
     return null;
   },
-  createPsu: (line, parent) => {
+  createPsu: (line, parent, psuNumber) => {
     const psu = {
       lineside120AFLA:"",
       branchBreaker:"",
@@ -68,7 +68,7 @@ const lpdConfiguration = {
       MFG:"",
       psuLocationDt:"",
       psu_location:"",
-      psu_dt:"",
+      psu_dt:psuNumber ? `PSU${formatToTwoDigits(psuNumber)}`:'',
       partNumber:"",
       powerFedFrom:"",
       cable_length:0,
@@ -256,7 +256,7 @@ const lpdStore = create((set) => ({
         const diff = numberOfPsus - newLpds[index].psus.length
         if(diff > 0){
           for (let i = 0; i < diff; i++) {
-            var psu = lpdConfiguration.createPsu(newLpds[index].line, newLpds[index]);
+            var psu = lpdConfiguration.createPsu(newLpds[index].line, newLpds[index], newLpds[index].psus.length + 1 + i);
             newLpds[index] = {...newLpds[index], 
               psus: [...newLpds[index].psus, psu],
             };
@@ -292,18 +292,31 @@ const lpdStore = create((set) => ({
       set((state) => {
         const newLpds = [...state.lpds];
         const psus = newLpds[lpdIndex].psus;
-
-        var drops = [];
-        for (let i = 0; i < numberOfDrops; i++) {
-          var drop = lpdConfiguration.createDrop(psus[psuIndex].line, psus[psuIndex]);
-          drops.push(drop)
-        }
-        psus[psuIndex] = {...psus[psuIndex], pwrDrops:drops}
-
-        newLpds[lpdIndex] = {...newLpds[lpdIndex], 
-          psus: psus,
-        };
-        return { lpds: newLpds };
+        const psu = psus[psuIndex]
+        const diff = numberOfDrops - psu.pwrDrops.length
+        console.log(diff);
+         if(diff > 0){
+            var drops = [];
+            for (let i = 0; i < diff; i++) {
+              var drop = lpdConfiguration.createDrop(psu.line, psu);
+              drops.push(drop)
+            }  
+            psu.pwrDrops=[...psu.pwrDrops,...drops]
+            newLpds[lpdIndex] = {...newLpds[lpdIndex], 
+              psus: psus,
+            };
+            return { lpds: newLpds };
+          } else if(diff < 0) {
+              var drops = psu.pwrDrops.slice(0, psu.pwrDrops.length + diff);
+              psu.pwrDrops=[...psu.pwrDrops,...drops]
+              newLpds[lpdIndex] = {...newLpds[lpdIndex], 
+                psus: psus,
+              };
+              return { lpds: newLpds };
+          } else {
+            
+            return { lpds: [...state.lpds] };
+          }
       });
     },
     setDropValue:(indexObject, key, value,isUI,isData)=>{

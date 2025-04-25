@@ -30,7 +30,8 @@ const LpdConfigurations = () => {
         <>
             <div>
                 <Heading is="h4">24VDC Power Distribution Configuration</Heading>
-                <SetItemsNumberInputBox title={"Consider cascading 24VDC power supplies as a group. Enter the number of cascading groups required for this project:"} items={lpds} addItems={addLpd}/>                         
+                <SetItemsNumberInputBox title={"Consider cascading 24VDC power supplies as a group. Enter the number of cascading groups required for this project:"} 
+                    items={lpds} addItems={addLpd}/>                         
                 {   
                     lpds.map((lpd, index) => {
                         absIndex++;

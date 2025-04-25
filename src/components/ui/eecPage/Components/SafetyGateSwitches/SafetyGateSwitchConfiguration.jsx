@@ -12,11 +12,12 @@ const SafetyGateSwitchConfiguration = ({
   safetyGateIndex,
   safetyGateSwitchIndex,
   safetyGateSwitch,
+  createNew,
 }) => {
   const mcps = mcpStore((state)=>state.mcps)
   const safetyGates = safetyGateStore((state) => state.safetyGates);
   const safetyGatesOptions = safetyGateStore((state) => state.safetyGatesOptions);
-  const index = {safetyGateIndex:safetyGateIndex, safetyGateSwitchIndex:safetyGateSwitchIndex};
+  const index = createNew ? {} : {safetyGateIndex:safetyGateIndex, safetyGateSwitchIndex:safetyGateSwitchIndex};
   const [safetyGateSwitchOptions, setSafetyGateSwitchOptions] = useState([]) 
   const getPlcOptions = lineStore((state)=> state.getPlcOptions)
   const plcs = lineStore((state)=> state.plcs)

@@ -3,6 +3,7 @@ import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import { networkSwitchConfiguration } from '../../Store/networkSwitchStore';
 import DeviceSelection from "../Common/DeviceSelection";
+import { lineConfiguration } from "../../Store/lineStore";
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -41,10 +42,12 @@ import DeviceSelection from "../Common/DeviceSelection";
           )}     
           <DeviceSelection item={drop} index={index} 
               deviceTitle={"Device Tag (e.g., MIO01)"} deviceProperty={"deviceTag"}
-              stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}/>                                
+              stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}
+              powerSource={drop}
+              canCreateDevice={true}/>                                
           {
-            drop.deviceTag?.startsWith("LETH") && 
-            <DropdownItem title={"Enter the device port to be connected to"} item={drop} property={"outputPort"} //need to check with michael on this
+            drop.deviceTag?.startsWith(lineConfiguration.networkSwitchIndicator) && 
+            <DropdownItem title={"Enter the device port to be connected to"} item={drop} property={"outputPort"} 
               options={networkPortOptions} index={index}/>
           }
           <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
