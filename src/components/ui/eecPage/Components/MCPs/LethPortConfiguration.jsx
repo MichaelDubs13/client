@@ -1,10 +1,10 @@
 import {mcpStore} from "../../Store/mcpStore";
-import { FormItem, FormLabel, FormInputDropdown } from "@tesla/design-system-react";
 import McpLethPorts from "./McpLethPorts";
 import DropdownItem from "../Util/DropdownItem";
 import { mcpOptions } from "../../Store/mcpStore";
 import { networkSwitchConfiguration } from "../../Store/networkSwitchStore";
 import DeviceSelection from "../Common/DeviceSelection";
+import SetItemsNumberDropdown from "../Common/SetItemsNumberDropdown";
 import "../../Eec.css";
 
 const LethPortConfiguration = ({mcp, index}) => {
@@ -23,23 +23,11 @@ const LethPortConfiguration = ({mcp, index}) => {
         { value: "8", label: "8" },
         { value: "9", label: "9" },
       ];
-    const handleSetlethNumberOfPortsChange = (event)=>{
-        const value = event.value;
-        setNumberOfLethPorts(mcpIndex, value);
-    }
-    
+   
     return ( 
          <div>
-            <FormItem className="form-item">
-                <FormLabel className="form-label" htmlFor="context">Enter the number of device connections required for this line (i.e., Total number of devices)</FormLabel>
-                <FormInputDropdown
-                id="context"
-                options={lethNumberOfPortOptions}
-                placeholder={mcp.ports.length}
-                selected={mcp.ports.length}
-                onOptionSelect={handleSetlethNumberOfPortsChange}/>
-            </FormItem>
-
+            <SetItemsNumberDropdown title={`Enter the number of device connections required for this line (i.e., Total number of devices)`} 
+                    items={mcp.ports} addItems={setNumberOfLethPorts} index={index} options={lethNumberOfPortOptions}/>   
             {/* Need to insert the remaining 0-9 port inputs based on the number of ports selected in the previous question*/}
             {/* Render all LETH ports*/}
             <div>

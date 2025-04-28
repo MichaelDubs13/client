@@ -14,38 +14,19 @@ export default class Fg_MainControlPanelComponent extends Component{
         this._class = "fg_MainControlPanel";
         this._name = `fg_MainControlPanel${index > 1 ? index : ""}`;
         this._mcp = mcp;
-        const mcpName = mcp.mcp_name.split('.')
-        this._location = mcpName[1];
-        this._powerFeedLocation = ""
-        this._powerFeed_DT_PSU = ""
-        this._mcp_location = mcp.location;
-        this._mcp_ipaddress = mcp.ups_ipAddress;
-        if(mcp.psu_location_dt){
-            var locationArray = mcp.psu_location_dt.split('-')
-            if(locationArray.length > 2){
-                this._powerFeedLocation = locationArray[1];
-                this._powerFeed_DT_PSU = locationArray[2]
-            }
-        }
-
-        this._powerFeedLocation = mcp.psu_location_dt;
-        this._plc_eth = false;
     }
 
     get Parameters(){
         return [
             // {name: "PLC_ID", value: "", type: "String"},
             // {name: "Location", value: this._location, type: "String"},
-            {name: "PowerFeed_Location_PSU", value: this._powerFeedLocation, type: "String"},
-            {name: "PowerFeed_DT_PSU", value: this._powerFeed_DT_PSU, type: "String"},
+            {name: "PowerFeed_Location_PSU", value: this._mcp.psu_location, type: "String"},
+            {name: "PowerFeed_DT_PSU", value: this._mcp.psu_location_dt, type: "String"},
             {name: "b_PLC_ETH", value: this._mcp.b_PLC_ETH, type: "Boolean"},
             // {name: "Pwr1_IntPt1_DT", value: "", type: "String"},
             // {name: "Pwr2_IntPt2_DT", value: "", type: "String"},
-            {name: "MCP_Location", value: this._mcp_location, type: "String"},
-            {name: "Local_IP_UPS", value: this._mcp_ipaddress, type: "String"},
-            // {name: "list_MCP_DTs", value: [], type: "arrayList"},
-            // {name: "list_MCP_DTs_full", value: [], type: "arrayList"},
-
+            {name: "MCP_Location", value: this._mcp.mcpMountingLocation, type: "String"},
+            {name: "Local_IP_UPS", value: this._mcp.ups_ip, type: "String"},
         ];
     }
     build(){

@@ -21,13 +21,13 @@ const PowerDropItem = ({
           <>
             <DropdownItem title={"Power drop type"} item={branchCircuit} property={'DropType'} options={pdpOptions.dropTypeOptions} index={index}/>
             <InputTextItem title={"Power drop description (i.e., function text)"} item={branchCircuit} property={'PwrDrop_DescTxt'} index={index}/>
-            <InputTextItem title={"Cable length from PDP to target device (meters)"} item={branchCircuit} property={'dbl_Cable_Length'} index={index}/>
+            <InputTextItem title={"Cable length from PDP to target device (meters)"} item={branchCircuit} property={'targetCableLength'} index={index}/>
             <DeviceSelection item={branchCircuit} index={index} 
-              deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"TargetDevice_DT"}
-              stationTitle={"Target device location (i.e., Station number) (e.g., 00010)"} stationProperty={"StrBox_DT"}/>                                
-            <InputTextItem title={"Target device FLA (Amps) (e.g., 12)"} item={branchCircuit} property={'TargetDevice_FLA'} index={index}/>
+              deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
+              stationTitle={"Target device location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}/>                                
+            <InputTextItem title={"Target device FLA (Amps) (e.g., 12)"} item={branchCircuit} property={'targetFLA'} index={index}/>
             <InputTextItem title={"Enter FLA of this power drop (Amps) (e.g., 10) (i.e., add up all current consuming devices connected to this power drop)"} 
-                      item={branchCircuit} property={'StrBox_DT_FLA'} index={index}/>
+                      item={branchCircuit} property={'targetFLA_Total'} index={index}/>
           </>
         )}
       </div>

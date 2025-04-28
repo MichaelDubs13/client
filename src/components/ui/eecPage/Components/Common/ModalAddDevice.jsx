@@ -9,6 +9,13 @@ import { hmiConfiguration, hmiStore } from "../../Store/hmiStore";
 import HmiConfiguration from "../HMIs/HmiConfiguration";
 import { safetyGateConfiguration, safetyGateStore } from "../../Store/safetyGateStore";
 import SafetyGateSwitchConfiguration from "../SafetyGateSwitches/SafetyGateSwitchConfiguration";
+import IO_ModuleCollectionInstance from "../IO_Modules/IO_ModuleCollectionInstance";
+import IO_ModuleConfiguration from "../IO_Modules/IO_ModuleConfiguration";
+import { ioModuleGroupConfiguration, ioModuleStore } from "../../Store/ioModuleStore";
+import { networkSwitchModel } from "../../Store/Models/NetworkSwitches/networkSwitchModel";
+import { hmiModel } from "../../Store/Models/HMIs/hmiModel";
+import { safetyGateSwitchModel } from "../../Store/Models/SafetyGates/safetyGateSwitchModel";
+import { ioModuleModel } from "../../Store/Models/IoModules/ioModuleModel";
 
 
 
@@ -23,6 +30,9 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
   const addWipSafetyGateSwitch = safetyGateStore((state)=>state.addWipSafetyGateSwitch)
   const setWipSafetyGateSwitch = safetyGateStore((state)=>state.setWipSafetyGateSwitch)
   const wipSafetyGateSwitch = safetyGateStore((state)=>state.wipSafetyGateSwitch)
+  const wipIoModule = ioModuleStore((state)=>state.wipIoModule)
+  const setWipIoModule = ioModuleStore((state)=>state.setWipIoModule)
+  const addWipIoModule = ioModuleStore((state)=>state.addWipIoModule)
 
   const handleFormSubmit = () => {
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
@@ -32,48 +42,51 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
     }else if(name.startsWith(lineConfiguration.gateIndicator)){
       addWipSafetyGateSwitch();
     }
+    else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
+      addWipIoModule();
+    }
     setOpenModal(false)
+  }
+  const updateItem = (item)=>{
+    item.line = line;
+    item.location = location;
+    item.deviceTag = name;
+    if(powerSource){
+      getPowerSource(item, powerSource)
+    } 
+    if(networkSource){
+      getEthernetSource(item, networkSource)
+    } 
+    return item;
+  }
+
+  const getPowerSource=(item, powerSource)=>{
+    item.powerSourceLine = powerSource.getSourceLine();
+    item.powerSourceLocation = powerSource.getSourceLocation();
+    item.powerSourceDT = powerSource.getSourceDeviceTag();
+  }
+  const getEthernetSource=(item, networkSource)=>{
+    item.ethernetSourceLine = networkSource.getSourceLine();
+    item.ethernetSourceLocation = networkSource.getSourceLocation();
+    item.ethernetSourceDT = networkSource.getSourceLocation();
   }
   useEffect(() => {
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
-      const newNetworkSwitch = networkSwitchConfiguration.create()
-      newNetworkSwitch.line = line;
-      newNetworkSwitch.location = location;
-      newNetworkSwitch.switchDT = name;
-      if(powerSource){
-        newNetworkSwitch.power1InLocation = powerSource.location;
-        newNetworkSwitch.power1InDT = powerSource.deviceTag;
-      } 
-      
+      var newNetworkSwitch = networkSwitchModel.create()
+      newNetworkSwitch = updateItem(newNetworkSwitch)
       setWipNetworkSwitch(newNetworkSwitch)   
     } else if(name.startsWith(lineConfiguration.hmiIndicator)){
-      const newHmi = hmiConfiguration.create()
-      newHmi.line = line;
-      newHmi.location = location;
-      newHmi.hmiDT = name;
-      if(powerSource){
-        newHmi.powerInLine = powerSource.line;
-        newHmi.powerInLocation = powerSource.location;
-        newHmi.powerInDT = powerSource.deviceTag;
-      }else if(networkSource){
-        newHmi.ethernetInLocation = networkSource.targetLocation;
-        newHmi.ethernetInDT = networkSource.targetDT;
-      }
+      var newHmi = hmiModel.create()
+      newHmi = updateItem(newHmi)
       setWipHmi(newHmi);
     } else if(name.startsWith(lineConfiguration.gateIndicator)){
-      const newGate = safetyGateConfiguration.createSafetyGateSwitch()
-      newGate.line = line;
-      newGate.location = location;
-      newGate.safetyGateDT = name;
-      if(powerSource){
-        newGate.powerSourceLine = powerSource.line;
-        newGate.powerSourceLocation = powerSource.location;
-        newGate.powerSourceDT = powerSource.deviceTag;
-      }else if(networkSource){
-        newGate.ethernetSourceLocation = networkSource.targetLocation;
-        newGate.ethernetSourceDT = networkSource.targetDT;
-      }
+      var newGate = safetyGateSwitchModel.create()
+      newGate = updateItem(newGate)
       setWipSafetyGateSwitch(newGate);
+    } else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
+      var newIoModule = ioModuleModel.create();
+      newIoModule = updateItem(newIoModule)
+      setWipIoModule(newIoModule);
     }
 }, [name]);
   
@@ -85,7 +98,10 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
       return <HmiConfiguration hmi={wipHmi} createNew={true}/>
     }else if(name.startsWith(lineConfiguration.gateIndicator)){
       return <SafetyGateSwitchConfiguration safetyGateSwitch={wipSafetyGateSwitch} createNew={true}/>
+    }else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
+      return <IO_ModuleConfiguration ioModule={wipIoModule} createNew={true}/>
     }
+    
   }
 
 

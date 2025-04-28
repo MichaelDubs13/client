@@ -3,6 +3,9 @@ import { splitIntoTwo } from './util';
 import { lpdConfiguration } from '../Store/lpdStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { pdpConfiguration } from '../Store/pdpStore';
+import { lpdModel } from '../Store/Models/LDPs/lpdModel';
+import { psuModel } from '../Store/Models/LDPs/psuModel';
+import { powerDropModel } from '../Store/Models/LDPs/powerDropModel';
 
 const psuParser = {
     parse(workbook, worksheet){
@@ -24,7 +27,7 @@ const psuParser = {
             const powerFedFrom = item["Power Fed from"];   
             const supplyVoltage = item["Supply Voltage"];    
             const xpdpCBIndex = item["XPDP CB Index"]; 
-            const psu = lpdConfiguration.createPsu(ProjectConfiguration.line);   
+            const psu = psuModel.create();   
             psu.lineside120AFLA=lineside120AFLA;
             psu.branchBreaker=branchBreaker;
             psu.branchOrder=branchOrder;
@@ -33,14 +36,14 @@ const psuParser = {
             psu.inputPowerTee=inputPowerTee;
             psu.MFG=MFG;
             psu.psuLocationDt=psuLocationDt;
-            psu.psu_location=psu_location;
-            psu.psu_dt=psu_dt;
+            psu.location=psu_location;
+            psu.deviceTag=psu_dt;
             psu.partNumber=partNumber;
             psu.powerFedFrom=powerFedFrom;
             psu.supplyVoltage=supplyVoltage;
             psu.xpdpCBIndex=xpdpCBIndex;
             psu.cable_length=0;
-            psu.pwrDrops=[];
+            psu.drops=[];
             psu.device={};
             psus.push(psu);
         })
@@ -59,14 +62,14 @@ const psuParser = {
             var psuDevice = devices.find(device => device.target_device_location_dt === psu.psuLocationDt)
             if(psuDevice){
                 if(psu.branchBreaker){
-                    psuParser.addToBranch(psu.branchBreaker, psuDevice.ac_primary_connection_source, psu, results, pdps, xpdps);
+                    psuParser.createLpd(psu.branchBreaker, psuDevice.ac_primary_connection_source, psu, results, pdps, xpdps);
                 } else if(psu.powerFedFrom){
                     var sourcePsu = psus.find(i => i.psuLocationDt === psu.powerFedFrom)
                     if(sourcePsu){
-                        psuParser.addToBranch(sourcePsu.branchBreaker, psu, results, pdps, xpdps);
+                        psuParser.createLpd(sourcePsu.branchBreaker, psu, results, pdps, xpdps);
                     }
                 } else {
-                    psuParser.addToBranch(0, psuDevice.ac_primary_connection_source, psu, results, pdps, xpdps);
+                    psuParser.createLpd(0, psuDevice.ac_primary_connection_source, psu, results, pdps, xpdps);
                 }}
             }
         )
@@ -74,14 +77,14 @@ const psuParser = {
         return results;
     },
 
-    addToBranch(cb, panel, psu, results, pdps, xpdps){
-        var foundGroup = results.find(group => group.cb === cb && group.panel === panel)
+    createLpd(deviceTag, panel, psu, results, pdps, xpdps){
+        var foundGroup = results.find(group => group.powerSourceDT === deviceTag && group.panel === panel)
         if(foundGroup){
             foundGroup.psus.push(psu)
             psu.data.parent = foundGroup;
         } else {
-            const group = lpdConfiguration.create()
-            group.cb = cb;
+            const group = lpdModel.create()
+            group.powerSourceDT = deviceTag;
             group.panel = panel;
             group.psus = [psu,];
             group.supplyVoltage = psu.supplyVoltage;
@@ -89,18 +92,18 @@ const psuParser = {
             group.line = ProjectConfiguration.line;
             group.location = panel //panel = location
             psu.data.parent = group;
-            
-            psuParser.setSourceCb(group, pdps, xpdps, panel, cb)
+            psu.line = group.line;
+            psuParser.setSourceCb(group, pdps, xpdps, panel, deviceTag)
 
             results.push(group)
         }
         return results;
     },
-    setSourceCb(group, pdps, xpdps, panel, cb){
+    setSourceCb(group, pdps, xpdps, panel, deviceTag){
         let pdp = pdps.find(i => i.location === panel);
         if(!pdp) pdp=xpdps.find(i => i.location === panel);
         if(!pdp) return null;
-        var brancCircuit = pdpConfiguration.getCB(pdp.branchCircuit, cb);
+        var brancCircuit = pdpConfiguration.getCB(pdp.branchCircuit, deviceTag);
         if(!brancCircuit) return null;
         brancCircuit.data.targetDevice = group.data.id
     },
@@ -110,14 +113,15 @@ const psuParser = {
             var directDevices = devices.filter(device => device.direct24VDC === psu.psuLocationDt)
             const drops = [];
             directDevices.forEach(device => {
-                const drop = lpdConfiguration.createDrop(ProjectConfiguration.line, psu);
-                drop.location = device.target_device_location;
-                drop.deviceTag = device.device_dt;
+                const drop = powerDropModel.create(psu);
+                drop.targetLocation = device.target_device_location;
+                drop.targetDT = device.device_dt;
+                drop.targetPort = '';
                 drop.fla = device.fla;
                 drop.description = device.target_device_function_text;
                 drops.push(drop);
             })
-            psu.pwrDrops = drops;
+            psu.drops = drops;
         })
 
         return psus;

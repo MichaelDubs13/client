@@ -12,7 +12,7 @@ export default class _f_DC_Distribution_CLS2_Balluff_120VPSU extends Component{
         this._psu = psu;
 
         //Needs to generate a page per 4 drops
-        this._numberOfSubDistribution = Math.ceil(psu.pwrDrops.length / 4);
+        this._numberOfSubDistribution = Math.ceil(psu.drops.length / 4);
     }
     get Parameters(){
         return [
@@ -30,8 +30,8 @@ export default class _f_DC_Distribution_CLS2_Balluff_120VPSU extends Component{
             dcSubDistribution.build();
         }
 
-        for(let i=0; i<this._psu.pwrDrops.length;i++){
-            const dcPowerDrop = new _c_DC_PowerDrop_Balluff_CLS2_120VPSU(this, i+1, this._psu.pwrDrops[i]);
+        for(let i=0; i<this._psu.drops.length;i++){
+            const dcPowerDrop = new _c_DC_PowerDrop_Balluff_CLS2_120VPSU(this, i+1, this._psu.drops[i]);
             dcPowerDrop.build();
         }
     }

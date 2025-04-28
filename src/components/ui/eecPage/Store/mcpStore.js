@@ -1,7 +1,7 @@
 import {create} from "zustand";
-import { projectStore } from "./projectStore";
-import { v4 as uuidv4 } from 'uuid';
-import {formatToTwoDigits} from './util'
+import {addItems, setModelValue, setNumberOfItems} from './util'
+import { mcpModel } from "./Models/MCPs/mcpModel";
+import { portModel } from "./Models/MCPs/portModel";
 const mcpOptions = {
   cableLengthOptions: [
     { value: "NULL", label: "NULL" },
@@ -25,115 +25,7 @@ const mcpConfiguration = {
 
     return null;
   },
-  createLethPort: () => {
-    return {
-      targetLocation: "",
-      targetDT: "",
-      targetPort: "",
-      targetCableLength: "NULL",
-      UI:{
-        expanded:false,
-      },
-      data:{
-        type:'lethPort',
-        id:uuidv4(),
-      },
-      setValue: function(indexObject, key, value){
-        mcpStore.getState().setPortValue(indexObject, key, value);
-      },
-      getNodeData: function(){
-        return [
-        ]
-      }
-    }
-  },
 
-  create: (location) => { 
-    const line = projectStore.getState().line;
-    return {
-      fla:"",
-      line:line,
-      location:location,
-      mcp_name:location,
-      mcpMountingLocation: "",
-      psu_location:"",
-      psu_location_dt:"",
-      ups_ip: "",
-      plc_network_switch_required:false,
-      plc_plant_ip:"",
-      plc_to_plc_ip:"",
-      plc_local_ip:"192.168.1.2",
-      plc_local_ip_secondary: "",
-      plc_id: `${line}-${location}-PLC01`,
-      plc_portx1p2r_target_location: "",
-      plc_portx1p2r_target_dt: "",
-      ked_plant_ip:"", 
-      ked_plc_to_plc_ip: "",
-      ked_local_ip:"", 
-      ked_local_ip_secondar:"",
-      ked_port4_target_location: "",
-      ked_port4_target_dt: "",
-      ked_port5_target_location: "",
-      ked_port5_target_dt: "",
-      leth_plant_ip: "",
-      leth_plc_to_plc_ip: "",
-      leth_local_ip:"", 
-      leth_local_ip_secondary:"",
-      leth_sw_type:"",
-      leth_port2:"",
-      leth_port3:"",
-      leth_port4:"",
-      leth_port2_target_location: "",
-      leth_port3_target_location: "",
-      leth_port4_target_location: "",
-      leth_port2_target_dt: "",
-      leth_port3_target_dt: "",
-      leth_port4_target_dt: "",
-      leth_port2_target_port: "",
-      leth_port3_target_port: "",
-      leth_port4_target_port: "",
-      gb_Port2_CableLength: "",
-      gb_Port3_CableLength: "",
-      gb_Port4_CableLength: "",
-      leth_number_of_ports: 16,
-      eth_plant_ip: "",
-      eth_plc_to_plc_ip: "",
-      eth_local_ip: "",
-      eth_local_ip_secondary: "",
-      eth_port1_target_location: "",
-      eth_port2_target_location: "",
-      b_PLC_ETH:false,
-      direct_network_devices:[],
-      connected_network_devices:[],
-      ports:[],
-      UI:{
-        expanded:false,
-        icon:"/panel.png",
-      },
-      data:{
-        type:'mcp',
-        id:uuidv4(),
-      },
-      setValue: function(indexObject, key, value){
-        mcpStore.getState().setMcpValue(indexObject, key, value);
-      },
-      getIndex: function(){
-        const mcps = mcpStore.getState().mcps;
-        return mcps.findIndex(mcp => mcp.data.id === this.data.id)
-      },
-      getItemById: function(id){
-        return mcpConfiguration.getItemById(this, id);
-      },
-      getNodeData: function(){
-        return [
-          this.location,
-        ]
-      },
-      getPlc: function(){
-        return `${this.line}-${this.location}-PLC01`;
-      }
-  }
-  },
   generateData: (mcps) => {
    return mcps
   }
@@ -145,22 +37,9 @@ const mcpStore = create((set) => ({
     },    
     addMcp: (numberOfMcp) => {
        set((state) => {
-          const diff = numberOfMcp - [...state.mcps].length
-          if(diff > 0){
-            const mcps = [];
-            for (let i = 0; i < diff; i++) {
-              const location = `MCP${formatToTwoDigits(i+1+[...state.mcps].length)}`
-              var mcp = mcpConfiguration.create(location);
-              mcps.push(mcp);
-            } 
-            return {mcps:[...state.mcps, ...mcps]} 
-          } else if(diff < 0) {
-              let newMcps = [...state.mcps];
-              newMcps = newMcps.slice(0, newMcps.length + diff);
-              return {mcps:newMcps}
-          } else {
-            return {mcps:[...state.mcps]}
-          }
+        let newMcps = [...state.mcps];
+        newMcps = addItems(newMcps, numberOfMcp, mcpModel.create);
+        return {mcps:newMcps}
         })
     },
     duplicateMcp:(index) => {  
@@ -174,43 +53,31 @@ const mcpStore = create((set) => ({
         return {mcps: [...state.mcps.slice(0, index), ...state.mcps.slice(index + 1)]};
       })
     },
-    setMcpValue:(indexObject, key, value)=>{
+    setMcpValue:(item, key, value, isUI, isData)=>{
+      const indexObject = item.getIndexObject();
       const index = indexObject.mcpIndex
       set((state) => {
         const newMcps = [...state.mcps];
-        newMcps[index] = {...newMcps[index], [key]: value};
+        setModelValue(newMcps[index], key, value, isUI, isData);
         return { mcps: newMcps };
       });
     },
-    setNumberOfLethPorts:(indexObject, numberOfPorts)=>{
-      var ports = [];
-      const mcpIndex = indexObject.mcpIndex
-      for (let i = 0; i < numberOfPorts; i++) {
-        var port = mcpConfiguration.createLethPort();
-        ports.push(port)
-      }
-
+    setNumberOfLethPorts:(index, numberOfPorts)=>{
       set((state) => {
         const newMcps = [...state.mcps];
-        newMcps[mcpIndex] = {...newMcps[mcpIndex], 
-          ports: ports,
-        };
-        console.log(newMcps);
+        newMcps[index].ports = setNumberOfItems(newMcps[index].ports, numberOfPorts, portModel.create, newMcps[index]);
         return { mcps: newMcps };
       });
     },
-    setPortValue:(indexObject, key, value)=>{
+    setPortValue:(item, key, value, isUI, isData)=>{
+      const indexObject = item.getIndexObject();
       const mcpIndex = indexObject.mcpIndex;
       const portIndex = indexObject.portIndex;
 
       set((state) => {
         const newMcps = [...state.mcps];
         const ports = newMcps[mcpIndex].ports;
-        ports[portIndex] = {...ports[portIndex], [key]:value}
-
-        newMcps[mcpIndex] = {...newMcps[mcpIndex], 
-          ports:ports
-        };
+        setModelValue(ports[portIndex], key, value, isUI, isData);
         return { mcps: newMcps };
       });
     },

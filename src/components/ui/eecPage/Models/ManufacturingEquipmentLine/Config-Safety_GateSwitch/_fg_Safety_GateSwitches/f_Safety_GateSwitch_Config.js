@@ -15,7 +15,7 @@ export default class f_Safety_GateSwitch_Config extends Component{
 
     get Parameters(){
         return [
-            {name: "GateSwitch_DT", value: this._gate.safetyGateDT, type: "String"},
+            {name: "GateSwitch_DT", value: this._gate.deviceTag, type: "String"},
             {name: "GateSwitch_Type", value: this._gate.safetyGateSwitchType, type: "String"},
             {name: "GateSwitch_HandleSide", value: this._gate.safetyGateSwitchHandle, type: "String"},
             {name: "PLC_ID", value: this._gate.plcID, type: "String"},

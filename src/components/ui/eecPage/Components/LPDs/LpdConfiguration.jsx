@@ -20,7 +20,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     const pdps = pdpStore((state) => state.pdps);
     const xpdps = xpdpStore((state) => state.xpdps);
     const [cbOptions, setCbOptions] = useState([])
-    let absIndex = 0;
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
     [
         {value: "Balluff-BAE00ET", label: "Balluff: BAE00ET"},
@@ -49,7 +48,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     }
     useEffect(() => {
         var options = getCbOptions(lpd.location)
-        console.log(options)
         setCbOptions(options);
     }, [lpd.location]);
 
@@ -110,15 +108,13 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                         lineTitle='Enter the power source Line name: (e.g., UBM01)'
                         locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
 
-            <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"cb"} 
+            <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"powerSourceDT"} 
                 options={cbOptions} index={index} onChange={handleDropChange}/>
-            <SetItemsNumberInputBox title={"Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})"} 
+            <SetItemsNumberInputBox title={`alculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                     items={lpd.psus} addItems={setNumberOfPsus} index={lpdIndex}/>          
-
             {
                 lpd.psus.map((psu,index) => {
-                    absIndex++;
-                    return <HeadingItem label={`24VDC Power Supply ${absIndex}: ++${line}+${psu.psu_location}-${psu.psu_dt} | ${lpd.psu_selected}`} 
+                    return <HeadingItem label={`24VDC Power Supply ${psu.getIndex()+1}: ++${line}+${psu.location}-${psu.deviceTag} | ${lpd.psu_selected}`} 
                     size={18} margin={"20px"} open={false} 
                     headerIcon={psu.UI.icon}
                     children={<LpdPsuItem lpdIndex={lpdIndex} psuIndex={index} psu={psu} lpd={lpd}/>}/>

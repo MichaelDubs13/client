@@ -2,38 +2,17 @@ import "../../Eec.css";
 import CheckboxItem from '../Util/CheckboxItem';
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
-import { ioModuleStore, ioModuleGroupOptions } from "../../Store/ioModuleStore";
+import { ioModuleGroupOptions } from "../../Store/ioModuleStore";
 import DeviceSelection from "../Common/DeviceSelection";
-import { useEffect, useState } from "react";
-import { mcpStore } from "../../Store/mcpStore";
-import { lineStore } from "../../Store/lineStore";
+import IO_ConfigurationTable from "./Table/IO_ConfigurationTable";
 
 const IO_ModuleConfiguration = ({ 
   ioModuleGroupIndex,
   ioModuleIndex,
   ioModule,
+  createNew,
 }) => {
-  const mcps = mcpStore((state)=>state.mcps)
-  const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
-  const ioModuleGroupsOptions = ioModuleStore((state) => state.ioModuleGroupsOptions);
-  const index = {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
-  const [ioModuleOptions, setIOModuleOptions] = useState([]) 
-  const getPlcOptions = lineStore((state)=> state.getPlcOptions)
-  const plcs = lineStore((state)=> state.plcs)
-  useEffect(() => {
-    getPlcOptions();
-    if(mcps.length === 1){
-      ioModule.setValue(index, "plcID", mcps[0].getPlc())
-    }
-}, [mcps]);
-
-  useEffect(() => {
-    const targetGateSwitch = ioModuleGroups.find(ioModuleGroup => ioModuleGroup.getFullName() === ioModule.selectedGateSwitch);
-    if(targetGateSwitch){
-      setIOModuleOptions(targetGateSwitch.getIOModuleOptions());
-    }
-  }, [ioModule.selectedGateSwitch]);
-
+  const index = createNew ? {} :  {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
 
   return (
     <div className="io-module-configuration">
@@ -41,7 +20,7 @@ const IO_ModuleConfiguration = ({
         <DeviceSelection item={ioModule} index={index} 
             lineTitle={"IO module LINE (e.g., UBM1)"} lineProperty={"line"}
             stationTitle={"IO module LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}
-            deviceTitle={"IO module Device Tag (e.g., MIO01, SIO01)"} deviceProperty={"ioModuleDT"}/>
+            deviceTitle={"IO module Device Tag (e.g., MIO01, SIO01)"} deviceProperty={"deviceTag"}/>
         <CheckboxItem title={"Is this module safety rated (i.e., Safety I/O):"} item={ioModule} property={"safetyRated"} index={index}/>
         {ioModule.safetyRated && (
           <>
@@ -111,43 +90,15 @@ const IO_ModuleConfiguration = ({
             <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection_Balluff_BNI0052"} options={ioModuleGroupOptions.portTypeDefaultSelection_Balluff_BNI0052Options} index={index}/>
           </>
         }
-        <InputTextItem title={"************************************************************ Insert the IO Module table for editing of IO Ports & port pins and delete this InputTextItem ************************************************************"} item={ioModule} property={""} index={index}/>
+        {
+          !createNew && <IO_ConfigurationTable ports={ioModule.ports} ioModuleGroupIndex={ioModuleGroupIndex} ioModuleIndex={ioModuleIndex}/>
+        }
         
         {/* Insert the IO Module table for editing of IO Ports & port pins */}
         {/* this is my try and creating a table for the IO Module, please change it as needed.
             I believe you are going to need a subcomponent of ioPorts called Pins as each port will 
             have 2 pins (pin4 and pin2). */}
     </div>
-        {/* <div className="io-module-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Port</th>
-                <th>Type</th>
-                <th>Is an IO-Link Module</th>
-                <th>Inputs/Outputs Description</th>
-                <th>PLC address</th>
-                <th>Target part number</th>
-                <th>Target LOCATION</th>
-                <th>Target Device Tag</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ioModule.ioPorts.map((port, portIndex) => (
-                <tr key={portIndex}>
-                  <td>{port.port}</td>
-                  <td>{port.Type}</td>
-                  <td>{port.isIOlinkModule ? "Yes" : "No"}</td> {/* Add a checkbox for IO-Link module */}{/*}
-                  <td>{port.description}</td>
-                  <td>{port.plcAddress}</td>
-                  <td>{port.targetPartNumber}</td>
-                  <td>{port.targetLocation}</td>
-                  <td>{port.targetDeviceTag}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table> 
-          </div>*/}
         {/* Render a new subcomponent for the 1st IO-Link Slave for each port designated to have an IO-Link module.
             Within this new subcomponent there will be another subcomponent for the 2nd IO-Link Slave if required. */}
         

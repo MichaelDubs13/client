@@ -15,11 +15,11 @@ import CreatableSelect from 'react-select/creatable';
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, item, property, placeHolder, options, setModelValue, onChange, index}) =>{
-    const [selectedOption, setSelectedOption] = useState({label:placeHolder, value:placeHolder});
+const CreateableDropdownItem = ({title, item, property,  options, onChange, index}) =>{
+    const [selectedOption, setSelectedOption] = useState({label:item[property] , value:item[property] });
     const [alloptions, setAllOptions]=useState(options);
-    const defaultValue = item ? item[property] : placeHolder;
-    const setPropertyValue = item? item.setValue : setModelValue;
+    const defaultValue = item[property] 
+    
 
     useEffect(() => {
         setAllOptions(options);
@@ -31,11 +31,11 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, options, se
     
     const setValue = (reportedValue) => {
         if(property && index){
-            setPropertyValue(index, property, reportedValue)
+            item.setValue(index, property, reportedValue)
         } else if(property && !index){
-            setPropertyValue(reportedValue, property);
+            item.setValue(reportedValue, property);
         }  else {
-            setPropertyValue(reportedValue);
+            item.setValue(reportedValue);
         }
     }
 

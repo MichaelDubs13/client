@@ -19,11 +19,11 @@ export default class C_BranchCircuit extends Component{
     get Parameters(){
         return [
             {name: "s_PwrDrop_DescTxt", value:  this._branchCircuit.PwrDrop_DescTxt, type: "String"}, //UI
-            {name: "dbl_Cable_Length", value: this._branchCircuit.dbl_Cable_Length, type: "Double"}, 
-            {name: "frmUI_StrBoxFLA", value: this._branchCircuit.StrBox_DT_FLA, type: "String"}, //UI => TargetDevice_FLA
-            {name: "frmUI_s_StrBoxDT", value: this._branchCircuit.StrBox_DT, type: "String"}, //UI  => TargetDevice_DT
-            {name: "s_TargetDevice_FLA", value: this._branchCircuit.TargetDevice_FLA, type: "String"}, 
-            {name: "s_TargetDevice_DT", value: this._branchCircuit.TargetDevice_DT, type: "String"}, 
+            {name: "dbl_Cable_Length", value: this._branchCircuit.targetCableLength, type: "Double"}, 
+            {name: "frmUI_StrBoxFLA", value: this._branchCircuit.targetFLA_Total, type: "String"}, //UI => TargetDevice_FLA
+            {name: "frmUI_s_StrBoxDT", value: this._branchCircuit.targetLocation, type: "String"}, //UI  => TargetDevice_DT
+            {name: "s_TargetDevice_FLA", value: this._branchCircuit.targetFLA, type: "String"}, 
+            {name: "s_TargetDevice_DT", value: this._branchCircuit.targetDT, type: "String"}, 
             {name: "b_PwrDrop_Spare", value: this._branchCircuit.PwrDrop_Spare, type: "Boolean"},
             ];
     }

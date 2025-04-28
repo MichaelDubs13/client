@@ -2,6 +2,7 @@ import * as XLSX from 'xlsx'
 import { xpdpConfiguration } from '../Store/xpdpStore';
 import { pdpConfiguration } from '../Store/pdpStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
+import { xpdpModel } from '../Store/Models/XPDPs/xpdpModel';
 
 
 const xpdpParser = {
@@ -33,15 +34,15 @@ const xpdpParser = {
                        xf_size = "30kVA Transformer"
                    }
                }
-               const branchCircuit = xpdpConfiguration.initializeBranchCircuits();
+               const branchCircuit = xpdpModel.initializeBranchCircuits();
    
                if(name){
-                    const xpdp = xpdpConfiguration.create(name);
+                    const xpdp = xpdpModel.create(null,name);
                     xpdp.amp=amp;
                     xpdp.xf_cable_length=xf_cable_length;
                     xpdp.fla_demand=fla_demand;
                     xpdp.fed_from=fed_from;
-                    xpdp.name=name;
+                    xpdp.deviceTag=name;
                     xpdp.location=name; //location is name, eg:XPDP01
                     xpdp.notes=notes;
                     xpdp.spare8A=spare8A;
@@ -71,37 +72,21 @@ const xpdpParser = {
                 }
             }
             pdpConfiguration.updateBranchCircuitCB_DT(xpdp.branchCircuit)
-            xpdpParser.calculateAllBranchFLA(xpdp);
+            pdpConfiguration.calculateAllBranchFLA(xpdp);
         })        
         return xpdps;
     },
     createBranchCircuit:(sourceDevice, parent, amperage)=>{
         const branch = xpdpConfiguration.createBranchCircuit(parent, amperage);
-        branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
         branch.line=ProjectConfiguration.line;
-        branch.TargetDevice_DT = sourceDevice.device_dt;
-        branch.StrBox_DT = sourceDevice.target_device_location;
-        branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
+        branch.targetDT = sourceDevice.device_dt;
+        branch.targetLocation = sourceDevice.target_device_location;
+        branch.targetFLA = sourceDevice.primary_ac_power_fla;
+        branch.targetCableLength = sourceDevice.ac_primary_power_length;
         branch.DropType = sourceDevice.ac_secondary_power_drop_type;
         branch.PwrDrop_DescTxt = sourceDevice.target_device_function_text;
         return branch;
     },
-    calculateBranchFLA:(branchCircuits)=>{
-        var fla = 0;
-        branchCircuits.forEach(branchCircuit => {
-            fla = fla + branchCircuit.TargetDevice_FLA;
-        })
-
-        branchCircuits.forEach(branchCircuit => {
-            branchCircuit.StrBox_DT_FLA = fla;
-        })
-    },
-    calculateAllBranchFLA:(xpdp)=>{
-        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["8A 1ph"])
-        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["15A 1ph"])
-        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["20A 1ph"])
-        xpdpParser.calculateBranchFLA(xpdp.branchCircuit["20A 3ph"])
-    }
 }
 
 export default xpdpParser;

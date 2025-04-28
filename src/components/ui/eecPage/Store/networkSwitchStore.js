@@ -1,8 +1,8 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import { v4 as uuidv4 } from 'uuid';
-import { projectStore } from "./projectStore";
-import {formatToTwoDigits} from './util'
+import {addItems, setModelValue, setNumberOfItems} from './util'
+import { networkSwitchModel } from "./Models/NetworkSwitches/networkSwitchModel";
+import { networkPortModel } from "./Models/NetworkSwitches/networkPortModel";
 
 const networkSwitchOptions = {
   deviceTypeSelectionOptions: [
@@ -75,7 +75,7 @@ const networkSwitchConfiguration = {
   },
   getNetworkSwitchOptions:(networkSwitches)=>{
     const networkSwitchOptions = networkSwitches.map((networkSwitch => {
-        const value = lineConfiguration.getDeviceFullName(networkSwitch.location, networkSwitch.switchDT);
+        const value = lineConfiguration.getDeviceFullName(networkSwitch.location, networkSwitch.deviceTag);
         return {label:value, value:value}
     }))
 
@@ -99,112 +99,11 @@ const networkSwitchConfiguration = {
     return ports;
   },
 
-  createPort: (parent) => {
-    return {
-      // change this to the values for the network switch ports
-      deviceTypeSelection: "SPARE", // EEC variable name: Device_Type_Selection
-      line:parent?.line,
-      targetLocation: "", // EEC variable name: Target_Location
-      targetDT: "", // EEC variable name: NotPLC_Connection_DT
-      targetCableLength: "TBD", // EEC variable name: Cable_Length_Selection
-      communicationFlow: "Out", // EEC variable name: Interruption_InOrOut
-      cascadingSwitch: false, // EEC variable name: Switch_Cascading
-      connectedDevice: "", // EEC variable name: Connected_Device
-      selectedSwitch: "", // EEC variable name: frmUI_NetworkSwitchSelection
-      targetPort: "", // EEC varaible name: frmUI_DevicePortSelection
-      UI:{
-        expanded:false,
-        icon:"/networkPort.png"
-      },
-      data:{
-        type:'networkPort',
-        parent:parent,
-        id:uuidv4(),
-      },
-      setValue: function(indexObject, key, value){
-        networkSwitchStore.getState().setPortValue(indexObject, key, value);
-      },
-      getNodeData: function(){
-        return [
-          this.deviceTypeSelection,
-        ]
-      }
-    }
-  },
 
-  create: (number) => { 
-    var networkSwitch = {
-       // this is where the variables for the network switch are defined going to the data model
-      // below is the first variable example
-      line: projectStore.getState().line, // EEC variable name: Switch_Line
-      location:"", // EEC variable name: Switch_Location
-      switchDT: number ? `LETH${formatToTwoDigits(number)}` : '', // EEC variable name: Switch_DT
-      plcID: "", // EEC variable name: PLC_ID
-      networkType: "Local", // EEC variable name: Network_Type_Selection
-      localIP: "", // EEC variable name: Local_IP
-      plantIP: "", // EEC variable name: Plant_IP
-      switchType: "Managed", // EEC variable name: Switch_Type_Selection
-      switchSpeed: "Gigabit", // EEC variable name: Switch_Speed_Selection
-      power1InLocation: "", // EEC variable name: PWR1_IN_Location
-      power1InDT: "", // EEC variable name: PWR1_IN_DT
-      power2InLocation: "", // EEC variable name: PWR2_IN_Location
-      power2InDT: "", // EEC variable name: PWR2_IN_DT
-      powerInLocation: "", // EEC variable name: PWR_IN_Location
-      powerInDT: "", // EEC variable name: PWR_IN_DT
-      alarmEnable: false, // EEC variable name: Alarm_Output_Selection
-      consoleEnable: false, // EEC variable name: Console_Output_Selection
-      alarmName: "", // EEC variable name: Alarm_DT
-      consuleName: "", // EEC variable name: Console_DT
-      ports_8: 0, // EEC variable name: 8_ports
-      ports_8or16: 16, // EEC variable name: 8or16_ports
-      ports_8or16or24: 0, // EEC variable name: 8or16or24_ports
-      ports:[],
-      UI:{
-        expanded:false,
-        icon:"/networkSwitch.png"
-      },
-      data:{
-        type:'networkSwitch',
-        id:uuidv4(),
-      },
-      setValue: function(indexObject, key, value){
-        networkSwitchStore.getState().setNetworkSwitchValue(indexObject, key, value);
-      },
-      getFullName: function() {
-        return lineConfiguration.getDeviceFullName(this.location, this.switchDT);
-      },
-      getPortOptions: function() {
-        return networkSwitchConfiguration.getNetworkDropPortOptions(this.ports.length, this.networkType, this.switchType);
-      },
-      getIndex: function(){
-        const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        return networkSwitches.findIndex(networkSwitch => networkSwitch.data.id === this.data.id)
-      },
-      getItemById: function(id){
-        return networkSwitchConfiguration.getItemById(this, id);
-      },
-      getNodeData: function(){
-        return [
-          this.switchDT,
-        ]
-      }
-    }
-    networkSwitch.ports = networkSwitchConfiguration.initializePorts(16, networkSwitch);
-    return networkSwitch;
-  },
-  
   generateData: (networkSwitches) => {
     return networkSwitches;
   },
 
-  initializePorts: (numberOfPorts, parent) => {
-    var ports = [];
-    for (let i = 0; i < numberOfPorts; i++) {
-      var port = networkSwitchConfiguration.createPort(parent);
-      ports.push(port)
-    }
-    return ports;
-  },
   calculateNumberOfPorts: (numberOfPorts, networkSwitch) => {
         // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
         // this will be used to create the ports for the network switch
@@ -226,13 +125,6 @@ const networkSwitchStore = create((set,get) => ({
     networkSwitches:[],
     networkSwitchesOptions:[],
 
-    /**
-     * Replace current networkSwitches objects with input networkSwitches objects, this is used to set pdp data from excel sheet/save files
-     * @param {Array} networkSwitches 
-     */
-    setNetworkSwitches: (networkSwitches) => {
-      set({networkSwitches:networkSwitches});
-    },
     setNetworkSwitchesOptions:(networkSwitches)=>{
       var networkSwitchesOptions= networkSwitchConfiguration.getNetworkSwitchOptions(networkSwitches);
       set({networkSwitchesOptions:networkSwitchesOptions});
@@ -251,24 +143,10 @@ const networkSwitchStore = create((set,get) => ({
      */    
     addNetworkSwitches: (numberOfNetworkSwitch) => {
       set((state) => {
-        const diff = numberOfNetworkSwitch - [...state.networkSwitches].length
-        if(diff > 0){
-          const networkSwitches = []
-          for (let i = 0; i < diff; i++) {
-            var networkSwitch = networkSwitchConfiguration.create(i+1+[...state.networkSwitches].length);
-            networkSwitches.push(networkSwitch);
-          }
-          let newNetworkSwitches =[...state.networkSwitches, ...networkSwitches]  
-          get().setNetworkSwitchesOptions(newNetworkSwitches);
-          return {networkSwitches:newNetworkSwitches}
-        } else if(diff < 0) {
-          let newNetworkSwitches = [...state.networkSwitches];
-          newNetworkSwitches = newNetworkSwitches.slice(0, newNetworkSwitches.length + diff);
-          get().setNetworkSwitchesOptions(newNetworkSwitches);
-          return {networkSwitches:newNetworkSwitches}
-        } else {
-          return {networkSwitches:[...state.networkSwitches]}
-        }
+        let newNetworkSwitches = [...state.networkSwitches];
+        newNetworkSwitches = addItems(newNetworkSwitches, numberOfNetworkSwitch, networkSwitchModel.create);
+        get().setNetworkSwitchesOptions(newNetworkSwitches);
+        return {networkSwitches:newNetworkSwitches}
       })    
     },
     setWipNetworkSwitch: (networkSwitch) => {
@@ -306,13 +184,14 @@ const networkSwitchStore = create((set,get) => ({
     })
   },
 
-  setNetworkSwitchValue:(indexObject, key, value)=>{
+  setNetworkSwitchValue:(item, key, value,isUI, isData)=>{
+    const indexObject = item.getIndexObject();
     const index = indexObject.networkSwitchIndex
     
     if(Object.keys(indexObject).length > 0){
       set((state) => {
         const newNetworkSwitches = [...state.networkSwitches];
-        newNetworkSwitches[index] = {...newNetworkSwitches[index], [key]: value};
+        setModelValue(newNetworkSwitches[index], key, value, isUI, isData);
         get().setNetworkSwitchesOptions(newNetworkSwitches);
         return { networkSwitches: newNetworkSwitches };
       });
@@ -329,35 +208,24 @@ const networkSwitchStore = create((set,get) => ({
   // this would be for the ports in this case
   setNumberOfPorts:(index, numberOfPorts)=>{
       set((state) => {
-
         const newNetworkSwitches = [...state.networkSwitches];
-        newNetworkSwitches[index] = {...newNetworkSwitches[index]};
-       
-        // create the ports for the network switch
         numberOfPorts = networkSwitchConfiguration.calculateNumberOfPorts(numberOfPorts, newNetworkSwitches[index]);
-        var ports = [];
-        for (let i = 0; i < numberOfPorts; i++) {
-          var port = networkSwitchConfiguration.createPort(newNetworkSwitches[index]);
-          ports.push(port)
-        }
-        newNetworkSwitches[index].ports = ports;
+        newNetworkSwitches[index].ports = setNumberOfItems(newNetworkSwitches[index].ports, numberOfPorts, networkPortModel.create, newNetworkSwitches[index]);
         return { networkSwitches: newNetworkSwitches };
       });
     },
-    setPortValue:(indexObject, key, value)=>{
-      const networkSwitchIndex = indexObject.networkSwitchIndex;
-      const portIndex = indexObject.portIndex;
+  setPortValue:(item, key, value,isUI,isData)=>{
+    const indexObject = item.getIndexObject();
+    const networkSwitchIndex = indexObject.networkSwitchIndex;
+    const portIndex = indexObject.portIndex;
 
-      set((state) => {
-        const newNetworkSwitches = [...state.networkSwitches];
-        const ports = [...newNetworkSwitches[networkSwitchIndex].ports]
-        ports[portIndex] = {...ports[portIndex], [key]:value}
+    set((state) => {
+      const newNetworkSwitches = [...state.networkSwitches];
+      const ports = newNetworkSwitches[networkSwitchIndex].ports;
+      setModelValue(ports[portIndex], key, value, isUI, isData);
 
-        newNetworkSwitches[networkSwitchIndex] = {...newNetworkSwitches[networkSwitchIndex], 
-          ports:ports
-        };
-        return { networkSwitches: newNetworkSwitches };
-      });
+      return { networkSwitches: newNetworkSwitches };
+    });
     }, 
 }));
 

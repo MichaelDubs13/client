@@ -11,8 +11,6 @@ const ExtensionUnitPositions = ({
   extensionUnitPositionIndex,
   extensionUnitPosition,
 }) => {
-  
-  const setExtensionUnitPositionValue = hmiStore((state) => state.setExtensionUnitPositionValue);
   const index = {hmiIndex:hmiIndex, extensionUnitPositionIndex:extensionUnitPositionIndex};
 
 
@@ -21,9 +19,8 @@ const ExtensionUnitPositions = ({
       <div className="extension-unit-position-settings">
             <DropdownItem
               title={"Button type:"}
-              placeHolder={extensionUnitPosition.buttonSelection}
+              item={extensionUnitPosition}
               options={hmiOptions.buttonSelectionOptions}
-              setModelValue={setExtensionUnitPositionValue}
               index={index}
               property={"buttonSelection"}
             />

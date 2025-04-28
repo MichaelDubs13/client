@@ -10,20 +10,18 @@ export default class C_LETH_Interface extends Component{
         this._class = "c_LETH_Interface";
         this._name = "c_LETH_Interface";   
         this._mcp = mcp;        
-        this._direct_network_devices = mcp.direct_network_devices;
-        
     }
 
     get Parameters(){
         return [
-            {name: "NumberofDevices", value: this._direct_network_devices.length, type: "Integer"},
+            {name: "NumberofDevices", value: this._mcp.ports.length, type: "Integer"},
         ];
     }
 
     build(){
-         for(let i=0; i<this._direct_network_devices.length;i++){
-            const device = this._direct_network_devices[i];
-            const networkDrop = new C_Network_Drop(this,i+1, device);
+         for(let i=0; i<this._mcp.ports.length;i++){
+            const drop = this._mcp.ports.length[i];
+            const networkDrop = new C_Network_Drop(this,i+1, drop);
             networkDrop.build();
         }
     }   

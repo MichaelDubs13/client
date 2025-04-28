@@ -5,7 +5,6 @@ export default class _f_PSU_TURCK extends Component{
     constructor(parent, index, psu) {
         super(parent);
         this.parent = parent;
-        this._index = index;
         const number = index > 1 ? index : "";
         this._classPath = "Config24V-PowerDistribution.Mechatronic._f_PSU_TURCK";
         this._class = "_f_PSU_TURCK";
@@ -15,8 +14,8 @@ export default class _f_PSU_TURCK extends Component{
     get Parameters(){
         return [
             {name: "NumberOf24V_PowerDrops", value: this._psu.pwrDrops.length, type: "Integer"},
-            {name: "Location", value: this._psu.psu_location, type: "String"},
-            {name: "PSU_DT", value: this._psu.psu_dt, type: "String"},
+            {name: "Location", value: this._psu.location, type: "String"},
+            {name: "PSU_DT", value: this._psu.deviceTag, type: "String"},
         ];
     }
     build(){

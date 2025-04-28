@@ -1,12 +1,10 @@
 import InputTextItem from "../Util/InputTextItem";
-import {mcpStore} from "../../Store/mcpStore";
 import HeadingItem from "../Util/HeadingItem";
 import EthPortConfiguration from "./EthPortConfiguration";
 import "../../Eec.css";
 
 
 const EthConfiguration = ({mcp, index}) => {
-    const setMcpValue = mcpStore((state) => state.setMcpValue);
     const mcpIndex = {mcpIndex:index}
 
     return ( 

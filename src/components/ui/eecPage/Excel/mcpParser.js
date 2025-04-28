@@ -2,6 +2,8 @@ import * as XLSX from 'xlsx'
 import { findClosestHigherNumber, splitIntoTwo } from './util';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { mcpConfiguration } from '../Store/mcpStore';
+import { mcpModel } from '../Store/Models/MCPs/mcpModel';
+import { portModel } from '../Store/Models/MCPs/portModel';
 
 
 const mcpParser = {
@@ -69,10 +71,10 @@ const mcpParser = {
 
                 const plc_id = `${ProjectConfiguration.line}-${mcp_name}-PLC01`;
                 const ports = [];
-                const mcp = mcpConfiguration.create(mcp_name)
+                const mcp = mcpModel.create(null, mcp_name)
                 mcp.fla=fla;
                 mcp.location=mcp_name;
-                mcp.mcp_name=mcp_name;
+                mcp.deviceTag=mcp_name;
                 mcp.mcpMountingLocation=location;
                 mcp.psu_location=psu_location;
                 mcp.psu_location_dt=psu_location_dt;
@@ -127,7 +129,7 @@ const mcpParser = {
 
                 //validation
                 //name must not include -
-                if(!mcp.mcp_name.includes('-')){
+                if(!mcp.deviceTag.includes('-')){
                     mcps.push(mcp);
                 }
             });
@@ -143,11 +145,11 @@ const mcpParser = {
         for(let i = 0; i<mcps.length;i++){
             mcps[i].b_PLC_ETH = true;
             if(i==0){
-                mcps[i].eth_port1_target_location = mcps[i+1].mcp_name
-                mcps[i].eth_port2_target_location = mcps[i+1].mcp_name
+                mcps[i].eth_port1_target_location = mcps[i+1].deviceTag
+                mcps[i].eth_port2_target_location = mcps[i+1].deviceTag
             } else if(i == mcps.length-1) {
-                mcps[i].eth_port1_target_location = mcps[0].mcp_name
-                mcps[i].eth_port2_target_location = mcps[0].mcp_name
+                mcps[i].eth_port1_target_location = mcps[0].deviceTag
+                mcps[i].eth_port2_target_location = mcps[0].deviceTag
             }
         }
         return mcps
@@ -178,7 +180,7 @@ const mcpParser = {
     },
     getConnectedNetworkDevices:(mcps, devices, networkSwitches) => {
         mcps.forEach(mcp => {
-            var localSwitches = networkSwitches.filter(networkSwitch => networkSwitch.mcpName === mcp.mcp_name && networkSwitch.networkType.toLowerCase() === "local")
+            var localSwitches = networkSwitches.filter(networkSwitch => networkSwitch.mcpName === mcp.deviceTag && networkSwitch.networkType.toLowerCase() === "local")
 
             localSwitches.forEach(localSwitch => {
                 var directNetworkSwitches = devices.filter(device => localSwitch.switch_location_dt === device.local_network_direct)
@@ -196,6 +198,23 @@ const mcpParser = {
 
         return mcps;
     },
+
+    getPorts:(mcps,devices)=>{
+        mcps.forEach(mcp => {
+            var connectedDevices = devices.filter(device => device.local_network_direct === mcp.mcpName)
+            var ports =[];
+            connectedDevices.forEach(device => {
+                const port = portModel.create(mcp);
+                port.targetLocation = device.target_device_location;
+                port.targetDT = device.device_dt;
+                port.line = ProjectConfiguration.line
+                device.device_dt.startsWith('LETH') ? port.deviceTypeSelection = 'Network Switch' : port.deviceTypeSelection = 'Device';
+                port.targetCableLength = device.local_cable_length;
+                ports.push(port);
+            })
+            mcps.ports = ports;
+        })
+    }
 }
 
 export default mcpParser;

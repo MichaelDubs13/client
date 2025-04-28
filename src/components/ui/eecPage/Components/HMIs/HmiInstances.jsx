@@ -35,7 +35,7 @@ const HmiInstances = () => {
                     items={hmis} addItems={addHmis}/> 
                 {   
                     hmis.map((hmi, index) => {
-                        return <HeadingItem label={`${index+1}:HMI ++${hmi.line}+${hmi.location}-${hmi.hmiDT} Parameters`} 
+                        return <HeadingItem label={`${index+1}:HMI ++${hmi.line}+${hmi.location}-${hmi.deviceTag} Parameters`} 
                                 size={18} margin={"20px"} open={false}
                                 headerIcon={"/panel.png"}
                                 children={<HmiConfiguration hmi={hmi} index={index}/>}

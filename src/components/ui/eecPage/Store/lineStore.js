@@ -2,20 +2,23 @@ import {create} from "zustand";
 import { pdpStore } from "./pdpStore";
 import { xpdpStore } from "./xpdpStore";
 import { mcpStore } from "./mcpStore";
-import { lpdStore } from "./lpdStore";
+import { lpdConfiguration, lpdStore } from "./lpdStore";
 import { networkSwitchStore } from "./networkSwitchStore";
 import { hmiStore } from "./hmiStore";
 import { safetyGateStore } from "./safetyGateStore";
 import { projectStore } from "./projectStore";
+import { ioModuleStore } from "./ioModuleStore";
 
 const lineOptions = {
-    addDeviceOptions:['LETH','HMI',"GS"]
+    addDeviceOptions:['LETH','HMI',"GS", 'SIO', 'MIO']
 }
 
 const lineConfiguration = {
     networkSwitchIndicator:'LETH',
     hmiIndicator:'HMI',
     gateIndicator:'GS',
+    safetyModuleIndicator:'SIO',
+    ioModuleIndicator:'MIO',
     getDeviceFullName:(location, device)=>{
         return `+${location}-${device}`;
     },
@@ -37,68 +40,51 @@ const lineConfiguration = {
                         locations.push(item.location)
                     }
                 }
-            }
-            
+            } 
         })
         return locations;
     },   
-    getStations:(array, stations, keys) => {
+    getStations:(array, stations) => {
         array.map((item) => {
-            keys.forEach(key => {
-                if(item[key]){
-                    if(!stations.includes(item[key])){
-                        stations.push(item[key])
-                    }
-                } 
-            });
+            const foundStations = item.getStations();
+            if(foundStations.length > 0){
+                stations.push(...foundStations);
+            }
         })
         return stations;
     },    
-    getDevices:(array, devices, station, keys) => {
+    getDevices:(array, devices, station) => {
         array.map((item) => {
-            keys.forEach(key => {
-                if(item[key.station] === station)
-                {
-                    if(item[key.device]){
-                        if(!devices.includes(item[key.device])){
-                            devices.push(item[key.device])
-                        }
-                    } 
-                }
-            });
+            const foundDevices = item.getDevices(station);
+            if(foundDevices.length > 0){
+                devices.push(...foundDevices); 
+            }
         })
         return devices;
     },
-
-    getDeviceByName:(name, location, line)=>{
+    getDeviceByName:(item, name, location, line)=>{
+        if(item.line != line) return;
+        if(item.location != location) return;
+        if(item.deviceTag != name) return;
+        return item;
+    },
+    getDeviceByNameGlobal:(name, location, line)=>{
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
         const hmis = hmiStore.getState().hmis;
         const safetyGates = safetyGateStore.getState().safetyGates;
+        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
 
-        for(let i=0;i<networkSwitches.length;i++){
-            if(networkSwitches[i].line != line) continue;
-            if(networkSwitches[i].location != location) continue;
-            if(networkSwitches[i].switchDT != name) continue;
-            var foundItem = networkSwitches[i]
-            if(foundItem) return foundItem;
-        }
-
-        for(let i=0;i<hmis.length;i++){
-            if(hmis[i].line != line) continue;
-            if(hmis[i].location != location) continue;
-            if(hmis[i].hmiDT != name) continue;
-            var foundItem = hmis[i]
-            if(foundItem) return foundItem;
-        }
-
+        const items = networkSwitches.concat(hmis);
         for(let i=0;i<safetyGates.length;i++){
-            if(safetyGates[i].line != line) continue;
-            if(safetyGates[i].location != location) continue;
-            for(let j=0;j<safetyGates[i].safetyGateSwitches.length;j++){
-                if(safetyGates[i].safetyGateSwitches[j].safetyGateDT === name){
-                    return safetyGates[i].safetyGateSwitches[j];
-                }
-            }
+            items.push(...safetyGates[i].safetyGateSwitches);
+        }
+        for(let i=0;i<ioModuleGroups.length;i++){
+            items.push(...ioModuleGroups[i].ioModules);
+        }
+
+        for(let i=0;i<items.length;i++){
+            var foundItem = lineConfiguration.getDeviceByName(items[i], name, location, line)
+            if(foundItem) return foundItem;
         }
     },
     getDeviceById:(id)=>{
@@ -107,34 +93,28 @@ const lineConfiguration = {
         const mcps = mcpStore.getState().mcps;
         const lpds = lpdStore.getState().lpds;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
+        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
 
-        for(let i=0;i<pdps.length;i++){
-            if(pdps[i].data.id === id) return pdps[i];
+        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
+
+        for(let i=0;i<items.length;i++){
+            if(items[i].data.id === id) return items[i];
             var foundItem = pdps[i].getItemById(id);
             if(foundItem) return foundItem;
         }
+    },
 
-        for(let i=0;i<xpdps.length;i++){
-            if(xpdps[i].data.id === id) return xpdps[i];
-            var foundItem = xpdps[i].getItemById(id);
-            if(foundItem) return foundItem;
-        }
+    getLvPowerSourceDevice:(location, device)=>{
+        const lpds = lpdStore.getState().lpds;
+        const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
+        const items = lpds.concat(safetyGates)
 
-        for(let i=0;i<mcps.length;i++){
-            if(mcps[i].data.id === id) return mcps[i];
-            var foundItem = mcps[i].getItemById(id);
-            if(foundItem) return foundItem;
-        }
-
-        for(let i=0;i<lpds.length;i++){
-            if(lpds[i].data.id === id) return lpds[i];
-            var foundItem = lpds[i].getItemById(id);
-            if(foundItem) return foundItem;
-        }
-
-        for(let i=0;i<networkSwitches.length;i++){
-            if(networkSwitches[i].data.id === id) return networkSwitches[i];
-            var foundItem = networkSwitches[i].getItemById(id);
+        for(let i=0;i<items.length;i++){
+            var foundItem = items[i].getPowerSource(location, device);
             if(foundItem) return foundItem;
         }
     }
@@ -153,17 +133,12 @@ const lineStore = create((set) => ({
         const hmis = hmiStore.getState().hmis;
         const safetyGates = safetyGateStore.getState().safetyGates;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
+        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
+        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
+
         const line = projectStore.getState().line;
-
         var newLines = [line,]
-        newLines = lineConfiguration.getLines(pdps, newLines);
-        newLines = lineConfiguration.getLines(xpdps, newLines);
-        newLines = lineConfiguration.getLines(mcps, newLines);
-        newLines = lineConfiguration.getLines(lpds, newLines);
-        newLines = lineConfiguration.getLines(networkSwitches, newLines);
-        newLines = lineConfiguration.getLines(hmis, newLines);
-        newLines = lineConfiguration.getLines(safetyGates, newLines);
-
+        newLines = lineConfiguration.getLines(items, newLines);
         newLines = newLines.map((line) => {
             return {label:line, value:line}
         })
@@ -189,16 +164,13 @@ const lineStore = create((set) => ({
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
         const hmis = hmiStore.getState().hmis;
         const safetyGates = safetyGateStore.getState().safetyGates;
-        
+        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
+        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
+
         var newLocations = []
-        newLocations = lineConfiguration.getLocations(pdps, line, newLocations);
-        newLocations = lineConfiguration.getLocations(xpdps, line, newLocations);
-        newLocations = lineConfiguration.getLocations(mcps, line, newLocations);
-        newLocations = lineConfiguration.getLocations(lpds, line, newLocations);
-        newLocations = lineConfiguration.getLocations(networkSwitches, line, newLocations);
-        newLocations = lineConfiguration.getLocations(hmis, line, newLocations);
-        newLocations = lineConfiguration.getLocations(safetyGates, line, newLocations);
-        
+        newLocations = lineConfiguration.getLocations(items, line, newLocations); 
+        newLocations = newLocations.filter(location => location);  
+        newLocations = [...new Set(newLocations)];     
         newLocations = newLocations.map((location) => {
             return {label:location, value:location}
         })
@@ -213,54 +185,13 @@ const lineStore = create((set) => ({
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
         const hmis = hmiStore.getState().hmis;
         const safetyGates = safetyGateStore.getState().safetyGates;
+        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
+        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
         
         var newStations = []
-        var keys = [];
-        newStations = lineConfiguration.getStations(pdps, newStations,keys);
-
-        keys=["StrBox_DT"]
-        pdps.forEach(pdp => {
-            Object.keys(pdp.branchCircuit).forEach(key => {
-                newStations = lineConfiguration.getStations(pdp.branchCircuit[key], newStations,keys);
-            })
-        })
-
-        keys = ["xfmrLocation",];
-        newStations = lineConfiguration.getStations(xpdps,newStations,keys);
-
-        keys=["StrBox_DT"]
-        xpdps.forEach(pdp => {
-            Object.keys(pdp.branchCircuit).forEach(key => {
-                newStations = lineConfiguration.getStations(pdp.branchCircuit[key], newStations,keys);
-            })
-        })
-
-        keys = ["mcpMountingLocation","psu_location"];
-        newStations = lineConfiguration.getStations(mcps, newStations,keys);
-
-        keys =["psu_location"];
-        lpds.forEach(lpd => {
-            newStations = lineConfiguration.getStations(lpd.psus, newStations,keys);
-        })
-
-        keys =["power1InLocation", "power2InLocation", "powerInLocation", "location"];
-        newStations = lineConfiguration.getStations(networkSwitches, newStations,keys);
-
-        keys =["targetLocation", ];
-        networkSwitches.forEach(networkSwitch => {
-            newStations = lineConfiguration.getStations(networkSwitch.ports, newStations,keys);
-        })
-
-        keys = ["location",];
-        newStations = lineConfiguration.getStations(hmis,newStations,keys);
-
-        keys = ["location",];
-        newStations = lineConfiguration.getStations(safetyGates,newStations,keys);
-
-        safetyGates.forEach(safetyGate => {
-            newStations = lineConfiguration.getStations(safetyGate.safetyGateSwitches, newStations,keys);
-        })
-        
+        newStations = lineConfiguration.getStations(items, newStations);
+        newStations = newStations.filter(station => station)
+        newStations = [...new Set(newStations)];
         newStations = newStations.map((station) => {
             return {label:station, value:station}
         })
@@ -284,52 +215,14 @@ const lineStore = create((set) => ({
         const mcps = mcpStore.getState().mcps;
         const lpds = lpdStore.getState().lpds;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        
+        const hmis = hmiStore.getState().hmis;
+        const safetyGates = safetyGateStore.getState().safetyGates;
+        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
+        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
         var newDevices = []
-        var keys = [];
-        newDevices = lineConfiguration.getDevices(pdps, newDevices,station,keys);
-
-        keys=[{station:"StrBox_DT", device:"TargetDevice_DT"}]
-        pdps.forEach(pdp => {
-            Object.keys(pdp.branchCircuit).forEach(key => {
-                newDevices = lineConfiguration.getDevices(pdp.branchCircuit[key], newDevices,station,keys);
-            })
-        })
-
-        keys=[{station:"StrBox_DT", device:"TargetDevice_DT"}]
-        xpdps.forEach(pdp => {
-            Object.keys(pdp.branchCircuit).forEach(key => {
-                newDevices = lineConfiguration.getDevices(pdp.branchCircuit[key], newDevices,station,keys);
-            })
-        })
-
-        keys = [{station:"psu_location", device:"psu_location_dt"},];
-        newDevices = lineConfiguration.getDevices(mcps, newDevices,station, keys);
-
-        keys =[{station:"psu_location", device:"psu_dt"},];
-        lpds.forEach(lpd => {
-            newDevices = lineConfiguration.getDevices(lpd.psus, newDevices,station, keys);
-        })
-
-        keys=[{station:"location", device:"deviceTag"},]
-        lpds.forEach(lpd => {
-            lpd.psus.forEach(psu => {
-                newDevices = lineConfiguration.getDevices(psu.pwrDrops, newDevices,station, keys);
-            })
-        })
-
-        keys = [{station:"power1InLocation", device:"power1InDT"},
-            {station:"power2InLocation", device:"power2InDT"},
-            {station:"powerInLocation", device:"powerInDT"},
-            {station:"location", device:"switchDT"},
-        ]
-        newDevices = lineConfiguration.getDevices(networkSwitches, newDevices, station, keys);
-
-        keys = [{station:"targetLocation", device:"targetDT"}]
-        networkSwitches.forEach(networkSwitch => {
-            newDevices = lineConfiguration.getDevices(networkSwitch.ports, newDevices, station, keys);
-        })
-        
+        newDevices = lineConfiguration.getDevices(items, newDevices,station);
+        newDevices = newDevices.filter(device => device);
+        newDevices = [...new Set(newDevices)];
         newDevices = newDevices.map((device) => {
             return {label:device, value:device}
         })
@@ -341,28 +234,15 @@ const lineStore = create((set) => ({
         const xpdps= xpdpStore.getState().xpdps;
         var cbs = [];
         pdps.forEach(pdp => {
-            if(pdp.location === location){
-                Object.keys(pdp.branchCircuit).forEach(key => {
-                    pdp.branchCircuit[key].forEach(drop => {
-                        if(drop.UI.CB_DT){
-                            cbs.push(drop.UI.CB_DT);
-                        }
-                    })
-                })
-            }
+            var foundCBs = pdp.getCBs(location);
+            cbs.push(...foundCBs);
         });
+       
         xpdps.forEach(pdp => {
-            if(pdp.location === location){
-                Object.keys(pdp.branchCircuit).forEach(key => {
-                    pdp.branchCircuit[key].forEach(drop => {
-                        if(drop.UI.CB_DT){
-                            cbs.push(drop.UI.CB_DT);
-                        }
-                    })
-                })
-            }
+            var foundCBs = pdp.getCBs(location);
+            cbs.push(...foundCBs);
         });
-        
+
         cbs = cbs.sort().map(cb => {
             return {label:cb, value:cb}
         })

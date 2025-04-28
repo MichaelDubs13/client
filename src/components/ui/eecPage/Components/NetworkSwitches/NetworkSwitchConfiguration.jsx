@@ -1,3 +1,4 @@
+import "../../Eec.css";
 import InputTextItem from '../Util/InputTextItem';
 import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
@@ -5,8 +6,6 @@ import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
-import { lpdConfiguration, lpdStore } from '../../Store/lpdStore';
-import "../../Eec.css";
 import { mcpStore } from '../../Store/mcpStore';
 import { useEffect } from 'react';
 import { lineStore } from '../../Store/lineStore';
@@ -15,9 +14,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
     const mcps = mcpStore((state)=> state.mcps);
     const plcs = lineStore((state)=> state.plcs);
     const getPlcOptions = lineStore((state)=> state.getPlcOptions);
-    const setNetworkSwitchValue = networkSwitchStore((state) => state.setNetworkSwitchValue);    
     const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);  
-    const lpds = lpdStore((state)=> state.lpds);
     const networkSwitchIndex = createNew ? {} : {networkSwitchIndex:index}
   
     useEffect(() => {
@@ -31,24 +28,13 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
         setNumberOfPorts(index, value);   
     }
 
-    const handleDeviceChange = (value) => {
-        if(networkSwitch.location && value){
-            const drop = lpdConfiguration.getDrop(lpds, networkSwitch.location, value)
-            if(drop){                
-                setNetworkSwitchValue(networkSwitchIndex, "power1InDT", drop.data.parent.psu_dt);
-                setNetworkSwitchValue(networkSwitchIndex, "power1InLocation", drop.data.parent.psu_location);
-                drop.setDataValue("targetDevice", networkSwitch.data.id)
-            }
-        }
-    }
-
     return (
         
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
                     <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
-                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"switchDT"} onDeviceChange={handleDeviceChange}
+                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"deviceTag"}
                         stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
                     
                     <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
@@ -74,19 +60,25 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     {networkSwitch.switchType === "Managed" && (
                         <>  
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
+                                deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
+                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/>                                
+                            {/* <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
+                                deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"powerSourceDT"}
+                                stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/>        */}
+                            {/* <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 deviceTitle={"Power 1 in device tag (e.g., PSU01)"}  deviceProperty={"power1InDT"}
                                 stationTitle={"Power 1 in location (e.g., 00010)"} stationProperty={"power1InLocation"}/>                                
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"power2InDT"}
-                                stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"power2InLocation"}/>                                
+                                stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"power2InLocation"}/>                               */}
                         </>
                     )}
 
                     {networkSwitch.switchType === "Unmanaged" && (
                         <>
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
-                                deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerInDT"}
-                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerInLocation"}/> 
+                                deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
+                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/> 
                         </>
                     )}
                     

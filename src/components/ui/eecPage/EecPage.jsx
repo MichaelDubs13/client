@@ -1,4 +1,4 @@
-import { Button,} from "@tesla/design-system-react";
+import { Button, } from "@tesla/design-system-react";
 import LineConfiguration from "./Components/LineConfiguration";
 import ModelBuilder from "./Models/ModelBuilder";
 import { Icon, Tooltip, TooltipWrapper, useTooltipState, FormItemFileUpload} from '@tesla/design-system-react';
@@ -21,6 +21,8 @@ import HeadingItem from "./Components/Util/HeadingItem";
 import { useState } from "react";
 import ElectricalDiagram from "./Flow/ElectricalDiagram";
 import NetworkDiagram from "./Flow/NetworkDiagram";
+import EditableTable from "./Components/Util/Table/EditableTable";
+import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 
 
 
@@ -45,7 +47,7 @@ const EecPage = () => {
     const handleSumbit = (event) => {
       event.preventDefault();
       const config = getConfig();
-      const validatedPdps =pdpConfiguration.generateData(pdps);
+      const validatedPdps =pdpModel.generateData(pdps);
       const validatedXpdps =xpdpConfiguration.generateData(xpdps);
       const validatedMcps =mcpConfiguration.generateData(mcps);
       const validatedLpds = lpdConfiguration.generateData(lpds);
@@ -131,7 +133,7 @@ const EecPage = () => {
               <LoadButton/>
             </div>
 
-            {/* <Grid/> */}
+            {/* <EditableTable/> */}
             <LineConfiguration/>
           </div>
         </>

@@ -1,5 +1,5 @@
 import LineStationSelection from '../Common/LineStationSelection';
-import { safetyGateOptions, safetyGateStore } from '../../Store/safetyGateStore';
+import { safetyGateStore } from '../../Store/safetyGateStore';
 import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
 import SafetyGateConfigurations from './SafetyGateConfigurations';
 import { DataTable } from '@tesla/design-system-react';

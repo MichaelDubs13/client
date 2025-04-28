@@ -1,12 +1,10 @@
 import InputTextItem from "../Util/InputTextItem";
-import {mcpStore} from "../../Store/mcpStore";
 import HeadingItem from "../Util/HeadingItem";
 import "../../Eec.css";
 import KedPortConfiguration from "./KedPortConfiguration";
 
 
 const KedConfiguration = ({mcp, index}) => {
-    const setMcpValue = mcpStore((state) => state.setMcpValue);
     const mcpIndex = {mcpIndex:index}
 
     return ( 

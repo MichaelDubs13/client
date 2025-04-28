@@ -1,8 +1,8 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import { v4 as uuidv4 } from 'uuid';
-import { projectStore } from "./projectStore";
-import {formatToTwoDigits} from './util'
+import {addItems, setModelValue, setNumberOfItems} from './util'
+import { ioModuleGroupModel } from "./Models/IoModules/ioModuleGroupModel";
+import { ioModuleModel } from "./Models/IoModules/ioModuleModel";
 
 const ioModuleGroupOptions = {
   // example of dropdown options for the IO Module parameters
@@ -108,113 +108,6 @@ const ioModuleGroupConfiguration = {
 
     return ioModuleGroupOptions;
   },
-
-  createIOModule: (number, parent) => {
-    return {
-      // this is where the variables for the IO Module Configuration are defined going to the data model
-      // below is the first variable example
-      line: parent.line, // EEC variable name: ***needs to be created in EEC
-      location:parent.location, // EEC variable name: s_frmUI_IOModLocation
-      // need to change the default value to toggle between SIO and MIO
-      ioModuleDT: `SIO or MIO${formatToTwoDigits(number)}`, // EEC variable name: s_IOModuleDT
-      safetyRated: false, // EEC variable name: b_frmUI_SafetyIO
-
-      sioManufacturerName: "Murr", // EEC variable name: s_frmUI_SIOModManuName
-      sioParts_AB: "", // EEC variable name: s_frmUI_SIOModuleParts_A_B
-      sioParts_Beckhoff: "", // EEC variable name: s_frmUI_SIOModuleParts_Beckhoff
-      sioParts_Murr: "55557", // EEC variable name: s_frmUI_SIOModuleParts_Murr
-      sioParts_Siemens: "", // EEC variable name: s_frmUI_SIOModuleParts_Siemens
-
-      mioManufacturerName: "Balluff", // EEC variable name: s_frmUI_MIOModManuName
-      mioParts_Balluff: "BNI005H", // EEC variable name: s_frmUI_MIOModuleParts_Balluff
-      mioParts_Beckhoff: "", // EEC variable name: s_frmUI_MIOModuleParts_Beckhoff
-      mioParts_PF: "", // EEC variable name: s_frmUI_MIOModuleParts_P_F
-      mioParts_Siemens: "", // EEC variable name: s_frmUI_MIOModuleParts_Siemens
-      mioParts_Turck: "", // EEC variable name: s_frmUI_MIOModuleParts_Turck
-
-      localIP: "192.168.1.x", // EEC variable name: s_frmUI_IOModIPv_IP_Address
-      opMode: "01", // EEC variable name: s_frmUI_OpMode
-
-      portTypeDefaultSelection: "", // EEC variable name: s_frmUI_DefaultPortTypeSelection
-
-      // ***************************************************************************************
-      // These variables are for the individual ports (pin 4 and pin 2) of the IO Module
-      portCounter: "",
-      pinType: "", // EEC variable name: s_pin_type_selected
-      pinDescription: "", // EEC variable name: s_pin_description
-      pinAddress: "", // EEC variable name: s_pin_PLCaddress
-      pinTargetPartNumber: "", // EEC variable name: s_TargetDevicePartNumber
-      pinTargetLocation: "", // EEC variable name: s_TargetDeviceLocation
-      pinTargetDT: "", // EEC variable name: s_TargetDeviceDT
-      // ***************************************************************************************
-
-      UI:{
-        expanded:false,
-        icon:"/ioModule.png"
-      },
-      data:{
-        parent:parent,
-        type:'ioModule',
-        id:uuidv4(),
-      },
-      setValue: function(indexObject, key, value){
-        ioModuleStore.getState().setIOModuleValue(indexObject, key, value);
-      },
-      getNodeData: function(){
-        return [
-          this.deviceTypeSelection,
-        ]
-      }
-    }
-  },
-
-  create: () => { 
-    var ioModuleGroup = {
-       // this is where the variables for the IO Modules Collection Instances are defined going to the data model
-      // below is the first variable example
-      line: projectStore.getState().line, // EEC variable name: s_frmUI_IOModLine ***needs to be created in EEC
-      location:"", // EEC variable name: s_frmUI_IOModLocation
-      plcID:"", // EEC variable name: PLC_ID
-      powerSourceLine:"", // EEC variable name: s_frmUI_IOModPSUSourceLine ***needs to be created in EEC
-      powerSourceLocation:"", // EEC variable name: s_frmUI_IOModPSUSourceLocation
-      powerSourceDT:"", // EEC variable name: s_frmUI_IOModPSUSourceDT
-      ethernetSourceLine:"", // EEC variable name: s_frmUI_IOModNetworkSourceLine ***needs to be created in EEC
-      ethernetSourceLocation:"", // EEC variable name: s_frmUI_IOModNetworkSourceLocation
-      ethernetSourceDT:"", // EEC variable name: s_frmUI_IOModNetworkSourceDT
-      ethernetSourceDevicePort:"", // EEC variable name: s_frmUI_IOModNetworkSourcePort
-
-      ioModules:[],
-      UI:{
-        expanded:false,
-        icon:"/ioModule.png"
-      },
-      data:{
-        type:'ioModuleGroup',
-        id:uuidv4(),
-      },
-      setValue: function(indexObject, key, value){
-        ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value);
-      },
-      getFullName: function() {
-        return lineConfiguration.getDeviceFullName(this.location, this.switchDT);
-      },
-      getIndex: function(){
-        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
-        return ioModuleGroups.findIndex(ioModuleGroup => ioModuleGroup.data.id === this.data.id)
-      },
-      getItemById: function(id){
-        return ioModuleGroupConfiguration.getItemById(this, id);
-      },
-      getNodeData: function(){
-        return [
-          this.ioModuleDT,
-        ]
-      }
-    }
-   
-    return ioModuleGroup;
-  },
-  
   generateData: (ioModuleGroups) => {
     return ioModuleGroups;
   },
@@ -224,10 +117,40 @@ const ioModuleGroupConfiguration = {
 const ioModuleStore = create((set,get) => ({
     ioModuleGroups:[],
     ioModuleGroupsOptions:[],
+    wipIoModule:{},
+    setWipIoModule: (ioModule) => {
+         set({wipIoModule:ioModule});
+    },
+    addWipIoModule: () => {
+      set((state) => {
+        const newIoMOdule = {...state.wipIoModule}
+        let newIoModuleGroups = [...state.ioModuleGroups]
+        const index = newIoModuleGroups.findIndex(group => group.location === newIoMOdule.location && group.line === newIoMOdule.line);
+        if(index > -1){
+          newIoMOdule.data.parent = newIoModuleGroups[index];
+          newIoModuleGroups[index].ioModules = [...newIoModuleGroups[index].ioModules,newIoMOdule ]
+        } else {
+          const newIoModuleGroup = ioModuleGroupModel.create();
+          newIoModuleGroup.line = newIoMOdule.line;
+          newIoModuleGroup.location = newIoMOdule.location;
+          if(newIoMOdule.powerSourceLine)newIoModuleGroup.powerSourceLine = newIoMOdule.powerSourceLine;
+          if(newIoMOdule.powerSourceLocation)newIoModuleGroup.powerSourceLocation = newIoMOdule.powerSourceLocation
+          if(newIoMOdule.powerSourceDT)newIoModuleGroup.powerSourceDT = newIoMOdule.powerSourceDT
+          if(newIoMOdule.ethernetSourceLine)newIoModuleGroup.ethernetSourceLine = newIoMOdule.ethernetSourceLine;
+          if(newIoMOdule.ethernetSourceLocation)newIoModuleGroup.ethernetSourceLocation = newIoMOdule.ethernetSourceLocation
+          if(newIoMOdule.ethernetSourceDT)newIoModuleGroup.ethernetSourceDT = newIoMOdule.ethernetSourceDT
+          if(newIoMOdule.ethernetSourceDevicePort)newIoModuleGroup.ethernetSourceDevicePort = newIoMOdule.ethernetSourceDevicePort
+          newIoMOdule.data.parent = newIoModuleGroup;
+          newIoModuleGroup.ioModules.push(newIoMOdule);
+          newIoModuleGroups = [...newIoModuleGroups, newIoModuleGroup]
+        }
+        return {ioModuleGroups:newIoModuleGroups}
+      })    
+    },
     /**
-         * Replace current ioModuleGroups objects with input ioModuleGroups objects, this is used to set pdp data from excel sheet/save files
-         * @param {Array} ioModuleGroups 
-         */
+     * Replace current ioModuleGroups objects with input ioModuleGroups objects, this is used to set pdp data from excel sheet/save files
+     * @param {Array} ioModuleGroups 
+     */
     setIOModuleGroups: (ioModuleGroups) => {
       set({ioModuleGroups:ioModuleGroups});
     },
@@ -249,22 +172,9 @@ const ioModuleStore = create((set,get) => ({
      */    
     addIOModuleGroups: (numberOfIOModuleGroup) => {
       set((state) => {
-        const diff = numberOfIOModuleGroup - [...state.ioModuleGroups].length
-        if(diff > 0){
-          const ioModuleGroups = []
-          for (let i = 0; i < diff; i++) {
-            var ioModuleGroup = ioModuleGroupConfiguration.create();
-            ioModuleGroups.push(ioModuleGroup);
-          }
-          let newIOModuleGroups =[...state.ioModuleGroups, ...ioModuleGroups] 
-          return {ioModuleGroups:newIOModuleGroups}
-        } else if(diff < 0) {
-          let newIOModuleGroups = [...state.ioModuleGroups];
-          newIOModuleGroups = newIOModuleGroups.slice(0, newIOModuleGroups.length + diff);
-          return {ioModuleGroups:newIOModuleGroups}
-        } else {
-          return {ioModuleGroups:[...state.ioModuleGroups]}
-        }
+        let newIOModuleGroups = [...state.ioModuleGroups];
+        newIOModuleGroups = addItems(newIOModuleGroups, numberOfIOModuleGroup, ioModuleGroupModel.create);
+        return {ioModuleGroups:newIOModuleGroups}
       })    
     },
 
@@ -288,11 +198,12 @@ const ioModuleStore = create((set,get) => ({
     })
   },
 
-  setIOModuleGroupValue:(indexObject, key, value)=>{
+  setIOModuleGroupValue:(item, key, value,isUI,isData)=>{
+    const indexObject = item.getIndexObject();
     const index = indexObject.ioModuleGroupIndex
     set((state) => {
       const newIOModuleGroups = [...state.ioModuleGroups];
-      newIOModuleGroups[index] = {...newIOModuleGroups[index], [key]: value};
+      setModelValue(newIOModuleGroups[index], key, value, isUI, isData);
       get().setIOModuleGroupsOptions(newIOModuleGroups);
       return { ioModuleGroups: newIOModuleGroups };
     });
@@ -304,39 +215,47 @@ const ioModuleStore = create((set,get) => ({
   setNumberOfIOModules:(index, numberOfIOModules)=>{
       set((state) => {
         const newIOModuleGroups = [...state.ioModuleGroups];
-        
-        const diff = numberOfIOModules - newIOModuleGroups[index].ioModules.length
-        if(diff > 0){
-          for (let i = 0; i < diff; i++) {
-            var ioModule = ioModuleGroupConfiguration.createIOModule(i+1,newIOModuleGroups[index]);
-            newIOModuleGroups[index] = {...newIOModuleGroups[index], 
-              ioModules: [...newIOModuleGroups[index].ioModules, ioModule],
-            };
-          }  
-        } else if(diff < 0) {
-            const ioModules = newIOModuleGroups[index].ioModules.slice(0, newIOModuleGroups[index].ioModules.length + diff);
-            newIOModuleGroups[index] = {...newIOModuleGroups[index], 
-              ioModules: ioModules,
-            };
-        }
+        newIOModuleGroups[index].ioModules = setNumberOfItems(newIOModuleGroups[index].ioModules, numberOfIOModules, ioModuleModel.create, newIOModuleGroups[index]);
         return { ioModuleGroups: newIOModuleGroups };
       });
     },
-    setIOModuleValue:(indexObject, key, value)=>{
+  setIOModuleValue:(item, key, value,isUI,isData)=>{
+      const indexObject = item.getIndexObject();
       const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;
       const ioModuleIndex = indexObject.ioModuleIndex;
-
-      set((state) => {
-        const newIOModuleGroups = [...state.ioModuleGroups];
-        const ioModules = [...newIOModuleGroups[ioModuleGroupIndex].ioModules]
-        ioModules[ioModuleIndex] = {...ioModules[ioModuleIndex], [key]:value}
-
-        newIOModuleGroups[ioModuleGroupIndex] = {...newIOModuleGroups[ioModuleGroupIndex], 
-          ioModules:ioModules
-        };
-        return { ioModuleGroups: newIOModuleGroups };
-      });
-    }, 
+      if(Object.keys(indexObject).length > 0){
+        set((state) => {
+          const newIOModuleGroups = [...state.ioModuleGroups];
+          const ioModules = newIOModuleGroups[ioModuleGroupIndex].ioModules
+          setModelValue(ioModules[ioModuleIndex], key, value, isUI, isData);
+          return { ioModuleGroups: newIOModuleGroups };
+        });
+      } else {
+        set((state) => {
+          const newIoModule = {...state.wipIoModule, [key]: value};
+          return { wipIoModule: newIoModule };
+        });
+      }
+    },
+    setPortValue:(item, key, value,isUI,isData)=>{
+      const indexObject = item.getIndexObject();
+      const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;
+      const ioModuleIndex = indexObject.ioModuleIndex;
+      const ioPortIndex = indexObject.ioPortIndex;
+      if(Object.keys(indexObject).length > 0){
+        set((state) => {
+          const newIOModuleGroups = [...state.ioModuleGroups];
+          const port = newIOModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[ioPortIndex];
+          setModelValue(port, key, value, isUI, isData);
+          return { ioModuleGroups: newIOModuleGroups };
+        });
+      } else {
+        set((state) => {
+          const newIoModule = {...state.wipIoModule, [key]: value};
+          return { wipIoModule: newIoModule };
+        });
+      }
+    },  
 }));
 
 export {

@@ -15,7 +15,6 @@ export default class Fg_MainControlPanel extends Component{
     get Parameters(){
         return [
             {name: "NumberofMCP_Instances", value: this._mcps.length, type: "Integer"},
-            // {name: "list_PLC_IDs", value: [], type: "arrayList"},
         ];
     }
 

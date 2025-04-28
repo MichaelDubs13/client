@@ -1,4 +1,3 @@
-import ProjectConfiguration from "../ProjectConfiguration";
 import Component from "../Component";
 import F_Supply from "./_f_Supply/F_Supply";
 import F_K_Grounding from "./_f_K_Grounding/F_K_Grounding";
@@ -12,8 +11,7 @@ export default class Fg_XPowerDistributionPanel extends Component{
         this._classPath = "Config-XFMR_PDP.Mechatronic._fg_XPDP";
         this._class = "fg_XPowerDistributionPanel";
         this._name = `fg_XPowerDistributionPanel${index > 1 ? index : ""}`;
-        this._xpdp = xpdp;
-        this._instanceName = this._xpdp.name;
+        this._xpdp = xpdp        
     }
 
     get Parameters(){

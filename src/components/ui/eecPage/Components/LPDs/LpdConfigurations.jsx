@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { lpdStore } from "../../Store/lpdStore";
 import { Heading} from '@tesla/design-system-react';
 import LpdConfiguration from "./LpdConfiguration";
@@ -13,7 +12,6 @@ const LpdConfigurations = () => {
     const addLpd =  lpdStore((state) => state.addLpd);
     const deleteLpd =  lpdStore((state) => state.deleteLpd);
     const duplicateLpd = lpdStore((state) => state.duplicateLpd);
-    let absIndex = 0;
 
     const handleDeleteItem = (index) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
@@ -34,8 +32,7 @@ const LpdConfigurations = () => {
                     items={lpds} addItems={addLpd}/>                         
                 {   
                     lpds.map((lpd, index) => {
-                        absIndex++;
-                        return <HeadingItem label={`24V Field mounted Power Supply Unit (PSU) Configuration, Group ${absIndex}`} 
+                        return <HeadingItem label={`24V Field mounted Power Supply Unit (PSU) Configuration, Group ${lpd.getIndex() + 1}`} 
                             size={18} margin={"20px"} open={false} 
                             headerIcon={lpd.UI.icon}
                             children={<LpdConfiguration lpd={lpd} lpdIndex={index}/>}

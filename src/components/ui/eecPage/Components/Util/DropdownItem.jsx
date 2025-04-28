@@ -15,21 +15,20 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const DropdownItem = ({title, item, property, placeHolder, options, setModelValue, onChange, index}) =>{
-    const [selectedOption, setSelectedOption] = useState(placeHolder);
-    const defaultValue = item ? item[property] : placeHolder;
-    const setPropertyValue = item? item.setValue : setModelValue;
+const DropdownItem = ({title, item, property, options,onChange, index}) =>{
+    const [selectedOption, setSelectedOption] = useState(item[property]);
+    const defaultValue = item[property]
 
     const handleOptionSelect = async (event) =>{
         const reportedValue = event.value;
         setSelectedOption(event.value);
 
         if(property && index){
-            setPropertyValue(index, property, reportedValue)
+            item.setValue (index, property, reportedValue)
         } else if(property && !index){
-            setPropertyValue(reportedValue, property);
+            item.setValue (reportedValue, property);
         }  else {
-            setPropertyValue(reportedValue);
+            item.setValue (reportedValue);
         }
 
         if(onChange){

@@ -9,7 +9,6 @@ import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
 import "../../Eec.css";
 
 const NetworkSwitchConfigurations = () => {
-    // this is the data being used in the UI for the network switch
     const line = projectStore((state) => state.line);
     const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
     const addNetworkSwitches =  networkSwitchStore((state) => state.addNetworkSwitches);
@@ -35,7 +34,7 @@ const NetworkSwitchConfigurations = () => {
                 <SetItemsNumberInputBox title={"Enter the number of Network Switches required for this line:"} items={networkSwitches} addItems={addNetworkSwitches}/>                   
                 {   
                     networkSwitches.map((networkSwitch, index) => {
-                        return <HeadingItem label={`${index+1}:Network Switch ++${line}+${networkSwitch.location}-${networkSwitch.switchDT} Parameters`} 
+                        return <HeadingItem label={`${index+1}:Network Switch ++${line}+${networkSwitch.location}-${networkSwitch.deviceTag} Parameters`} 
                                 size={18} margin={"20px"} open={false}
                                 headerIcon={networkSwitch.UI.icon}
                                 children={<NetworkSwitchConfiguration networkSwitch={networkSwitch} index={index}/>}

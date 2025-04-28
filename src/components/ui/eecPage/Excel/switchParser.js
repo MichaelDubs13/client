@@ -3,6 +3,7 @@ import { splitIntoTwo } from './util';
 import { networkSwitchConfiguration } from '../Store/networkSwitchStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { lpdConfiguration } from '../Store/lpdStore';
+import { networkSwitchModel } from '../Store/Models/NetworkSwitches/networkSwitchModel';
 
 
 const switchParser = {
@@ -27,21 +28,14 @@ const switchParser = {
             var psu_location = psu_arr[0];
             var psu_dt = psu_arr[1];
 
-            let portCount = item["Port Count"];  
-            if(!portCount){
-                portCount = 16;
-            }
-            
             const switch_location_dt = item["Switch Location-DT"]; 
             const switch_arr = splitIntoTwo(switch_location_dt, "-");
             var switch_location = switch_arr[0];
             var switch_dt = switch_arr[1];
           
             const switchType = item["Switch type"];  
-            const inPort = item["in port"];  
-            const inSwitch = item["in switch"];  
             const mfg = switchParser.getMFG(switchType);
-            const networkSwitch = networkSwitchConfiguration.create();
+            const networkSwitch = networkSwitchModel.create();
             networkSwitch.fla=fla;
             networkSwitch.alarmOutput=alarmOutput;
             networkSwitch.alarmTag=alarmTag;
@@ -51,17 +45,12 @@ const switchParser = {
             networkSwitch.plantIP=plantIP;
             networkSwitch.mcpName=mcpName;
             networkSwitch.networkType=networkType;
-            networkSwitch.psu_location_dt=psu_location_dt;
-            networkSwitch.psu_location=psu_location;
-            networkSwitch.psu_dt=psu_dt;
-            networkSwitch.portCount=portCount;
-            networkSwitch.switch_location_dt=switch_location_dt;
+            networkSwitch.powerSourceLocation=psu_location;
+            networkSwitch.powerSourceDT=psu_dt;
             networkSwitch.line = ProjectConfiguration.line;
             networkSwitch.location=switch_location;
-            networkSwitch.switchDT=switch_dt;
+            networkSwitch.deviceTag=switch_dt;
             networkSwitch.switchType=switchType;
-            networkSwitch.inPort=inPort;
-            networkSwitch.inSwitch=inSwitch;
             networkSwitch.mfg=mfg;
             networkSwitch.mcp={};
             networkSwitch.devices=[];
@@ -79,27 +68,21 @@ const switchParser = {
         return networkSwitches;
     },
     setSourcePwrDrop(networkSwitch, lpds){
-        var drop = lpdConfiguration.getDrop(lpds, networkSwitch.location, networkSwitch.switchDT)
+        var drop = lpdConfiguration.getDrop(lpds, networkSwitch.location, networkSwitch.deviceTag)
         if(!drop) return null;
         drop.data.targetDevice = networkSwitch.data.id
     },
 
     createAdditionalParameters(networkSwitch){
-        //Parameter for F_Network_switchConfig
-        networkSwitch.pwr_in_location = ""
-        networkSwitch.pwr_in_dt = ""
+        //double check this
         networkSwitch.pwr1_in_location = ""
         networkSwitch.pwr1_in_dt = ""
         networkSwitch.managedtype = "Managed";
         if(networkSwitch.mfg === "Siemens"){
-            networkSwitch.pwr_in_location = ""
-            networkSwitch.pwr_in_dt = ""
             networkSwitch.pwr1_in_location = networkSwitch.psu_location;
             networkSwitch.pwr1_in_dt = networkSwitch.psu_dt;
             networkSwitch.managedtype = "Managed";
         } else if (networkSwitch.mfg === "Balluf"){
-            networkSwitch.pwr_in_location = networkSwitch.psu_location;
-            networkSwitch.pwr_in_dt = networkSwitch.psu_dt;
             networkSwitch.pwr1_in_location = ""
             networkSwitch.pwr1_in_dt = ""
             networkSwitch.managedtype = "Unmanaged";
@@ -136,7 +119,7 @@ const switchParser = {
             networkSwitch = {...networkSwitch, "devices": connectedDevices}
             const ports = [];
             connectedDevices.forEach(device => {
-                const port = networkSwitchConfiguration.createPort(networkSwitch);
+                const port = networkSwitchModel.create(networkSwitch);
                 port.targetLocation = device.target_device_location;
                 port.targetDT = device.device_dt;
                 port.line = ProjectConfiguration.line

@@ -41,13 +41,13 @@ import { lineConfiguration } from "../../Store/lineStore";
             </>
           )}     
           <DeviceSelection item={drop} index={index} 
-              deviceTitle={"Device Tag (e.g., MIO01)"} deviceProperty={"deviceTag"}
-              stationTitle={"Location designation(i.e., Station number)"} stationProperty={"location"}
+              deviceTitle={"Device Tag (e.g., MIO01)"} deviceProperty={"targetDT"}
+              stationTitle={"Location designation(i.e., Station number)"} stationProperty={"targetLocation"}
               powerSource={drop}
               canCreateDevice={true}/>                                
           {
             drop.deviceTag?.startsWith(lineConfiguration.networkSwitchIndicator) && 
-            <DropdownItem title={"Enter the device port to be connected to"} item={drop} property={"outputPort"} 
+            <DropdownItem title={"Enter the device port to be connected to"} item={drop} property={"targetPort"}  
               options={networkPortOptions} index={index}/>
           }
           <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    

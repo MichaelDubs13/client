@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import CreateableDropdownItem from '../Util/CreateableDropdownItem';
 import { lineStore, lineOptions, lineConfiguration } from '../../Store/lineStore';
 import "../../Eec.css";
-import ModalAddDevice from '../Util/ModalAddDevice';
+import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { Icon } from '@tesla/design-system-react';
 
@@ -37,7 +37,7 @@ const DeviceSelection = ({
         setDeviceOptions(deviceOptions)
     }, [item[deviceProperty], item[stationProperty], item.line]);
 
-    const CanAddDevice=(arr, value) =>{
+    const canAddDevice=(arr, value) =>{
         for(let i=0;i<arr.length;i++){
             if(value.startsWith(arr[i])){
                 return true;
@@ -47,7 +47,7 @@ const DeviceSelection = ({
     }
 
     const deviceExist=()=>{
-        var foundItem = lineConfiguration.getDeviceByName(item[deviceProperty], item[stationProperty], item.line);
+        var foundItem = lineConfiguration.getDeviceByNameGlobal(item[deviceProperty], item[stationProperty], item.line);
         return foundItem;
     }
 
@@ -56,7 +56,7 @@ const DeviceSelection = ({
             if(deviceExist()){
                 return <Icon data={iconStatusSuccess} style={{marginLeft:'15px',}}/>
             } else {
-                if(CanAddDevice(lineOptions.addDeviceOptions,item[deviceProperty])){
+                if(canAddDevice(lineOptions.addDeviceOptions,item[deviceProperty])){
                     return <ModalAddDevice item={item} name={item[deviceProperty]} line={item.line} location={item[stationProperty]} 
                             powerSource={powerSource} networkSource={networkSource}/>
                 }
@@ -64,14 +64,40 @@ const DeviceSelection = ({
         }
     }
 
+    const getSourceDevice = (deviceTag, location) => {
+        var foundItem = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
+        if(foundItem){
+            if(powerSource){
+                foundItem.setPowerSource(powerSource.getSourceLine(), powerSource.getSourceLocation(), powerSource.getSourceDeviceTag()); 
+                powerSource.setDataValue("powerTarget", item.data.id)  
+            }
+    
+            if(networkSource){
+                foundItem.setNetworkSource(networkSource.getSourceLine(), networkSource.getSourceLocation(), networkSource.getSourceDeviceTag());   
+                networkSource.setDataValue("ethernetTarget", item.data.id)  
+            }
+        }
+    }
+    const handleDeviceChange = (deviceTag) => {
+        getSourceDevice(deviceTag, item[stationProperty])
+        if(onDeviceChange){
+            onDeviceChange();
+        }
+    }
+    const handleStationChange = (location) => {
+        getSourceDevice(item[deviceProperty], location)
+        if(onStationChange){
+            onStationChange();
+        }
+    }
     return (
         
         <div>
             <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index}/>
-            <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} options={stations} index={index} onChange={onStationChange}/>
+            <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} options={stations} index={index} onChange={handleStationChange}/>
             {
                 <div style={{display:'flex', alignContent:'center', alignItems:'center'}}>
-                    <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} options={deviceOptions} index={index} onChange={onDeviceChange}/>
+                    <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} options={deviceOptions} index={index} onChange={handleDeviceChange}/>
                     {
                         renderAddDeviceModal()
                     }

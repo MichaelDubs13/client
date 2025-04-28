@@ -2,6 +2,8 @@ import * as XLSX from 'xlsx'
 import {pdpConfiguration} from '../Store/pdpStore';
 import { findClosestHigherNumber } from './util';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
+import { pdpModel } from '../Store/Models/PDPs/pdpModel';
+import { branchCircuitModel } from '../Store/Models/PDPs/branchCircuitModel';
 
 const pdpParser = {
     enclosureSizeOptions: ["800x1400x500", "1000x1800x500"],
@@ -37,11 +39,11 @@ const pdpParser = {
             const spare70A = item["Spare 70A"];
             const spare100A = item["Spare 100A"];
             const spare250A = item["Spare 250A"];
-            const branchCircuit = pdpConfiguration.initializeBranchCircuits();
+            const branchCircuit = pdpModel.initializeBranchCircuits();
             const hotPowerDrops = [] //only available in UI
             if(name){
-                const pdp = pdpConfiguration.create(name);
-                pdp.name =name;
+                const pdp = pdpModel.create(null,name);
+                pdp.deviceTag =name;
                 pdp.amp = amp;
                 pdp.FLA = FLA; 
                 pdp.location = name; //location is name of the PDP eg:MPDP
@@ -88,7 +90,7 @@ const pdpParser = {
     },
     createPdpBranchCircuit:(pdps, devices)=>{
         pdps.forEach(pdp => {
-            var sources = devices.filter(device => device.ac_primary_connection_source === pdp.name)
+            var sources = devices.filter(device => device.ac_primary_connection_source === pdp.deviceTag)
             for(let i=0; i<sources.length; i++){
                 const sourceDevice = sources[i];
                 if(sourceDevice.ac_primary_power_branch_size){
@@ -101,41 +103,20 @@ const pdpParser = {
                 }
             }
             pdpConfiguration.updateBranchCircuitCB_DT(pdp.branchCircuit)
-            pdpParser.calculateAllBranchFLA(pdp);
+            pdpConfiguration.calculateAllBranchFLA(pdp);
         })        
         return pdps;
     },
     createBranchCircuit:(sourceDevice, pdp, amperage)=>{
-        const branch = pdpConfiguration.createBranchCircuit(pdp, amperage);
-        branch.dbl_Cable_Length = sourceDevice.ac_primary_power_length;
+        const branch = branchCircuitModel.create(pdp, amperage);
         branch.line=ProjectConfiguration.line;
-        branch.TargetDevice_DT = sourceDevice.device_dt;
-        branch.StrBox_DT = sourceDevice.target_device_location;
-        branch.TargetDevice_FLA = sourceDevice.primary_ac_power_fla;
+        branch.targetDT = sourceDevice.device_dt;
+        branch.targetLocation = sourceDevice.target_device_location;
+        branch.targetFLA = sourceDevice.primary_ac_power_fla;
+        branch.targetCableLength = sourceDevice.ac_primary_power_length;
         branch.DropType = sourceDevice.ac_secondary_power_drop_type;
         branch.PwrDrop_DescTxt = sourceDevice.target_device_function_text;
         return branch;
-    },
-  
-    calculateBranchFLA:(branchCircuits)=>{
-        var fla = 0;
-        branchCircuits.forEach(branchCircuit => {
-            fla = fla + branchCircuit.TargetDevice_FLA;
-        })
-
-        branchCircuits.forEach(branchCircuit => {
-            branchCircuit.StrBox_DT_FLA = fla;
-        })
-    },
-    calculateAllBranchFLA:(pdp)=>{
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["250A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["100A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["70A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["60A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["40A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["30A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["20A"])
-        pdpParser.calculateBranchFLA(pdp.branchCircuit["10A"])
     },
 }
 

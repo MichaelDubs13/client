@@ -65,7 +65,7 @@ export default class Fg_PowerDistributionPanel extends Component{
     get Parameters(){
         return [
             {name: "Amperage", value: this._pdp.amp, type: "String"},
-            {name: "Location", value: this._pdp.name, type: "String"},
+            {name: "Location", value: this._pdp.location, type: "String"},
             {name: "frmUI_EnclosureNameplateFLA", value: this._pdp.FLA, type: "String"},
             {name: "NumberofPowerDrops_10A", value: this._pdp.branchCircuit["10A"].length, type: "Integer"},
             {name: "NumberofPowerDrops_20A", value: this._pdp.branchCircuit["20A"].length, type: "Integer"},

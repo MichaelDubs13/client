@@ -1,5 +1,5 @@
 import { xpdpStore } from '../../Store/xpdpStore';
-import { FormLabel, FormInputText,  FormItem,  } from '@tesla/design-system-react';
+import { FormLabel,  FormItem,  } from '@tesla/design-system-react';
 import { useEffect, useState } from "react";
 import "../../Eec.css";
 import PowerDropItem from '../PDPs/PowerDropItem';

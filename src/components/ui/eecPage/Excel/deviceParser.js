@@ -4,6 +4,9 @@ import HmiConfiguration from '../Components/HMIs/HmiConfiguration';
 import { hmiConfiguration } from '../Store/hmiStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { safetyGateConfiguration } from '../Store/safetyGateStore';
+import { hmiModel } from '../Store/Models/HMIs/hmiModel';
+import { safetyGateGroupModel } from '../Store/Models/SafetyGates/safetyGateGroupModel';
+import { safetyGateSwitchModel } from '../Store/Models/SafetyGates/safetyGateSwitchModel';
 
 
 const deviceParser = {
@@ -160,7 +163,7 @@ const deviceParser = {
     getMcp(devices, mcps){
         devices = devices.map(device => {
             if(device.mcp_name){
-                const targetMcp = mcps.find(mcp => mcp.mcp_name == device.mcp_name);
+                const targetMcp = mcps.find(mcp => mcp.deviceTag == device.mcp_name);
                 if(targetMcp){
                     device = {...device, mcp:targetMcp};
                 }
@@ -207,28 +210,28 @@ const deviceParser = {
         var results = [];
         for(let i=0;i<devices.length;i++){
             const device = devices[i];
-            const hmiObject = hmiConfiguration.create();
+            const hmiObject = hmiModel.create();
             hmiObject.line = ProjectConfiguration.line;
             hmiObject.location = device.target_device_location;
-            hmiObject.hmiDT = device.device_dt;
+            hmiObject.deviceTag = device.device_dt;
             hmiObject.localIP = device.localip;
             hmiObject.plantIP = device.plant_ip;
             hmiObject.plcID = `${device.mcp_name}_PLC01`
-            hmiObject.powerInLine = ProjectConfiguration.line;
-            hmiObject.powerInLocation = device.source24VDC_location;
-            hmiObject.powerInDT = device.source24VDC_dt;
+            hmiObject.powerSourceLine = ProjectConfiguration.line;
+            hmiObject.powerSourceLocation = device.source24VDC_location;
+            hmiObject.powerSourceDT = device.source24VDC_dt;
             hmiObject.ethernetCascadingFrom = false;
-            hmiObject.ethernetInLine = ProjectConfiguration.line;
-            hmiObject.ethernetInLocation = device.local_network_source_location;
-            hmiObject.ethernetInDT = device.local_network_source_dt;
-            hmiObject.ethernetInDevicePort = device.local_switch_port;
+            hmiObject.ethernetSourceLine = ProjectConfiguration.line;
+            hmiObject.ethernetSourceLocation = device.local_network_source_location;
+            hmiObject.ethernetSourceDT = device.local_network_source_dt;
+            hmiObject.ethernetSourceDevicePort = device.local_switch_port;
             hmiObject.ethernetCascadingTo = false;
             hmiObject.ethernetCascadingToOutside = false;
             hmiObject.hmiCascadingToSelection = false;
-            hmiObject.ethernetOutLine = ProjectConfiguration.line;;
-            hmiObject.ethernetOutLocation = '';
-            hmiObject.ethernetOutDT = '';
-            hmiObject.ethernetOutDevicePort = '';
+            hmiObject.ethernetTargetLine = ProjectConfiguration.line;;
+            hmiObject.ethernetTargetLocation = '';
+            hmiObject.ethernetTargetDT = '';
+            hmiObject.ethernetTargetDevicePort = '';
             hmiObject.hmiScreenSize = deviceParser.getHmiSize(device.partnumber)
             hmiObject.mountingType = "Flange at Bottom";
             hmiObject.hmiVersion = "V17";
@@ -259,13 +262,13 @@ const deviceParser = {
         var results = [];
         let groupedDevices = Object.groupBy(devices, ({target_device_location}) => target_device_location);
         Object.keys(groupedDevices).forEach(key => {
-            var group = safetyGateConfiguration.create();
+            var group = safetyGateGroupModel.create();
             group.location = key;
             const gates = []
             for(let i=0;i<groupedDevices[key].length;i++){
                 const device = groupedDevices[key][i];
-                const gateObject = safetyGateConfiguration.createSafetyGateSwitch(group)
-                gateObject.safetyGateDT = device.device_dt;
+                const gateObject = safetyGateSwitchModel.create(group)
+                gateObject.deviceTag = device.device_dt;
                 gateObject.localIP = device.localip;
                 gateObject.plcID = `${device.mcp_name}_PLC01`
                 gateObject.gateSwitchCascadingFrom = false;
