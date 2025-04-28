@@ -37,11 +37,13 @@ export const lpdModel = {
             
           },
           getPartNumber: function(){
-            if(this.psu_selected){
-              return this.psu_selected.split(':')[-1].trim();
+            /* if(this.psu_selected){
+              console.log(this.psu_selected);
+              return this.psu_selected.split(':')[1].trim();
             } else {
               return '';
-            }
+            } */
+            return "";
           },
           getPowerSource: function(location, device, port){
             for(let i=0;i<this.psus.length;i++){

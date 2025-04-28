@@ -42,7 +42,7 @@ const xpdpStore = create((set) => ({
     },
     addXpdp: (numberOfXpdp) => {
       set((state) => {
-        let newXpdps = [...state.xpdp];
+        let newXpdps = [...state.xpdps];
         newXpdps = addItems(newXpdps, numberOfXpdp, xpdpModel.create);
         return {xpdps:newXpdps}
         })
