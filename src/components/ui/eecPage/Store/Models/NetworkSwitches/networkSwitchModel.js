@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits, getItemById } from '../../util';
+import { formatToTwoDigits, getItemById, recreateArrayElement, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { networkSwitchStore, networkSwitchConfiguration } from '../../networkSwitchStore';
 import { networkPortModel } from './networkPortModel';
@@ -49,7 +49,7 @@ export const networkSwitchModel = {
         }
       },
       setValue: function(indexObject, key, value){
-        networkSwitchStore.getState().setNetworkSwitchValue(this, key, value);
+        networkSwitchStore.getState().setNetworkSwitchValue(indexObject, key, value);
       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);
@@ -87,9 +87,10 @@ export const networkSwitchModel = {
         return devices;
       },
       setPowerSource:function(line, location, deviceTag){
-        this.setValue(this, "powerSourceLine", line)
-        this.setValue(this, "powerSourceLocation", location)
-        this.setValue(this, "powerSourceDT", deviceTag)
+        const indexObject = this.getIndexObject();
+        this.setValue(indexObject, "powerSourceLine", line)
+        this.setValue(indexObject, "powerSourceLocation", location)
+        this.setValue(indexObject, "powerSourceDT", deviceTag)
       }
     }
     networkSwitch.ports = networkSwitchModel.initializePorts(16, networkSwitch);
@@ -103,4 +104,15 @@ export const networkSwitchModel = {
     }
     return ports;
   },
+   merge: (state, currentState) => { 
+      const networkSwitches = state.networkSwitches.map(networkSwitch => {
+          var newNetworkSwitch = recreateObject(networkSwitch, networkSwitchModel.create)
+          var ports = recreateArrayElement(newNetworkSwitch, networkSwitch.ports, networkPortModel.create)
+          newNetworkSwitch.ports = ports;
+          return newNetworkSwitch;
+      })
+      state.networkSwitches = networkSwitches;
+      Object.assign(currentState, state)
+      return currentState
+  } 
 }

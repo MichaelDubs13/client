@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import {addItems, setModelValue, setNumberOfItems} from './util'
+import {addItems, circularReplacer, setModelValue, setNumberOfItems} from './util'
 import { safetyGateGroupModel } from "./Models/SafetyGates/safetyGateGroupModel";
 import { safetyGateSwitchModel } from "./Models/SafetyGates/safetyGateSwitchModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -109,8 +109,8 @@ const safetyGateStore = create(
     })
   },
 
-  setSafetyGateValue:(item, key, value,isUI,isData)=>{
-    const indexObject = item.getIndexObject();
+  setSafetyGateValue:(indexObject, key, value,isUI,isData)=>{
+    //const indexObject = item.getIndexObject();
     const index = indexObject.safetyGateIndex
     set((state) => {
       const newSafetyGates = [...state.safetyGates];
@@ -146,8 +146,14 @@ const safetyGateStore = create(
     }},
     }),
     {
-      name: 'eec-state',
+      name: 'safetyGate-state',
       storage: createJSONStorage(() => localStorage),
+      serialize: (state) => {
+        return JSON.stringify(state, circularReplacer())
+      },
+      merge: (state, currentState) => { 
+        return safetyGateGroupModel.merge(state, currentState);
+      } 
     }
 ));
 

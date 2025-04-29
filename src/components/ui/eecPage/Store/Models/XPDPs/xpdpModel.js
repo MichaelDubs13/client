@@ -1,9 +1,10 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, recreateArrayElement, recreateBranchCircuit, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { pdpConfiguration } from "../../pdpStore";
 import { xpdpStore } from '../../xpdpStore';
+import { branchCircuitModel } from './branchCircuitModel';
 
 
 export const xpdpModel = {
@@ -45,7 +46,7 @@ export const xpdpModel = {
           }
       },
       setValue: function(indexObject, key, value){
-          xpdpStore.getState().setXPdpValue(this, key, value);
+          xpdpStore.getState().setXPdpValue(indexObject, key, value);
       },
       getCB: function(location, cb_dt){
         if(this.location === location){
@@ -106,5 +107,18 @@ export const xpdpModel = {
 
      return branchCircuit;
   },
+    merge: (state, currentState) => { 
+        const pdps = state.xpdps.map(pdp => {
+            var newPdp = recreateObject(pdp, xpdpModel.create)
+            Object.keys(pdp.branchCircuit).forEach(key => { 
+                var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], branchCircuitModel.create);
+                newPdp.branchCircuit[key] = branchCircuit;
+            });
 
+            return newPdp;
+        })
+        state.xpdps = pdps;
+        Object.assign(currentState, state)
+        return currentState
+    } 
 }

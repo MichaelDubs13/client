@@ -29,7 +29,7 @@ export const hotPowerBranchCircuitModel = {
         return this.data.parent.hotPowerDrops.findIndex(drop => drop.data.id === this.data.id)
       },
       setValue: function(indexObject, key, value){
-        pdpStore.getState().setHotPowerValue(this, key, value);
+        pdpStore.getState().setHotPowerValue(indexObject, key, value);
       },
       getNodeData: function(){
         return [

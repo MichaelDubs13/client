@@ -28,7 +28,7 @@ export const portModel = {
             }
           },
           setValue: function(indexObject, key, value){
-            mcpStore.getState().setPortValue(this, key, value);
+            mcpStore.getState().setPortValue(indexObject, key, value);
           },
           getIndex: function(){
             return this.data.parent.ports.findIndex(port => port.data.id === this.data.id)

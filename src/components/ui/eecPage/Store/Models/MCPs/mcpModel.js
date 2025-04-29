@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits, getItemById } from '../../util';
+import { formatToTwoDigits, getItemById, recreateArrayElement, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { mcpStore, mcpConfiguration } from '../../mcpStore';
 
@@ -79,7 +79,7 @@ export const mcpModel = {
             }
           },
           setValue: function(indexObject, key, value){
-            mcpStore.getState().setMcpValue(this, key, value);
+            mcpStore.getState().setMcpValue(indexObject, key, value);
           },
           getIndex: function(){
             const mcps = mcpStore.getState().mcps;
@@ -108,7 +108,17 @@ export const mcpModel = {
             devices = [...devices, ]
             return devices;
           }
-          
       }
-      },
+    },
+    merge: (state, currentState) => { 
+        const mcps = state.mcps.map(mcp => {
+            var newMcp = recreateObject(mcp, mcpModel.create)
+            var ports = recreateArrayElement(newMcp, mcp.ports, mcpModel.create)
+            newMcp.ports = ports;
+            return newMcp;
+        })
+        state.mcps = mcps;
+        Object.assign(currentState, state)
+        return currentState
+    } 
 }

@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import {addItems, setModelValue, setNumberOfItems} from './util'
+import {addItems, circularReplacer, setModelValue, setNumberOfItems} from './util'
 import { ioModuleGroupModel } from "./Models/IoModules/ioModuleGroupModel";
 import { ioModuleModel } from "./Models/IoModules/ioModuleModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -189,8 +189,8 @@ const ioModuleStore = create(
     })
   },
 
-  setIOModuleGroupValue:(item, key, value,isUI,isData)=>{
-    const indexObject = item.getIndexObject();
+  setIOModuleGroupValue:(indexObject, key, value,isUI,isData)=>{
+    //const indexObject = item.getIndexObject();
     const index = indexObject.ioModuleGroupIndex
     set((state) => {
       const newIOModuleGroups = [...state.ioModuleGroups];
@@ -228,8 +228,8 @@ const ioModuleStore = create(
         });
       }
     },
-    setPortValue:(item, key, value,isUI,isData)=>{
-      const indexObject = item.getIndexObject();
+    setPortValue:(indexObject, key, value,isUI,isData)=>{
+      //const indexObject = item.getIndexObject();
       const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;
       const ioModuleIndex = indexObject.ioModuleIndex;
       const ioPortIndex = indexObject.ioPortIndex;
@@ -249,8 +249,14 @@ const ioModuleStore = create(
     },  
   }),
   {
-    name: 'eec-state',
+    name: 'ioModule-state',
     storage: createJSONStorage(() => localStorage),
+    serialize: (state) => {
+      return JSON.stringify(state, circularReplacer())
+    },
+    merge: (state, currentState) => { 
+      return ioModuleGroupModel.merge(state, currentState);
+    } 
   }
 ));
 

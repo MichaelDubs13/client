@@ -34,10 +34,11 @@ export const powerDropModel = {
         }
       },
       setValue: function(indexObject, key, value){
-        lpdStore.getState().setDropValue(this, key, value);
+        lpdStore.getState().setDropValue(indexObject, key, value);
       },
       setDataValue: function(key, value){
-        lpdStore.getState().setDropValue(this, key, value,false, true);
+        const indexObject = this.getIndexObject();
+        lpdStore.getState().setDropValue(indexObject, key, value,false, true);
       },
       getIndex: function(){
         return this.data.parent.drops.findIndex(drop => drop.data.id === this.data.id)

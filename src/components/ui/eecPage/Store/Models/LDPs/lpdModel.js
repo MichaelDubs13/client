@@ -2,7 +2,9 @@ import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { lpdConfiguration, lpdStore } from '../../lpdStore';
-import { getItemById } from '../../util';
+import { getItemById, recreateArrayElement, recreateObject } from '../../util';
+import { powerDropModel } from './powerDropModel';
+import { psuModel } from './psuModel';
 
 export const lpdModel = {
     create: () => { 
@@ -27,7 +29,7 @@ export const lpdModel = {
             return {lpdIndex:lpdIndex}
           },
           setValue: function(indexObject, key, value){
-            lpdStore.getState().setLpdValue(this, key, value);
+            lpdStore.getState().setLpdValue(indexObject, key, value);
           },
           getMFG: function(){
             if(this.psu_selected){
@@ -82,4 +84,20 @@ export const lpdModel = {
           }
         }
       },
+      merge: (state, currentState) => { 
+          const lpds = state.lpds.map(lpd => {
+                var newLpd = recreateObject(lpd, lpdModel.create)
+                var newPsus = recreateArrayElement(newLpd, lpd.psus, psuModel.create)
+                newPsus=newPsus.map(newPsu => {
+                  var drops = recreateArrayElement(newPsu, newPsu.drops, powerDropModel.create)
+                  newPsu.drops = drops;
+                  return newPsu;
+                });
+              newLpd.psus = newPsus;
+              return newLpd;
+          })
+          state.lpds = lpds;
+          Object.assign(currentState, state)
+          return currentState
+      } 
 }

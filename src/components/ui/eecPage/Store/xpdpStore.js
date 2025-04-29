@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import { pdpConfiguration } from "./pdpStore";
-import {addItems, setModelValue} from './util'
+import {addItems, circularReplacer, setModelValue} from './util'
 import { xpdpModel } from "./Models/XPDPs/xpdpModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -37,7 +37,7 @@ const xpdpConfiguration = {
 
 const xpdpStore = create(
     persist(
-      (set,get) => ({
+      (set) => ({
     
     xpdps:[],    
     setXpdps: (xpdps) => {
@@ -62,8 +62,8 @@ const xpdpStore = create(
       })
     },
     
-    setXPdpValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setXPdpValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const index = indexObject.pdpIndex
       set((state) => {
         const newPdps = [...state.xpdps];
@@ -88,8 +88,8 @@ const xpdpStore = create(
      * @param {String} value value of the parameter
      * @param {Boolean} isUI set value for UI object in the main object
      */
-    setBranchCircuitValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setBranchCircuitValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const pdpIndex = indexObject.pdpIndex;
       const branchCircuitIndex = indexObject.branchCircuitIndex;
       const amperage = indexObject.amperage;
@@ -103,9 +103,15 @@ const xpdpStore = create(
     },
     }),
     {
-      name: 'eec-state',
-      storage: createJSONStorage(() => localStorage),
-    }
+       name: 'xpdp-state',
+       storage: createJSONStorage(() => localStorage),
+       serialize: (state) => {
+         return JSON.stringify(state, circularReplacer())
+       },
+       merge: (state, currentState) => { 
+         return xpdpModel.merge(state, currentState);
+       } 
+     }
 ));
 
 export {

@@ -187,7 +187,7 @@ const lineStore = create((set) => ({
         const safetyGates = safetyGateStore.getState().safetyGates;
         const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
         const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
-        
+        console.log(items)
         var newStations = []
         newStations = lineConfiguration.getStations(items, newStations);
         newStations = newStations.filter(station => station)

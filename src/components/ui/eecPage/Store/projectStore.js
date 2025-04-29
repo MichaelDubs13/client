@@ -1,5 +1,6 @@
 import {create} from "zustand";
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { circularReplacer } from "./util";
 
 const projectStore = create(
     persist((set) => ({
@@ -30,6 +31,13 @@ const projectStore = create(
         set({installation_location:data.installation_location});
     },
 
+    clearConfig:()=>{
+        set({plant:"PLANT1"}); 
+        set({shop:"SHOP1"});  
+        set({line:"LINE1"});
+        set({installation_location:"UL"});
+    },
+
     getConfig:()=>{
         return {
             plant:projectStore.plant,
@@ -40,8 +48,11 @@ const projectStore = create(
     }
     }),
     {
-        name: 'eec-state',
+        name: 'project-state',
         storage: createJSONStorage(() => localStorage),
+        serialize: (state) => {
+            return JSON.stringify(state, circularReplacer())
+        },        
     }
 ));
 

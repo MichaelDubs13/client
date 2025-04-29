@@ -2,7 +2,8 @@ import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { safetyGateStore, safetyGateConfiguration } from '../../safetyGateStore';
-import { getItemById } from '../../util';
+import { getItemById, recreateArrayElement, recreateObject } from '../../util';
+import { safetyGateSwitchModel } from './safetyGateSwitchModel';
 
 export const safetyGateGroupModel = {
     create: () => { 
@@ -27,7 +28,7 @@ export const safetyGateGroupModel = {
           }
         },
         setValue: function(indexObject, key, value){
-          safetyGateStore.getState().setSafetyGateValue(this, key, value);
+          safetyGateStore.getState().setSafetyGateValue(indexObject, key, value);
         },
         getFullName: function() {
           return lineConfiguration.getDeviceFullName(this.location);
@@ -66,5 +67,17 @@ export const safetyGateGroupModel = {
      
       return safetyGate;
     },
+
+     merge: (state, currentState) => { 
+        const gates = state.safetyGates.map(gate => {
+            var newGate = recreateObject(gate, safetyGateGroupModel.create)
+            var safetyGateSwitches = recreateArrayElement(newGate, gate.safetyGateSwitches, safetyGateSwitchModel.create)
+            newGate.safetyGateSwitches = safetyGateSwitches;
+            return newGate;
+        })
+        state.safetyGates = gates;
+        Object.assign(currentState, state)
+        return currentState
+    } 
     
 }

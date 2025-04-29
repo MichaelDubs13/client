@@ -56,7 +56,8 @@ export const safetyGateSwitchModel = {
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value);
       },
       setDataValue: function(key, value){
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, key, value,false, true);
+        const indexObject = this.getIndexObject();
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value,false, true);
       },
       getNodeData: function(){
         return [

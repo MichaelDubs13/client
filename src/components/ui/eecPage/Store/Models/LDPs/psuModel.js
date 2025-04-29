@@ -42,7 +42,7 @@ export const psuModel = {
             }
           },
           setValue: function(indexObject, key, value){
-            lpdStore.getState().setPsuValue(this, key, value);
+            lpdStore.getState().setPsuValue(indexObject, key, value);
           },
           getFullName: function() {
             return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);

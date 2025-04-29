@@ -27,10 +27,11 @@ export const extensionUnitPositionModel = {
         return index;
       },
       setValue: function(indexObject, key, value){
-        hmiStore.getState().setExtensionUnitPositionValue(this, key, value);
+        hmiStore.getState().setExtensionUnitPositionValue(indexObject, key, value);
       },
       setDataValue: function(key, value){
-        hmiStore.getState().setExtensionUnitPositionValue(this, key, value,false, true);
+        const indexObject = this.getIndexObject();  
+        hmiStore.getState().setExtensionUnitPositionValue(indexObject, key, value,false, true);
       },
     }
   },

@@ -34,10 +34,11 @@ export const networkPortModel = {
             }
           },
           setValue: function(indexObject, key, value){
-            networkSwitchStore.getState().setPortValue(this, key, value);
+            networkSwitchStore.getState().setPortValue(indexObject, key, value);
           },
           setDataValue: function(key, value){
-            networkSwitchStore.getState().setPortValue(this, key, value,false, true);
+            const indexObject = this.getIndexObject();
+            networkSwitchStore.getState().setPortValue(indexObject, key, value,false, true);
           },
           getNodeData: function(){
             return [

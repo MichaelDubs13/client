@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, recreateArrayElement, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { hmiStore, hmiConfiguration } from '../../hmiStore';
 import { extensionUnitPositionModel } from './extensionUnitPositionModel';
@@ -140,5 +140,16 @@ export const hmiModel = {
     }
     return extensionUnitPositions;
   },
+    merge: (state, currentState) => { 
+    const hmis = state.hmis.map(hmi => {
+        var newHmi = recreateObject(hmi, hmiModel.create)
+        var newExtensionUnitPositions = recreateArrayElement(newHmi, hmi.extensionUnitPositions, extensionUnitPositionModel.create)
+        newHmi.extensionUnitPositions = newExtensionUnitPositions;
+        return newHmi;
+        })
+        state.hmis = hmis;
+        Object.assign(currentState, state)
+        return currentState
+    } 
      
 }

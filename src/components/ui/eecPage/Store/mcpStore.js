@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {addItems, setModelValue, setNumberOfItems} from './util'
+import {addItems, circularReplacer, setModelValue, setNumberOfItems} from './util'
 import { mcpModel } from "./Models/MCPs/mcpModel";
 import { portModel } from "./Models/MCPs/portModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -44,8 +44,8 @@ const mcpStore = create(
         return {mcps: [...state.mcps.slice(0, index), ...state.mcps.slice(index + 1)]};
       })
     },
-    setMcpValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setMcpValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const index = indexObject.mcpIndex
       set((state) => {
         const newMcps = [...state.mcps];
@@ -60,8 +60,8 @@ const mcpStore = create(
         return { mcps: newMcps };
       });
     },
-    setPortValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setPortValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const mcpIndex = indexObject.mcpIndex;
       const portIndex = indexObject.portIndex;
 
@@ -73,10 +73,16 @@ const mcpStore = create(
       });
     },
   }),
-  {
-    name: 'eec-state',
-    storage: createJSONStorage(() => localStorage),
-  }
+   {
+     name: 'mcp-state',
+     storage: createJSONStorage(() => localStorage),
+     serialize: (state) => {
+       return JSON.stringify(state, circularReplacer())
+     },
+     merge: (state, currentState) => { 
+       return mcpModel.merge(state, currentState);
+     } 
+   }
 ));
 
 export {

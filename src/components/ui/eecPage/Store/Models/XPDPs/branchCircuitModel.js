@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pdpStore } from "../../pdpStore";
+import { xpdpStore } from '../../xpdpStore';
 
 
 export const branchCircuitModel = {
@@ -45,10 +46,11 @@ export const branchCircuitModel = {
            return this.data.parent.branchCircuit[amperage].findIndex(drop => drop.data.id === this.data.id)
          },
          setValue: function(indexObject, key, value){
-           xpdpStore.getState().setBranchCircuitValue(this, key, value, false);
+           xpdpStore.getState().setBranchCircuitValue(indexObject, key, value, false);
          },
          setDataValue: function(key, value){
-           xpdpStore.getState().setBranchCircuitValue(this, key, value, false, true);
+          const indexObject = this.getIndexObject();
+           xpdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, true);
          },
          getNodeData: function(){
            return [

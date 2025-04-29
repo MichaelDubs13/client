@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import {addItems, setModelValue, setNumberOfItems} from './util'
+import {addItems, circularReplacer, setModelValue, setNumberOfItems} from './util'
 import { networkSwitchModel } from "./Models/NetworkSwitches/networkSwitchModel";
 import { networkPortModel } from "./Models/NetworkSwitches/networkPortModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -200,8 +200,8 @@ const networkSwitchStore = create(
     })
   },
 
-  setNetworkSwitchValue:(item, key, value,isUI, isData)=>{
-    const indexObject = item.getIndexObject();
+  setNetworkSwitchValue:(indexObject, key, value,isUI, isData)=>{
+    //const indexObject = item.getIndexObject();
     const index = indexObject.networkSwitchIndex
     
     if(Object.keys(indexObject).length > 0){
@@ -227,8 +227,8 @@ const networkSwitchStore = create(
         return { networkSwitches: newNetworkSwitches };
       });
     },
-  setPortValue:(item, key, value,isUI,isData)=>{
-    const indexObject = item.getIndexObject();
+  setPortValue:(indexObject, key, value,isUI,isData)=>{
+    //const indexObject = item.getIndexObject();
     const networkSwitchIndex = indexObject.networkSwitchIndex;
     const portIndex = indexObject.portIndex;
 
@@ -242,8 +242,14 @@ const networkSwitchStore = create(
     }, 
   }),
   {
-    name: 'eec-state',
+    name: 'networkswitch-state',
     storage: createJSONStorage(() => localStorage),
+    serialize: (state) => {
+      return JSON.stringify(state, circularReplacer())
+    },
+    merge: (state, currentState) => { 
+      return networkSwitchModel.merge(state, currentState);
+    } 
   }
 ));
 

@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {addItems, setModelValue, setNumberOfItems} from './util'
+import {addItems, circularReplacer, setModelValue, setNumberOfItems} from './util'
 import { lpdModel } from "./Models/LDPs/lpdModel";
 import { psuModel } from "./Models/LDPs/psuModel";
 import { powerDropModel } from "./Models/LDPs/powerDropModel";
@@ -76,8 +76,8 @@ const lpdStore = create(
         return {lpds: [...state.lpds.slice(0, index), ...state.lpds.slice(index + 1)]};
       })
     },
-    setLpdValue:(item, key, value,isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setLpdValue:(indexObject, key, value,isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const index = indexObject.lpdIndex
       set((state) => {
         const newLpds = [...state.lpds];
@@ -92,8 +92,8 @@ const lpdStore = create(
         return { lpds: newLpds };
       })
     },
-    setPsuValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setPsuValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const lpdIndex = indexObject.lpdIndex;
       const psuIndex = indexObject.psuIndex;
 
@@ -117,8 +117,8 @@ const lpdStore = create(
         return { lpds: newLpds };
       });
     },
-    setDropValue:(item, key, value,isUI,isData)=>{
-      const indexObject = item.getIndexObject();
+    setDropValue:(indexObject, key, value,isUI,isData)=>{
+      //const indexObject = item.getIndexObject();
       const lpdIndex = indexObject.lpdIndex;
       const psuIndex = indexObject.psuIndex;
       const dropIndex = indexObject.dropIndex;
@@ -131,10 +131,16 @@ const lpdStore = create(
       });
     },
   }),
-  {
-    name: 'eec-state',
-    storage: createJSONStorage(() => localStorage),
-  }
+   {
+      name: 'lpd-state',
+      storage: createJSONStorage(() => localStorage),
+      serialize: (state) => {
+        return JSON.stringify(state, circularReplacer())
+      },
+      merge: (state, currentState) => { 
+        return lpdModel.merge(state, currentState);
+      } 
+    }
 ));
 
 export {

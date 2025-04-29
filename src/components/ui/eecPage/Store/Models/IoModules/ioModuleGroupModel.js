@@ -1,8 +1,10 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits, getItemById } from '../../util';
+import { formatToTwoDigits, getItemById, recreateArrayElement, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { ioModuleStore, ioModuleGroupConfiguration } from '../../ioModuleStore';
+import { ioModuleModel } from './ioModuleModel';
+import { ioModulePortModel } from './ioModulePortModel';
 
 
 export const ioModuleGroupModel = {
@@ -37,7 +39,8 @@ export const ioModuleGroupModel = {
         ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value);
       },
       setDataValue: function(key, value){
-        ioModuleStore.getState().setIOModuleGroupValue(this, key, value,false, true);
+        const indexObject = this.getIndexObject();
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value,false, true);
       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location);
@@ -86,5 +89,21 @@ export const ioModuleGroupModel = {
    
     return ioModuleGroup;
   },
+  merge: (state, currentState) => { 
+      const ioModuleGroups = state.ioModuleGroups.map(ioModuleGroup => {
+          var newIoModuleGroup = recreateObject(ioModuleGroup, ioModuleGroupModel.create)
+          var newIoModules = recreateArrayElement(newIoModuleGroup, ioModuleGroup.ioModules, ioModuleModel.create)
+          newIoModules=newIoModules.map(newIoModule => {
+            var ports = recreateArrayElement(newIoModule, newIoModule.ports, ioModulePortModel.create)
+            newIoModule.ports = ports;
+            return newIoModule;
+          });
+          newIoModuleGroup.ioModules = newIoModules;
+          return newIoModuleGroup;
+      })
+      state.ioModuleGroups = ioModuleGroups;
+      Object.assign(currentState, state)
+      return currentState
+  } 
        
 }

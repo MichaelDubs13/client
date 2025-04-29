@@ -2,13 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { pdpStore } from "../../pdpStore";
 
 
-export const branchCircuitModel = {
+export const pdpBranchCircuitModel = {
     /**
    * creates a new branch circuit with default values
    * @returns 
    */
   create: (parent, amperage) => {
-    return {
+    const branchCircuit= {
       PwrDrop_Spare: false,
       DropType: "A-external",
       PwrDrop_DescTxt: "",
@@ -45,10 +45,11 @@ export const branchCircuitModel = {
         return this.data.parent.branchCircuit[amperage].findIndex(drop => drop.data.id === this.data.id)
       },
       setValue: function(indexObject, key, value){
-        pdpStore.getState().setBranchCircuitValue(this, key, value, false, false);
+        pdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, false);
       },
       setDataValue: function(key, value){
-        pdpStore.getState().setBranchCircuitValue(this, key, value, false, true);
+        const indexObject = this.getIndexObject();
+        pdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, true);
       },
       getNodeData: function(){
         return [
@@ -67,5 +68,7 @@ export const branchCircuitModel = {
         return []
       }
     }
+
+    return branchCircuit;
   },
 }

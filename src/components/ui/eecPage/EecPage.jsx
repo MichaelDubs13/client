@@ -21,8 +21,8 @@ import HeadingItem from "./Components/Util/HeadingItem";
 import { useState } from "react";
 import ElectricalDiagram from "./Flow/ElectricalDiagram";
 import NetworkDiagram from "./Flow/NetworkDiagram";
-import Cookies from 'js-cookie';
 import { pdpModel } from "./Store/Models/PDPs/pdpModel";
+import ClearButton from "./ClearButton";
 
 
 
@@ -131,6 +131,7 @@ const EecPage = () => {
               <Button onClick={handleSumbit} style={{marginTop:'5px'}}>Generate</Button>
               <SaveButton/>
               <LoadButton/>
+              <ClearButton/>
             </div>
 
             {/* <EditableTable/> */}

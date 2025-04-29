@@ -50,6 +50,10 @@ export const ioModuleModel = {
           setValue: function(indexObject, key, value){
             ioModuleStore.getState().setIOModuleValue(indexObject, key, value);
           },
+          setDataValue: function(key, value){
+            const indexObject = this.getIndexObject();
+            ioModuleStore.getState().setIOModuleValue(indexObject, key, value,false, true);
+          },
           getNodeData: function(){
             return [
               this.deviceTypeSelection,
@@ -61,9 +65,6 @@ export const ioModuleModel = {
           getItemById:function(id){
             return getItemById(this.ports, id);
           },
-          setDataValue: function(key, value){
-            ioModuleStore.getState().setIOModuleValue(this, key, value,false, true);
-          },
           getStations: function(){
             return [this.location,]
           },
@@ -74,14 +75,16 @@ export const ioModuleModel = {
             return []
           },
           setPowerSource:function(line, location, name){
-            ioModuleStore.getState().setIOModuleGroupValue(this.data.parent, "powerSourceLine", line);
-            ioModuleStore.getState().setIOModuleGroupValue(this.data.parent, "powerSourceLocation", location);
-            ioModuleStore.getState().setIOModuleGroupValue(this.data.parent, "powerSourceDT", name);
+            const indexObject = this.getIndexObject();
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceLine", line);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceLocation", location);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceDT", name);
           },
           setNetworkSource:function(line, location, name){
-            ioModuleStore.getState().setIOModuleGroupValue(this.data.parent, "ethernetSourceLine", line);
-            ioModuleStore.getState().setIOModuleGroupValue(this.data.parent, "ethernetSourceLocation", location);
-            ioModuleStore.getState().setIOModuleGroupValue(this.data.parent, "ethernetSourceDT", name);
+            const indexObject = this.getIndexObject();
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLine", line);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLocation", location);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceDT", name);
           },
         }
     

@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import {addItems, setModelValue, setNumberOfItems} from './util'
+import {addItems, circularReplacer, setModelValue, setNumberOfItems} from './util'
 import { hmiModel } from "./Models/HMIs/hmiModel";
 import { extensionUnitPositionModel } from "./Models/HMIs/extensionUnitPositionModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -154,8 +154,8 @@ const hmiConfiguration = {
         })
       },
     
-      setHmiValue:(item, key, value,isUI,isData)=>{
-        const indexObject = item.getIndexObject();
+      setHmiValue:(indexObject, key, value,isUI,isData)=>{
+        //const indexObject = item.getIndexObject();
         const index = indexObject.hmiIndex
         if(Object.keys(indexObject).length > 0){
           set((state) => {
@@ -182,8 +182,8 @@ const hmiConfiguration = {
         return { hmis: newHmis };
       });
     },
-    setExtensionUnitPositionValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setExtensionUnitPositionValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const hmiIndex = indexObject.hmiIndex;
       const extensionUnitPositionIndex = indexObject.extensionUnitPositionIndex;
       set((state) => {
@@ -195,8 +195,14 @@ const hmiConfiguration = {
     },     
   }),
   {
-    name: 'eec-state',
+    name: 'hmi-state',
     storage: createJSONStorage(() => localStorage),
+    serialize: (state) => {
+      return JSON.stringify(state, circularReplacer())
+    },
+    merge: (state, currentState) => { 
+      return hmiModel.merge(state, currentState);
+    } 
   }
 ));
 

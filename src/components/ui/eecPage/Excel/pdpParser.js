@@ -3,7 +3,7 @@ import {pdpConfiguration} from '../Store/pdpStore';
 import { findClosestHigherNumber } from './util';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { pdpModel } from '../Store/Models/PDPs/pdpModel';
-import { branchCircuitModel } from '../Store/Models/PDPs/branchCircuitModel';
+import { pdpBranchCircuitModel } from '../Store/Models/PDPs/pdpBranchCircuitModel';
 
 const pdpParser = {
     enclosureSizeOptions: ["800x1400x500", "1000x1800x500"],
@@ -108,7 +108,7 @@ const pdpParser = {
         return pdps;
     },
     createBranchCircuit:(sourceDevice, pdp, amperage)=>{
-        const branch = branchCircuitModel.create(pdp, amperage);
+        const branch = pdpBranchCircuitModel.create(pdp, amperage);
         branch.line=ProjectConfiguration.line;
         branch.targetDT = sourceDevice.device_dt;
         branch.targetLocation = sourceDevice.target_device_location;

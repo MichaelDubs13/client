@@ -29,10 +29,11 @@ export const ioModulePortModel = {
             return {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex, ioPortIndex:ioPortIndex};
           },
           setValue: function(indexObject, key, value){
-            ioModuleStore.getState().setPortValue(this, key, value);
+            ioModuleStore.getState().setPortValue(indexObject, key, value);
           },
           setDataValue: function(key, value){
-            ioModuleStore.getState().setPortValue(this, key, value,false, true);
+            const indexObject = this.getIndexObject();
+            ioModuleStore.getState().setPortValue(indexObject, key, value,false, true);
           },
           getNodeData: function(){
             return [

@@ -1,8 +1,8 @@
 import {create} from "zustand";
-import {addItems, setModelValue} from './util'
+import {addItems, circularReplacer, setModelValue} from './util'
 import {  pdpModel } from "./Models/PDPs/pdpModel";
 import { hotPowerBranchCircuitModel } from "./Models/PDPs/hotPowerBranchCircuitModel";
-import { branchCircuitModel } from "./Models/PDPs/branchCircuitModel";
+import { pdpBranchCircuitModel } from "./Models/PDPs/pdpBranchCircuitModel";
 import { persist, createJSONStorage  } from 'zustand/middleware';
 
 
@@ -92,7 +92,7 @@ const pdpConfiguration = {
   createBranchCircuits: (numberOfDrps, parent, amperage) => {
     var newPwrDrops = []
     for(let i=0; i<numberOfDrps; i++){
-        var newPwrDrop = branchCircuitModel.create(parent, amperage);
+        var newPwrDrop = pdpBranchCircuitModel.create(parent, amperage);
         newPwrDrops.push(newPwrDrop);
     }
     return newPwrDrops;
@@ -147,8 +147,8 @@ const pdpStore = create()(
      * @param {String} key name of the parameter
      * @param {String} value value of the parameter
      */
-    setPdpValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setPdpValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const index = indexObject.pdpIndex
       set((state) => {
         const newPdps = [...state.pdps];
@@ -164,8 +164,8 @@ const pdpStore = create()(
      * @param {String} value value of the parameter
      * @param {Boolean} isUI set value for UI object in the main object
      */
-    setBranchCircuitValue:(item, key, value, isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setBranchCircuitValue:(indexObject, key, value, isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const pdpIndex = indexObject.pdpIndex;
       const branchCircuitIndex = indexObject.branchCircuitIndex;
       const amperage = indexObject.amperage;
@@ -187,6 +187,7 @@ const pdpStore = create()(
     setNumberOfPowerDrps:(index, amperage, value)=>{
       set((state) => {
         var newPdps = [...state.pdps];
+        console.log(newPdps);
         var branchCircuit  = pdpConfiguration.createBranchCircuits(value, newPdps[index], amperage);
         newPdps[index].branchCircuit[amperage] = branchCircuit;
         branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
@@ -222,8 +223,8 @@ const pdpStore = create()(
      * @param {String} key name of the parameter
      * @param {String} value value of the parameter
      */
-    setHotPowerValue:(item, key, value,isUI, isData)=>{
-      const indexObject = item.getIndexObject();
+    setHotPowerValue:(indexObject, key, value,isUI, isData)=>{
+      //const indexObject = item.getIndexObject();
       const pdpIndex = indexObject.pdpIndex;
       const hotPowerIndex = indexObject.hotPowerIndex;
 
@@ -236,8 +237,14 @@ const pdpStore = create()(
     },
   }),
   {
-    name: 'eec-state',
+    name: 'pdp-state',
     storage: createJSONStorage(() => localStorage),
+    serialize: (state) => {
+      return JSON.stringify(state, circularReplacer())
+    },
+    merge: (state, currentState) => {       
+      return pdpModel.merge(state, currentState);
+    } 
   }
 ));
 
