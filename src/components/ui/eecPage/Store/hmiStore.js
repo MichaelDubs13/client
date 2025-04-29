@@ -93,6 +93,7 @@ const hmiConfiguration = {
         hmis:[],
         hmisOptions:[],
         setWipHmi: (hmi) => {
+          console.log(hmi);
           set({wipHmi:hmi});
         },
         addWipHmi: () => {
