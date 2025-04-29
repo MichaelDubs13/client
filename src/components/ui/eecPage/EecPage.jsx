@@ -9,7 +9,7 @@ import { projectStore } from "./Store/projectStore";
 import { xpdpConfiguration, xpdpStore } from "./Store/xpdpStore";
 import { mcpConfiguration, mcpStore } from "./Store/mcpStore";
 import { lpdConfiguration, lpdStore } from "./Store/lpdStore";
-import {pdpStore, pdpConfiguration} from "./Store/pdpStore";
+import {pdpStore} from "./Store/pdpStore";
 import LoadButton from "./LoadButton";
 import SaveButton from "./SaveButton";
 import UploadButton from "./UploadButton";
@@ -21,7 +21,7 @@ import HeadingItem from "./Components/Util/HeadingItem";
 import { useState } from "react";
 import ElectricalDiagram from "./Flow/ElectricalDiagram";
 import NetworkDiagram from "./Flow/NetworkDiagram";
-import EditableTable from "./Components/Util/Table/EditableTable";
+import Cookies from 'js-cookie';
 import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 
 

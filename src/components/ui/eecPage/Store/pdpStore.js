@@ -1,8 +1,9 @@
 import {create} from "zustand";
 import {addItems, setModelValue} from './util'
-import { pdpModel } from "./Models/PDPs/pdpModel";
+import {  pdpModel } from "./Models/PDPs/pdpModel";
 import { hotPowerBranchCircuitModel } from "./Models/PDPs/hotPowerBranchCircuitModel";
 import { branchCircuitModel } from "./Models/PDPs/branchCircuitModel";
+import { persist, createJSONStorage  } from 'zustand/middleware';
 
 
 const pdpOptions = {
@@ -97,7 +98,9 @@ const pdpConfiguration = {
     return newPwrDrops;
   },
 }
-const pdpStore = create((set) => ({
+const pdpStore = create()(
+  persist(
+    (set) => ({
     pdps:[],
     /**
      * Replace current pdps objects with input pdp objects, this is used to set pdp data from excel sheet/save files
@@ -195,16 +198,19 @@ const pdpStore = create((set) => ({
      * Creates 3 instances of the hotpoweritems for target pdp, this function uses index to find the target pdp
      * @param {Number} index index of the target pdp
      */
-    setHotPowerBranchCircuit:(index) => {
+    setHotPowerBranchCircuit:(item) => {
+      const indexObject = item.getIndexObject();
+      const pdpIndex = indexObject.pdpIndex;
+
       var newPwrDrops = []
       for(let i=0; i<3; i++){
-          var newPwrDrop = hotPowerBranchCircuitModel.create();
+          var newPwrDrop = hotPowerBranchCircuitModel.create(item);
           newPwrDrops.push(newPwrDrop);
       }
 
       set((state) => {
         const newPdps = [...state.pdps];
-        newPdps[index] = {...newPdps[index], hotPowerDrops: newPwrDrops};
+        newPdps[pdpIndex].hotPowerDrops = newPwrDrops;
         return { pdps: newPdps };
       });
     },
@@ -228,8 +234,12 @@ const pdpStore = create((set) => ({
         return { pdps: newPdps };
       });
     },
-
-}));
+  }),
+  {
+    name: 'eec-state',
+    storage: createJSONStorage(() => localStorage),
+  }
+));
 
 export {
   pdpStore,

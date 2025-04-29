@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, getItemById } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { mcpStore, mcpConfiguration } from '../../mcpStore';
 
@@ -86,7 +86,7 @@ export const mcpModel = {
             return mcps.findIndex(mcp => mcp.data.id === this.data.id)
           },
           getItemById: function(id){
-            return mcpConfiguration.getItemById(this, id);
+            return getItemById(this.portss, id);
           },
           getNodeData: function(){
             return [

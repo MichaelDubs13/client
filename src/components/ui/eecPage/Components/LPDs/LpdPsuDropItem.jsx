@@ -1,9 +1,8 @@
 import "../../Eec.css";
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
-import { networkSwitchConfiguration } from '../../Store/networkSwitchStore';
 import DeviceSelection from "../Common/DeviceSelection";
-import { lineConfiguration } from "../../Store/lineStore";
+import NetworkPortSelection from "../Common/NetworkPortSelection";
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -29,8 +28,7 @@ import { lineConfiguration } from "../../Store/lineStore";
     [
         {value: "XD2", label: "XD2"},
         {value: "XD3", label: "XD3"},
-    ] : []
-    const networkPortOptions = networkSwitchConfiguration.getNetworkDropPortOptions(16)
+    ] : []    
   
     return (
       <div className="lpd-psu-drop-item">
@@ -45,11 +43,9 @@ import { lineConfiguration } from "../../Store/lineStore";
               stationTitle={"Location designation(i.e., Station number)"} stationProperty={"targetLocation"}
               powerSource={drop}
               canCreateDevice={true}/>                                
-          {
-            drop.deviceTag?.startsWith(lineConfiguration.networkSwitchIndicator) && 
-            <DropdownItem title={"Enter the device port to be connected to"} item={drop} property={"targetPort"}  
-              options={networkPortOptions} index={index}/>
-          }
+          <NetworkPortSelection title={"Enter the device port to be connected to"} item={drop} 
+              index={index} property={"ethernetSourceDevicePort"} targetDT={drop.targetDT} targetLocation={drop.targetLocation} targetLine={drop.line}
+              portSelect="power"/>
           <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
           <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"}/>              
         </div>

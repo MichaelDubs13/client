@@ -2,6 +2,7 @@ import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { safetyGateStore, safetyGateConfiguration } from '../../safetyGateStore';
+import { getItemById } from '../../util';
 
 export const safetyGateGroupModel = {
     create: () => { 
@@ -36,7 +37,7 @@ export const safetyGateGroupModel = {
           return safetyGates.findIndex(safetyGate => safetyGate.data.id === this.data.id)
         },
         getItemById: function(id){
-          return safetyGateConfiguration.getItemById(this, id);
+          return getItemById(this.safetyGateSwitches, id);
         },
         getNodeData: function(){
           return [

@@ -1,5 +1,5 @@
 import "../../Eec.css";
-import { pdpOptions, pdpStore } from '../../Store/pdpStore';
+import { pdpOptions } from '../../Store/pdpStore';
 import InputTextItem from '../Util/InputTextItem';
 import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
@@ -9,11 +9,10 @@ import { DataTable } from '@tesla/design-system-react';
 import LineLocationSelection from '../Common/LineLocationSelection';
 
 const PdpConfiguration = ({pdp, index}) => {
-    const setHotPowerBranchCircuit = pdpStore((state) => state.setHotPowerBranchCircuit);
     const pdpIndex = {pdpIndex:index}
     const handleSetOpt_HotPwrChange = (value)=> {
         if(value){
-            setHotPowerBranchCircuit(index);
+            pdp.setHotPowerBranchCircuit();
         }
     }
 

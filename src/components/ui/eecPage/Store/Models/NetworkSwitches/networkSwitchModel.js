@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, getItemById } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { networkSwitchStore, networkSwitchConfiguration } from '../../networkSwitchStore';
 import { networkPortModel } from './networkPortModel';
@@ -55,14 +55,14 @@ export const networkSwitchModel = {
         return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);
       },
       getPortOptions: function() {
-        return networkSwitchConfiguration.getNetworkDropPortOptions(this.ports.length, this.networkType, this.switchType);
+        return networkSwitchConfiguration.getEthernetNetworkPortOptions(this.ports.length, this.networkType, this.switchType);
       },
       getIndex: function(){
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
         return networkSwitches.findIndex(networkSwitch => networkSwitch.data.id === this.data.id)
       },
       getItemById: function(id){
-        return networkSwitchConfiguration.getItemById(this, id);
+        return getItemById(this.ports, id);
       },
       getNodeData: function(){
         return [

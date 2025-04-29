@@ -1,6 +1,8 @@
 import {create} from "zustand";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-const projectStore = create((set) => ({
+const projectStore = create(
+    persist((set) => ({
     plant:"PLANT1",
     shop:"SHOP1",
     line:"LINE1", 
@@ -36,7 +38,12 @@ const projectStore = create((set) => ({
             installation_location:projectStore.installation_location,
         }
     }
-}));
+    }),
+    {
+        name: 'eec-state',
+        storage: createJSONStorage(() => localStorage),
+    }
+));
 
 export {
     projectStore,

@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "http-proxy-middleware": "^3.0.3",
+    "js-cookie": "^3.0.5",
     "jszip": "^3.10.1",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
@@ -36,7 +37,7 @@
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5",
     "xmldom": "^0.6.0",
-    "zustand": "^4.5.4"
+    "zustand": "^4.5.6"
   },
   "scripts": {
     "start": "react-scripts start",

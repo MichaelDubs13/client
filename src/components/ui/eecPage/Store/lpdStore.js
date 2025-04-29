@@ -3,6 +3,7 @@ import {addItems, setModelValue, setNumberOfItems} from './util'
 import { lpdModel } from "./Models/LDPs/lpdModel";
 import { psuModel } from "./Models/LDPs/psuModel";
 import { powerDropModel } from "./Models/LDPs/powerDropModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const lpdOptions = {
   psuSupplyVoltageOptions: [
@@ -13,15 +14,15 @@ const lpdOptions = {
   ],
 
   psuSelection120_240Options:[
-  { value: "Balluff-BAE00ET", label: "Balluff: BAE00ET" },
-  { value: "Balluff-BAE00FL", label: "Balluff: BAE00FL" },
-  { value: "Balluff-BAE0133", label: "Balluff: BAE0133" },
+    {value: "Balluff:BAE00ET", label: "Balluff:BAE00ET"},
+    {value: "Balluff-BAE00FL", label: "Balluff:BAE00FL"},
+    {value: "Balluff:BAE0133", label: "Balluff:BAE0133"},
   ],
 
   psuSelection400_480Options:[
-  { value: "Siemens", label: "Siemens: 6ES7148-4PC00-0HA0" },
-  { value: "Turck", label: "Turck: PSU67-3P-1MP-2M5-24200-F" },
-  { value: "Puls", label: "Puls: FPT500.247-064-102" },
+    {value: "Siemens:6ES7148-4PC00-0HA0", label: "Siemens:6ES7148-4PC00-0HA0"},
+    {value: "Turck:PSU67-3P-1MP-2M5-24200-F", label: "Turck:PSU67-3P-1MP-2M5-24200-F"},
+    {value: "Puls:FPT500.247-064-102", label: "Puls:FPT500.247-064-102"},
   ],
   psuToPsuCableLengthOptions:[
     { value: "TBD", label: "TBD" },
@@ -38,16 +39,6 @@ const lpdOptions = {
   ],
 }
 const lpdConfiguration = {
-  getItemById:(lpd, id) =>{
-    for(let i=0;i<lpd.psus.length;i++){
-      const psu = lpd.psus[i];
-      if(psu.data.id === id) return psu;
-      const drop = psu.getItemById(id);
-      if(drop) return drop;
-    }
-
-    return null;
-  },
   getDrop:(lpds,location, device, port) => {
     for(let i=0;i<lpds.length;i++){
       const drop = lpds[i].getDrop(location, device, port);
@@ -61,7 +52,8 @@ const lpdConfiguration = {
     return lpds;
   }
 }
-const lpdStore = create((set) => ({
+const lpdStore = create(
+  persist((set) => ({
     lpds:[],   
     setLpds: (lpds) => {
       set({lpds:lpds});
@@ -138,7 +130,12 @@ const lpdStore = create((set) => ({
         return { lpds: newLpds };
       });
     },
-}));
+  }),
+  {
+    name: 'eec-state',
+    storage: createJSONStorage(() => localStorage),
+  }
+));
 
 export {
   lpdStore,

@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, getItemById } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { ioModuleStore, ioModuleGroupConfiguration } from '../../ioModuleStore';
 
@@ -34,7 +34,7 @@ export const ioModuleGroupModel = {
         return {ioModuleGroupIndex:ioModuleGroupIndex};
       },
       setValue: function(indexObject, key, value){
-        ioModuleStore.getState().setIOModuleGroupValue(this, key, value);
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value);
       },
       setDataValue: function(key, value){
         ioModuleStore.getState().setIOModuleGroupValue(this, key, value,false, true);
@@ -47,7 +47,7 @@ export const ioModuleGroupModel = {
         return ioModuleGroups.findIndex(ioModuleGroup => ioModuleGroup.data.id === this.data.id)
       },
       getItemById: function(id){
-        return ioModuleGroupConfiguration.getItemById(this, id);
+        return getItemById(this.ioModules, id);
       },
       getNodeData: function(){
         return [
@@ -55,14 +55,16 @@ export const ioModuleGroupModel = {
         ]
       },
       setPowerSource:function(line, location, name){
-        ioModuleStore.getState().setIOModuleGroupValue(this, "powerSourceLine", line);
-        ioModuleStore.getState().setIOModuleGroupValue(this, "powerSourceLocation", location);
-        ioModuleStore.getState().setIOModuleGroupValue(this, "powerSourceDT", name);
+        const indexObject = this.getIndexObject();
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceLine", line);
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceLocation", location);
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceDT", name);
       },
       setNetworkSource:function(line, location, name){
-        ioModuleStore.getState().setIOModuleGroupValue(this, "ethernetSourceLine", line);
-        ioModuleStore.getState().setIOModuleGroupValue(this, "ethernetSourceLocation", location);
-        ioModuleStore.getState().setIOModuleGroupValue(this, "ethernetSourceDT", name);
+        const indexObject = this.getIndexObject();
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLine", line);
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLocation", location);
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceDT", name);
       },
       getStations: function(){
         var stations = []

@@ -13,7 +13,7 @@ import { lineConfiguration } from '../../Store/lineStore';
 const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
     const setNumberOfIOModules = ioModuleStore((state) => state.setNumberOfIOModules);
     const ioModuleGroupIndex = {ioModuleGroupIndex:index}
-    const networkPortOptions = networkSwitchConfiguration.getNetworkDropPortOptions(16)
+    const networkPortOptions = networkSwitchConfiguration.getEthernetNetworkPortOptions(16)
     return (
         
         <div>

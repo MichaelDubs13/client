@@ -44,7 +44,6 @@ export const xpdpModel = {
             pdpIndex:pdpIndex,
           }
       },
-    
       setValue: function(indexObject, key, value){
           xpdpStore.getState().setXPdpValue(this, key, value);
       },

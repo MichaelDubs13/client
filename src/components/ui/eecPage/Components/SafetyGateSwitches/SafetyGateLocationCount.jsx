@@ -9,7 +9,6 @@ import DeleteButton from "../Util/DeleteButton";
 import DuplicateButton from "../Util/DuplicateButton";
 
 const SafetyGateLocationCount = () => {
-    // this is the data being used in the UI for the safety gate switches
     const line = projectStore((state) => state.line);
     const safetyGates = safetyGateStore((state) => state.safetyGates);
     const addSafetyGates =  safetyGateStore((state) => state.addSafetyGates);

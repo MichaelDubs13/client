@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, getItemById } from '../../util';
 import {  lpdStore } from '../../lpdStore';
 
 export const psuModel = {
@@ -55,11 +55,7 @@ export const psuModel = {
             return this.data.parent.psus.findIndex(psu => psu.data.id === this.data.id)
           },
           getItemById:function(id){
-            for(let i=0;i<this.drops.length;i++){
-              const drop = this.drops[i];
-              if(drop.data.id === id) return drop;
-            }
-            return null;
+            return getItemById(this.drops, id);
           },
           getNodeData: function(){
             return [
