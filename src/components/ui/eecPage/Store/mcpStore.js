@@ -64,7 +64,7 @@ const mcpStore = create(
       //const indexObject = item.getIndexObject();
       const mcpIndex = indexObject.mcpIndex;
       const portIndex = indexObject.portIndex;
-
+      console.log(indexObject)
       set((state) => {
         const newMcps = [...state.mcps];
         const ports = newMcps[mcpIndex].ports;

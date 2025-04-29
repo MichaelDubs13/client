@@ -128,16 +128,14 @@ export const hmiModel = {
          hmiConfiguration.getRfidPositions(hmi);
          return hmi;
        },
-
-       // change this to Extension unit positions
-  initializeExtensionUnitPositions: (numberOfExtensionUnitPositions, parent) => {
-    var extensionUnitPositions = [];
-    for (let i = 0; i < numberOfExtensionUnitPositions; i++) {
-      var extensionUnitPosition = extensionUnitPositionModel.create(parent);
-      extensionUnitPositions.push(extensionUnitPosition)
-    }
-    return extensionUnitPositions;
-  },
+    initializeExtensionUnitPositions: (numberOfExtensionUnitPositions, parent) => {
+        var extensionUnitPositions = [];
+        for (let i = 0; i < numberOfExtensionUnitPositions; i++) {
+        var extensionUnitPosition = extensionUnitPositionModel.create(parent);
+        extensionUnitPositions.push(extensionUnitPosition)
+        }
+        return extensionUnitPositions;
+    },
     merge: (state, currentState) => { 
     const hmis = state.hmis.map(hmi => {
         var newHmi = recreateObject(hmi, hmiModel.create)

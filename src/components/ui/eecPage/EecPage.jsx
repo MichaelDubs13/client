@@ -47,6 +47,8 @@ const EecPage = () => {
     const handleSumbit = (event) => {
       event.preventDefault();
       const config = getConfig();
+      console.log(config);
+      var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
       const validatedPdps =pdpModel.generateData(pdps);
       const validatedXpdps =xpdpConfiguration.generateData(xpdps);
       const validatedMcps =mcpConfiguration.generateData(mcps);
@@ -57,16 +59,16 @@ const EecPage = () => {
       const validatedIOModules = ioModuleGroupConfiguration.generateData(ioModuleGroups);
       var devices = []
       var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
-      downloadXML(imx, "generated_imx.imx");
+      downloadXML(imx, name);
     }
 
 
-    const downloadXML = (doc) => {
+    const downloadXML = (doc, name) => {
       const fileData = doc;
       const blob = new Blob([fileData], { type: "text/xml" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.download = "generatedEEC.imx";
+      link.download = name;
       link.href = url;
       link.click();
     }
@@ -129,12 +131,11 @@ const EecPage = () => {
             <div style={{display: "flex", justifyContent: "left", gap: "15px", alignContent:'center', alignItems:'center'}}>
               <UploadButton/>
               <Button onClick={handleSumbit} style={{marginTop:'5px'}}>Generate</Button>
-              <SaveButton/>
-              <LoadButton/>
+              {/* <SaveButton/>
+              <LoadButton/> */}
               <ClearButton/>
             </div>
 
-            {/* <EditableTable/> */}
             <LineConfiguration/>
           </div>
         </>

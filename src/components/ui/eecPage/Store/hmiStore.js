@@ -81,9 +81,6 @@ const hmiConfiguration = {
     }
     return numberOfExtensionUnitPositions;
    },
-   generateData: (hmis) => {
-    return hmis;
-    }
   }
   
 
@@ -102,13 +99,6 @@ const hmiConfiguration = {
             const newHmis = [...state.hmis, newHmi]
             return {hmis:newHmis}
           })    
-        },
-        /**
-         * Replace current HMIs objects with input HMIs objects, this is used to set HMI data from excel sheet/save files
-         * @param {Array} hmis 
-         */
-        setHmis: (hmis) => {
-          set({hmis:hmis});
         },
         setHmisOptions:(hmis)=>{
           var hmisOptions= hmiConfiguration.getHmiOptions(hmis);

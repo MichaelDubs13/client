@@ -25,7 +25,7 @@ const DeviceSelection = ({
     const [deviceOptions, setDeviceOptions] = useState([])   
     
     useEffect(() => {
-        getLineOptions();
+        getLineOptions();        
     }, [item.line]);
 
     useEffect(() => {

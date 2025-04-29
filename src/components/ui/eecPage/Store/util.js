@@ -1,5 +1,3 @@
-import { branchCircuitModel } from "./Models/PDPs/pdpBranchCircuitModel";
-
 export function formatToTwoDigits(number) {
     return String(number).padStart(2, '0');
 }

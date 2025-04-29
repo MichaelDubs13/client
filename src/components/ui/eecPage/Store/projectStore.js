@@ -40,10 +40,10 @@ const projectStore = create(
 
     getConfig:()=>{
         return {
-            plant:projectStore.plant,
-            shop:projectStore.shop,
-            line:projectStore.line,
-            installation_location:projectStore.installation_location,
+            plant:projectStore.getState().plant,
+            shop:projectStore.getState().shop,
+            line:projectStore.getState().line,
+            installation_location:projectStore.getState().installation_location,
         }
     }
     }),

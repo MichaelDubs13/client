@@ -3,12 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { formatToTwoDigits, getItemById, recreateArrayElement, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { mcpStore, mcpConfiguration } from '../../mcpStore';
+import { portModel } from './portModel';
 
 export const mcpModel = {
     create: (index, name) => { 
         const line = projectStore.getState().line;
         const location = name ? name : `MCP${formatToTwoDigits(1+index)}`;
-        return {
+        const mcp = {
           fla:"",
           line:line,
           location:location,
@@ -109,11 +110,21 @@ export const mcpModel = {
             return devices;
           }
       }
+      mcp.ports = mcpModel.initializePorts(3, mcp);
+      return mcp;
+    },
+    initializePorts: (numberOfPorts, parent) => {
+        var ports = [];
+        for (let i = 0; i < numberOfPorts; i++) {
+        var port = portModel.create(parent);
+        ports.push(port)
+        }
+        return ports;
     },
     merge: (state, currentState) => { 
         const mcps = state.mcps.map(mcp => {
             var newMcp = recreateObject(mcp, mcpModel.create)
-            var ports = recreateArrayElement(newMcp, mcp.ports, mcpModel.create)
+            var ports = recreateArrayElement(newMcp, mcp.ports, portModel.create)
             newMcp.ports = ports;
             return newMcp;
         })

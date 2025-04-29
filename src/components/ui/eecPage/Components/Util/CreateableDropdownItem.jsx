@@ -30,6 +30,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
     }, [defaultValue]);
     
     const setValue = (reportedValue) => {
+        
         if(item){
             if(property && index){
                 item.setValue(index, property, reportedValue)
@@ -45,7 +46,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
 
     const handleOptionSelect = async (event) =>{
         if(!event) return;
-        
+        console.log(item);
         const reportedValue = event.value;
         setSelectedOption(event.value);
         setValue(reportedValue)

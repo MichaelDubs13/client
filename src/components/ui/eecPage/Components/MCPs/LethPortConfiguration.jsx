@@ -12,10 +12,6 @@ const LethPortConfiguration = ({mcp, index}) => {
     const mcpIndex = {mcpIndex:index}
     const portOptions = networkSwitchConfiguration.getEthernetNetworkPortOptions(8, 'Local', 'Unmanaged');
     const lethNumberOfPortOptions = [
-        { value: "0", label: "0" },
-        { value: "1", label: "1" },
-        { value: "2", label: "2" },
-        { value: "3", label: "3" },
         { value: "4", label: "4" },
         { value: "5", label: "5" },
         { value: "6", label: "6" },
@@ -30,7 +26,7 @@ const LethPortConfiguration = ({mcp, index}) => {
                     items={mcp.ports} addItems={setNumberOfLethPorts} index={index} options={lethNumberOfPortOptions}/>   
             {/* Need to insert the remaining 0-9 port inputs based on the number of ports selected in the previous question*/}
             {/* Render all LETH ports*/}
-            <div>
+            {/* <div>
                 <h7>Port 2</h7>
                 <DeviceSelection item={mcp} index={mcpIndex} 
                     deviceTitle={"Target device (e.g., LETH01)"} deviceProperty={"leth_port2_target_dt"}
@@ -56,12 +52,14 @@ const LethPortConfiguration = ({mcp, index}) => {
                     stationTitle={"Target location (e.g., 00010)"} stationProperty={"leth_port4_target_location"}/>
                 <DropdownItem title={"Target port ID (e.g., P1)"} item={mcp} property={"leth_port4_target_port"} options={portOptions} index={mcpIndex}/>   
                 <DropdownItem title={"Cable length (m)"} item={mcp} property={"gb_Port4_CableLength"} options={mcpOptions.cableLengthOptions} index={mcpIndex}/>
-            </div>
+            </div> */}
             {
-                mcp.ports.map((port,index) => {
+                mcp.ports.map((port,portIndex) => {
+                    console.log(mcp)
+                    console.log(port)
                     return <McpLethPorts
-                        mcpIndex={mcpIndex}
-                        portIndex={index}
+                        mcpIndex={index}
+                        portIndex={portIndex}
                         port={port}
                     />
                 })

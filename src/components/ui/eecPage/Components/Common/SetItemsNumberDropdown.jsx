@@ -6,14 +6,14 @@ const SetItemsNumberDropdown = ({title, items, addItems, index, property, option
     const [numberOfItems, setNumberOfItems] = useState(items.length);
 
     const handleValueChange = (event)=> {
-        event.preventDefault(); 
-        setNumberOfItems(event.target.value);
+        const reportedValue = event.value;
+        setNumberOfItems(event.value);
         if(index != null && property != null){
-            addItems(index, property, numberOfItems);     
+            addItems(index, property, reportedValue);     
         } else if(index != null) {
-            addItems(index, numberOfItems);     
+            addItems(index, reportedValue);     
         } else {
-            addItems(numberOfItems); 
+            addItems(reportedValue); 
         }
     }    
 
