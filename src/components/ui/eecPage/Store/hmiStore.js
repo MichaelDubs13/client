@@ -89,6 +89,7 @@ const hmiConfiguration = {
         hmis:[],
         hmisOptions:[],
         setWipHmi: (hmi) => {
+          console.log(hmi);
           set({wipHmi:hmi});
         },
         addWipHmi: () => {
@@ -150,8 +151,8 @@ const hmiConfiguration = {
         })
       },
     
-      setHmiValue:(item, key, value,isUI,isData)=>{
-        const indexObject = item.getIndexObject();
+      setHmiValue:(indexObject, key, value,isUI,isData)=>{
+        //const indexObject = item.getIndexObject();
         const index = indexObject.hmiIndex
         if(Object.keys(indexObject).length > 0){
           set((state) => {

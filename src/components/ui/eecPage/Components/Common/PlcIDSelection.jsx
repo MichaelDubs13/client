@@ -4,10 +4,11 @@ import "../../Eec.css";
 import DropdownItem from '../Util/DropdownItem';
 import { useEffect } from 'react';
 
-const PlcIDSelection = ({item, title, index}) => {
+const PlcIDSelection = ({item, title, index, createNew}) => {
     const mcps = mcpStore((state)=>state.mcps)
     const getPlcOptions = lineStore((state)=> state.getPlcOptions)
     const plcs = lineStore((state)=> state.plcs)
+    const indexObject = createNew ? {} :index;
     useEffect(() => {
         getPlcOptions();
         if(mcps.length === 1){
@@ -18,7 +19,7 @@ const PlcIDSelection = ({item, title, index}) => {
         
         <div>
             <DropdownItem title={title} item={item} 
-                options={plcs} property={"plcID"} index={index}/>
+                options={plcs} property={"plcID"} index={indexObject}/>
         </div>
     );
 };

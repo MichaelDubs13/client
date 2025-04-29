@@ -59,10 +59,11 @@ export const hmiModel = {
              return {hmiIndex:index}
            },
            setValue: function(indexObject, key, value){
-             hmiStore.getState().setHmiValue(this, key, value);
+             hmiStore.getState().setHmiValue(indexObject, key, value);
            },
            setDataValue: function(key, value){
-             hmiStore.getState().setHmiValue(this, key, value,false, true);
+            const indexObject = this.getIndexObject();
+             hmiStore.getState().setHmiValue(indexObject, key, value,false, true);
            },
            getFullName: function() {
              return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);
@@ -81,14 +82,16 @@ export const hmiModel = {
              ]
            },
            setPowerSource:function(line, location, name){
-             hmiStore.getState().setHmiValue(this, "powerSourceLine", line);
-             hmiStore.getState().setHmiValue(this, "powerSourceLocation", location);
-             hmiStore.getState().setHmiValue(this, "powerSourceDT", name);
+            const indexObject = this.getIndexObject();
+             hmiStore.getState().setHmiValue(indexObject, "powerSourceLine", line);
+             hmiStore.getState().setHmiValue(indexObject, "powerSourceLocation", location);
+             hmiStore.getState().setHmiValue(indexObject, "powerSourceDT", name);
            },
            setNetworkSource:function(line, location, name){
-             hmiStore.getState().setHmiValue(this, "ethernetSourceLine", line);
-             hmiStore.getState().setHmiValue(this, "ethernetSourceLocation", location);
-             hmiStore.getState().setHmiValue(this, "ethernetSourceDT", name);
+            const indexObject = this.getIndexObject();
+             hmiStore.getState().setHmiValue(indexObject, "ethernetSourceLine", line);
+             hmiStore.getState().setHmiValue(indexObject, "ethernetSourceLocation", location);
+             hmiStore.getState().setHmiValue(indexObject, "ethernetSourceDT", name);
            },
            getStations: function(){
              return [this.location, this.powerSourceLocation, this.ethernetSourceLocation, this.ethernetTargetLocation]
