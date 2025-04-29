@@ -2,6 +2,7 @@ import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { lpdConfiguration, lpdStore } from '../../lpdStore';
+import { getItemById } from '../../util';
 
 export const lpdModel = {
     create: () => { 
@@ -37,13 +38,16 @@ export const lpdModel = {
             
           },
           getPartNumber: function(){
-            /* if(this.psu_selected){
-              console.log(this.psu_selected);
-              return this.psu_selected.split(':')[1].trim();
+            if(this.psu_selected){
+              var psuElements = this.psu_selected.split(':')
+              if(psuElements.length == 2){
+                return psuElements[1];
+              }else{
+                return '';
+              }
             } else {
               return '';
-            } */
-            return "";
+            }
           },
           getPowerSource: function(location, device, port){
             for(let i=0;i<this.psus.length;i++){
@@ -57,7 +61,7 @@ export const lpdModel = {
             return lpds.findIndex(lpd => lpd.data.id === this.data.id)
           },
           getItemById: function(id){
-            return lpdConfiguration.getItemById(this, id);
+            return getItemById(this.psus, id);
           },
           getNodeData: function(){
             return [

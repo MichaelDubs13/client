@@ -6,7 +6,7 @@ export const hotPowerBranchCircuitModel = {
    * creates a new hotPower Branch circuit with default values
    * @returns 
    */
-  create: () => {
+  create: (parent) => {
     return {
       HotPwrDropType: "Spare",
       HotPwrDrp_Target_Location: "",
@@ -15,6 +15,7 @@ export const hotPowerBranchCircuitModel = {
       data:{
         type:'hotPower',
         id:uuidv4(),
+        parent:parent,
       },
       getIndexObject: function(){
         const pdpIndex = this.data.parent.getIndex();

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits } from '../../util';
+import { formatToTwoDigits, getItemById } from '../../util';
 import { ioModuleStore, ioModuleGroupConfiguration } from '../../ioModuleStore';
 import { ioModulePortModel } from './ioModulePortModel';
 
@@ -48,7 +48,7 @@ export const ioModuleModel = {
             return {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
           },
           setValue: function(indexObject, key, value){
-            ioModuleStore.getState().setIOModuleValue(this, key, value);
+            ioModuleStore.getState().setIOModuleValue(indexObject, key, value);
           },
           getNodeData: function(){
             return [
@@ -57,6 +57,9 @@ export const ioModuleModel = {
           },
           getIndex: function(){
             return this.data.parent.ioModules.findIndex(module => module.data.id === this.data.id)
+          },
+          getItemById:function(id){
+            return getItemById(this.ports, id);
           },
           setDataValue: function(key, value){
             ioModuleStore.getState().setIOModuleValue(this, key, value,false, true);

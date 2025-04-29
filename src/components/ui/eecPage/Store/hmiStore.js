@@ -1,10 +1,9 @@
-import { projectStore } from "./projectStore";
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import { v4 as uuidv4 } from 'uuid';
-import {addItems, formatToTwoDigits, setModelValue, setNumberOfItems} from './util'
+import {addItems, setModelValue, setNumberOfItems} from './util'
 import { hmiModel } from "./Models/HMIs/hmiModel";
 import { extensionUnitPositionModel } from "./Models/HMIs/extensionUnitPositionModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const hmiOptions = {
   hmiScreenSizeOptions:[
@@ -81,10 +80,15 @@ const hmiConfiguration = {
       numberOfExtensionUnitPositions = 12;
     }
     return numberOfExtensionUnitPositions;
-   }
+   },
+   generateData: (hmis) => {
+    return hmis;
+    }
   }
+  
 
-  const hmiStore = create((set,get) => ({
+  const hmiStore = create(
+    persist((set,get) => ({
         wipHmi:{},
         hmis:[],
         hmisOptions:[],
@@ -189,11 +193,13 @@ const hmiConfiguration = {
         setModelValue(extensionUnitPositions[extensionUnitPositionIndex], key, value, isUI, isData);
         return { hmis: newHmis };
       });
-    }, 
-    
-    
-    
-}));
+    },     
+  }),
+  {
+    name: 'eec-state',
+    storage: createJSONStorage(() => localStorage),
+  }
+));
 
 export {
   hmiConfiguration,

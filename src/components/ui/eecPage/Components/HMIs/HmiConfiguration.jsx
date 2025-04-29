@@ -9,6 +9,7 @@ import { lpdConfiguration, lpdStore } from '../../Store/lpdStore';
 import "../../Eec.css";
 import PlcIDSelection from '../Common/PlcIDSelection';
 import { lineConfiguration } from '../../Store/lineStore';
+import NetworkPortSelection from '../Common/NetworkPortSelection';
 
 const HmiConfiguration = ({hmi, index, createNew}) => {
     const hmisOptions = hmiStore((state) => state.hmisOptions);
@@ -57,11 +58,8 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
                                 deviceTitle={"Network source Device Tag (e.g., LETH01)"}  deviceProperty={"ethernetSourceDT"}
                                 stationTitle={"Network source LOCATION (e.g., 00010)"} stationProperty={"ethernetSourceLocation"} 
                                 lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}/>
-                            {hmi.ethernetSourceDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
-                                <>
-                                    <InputTextItem title={"What device port does this HMI get network from? (e.g., 1)"} item={hmi} index={hmiIndex} property={"ethernetSourceDevicePort"}/>
-                                </>
-                            )}
+                            <NetworkPortSelection title={"What device port does this HMI get network from? (e.g., 1)"} item={hmi} 
+                                index={hmiIndex} property={"ethernetSourceDevicePort"} targetDT={hmi.ethernetSourceDT} targetLocation={hmi.ethernetSourceLocation} targetLine={hmi.line}/>
                         </>
                     )}
 

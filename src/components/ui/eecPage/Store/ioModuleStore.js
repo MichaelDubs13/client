@@ -3,6 +3,7 @@ import { lineConfiguration } from "./lineStore";
 import {addItems, setModelValue, setNumberOfItems} from './util'
 import { ioModuleGroupModel } from "./Models/IoModules/ioModuleGroupModel";
 import { ioModuleModel } from "./Models/IoModules/ioModuleModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const ioModuleGroupOptions = {
   // example of dropdown options for the IO Module parameters
@@ -89,17 +90,6 @@ const ioModuleGroupOptions = {
 
 
 const ioModuleGroupConfiguration = {
-   //fetch child component by id
-   getItemById:( ioModuleGroup, id) =>{
-    for(let i=0;i<ioModuleGroup.ioModules.length;i++){
-      const ioModule = ioModuleGroup.ioModules[i];
-        if(ioModule.data.id === id){   
-          return ioModule;
-        }
-    }
-
-    return null;
-  },
   getIOModuleGroupOptions:(ioModuleGroups)=>{
     const ioModuleGroupOptions = ioModuleGroups.map((ioModuleGroup => {
         const value = lineConfiguration.getDeviceFullName(ioModuleGroup.location, ioModuleGroup.ioModuleDT);
@@ -114,7 +104,8 @@ const ioModuleGroupConfiguration = {
 
 }
   
-const ioModuleStore = create((set,get) => ({
+const ioModuleStore = create(
+  persist((set,get) => ({
     ioModuleGroups:[],
     ioModuleGroupsOptions:[],
     wipIoModule:{},
@@ -219,8 +210,8 @@ const ioModuleStore = create((set,get) => ({
         return { ioModuleGroups: newIOModuleGroups };
       });
     },
-  setIOModuleValue:(item, key, value,isUI,isData)=>{
-      const indexObject = item.getIndexObject();
+  setIOModuleValue:(indexObject, key, value,isUI,isData)=>{
+      //const indexObject = item.getIndexObject();
       const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;
       const ioModuleIndex = indexObject.ioModuleIndex;
       if(Object.keys(indexObject).length > 0){
@@ -256,7 +247,12 @@ const ioModuleStore = create((set,get) => ({
         });
       }
     },  
-}));
+  }),
+  {
+    name: 'eec-state',
+    storage: createJSONStorage(() => localStorage),
+  }
+));
 
 export {
   ioModuleStore,

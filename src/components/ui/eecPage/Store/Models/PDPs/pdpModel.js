@@ -6,7 +6,6 @@ import { pdpConfiguration } from "../../pdpStore";
 import { pdpStore } from "../../pdpStore";
 import pdpParser from '../../../Excel/pdpParser';
 
-
 /**
  * creates a new pdp object with default values, all default values should be specified here
  * @returns new pdp with default values
@@ -102,6 +101,9 @@ export const pdpModel = {
             }
             return cbs;
           },
+          setHotPowerBranchCircuit:function(){
+            pdpStore.getState().setHotPowerBranchCircuit(this);
+          }
         }
     
         return pdp;

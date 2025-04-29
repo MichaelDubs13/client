@@ -2,6 +2,8 @@ import {create} from "zustand";
 import {addItems, setModelValue, setNumberOfItems} from './util'
 import { mcpModel } from "./Models/MCPs/mcpModel";
 import { portModel } from "./Models/MCPs/portModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
+
 const mcpOptions = {
   cableLengthOptions: [
     { value: "NULL", label: "NULL" },
@@ -14,23 +16,12 @@ const mcpOptions = {
   ],
 }
 const mcpConfiguration = {
-  //fetch child component by id
-  getItemById:( mcp, id) =>{
-    for(let i=0;i<mcp.ports.length;i++){
-      const port = mcp.ports[i];
-        if(port.data.id === id){   
-          return port;
-        }
-    }
-
-    return null;
-  },
-
   generateData: (mcps) => {
    return mcps
   }
 }
-const mcpStore = create((set) => ({
+const mcpStore = create(
+  persist((set) => ({
     mcps:[],    
     setMcps: (mcps) => {
       set({mcps:mcps});
@@ -81,8 +72,12 @@ const mcpStore = create((set) => ({
         return { mcps: newMcps };
       });
     },
-
-}));
+  }),
+  {
+    name: 'eec-state',
+    storage: createJSONStorage(() => localStorage),
+  }
+));
 
 export {
   mcpStore,

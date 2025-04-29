@@ -21,26 +21,19 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     const xpdps = xpdpStore((state) => state.xpdps);
     const [cbOptions, setCbOptions] = useState([])
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
-    [
-        {value: "Balluff-BAE00ET", label: "Balluff: BAE00ET"},
-        {value: "Balluff-BAE00FL", label: "Balluff: BAE00FL"},
-        {value: "Balluff-BAE0133", label: "Balluff: BAE0133"},
-    ] : [
-        {value: "Siemens", label: "Siemens: 6ES7148-4PC00-0HA0"},
-        {value: "Turck", label: "Turck: PSU67-3P-1MP-2M5-24200-F"},
-        {value: "Puls", label: "Puls: FPT500.247-064-102"},
-    ]
+    lpdOptions.psuSelection120_240Options : 
+    lpdOptions.psuSelection400_480Options;
 
     const getpsuCascadingLimit=(value)=>{
-        if (value === "Balluff-BAE00ET" || value === "Balluff-BAE00FL") {
+        if (value === "Balluff:BAE00ET" || value === "Balluff-BAE00FL") {
             setPsuCascadingLimit('maximum of 2 at 120V, 4 at 240V');
-        } else if (value === "Balluff-BAE0133") {
+        } else if (value === "Balluff:BAE0133") {
             setPsuCascadingLimit('maximum of 3');
-        } else if (value === "Siemens") {
+        } else if (value === "Siemens:6ES7148-4PC00-0HA0") {
             setPsuCascadingLimit('maximum of 15');
-        } else if (value === "Turck") {
+        } else if (value === "Turck:PSU67-3P-1MP-2M5-24200-F") {
             setPsuCascadingLimit('maximum of 8');
-        } else if (value === "Puls") {
+        } else if (value === "Puls:FPT500.247-064-102") {
             setPsuCascadingLimit('maximum of 8');
         } else {
             setPsuCascadingLimit('maximum of 8');

@@ -53,7 +53,7 @@ export const safetyGateSwitchModel = {
         return {safetyGateIndex:safetyGateIndex,safetyGateSwitchIndex:safetyGateSwitchIndex}
       },
       setValue: function(indexObject, key, value){
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, key, value);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value);
       },
       setDataValue: function(key, value){
         safetyGateStore.getState().setSafetyGateSwitchValue(this, key, value,false, true);
@@ -96,14 +96,16 @@ export const safetyGateSwitchModel = {
         return this.deviceTag;
       },
       setPowerSource:function(line, location, name){
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, "powerSourceLine", line);
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, "powerSourceLocation", location);
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, "powerSourceDT", name);
+        const indexObject = this.getIndexObject();
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerSourceLine", line);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerSourceLocation", location);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerSourceDT", name);
       },
       setNetworkSource:function(line, location, name){
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, "ethernetSourceLine", line);
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, "ethernetSourceLocation", location);
-        safetyGateStore.getState().setSafetyGateSwitchValue(this, "ethernetSourceDT", name);
+        const indexObject = this.getIndexObject();
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceLine", line);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceLocation", location);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceDT", name);
       },
     }
   },

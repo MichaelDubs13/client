@@ -2,7 +2,7 @@ import {create} from "zustand";
 import { pdpStore } from "./pdpStore";
 import { xpdpStore } from "./xpdpStore";
 import { mcpStore } from "./mcpStore";
-import { lpdConfiguration, lpdStore } from "./lpdStore";
+import { lpdStore } from "./lpdStore";
 import { networkSwitchStore } from "./networkSwitchStore";
 import { hmiStore } from "./hmiStore";
 import { safetyGateStore } from "./safetyGateStore";

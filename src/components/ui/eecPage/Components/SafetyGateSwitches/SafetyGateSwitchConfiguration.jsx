@@ -7,6 +7,7 @@ import DeviceSelection from "../Common/DeviceSelection";
 import { useEffect, useState } from "react";
 import PlcIDSelection from "../Common/PlcIDSelection";
 import { lineConfiguration } from "../../Store/lineStore";
+import NetworkPortSelection from "../Common/NetworkPortSelection";
 
 const SafetyGateSwitchConfiguration = ({ 
   safetyGateIndex,
@@ -38,19 +39,16 @@ const SafetyGateSwitchConfiguration = ({
                 deviceTitle={"Network source Device Tag (e.g., LETH01)"} deviceProperty={"ethernetSourceDT"}
                 stationTitle={"Network source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetSourceLocation"}
                 lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}/>    
-                {/* need to include the device port dropdown here */}
-                {safetyGateSwitch.ethernetSourceDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
-                    <>
-                        <InputTextItem title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} index={safetyGateSwitchIndex} property={"ethernetSourceDevicePort"}/>
-                    </>
-                )}
+            <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
+                index={safetyGateSwitchIndex} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} targetLocation={safetyGateSwitch.ethernetSourceLocation} targetLine={safetyGateSwitch.line}/>
           </>
         }
 
         <CheckboxItem title={"Check if this gate switch is a power and/or network source for another gate switch in this configuration:"} item={safetyGateSwitch} property={"gateSwitchCascadingTo"} index={index}/>
         {safetyGateSwitch.gateSwitchCascadingTo &&
           <>
-            <DropdownItem title={"Select which gate switch this port is the source for:"} item={safetyGateSwitch} property={"safetyGateCascadingToSelection"} options={safetyGatesOptions} index={index}/>
+            <DropdownItem title={"Select which gate switch this port is the source for:"} item={safetyGateSwitch} property={"safetyGateCascadingToSelection"} 
+              options={safetyGatesOptions} index={index}/>
           </>
         }
         {!safetyGateSwitch.gateSwitchCascadingTo &&
@@ -66,12 +64,9 @@ const SafetyGateSwitchConfiguration = ({
                     deviceTitle={"Network target Device Tag (e.g., PSU01)"} deviceProperty={"ethernetTargetDT"}
                     stationTitle={"Network target LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetTargetLocation"}
                     lineTitle={"Network target LINE (e.g., UBM1)"} lineProperty={"ethernetTargetLine"}/>    
-                    {/* need to include the device port dropdown here */}
-                    {safetyGateSwitch.ethernetTargeteDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
-                    <>
-                        <InputTextItem title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} index={safetyGateSwitchIndex} property={"ethernetTargetDevicePort"}/>
-                    </>
-                )}
+                <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
+                    index={safetyGateSwitchIndex} property={"ethernetTargetDevicePort"} targetDT={safetyGateSwitch.ethernetTargeteDT} targetLocation={safetyGateSwitch.ethernetTargetLocation} targetLine={safetyGateSwitch.line}/>
+              
               </>
             }
           </>

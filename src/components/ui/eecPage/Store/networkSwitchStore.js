@@ -3,6 +3,7 @@ import { lineConfiguration } from "./lineStore";
 import {addItems, setModelValue, setNumberOfItems} from './util'
 import { networkSwitchModel } from "./Models/NetworkSwitches/networkSwitchModel";
 import { networkPortModel } from "./Models/NetworkSwitches/networkPortModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const networkSwitchOptions = {
   deviceTypeSelectionOptions: [
@@ -62,17 +63,6 @@ const networkSwitchOptions = {
 
 
 const networkSwitchConfiguration = {
-   //fetch child component by id
-   getItemById:( networkSwitch, id) =>{
-    for(let i=0;i<networkSwitch.ports.length;i++){
-      const port = networkSwitch.ports[i];
-        if(port.data.id === id){   
-          return port;
-        }
-    }
-
-    return null;
-  },
   getNetworkSwitchOptions:(networkSwitches)=>{
     const networkSwitchOptions = networkSwitches.map((networkSwitch => {
         const value = lineConfiguration.getDeviceFullName(networkSwitch.location, networkSwitch.deviceTag);
@@ -81,7 +71,7 @@ const networkSwitchConfiguration = {
 
     return networkSwitchOptions;
   },
-  getNetworkDropPortOptions:(numberOfPorts, networkType, switchType) => {
+  getEthernetNetworkPortOptions:(numberOfPorts, networkType, switchType) => {
     const ports = [];
     for(let i=0;i<numberOfPorts;i++){
       const portNumber = i+1;
@@ -95,6 +85,30 @@ const networkSwitchConfiguration = {
       }
 
       ports.push(port)
+    }
+    return ports;
+  },
+  getEthernetPowerPortOptions:(networkType, switchType, switchSpeed) => {
+    const ports = [];
+    if(networkType === "Local" && switchType === "Managed"){
+      ports = [
+        "L1 (M12 L-coded)",
+        "L2 (M12 L-coded)",
+        "FAULT (M12 A-coded)",
+        "CONSOLE (M12 B-coded)",
+      ]
+    } else {
+      if(networkType === "Local" && switchType === "Unmanaged"){
+        ports = [
+          `POWER_IN (7/8")`,
+          "ETHERNET (M12 D-coded)",
+        ]
+      } else if(switchSpeed === "Fast" && networkType === "Plabt") {
+        ports = [
+          `POWER (7/8")`,
+          "ETHERNET (M12 D-coded)",
+        ]
+      }
     }
     return ports;
   },
@@ -120,7 +134,9 @@ const networkSwitchConfiguration = {
         return numberOfPorts;
   }
 }
-const networkSwitchStore = create((set,get) => ({
+const networkSwitchStore = create(
+  persist(
+    (set,get) => ({
     wipNetworkSwitch:{},
     networkSwitches:[],
     networkSwitchesOptions:[],
@@ -203,9 +219,6 @@ const networkSwitchStore = create((set,get) => ({
     }
   },
 
-    
-  // this is for sub components under network switch
-  // this would be for the ports in this case
   setNumberOfPorts:(index, numberOfPorts)=>{
       set((state) => {
         const newNetworkSwitches = [...state.networkSwitches];
@@ -227,7 +240,12 @@ const networkSwitchStore = create((set,get) => ({
       return { networkSwitches: newNetworkSwitches };
     });
     }, 
-}));
+  }),
+  {
+    name: 'eec-state',
+    storage: createJSONStorage(() => localStorage),
+  }
+));
 
 export {
   networkSwitchStore,

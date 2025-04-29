@@ -2,6 +2,7 @@ import {create} from "zustand";
 import { pdpConfiguration } from "./pdpStore";
 import {addItems, setModelValue} from './util'
 import { xpdpModel } from "./Models/XPDPs/xpdpModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const xpdpOptions = {
   xfmrSizeOptions: [
@@ -34,7 +35,9 @@ const xpdpConfiguration = {
   }
 }
 
-const xpdpStore = create((set) => ({
+const xpdpStore = create(
+    persist(
+      (set,get) => ({
     
     xpdps:[],    
     setXpdps: (xpdps) => {
@@ -98,8 +101,12 @@ const xpdpStore = create((set) => ({
         return { xpdps: newPdps };
       });
     },
-   
-}));
+    }),
+    {
+      name: 'eec-state',
+      storage: createJSONStorage(() => localStorage),
+    }
+));
 
 export {
   xpdpStore,

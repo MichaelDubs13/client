@@ -1,10 +1,9 @@
 import {create} from "zustand";
 import { lineConfiguration } from "./lineStore";
-import { v4 as uuidv4 } from 'uuid';
-import { projectStore } from "./projectStore";
-import {addItems, formatToTwoDigits, setModelValue, setNumberOfItems} from './util'
+import {addItems, setModelValue, setNumberOfItems} from './util'
 import { safetyGateGroupModel } from "./Models/SafetyGates/safetyGateGroupModel";
 import { safetyGateSwitchModel } from "./Models/SafetyGates/safetyGateSwitchModel";
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 const safetyGateOptions = {
   // example of dropdown options for the safet gate switch parameters
@@ -22,17 +21,6 @@ const safetyGateOptions = {
 
 
 const safetyGateConfiguration = {
-   //fetch child component by id
-   getItemById:( safetyGate, id) =>{
-    for(let i=0;i<safetyGate.safetyGateSwitches.length;i++){
-      const safetyGateSwitch = safetyGate.safetyGateSwitches[i];
-        if(safetyGateSwitch.data.id === id){   
-          return safetyGateSwitch;
-        }
-    }
-
-    return null;
-  },
   getSafetyGateOptions:(safetyGates)=>{
     const safetyGateOptions = safetyGates.map((safetyGate => {
         const value = lineConfiguration.getDeviceFullName(safetyGate.location, safetyGate.deviceTag);
@@ -48,7 +36,9 @@ const safetyGateConfiguration = {
 
 }
   
-const safetyGateStore = create((set,get) => ({
+const safetyGateStore = create(
+    persist(
+    (set,get) => ({
     wipSafetyGateSwitch:{},
     safetyGates:[],
     safetyGatesOptions:[],
@@ -137,8 +127,8 @@ const safetyGateStore = create((set,get) => ({
         return { safetyGates: newSafetyGates };
       });
   },
-  setSafetyGateSwitchValue:(item, key, value,isUI,isData)=>{
-    const indexObject = item.getIndexObject();
+  setSafetyGateSwitchValue:(indexObject, key, value,isUI,isData)=>{
+    //const indexObject = item.getIndexObject();
     const safetyGateIndex = indexObject.safetyGateIndex;
     const safetyGateSwitchIndex = indexObject.safetyGateSwitchIndex;
     if(Object.keys(indexObject).length > 0){
@@ -154,7 +144,12 @@ const safetyGateStore = create((set,get) => ({
         return { wipSafetyGateSwitch: newSafetyGateSwitch };
       });
     }},
-}));
+    }),
+    {
+      name: 'eec-state',
+      storage: createJSONStorage(() => localStorage),
+    }
+));
 
 export {
   safetyGateStore,

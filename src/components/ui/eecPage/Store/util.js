@@ -2,6 +2,18 @@ export function formatToTwoDigits(number) {
     return String(number).padStart(2, '0');
 }
 
+export function getItemById(items, id){
+    for(let i=0;i<items.length;i++){
+        const item = this.items[i];
+        if(item.data.id === id) return item;
+        if(item.hasOwnProperty("getItemById")){
+            var foundItem = item.getItemById(id);
+            if(foundItem) return foundItem;
+        }
+      }
+      return null;
+}
+
 export function addItems(newItems, numberOfItems, create){
     const diff = numberOfItems - newItems.length
     if(diff > 0){

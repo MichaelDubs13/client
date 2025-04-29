@@ -10,7 +10,7 @@ import "../../Eec.css";
 const LethPortConfiguration = ({mcp, index}) => {
     const setNumberOfLethPorts = mcpStore((state) => state.setNumberOfLethPorts);
     const mcpIndex = {mcpIndex:index}
-    const portOptions = networkSwitchConfiguration.getNetworkDropPortOptions(8, 'Local', 'Unmanaged');
+    const portOptions = networkSwitchConfiguration.getEthernetNetworkPortOptions(8, 'Local', 'Unmanaged');
     const lethNumberOfPortOptions = [
         { value: "0", label: "0" },
         { value: "1", label: "1" },
