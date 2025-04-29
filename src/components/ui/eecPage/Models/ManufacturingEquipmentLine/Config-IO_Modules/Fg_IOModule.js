@@ -11,26 +11,17 @@ export default class Fg_IOModule extends Component{
         this._switch = parent._switch;
         this._ioModuleGroup = ioModuleGroup;
         this._ioModule = ioModuleGroup[0];
-        var targetIOModule = ioModuleGroup.find(module => module.local_switch_port > 0)
-        this._source_network_port = 0;
-        if(targetIOModule){
-            this._source_network_port = targetIOModule.local_switch_port
-        }
-
-        this._plc_id = this._ioModule.mcp ? this._ioModule.mcp.plc_id : ""
-        console.log(this._ioModule.mcp)
-        console.log(this._ioModule.mcp.plc_id)
     }
 
     get Parameters(){
         return [
-            {name: "s_frmUI_IOModNetworkSourcePort", value: this._source_network_port, type: "Integer"},
-            {name: "s_frmUI_IOModNetworkSourceLocation", value: this._ioModule.local_network_source_location, type: "String"},
-            {name: "s_frmUI_IOModNetworkSourceDT", value: this._ioModule.local_network_source_dt, type: "String"},
-            {name: "s_frmUI_IOModPSUSourceLocation", value: this._ioModule.source24VDC_location, type: "String"},
-            {name: "s_frmUI_IOModPSUSourceDT", value: this._ioModule.source24VDC_dt, type: "String"},
-            {name: "s_frmUI_IOModLocation", value: this._ioModule.target_device_location, type: "String"},
-            {name: "PLC_ID", value: this._plc_id, type: "String"},
+            {name: "s_frmUI_IOModNetworkSourcePort", value: this._ioModuleGroup.ethernetSourceDevicePort, type: "Integer"},
+            {name: "s_frmUI_IOModNetworkSourceLocation", value: this._ioModuleGroup.ethernetSourceLocation, type: "String"},
+            {name: "s_frmUI_IOModNetworkSourceDT", value: this._ioModuleGroup.ethernetSourceDT, type: "String"},
+            {name: "s_frmUI_IOModPSUSourceLocation", value: this._ioModuleGroup.powerSourceLocation, type: "String"},
+            {name: "s_frmUI_IOModPSUSourceDT", value: this._ioModuleGroup.powerSourceDT, type: "String"},
+            {name: "s_frmUI_IOModLocation", value: this._ioModuleGroup.location, type: "String"},
+            {name: "PLC_ID", value: this._ioModuleGroup.plcID, type: "String"},
         ];
     }
     build(){

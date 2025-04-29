@@ -16,9 +16,9 @@ export default class F_AddDeleteMoveIOModule extends Component{
         ];
     }
     build(){
-         for(let i=0; i < this._ioModuleGroup.length; i++){
+         for(let i=0; i < this._ioModuleGroup.ioModules.length; i++){
             
-            const ioModule = new IO_Module(this, i+1, this._ioModuleGroup[i])
+            const ioModule = new IO_Module(this, i+1, this._ioModuleGroup.ioModules[i])
             ioModule.build();
         }
     }

@@ -4,14 +4,22 @@ import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
 import { lpdStore } from "./Store/lpdStore";
 import { projectStore } from "./Store/projectStore";
+import { networkSwitchStore } from "./Store/networkSwitchStore";
+import { hmiStore } from "./Store/hmiStore";
+import { safetyGateStore } from "./Store/safetyGateStore";
+import { ioModuleStore } from "./Store/ioModuleStore";
 
 
-const SaveButton = () => {
+const ExportButton = () => {
   const getConfig =  projectStore((state) => state.getConfig);
-  const pdps =  pdpStore((state) => state.pdps);
-  const xpdps =  xpdpStore((state) => state.xpdps);
-  const mcps =  mcpStore((state) => state.mcps);
-  const lpds =  lpdStore((state) => state.lpds);
+  const pdps = pdpStore((state) => state.pdps);
+  const xpdps = xpdpStore((state) => state.xpdps);
+  const mcps = mcpStore((state) => state.mcps);
+  const lpds = lpdStore((state) => state.lpds);
+  const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
+  const hmis = hmiStore((state) => state.hmis);
+  const safetyGates = safetyGateStore((state) => state.safetyGates);
+  const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
   
   
 
@@ -47,6 +55,10 @@ const SaveButton = () => {
       xpdps:xpdps,
       mcps:mcps,
       lpds:lpds,
+      networkSwitches:networkSwitches,
+      hmis:hmis,
+      safetyGates:safetyGates,
+      ioModuleGroups:ioModuleGroups,
       config:getConfig(),
     }
 
@@ -60,4 +72,4 @@ const SaveButton = () => {
   );
 };
 
-export default SaveButton;
+export default ExportButton;

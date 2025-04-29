@@ -12,16 +12,17 @@ export default class IO_Module extends Component{
         this._ioModule = ioModule;
         this.getType();
         this.getSIOInfo();
+        this.getMIOInfo();
 
     }
 
     getType(){
         this._isSIO=false;
         this._isMIO=false;
-        if(this._ioModule.device_dt.startsWith("SIO")){
+        if(this._ioModule.deviceTag.startsWith("SIO")){
             this._isSIO=true;
             this._isMIO=false;
-        } else if (this._ioModule.device_dt.startsWith("MIO")) {
+        } else if (this._ioModule.deviceTag.startsWith("MIO")) {
             this._isSIO=false;
             this._isMIO=true;
         }  
@@ -31,21 +32,31 @@ export default class IO_Module extends Component{
         this._sioModManuName = "";
         this._sioModuleParts_Murr = "";
         if(this._isSIO){
-            this._sioModManuName = this._ioModule.mfg;
-            this._sioModuleParts_Murr = this._ioModule.partNumber;
+            this._sioModManuName = this._ioModule.sioManufacturerName;
+            this._sioModuleParts_Murr = this._ioModule.sioParts_Murr;
+        }
+    }
+    getMIOInfo(){
+        this._mioModManuName = "";
+        this._mioModuleParts_Balluff = "";
+        if(this._isMIO){
+            this._mioModManuName = this._ioModule.mioManufacturerName;
+            this._mioModuleParts_Balluff = this._ioModule.mioParts_Balluff;
         }
     }
     
 
     get Parameters(){
         return [
-            {name: "s_frmUI_IOModLocation", value: this._ioModule.target_device_location, type: "String"},
-            {name: "s_IOModuleDT", value: this._ioModule.device_dt, type: "String"},
-            {name: "b_frmUI_SafetyIO", value: this._isSIO, type: "Boolean"},
+            {name: "s_frmUI_IOModLocation", value: this._ioModule.location, type: "String"},
+            {name: "s_IOModuleDT", value: this._ioModule.deviceTag, type: "String"},
+            {name: "b_frmUI_SafetyIO", value: this._isSIO, type: "Boolean"},            
             {name: "s_frmUI_SIOModManuName", value: this._sioModManuName, type: "String"},
             {name: "s_frmUI_SIOModuleParts_Murr", value: this._sioModuleParts_Murr, type: "String"},
-            {name: "s_frmUI_IOModIPv4_IP_Address", value: this._ioModule.localip, type: "String"},
-            {name: "s_frmUI_OpMode", value: this._ioModule.opmode, type: "String"},
+            {name: "s_frmUI_MIOModManuName", value: this._mioModManuName, type: "String"},
+            {name: "s_frmUI_MIOModuleParts_Balluff", value: this._mioModuleParts_Balluff, type: "String"},
+            {name: "s_frmUI_IOModIPv4_IP_Address", value: this._ioModule.localIP, type: "String"},
+            {name: "s_frmUI_OpMode", value: this._ioModule.opMode, type: "String"},
         ];
     }
 

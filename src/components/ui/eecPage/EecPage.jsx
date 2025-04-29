@@ -11,7 +11,7 @@ import { mcpConfiguration, mcpStore } from "./Store/mcpStore";
 import { lpdConfiguration, lpdStore } from "./Store/lpdStore";
 import {pdpStore} from "./Store/pdpStore";
 import LoadButton from "./LoadButton";
-import SaveButton from "./SaveButton";
+import ExportButton from "./ExportButton";
 import UploadButton from "./UploadButton";
 import { networkSwitchConfiguration, networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiConfiguration, hmiStore } from "./Store/hmiStore";
@@ -23,6 +23,7 @@ import ElectricalDiagram from "./Flow/ElectricalDiagram";
 import NetworkDiagram from "./Flow/NetworkDiagram";
 import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 import ClearButton from "./ClearButton";
+import { mcpModel } from "./Store/Models/MCPs/mcpModel";
 
 
 
@@ -47,11 +48,10 @@ const EecPage = () => {
     const handleSumbit = (event) => {
       event.preventDefault();
       const config = getConfig();
-      console.log(config);
       var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
       const validatedPdps =pdpModel.generateData(pdps);
       const validatedXpdps =xpdpConfiguration.generateData(xpdps);
-      const validatedMcps =mcpConfiguration.generateData(mcps);
+      const validatedMcps =mcpModel.generateData(mcps);
       const validatedLpds = lpdConfiguration.generateData(lpds);
       const validatedNetworkSwitches = networkSwitchConfiguration.generateData(networkSwitches);
       const validatedHmis = hmiConfiguration.generateData(hmis);
@@ -131,8 +131,8 @@ const EecPage = () => {
             <div style={{display: "flex", justifyContent: "left", gap: "15px", alignContent:'center', alignItems:'center'}}>
               <UploadButton/>
               <Button onClick={handleSumbit} style={{marginTop:'5px'}}>Generate</Button>
-              {/* <SaveButton/>
-              <LoadButton/> */}
+              <ExportButton/>
+              <LoadButton/>
               <ClearButton/>
             </div>
 

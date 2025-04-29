@@ -16,9 +16,7 @@ const mcpOptions = {
   ],
 }
 const mcpConfiguration = {
-  generateData: (mcps) => {
-   return mcps
-  }
+
 }
 const mcpStore = create(
   persist((set) => ({

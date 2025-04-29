@@ -51,9 +51,9 @@ export const mcpModel = {
           leth_port2_target_port: "",
           leth_port3_target_port: "",
           leth_port4_target_port: "",
-          gb_Port2_CableLength: "",
-          gb_Port3_CableLength: "",
-          gb_Port4_CableLength: "",
+          gb_Port2_CableLength: "NULL",
+          gb_Port3_CableLength: "NULL",
+          gb_Port4_CableLength: "NULL",
           leth_number_of_ports: 16,
           eth_plant_ip: "",
           eth_plc_to_plc_ip: "",
@@ -120,6 +120,31 @@ export const mcpModel = {
         ports.push(port)
         }
         return ports;
+    },
+    generateData: (mcps) => {
+        mcps.forEach(mcp => {
+          const length = mcp.ports.length > 4 ? 4 : mcp.ports.length;
+          for(let i=0; i < length; i++){
+            const port = mcp.ports[i];
+            if(i === 1){
+              mcp.leth_port2_target_location = port.targetLocation;
+              mcp.leth_port2_target_dt = port.targetDT;
+              mcp.leth_port2_target_port = port.targetPort;
+              mcp.gb_Port2_CableLength = port.targetCableLength;
+            } else if(i===2){
+              mcp.leth_port3_target_location = port.targetLocation;
+              mcp.leth_port3_target_dt = port.targetDT;
+              mcp.leth_port3_target_port = port.targetPort;
+              mcp.gb_Port3_CableLength = port.targetCableLength;
+            } else if(i===3){
+              mcp.leth_port4_target_location = port.targetLocation;
+              mcp.leth_port4_target_dt = port.targetDT;
+              mcp.leth_port4_target_port = port.targetPort;
+              mcp.gb_Port4_CableLength = port.targetCableLength;
+            }
+          }
+        });
+       return mcps
     },
     merge: (state, currentState) => { 
         const mcps = state.mcps.map(mcp => {
