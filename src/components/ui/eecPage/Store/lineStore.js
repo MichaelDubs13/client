@@ -32,13 +32,16 @@ const lineConfiguration = {
         })
         return lines;
     },    
-    getLocations:(array, line, locations) => {
+    getLocations:(array, locations) => {
         array.map((item) => {
             if(item.location){
-                if(item.line === line){
-                    if(!locations.includes(item.location)){
-                        locations.push(item.location)
-                    }
+                // if(item.line === line){
+                //     if(!locations.includes(item.location)){
+                //         locations.push(item.location)
+                //     }
+                // }
+                if(!locations.includes(item.location)){
+                    locations.push(item.location)
                 }
             } 
         })
@@ -168,12 +171,23 @@ const lineStore = create((set) => ({
         const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
 
         var newLocations = []
-        newLocations = lineConfiguration.getLocations(items, line, newLocations); 
+        newLocations = lineConfiguration.getLocations(items, newLocations); 
         newLocations = newLocations.filter(location => location);  
         newLocations = [...new Set(newLocations)];     
         newLocations = newLocations.map((location) => {
             return {label:location, value:location}
         })
+
+        var newStations = []
+        newStations = lineConfiguration.getStations(items, newStations);
+        newStations = newStations.filter(station => station)
+        newStations = [...new Set(newStations)];
+        newStations = newStations.map((station) => {
+            return {label:station, value:station}
+        })
+
+        newLocations.push(...newStations);
+        newLocations = [...new Set(newLocations)];   
         return newLocations;
     },
 
@@ -187,7 +201,6 @@ const lineStore = create((set) => ({
         const safetyGates = safetyGateStore.getState().safetyGates;
         const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
         const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
-        console.log(items)
         var newStations = []
         newStations = lineConfiguration.getStations(items, newStations);
         newStations = newStations.filter(station => station)
@@ -196,6 +209,15 @@ const lineStore = create((set) => ({
             return {label:station, value:station}
         })
 
+        var newLocations = []
+        newLocations = lineConfiguration.getLocations(items, newLocations); 
+        newLocations = newLocations.filter(location => location);  
+        newLocations = [...new Set(newLocations)];     
+        newLocations = newLocations.map((location) => {
+            return {label:location, value:location}
+        })
+        newStations.push(...newLocations);
+        newStations = [...new Set(newStations)];
         set((state) => {
             return {stations: newStations};
         })

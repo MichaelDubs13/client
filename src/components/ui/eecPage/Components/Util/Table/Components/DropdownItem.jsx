@@ -48,7 +48,7 @@ const DropdownItem = ({inputRef, className, item, property, options, onChange,on
                 options={options}
                 placeholder={defaultValue}
                 selected={selectedOption}
-                style={{ marginBottom: "5px"}}
+                style={{ marginBottom: "5px", width:'150px'}}
                 ></FormInputDropdown>
             }
                 

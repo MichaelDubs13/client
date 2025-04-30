@@ -41,7 +41,7 @@ const NetworkSwitchPort = ({
           <>
             <DropdownItem title={"Does the connection flow into or out of this switch?"} item={port} property={"communicationFlow"} options={networkSwitchOptions.communicationFlowOptions} index={index}/>
             <CheckboxItem title={"Is this port connected to another switch in this configuration?"} item={port} property={"cascadingSwitch"} index={index}/>
-            {port.communicationFlow === "In" &&
+            {port.communicationFlow === "In" && port.cascadingSwitch &&
               <>
                 <InputTextItem title={"This network port is connected to:"} item={port} property={"connectedDevice"} index={index} />
               </>

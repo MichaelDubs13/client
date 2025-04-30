@@ -40,7 +40,9 @@ const SafetyGateSwitchConfiguration = ({
                 stationTitle={"Network source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetSourceLocation"}
                 lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}/>    
             <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
-                index={safetyGateSwitchIndex} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} targetLocation={safetyGateSwitch.ethernetSourceLocation} targetLine={safetyGateSwitch.line}/>
+                index={safetyGateSwitchIndex} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} 
+                targetLocation={safetyGateSwitch.ethernetSourceLocation} targetLine={safetyGateSwitch.line}
+                createNew={createNew}/>
           </>
         }
 
@@ -65,8 +67,9 @@ const SafetyGateSwitchConfiguration = ({
                     stationTitle={"Network target LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetTargetLocation"}
                     lineTitle={"Network target LINE (e.g., UBM1)"} lineProperty={"ethernetTargetLine"}/>    
                 <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
-                    index={safetyGateSwitchIndex} property={"ethernetTargetDevicePort"} targetDT={safetyGateSwitch.ethernetTargeteDT} targetLocation={safetyGateSwitch.ethernetTargetLocation} targetLine={safetyGateSwitch.line}/>
-              
+                    index={safetyGateSwitchIndex} property={"ethernetTargetDevicePort"} targetDT={safetyGateSwitch.ethernetTargeteDT} 
+                    targetLocation={safetyGateSwitch.ethernetTargetLocation} targetLine={safetyGateSwitch.line}
+                    createNew={createNew}/>
               </>
             }
           </>

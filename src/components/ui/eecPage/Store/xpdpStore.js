@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import { pdpConfiguration } from "./pdpStore";
-import {addItems, circularReplacer, setModelValue} from './util'
+import {addBranchCircuit, addItems, circularReplacer, setModelValue} from './util'
 import { xpdpModel } from "./Models/XPDPs/xpdpModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { branchCircuitModel } from "./Models/XPDPs/branchCircuitModel";
@@ -32,6 +32,13 @@ const xpdpConfiguration = {
     return newPwrDrops;
   },
   generateData: (xpdps) => {
+    xpdps.forEach(pdp => {
+      var branchCircuit3Ph = pdp.branchCircuit["20A 3ph"];
+      if(branchCircuit3Ph.length > 2){
+        branchCircuit3Ph = branchCircuit3Ph.slice(0, 1);
+        pdp.branchCircuit["20A 3ph"] = branchCircuit3Ph;
+      }
+    });
    return xpdps;
   }
 }
@@ -72,10 +79,10 @@ const xpdpStore = create(
         return { xpdps: newPdps };
       });
     },
-    setNumberOfPowerDrps:(index, amperage, value)=>{
+    setNumberOfPowerDrps:(index, amperage, numberOfPowerDrops)=>{
       set((state) => {
         const newPdps = [...state.xpdps];
-        var branchCircuit  = xpdpConfiguration.createBranchCircuits(value, newPdps[index], amperage);
+        var branchCircuit = addBranchCircuit(newPdps[index].branchCircuit[amperage], newPdps[index], numberOfPowerDrops, branchCircuitModel.create, amperage)
         newPdps[index].branchCircuit[amperage] = branchCircuit;
         branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
         return { xpdps: newPdps };

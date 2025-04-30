@@ -9,7 +9,7 @@ export const ioModulePortModel = {
           isIOLink: 'no',
           pinType: "", // EEC variable name: s_pin_type_selected
           pinDescription: "", // EEC variable name: s_pin_description
-          pinAddress: "192.168.1.X", // EEC variable name: s_pin_PLCaddress
+          pinAddress: "%I0.0", // EEC variable name: s_pin_PLCaddress
           pinTargetPartNumber: "", // EEC variable name: s_TargetDevicePartNumber
           pinTargetLocation: "", // EEC variable name: s_TargetDeviceLocation
           pinTargetDT: "", // EEC variable name: s_TargetDeviceDT

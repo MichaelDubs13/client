@@ -2,7 +2,7 @@ import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
 import { formatToTwoDigits, getItemById, recreateArrayElement, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
-import { mcpStore, mcpConfiguration } from '../../mcpStore';
+import { mcpStore } from '../../mcpStore';
 import { portModel } from './portModel';
 
 export const mcpModel = {

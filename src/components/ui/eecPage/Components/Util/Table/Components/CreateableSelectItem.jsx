@@ -65,22 +65,23 @@ const CreateableSelectItem = ({inputRef, className, item, property, options, onC
     return (
         <>
             {                
-        
-                <CreatableSelect 
-                    selectOption
-                    // menuPortalTarget={document.body}
-                    // menuPosition="fixed"
-                    ref={inputRef}
-                    className={className}
-                    options={alloptions} 
-                    getOptionLabel={(option) => option.label}
-                    getOptionValue={(option) => option.value}
-                    onChange={handleOptionSelect}
-                    onCreateOption={handleOptionCreation}
-                    onFocus={onFocus}
-                    placeholder={defaultValue}
-                    selected={selectedOption}
-                    value={selectedOption}/>    
+                <div style={{ width:'200px'}}>
+                    <CreatableSelect 
+                        selectOption
+                        // menuPortalTarget={document.body}
+                        // menuPosition="fixed"
+                        ref={inputRef}
+                        className={className}
+                        options={alloptions} 
+                        getOptionLabel={(option) => option.label}
+                        getOptionValue={(option) => option.value}
+                        onChange={handleOptionSelect}
+                        onCreateOption={handleOptionCreation}
+                        onFocus={onFocus}
+                        placeholder={defaultValue}
+                        selected={selectedOption}
+                        value={selectedOption}/>    
+                </div>
             }            
         </>
     );

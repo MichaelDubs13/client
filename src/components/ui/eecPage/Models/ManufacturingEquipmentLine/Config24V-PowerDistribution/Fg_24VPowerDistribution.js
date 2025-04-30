@@ -1,5 +1,4 @@
 import Component from "../Component";
-import ProjectConfiguration from "../ProjectConfiguration";
 import _F_PSU from "./_F_PSU";
 import _f_DC_Distribution_CLS2_Balluff_120VPSU from "./_f_DC_Distribution/_f_DC_Distribution_CLS2_Balluff_120VPSU";
 import _f_PSU_Balluff_CLS2_BAE0133 from "./_f_PSU_Balluff/_f_PSU_Balluff_CLS2_BAE0133";

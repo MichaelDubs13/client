@@ -9,7 +9,7 @@ export const safetyGateSwitchModel = {
         // below is the first variable example
         line: parent?.line, // EEC variable name: safetyGate_Line
         location:parent?.location, // EEC variable name: MountingLocation
-        deviceTag: number? `GS${formatToTwoDigits(number)}`:'', // EEC variable name: GateSwitch_DT\
+        deviceTag: number > -1? `GS${formatToTwoDigits(number+1)}`:'', // EEC variable name: GateSwitch_DT\
         safetyGateSwitchType: "PROFINET", // EEC variable name: GateSwitch_Type
         safetyGateSwitchHandle: "Right", // EEC variable name: GateSwitch_HandleSide
         plcID: "", // EEC variable name: PLC_ID

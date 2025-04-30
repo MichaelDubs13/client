@@ -6,9 +6,9 @@ import { useState, useEffect } from 'react';
 
 
 
-const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portSelect='network'}) => {
+const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portSelect='network',createNew}) => {
     const [portOptions, setPortOptions] = useState([]);
-
+    const itemIndex = createNew ? {} : index;
     useEffect(() => {
         var ports = []
         var foundItem = lineConfiguration.getDeviceByNameGlobal(targetDT, targetLocation, targetLine);
@@ -31,7 +31,7 @@ const NetworkPortSelection = ({item, title, index, property, targetDT, targetLoc
         <div>
              {targetDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
                     <>
-                        <DropdownItem title={title} item={item} index={index} property={property} options={portOptions}/>
+                        <DropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions}/>
                     </>
              )
             }

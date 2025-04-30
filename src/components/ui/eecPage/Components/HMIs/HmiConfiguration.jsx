@@ -59,7 +59,9 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
                                 stationTitle={"Network source LOCATION (e.g., 00010)"} stationProperty={"ethernetSourceLocation"} 
                                 lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}/>
                             <NetworkPortSelection title={"What device port does this HMI get network from? (e.g., 1)"} item={hmi} 
-                                index={hmiIndex} property={"ethernetSourceDevicePort"} targetDT={hmi.ethernetSourceDT} targetLocation={hmi.ethernetSourceLocation} targetLine={hmi.line}/>
+                                index={hmiIndex} property={"ethernetSourceDevicePort"} targetDT={hmi.ethernetSourceDT} 
+                                targetLocation={hmi.ethernetSourceLocation} targetLine={hmi.line}
+                                createNew={createNew}/>
                         </>
                     )}
 
@@ -87,7 +89,6 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
                     <DropdownItem title={"HMI mounting type"} item={hmi} options={hmiOptions.mountingTypeOptions} index={hmiIndex} property={"mountingType"}/>
                     <DropdownItem title={"HMI version"} item={hmi} options={hmiOptions.hmiVersionOptions} index={hmiIndex} property={"hmiVersion"}/>
                     <DropdownItem title={"RFID position"} item={hmi} options={hmiOptions.rfidPositionOptions} onChange={handleRfidPositionChange} index={hmiIndex} property={"rfidPosition"}/>
-                    
                     <DropdownItem title={"Number of Extension Unit Positions"} item={hmi} options={hmiOptions.numberOfExtensionUnitPositionsOptions} 
                         onChange={setExtensionUnitPositions} index={hmiIndex} property={"numberOfExtensionUnitPositions"}/>
                     {/* Render all Extension Unit Positions */}

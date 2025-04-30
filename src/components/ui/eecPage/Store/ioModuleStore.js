@@ -228,6 +228,18 @@ const ioModuleStore = create(
         });
       }
     },
+    setIOModulePortType:(indexObject, value)=>{
+      const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;
+      const ioModuleIndex = indexObject.ioModuleIndex;
+      set((state) => {
+        const newIOModuleGroups = [...state.ioModuleGroups];
+        const ioModule = newIOModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex];
+        for(let i=0;i<ioModule.ports.length;i++){
+          ioModule.ports[i].pinType = value;
+        }
+        return { ioModuleGroups: newIOModuleGroups };
+      });
+    },
     setPortValue:(indexObject, key, value,isUI,isData)=>{
       //const indexObject = item.getIndexObject();
       const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;

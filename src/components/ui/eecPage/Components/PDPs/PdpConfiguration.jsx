@@ -7,6 +7,7 @@ import PowerDropConfiguration from './PowerDropConfiguration';
 import HotPowerConfiguration from './HotPowerConfiguration';
 import { DataTable } from '@tesla/design-system-react';
 import LineLocationSelection from '../Common/LineLocationSelection';
+import LineStationSelection from "../Common/LineStationSelection";
 
 const PdpConfiguration = ({pdp, index}) => {
     const pdpIndex = {pdpIndex:index}
@@ -15,14 +16,16 @@ const PdpConfiguration = ({pdp, index}) => {
             pdp.setHotPowerBranchCircuit();
         }
     }
-
+    const handleLocationChange = (value) => {
+        pdp.setValue(pdpIndex, "hotPowerPanelLocation", `H${value}`)
+    }
 
     return (
         
         <div>
             <div>
                 <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
-                    <LineLocationSelection item={pdp} index={pdpIndex} showPlantShop={true}/>
+                    <LineLocationSelection item={pdp} index={pdpIndex} showPlantShop={true} onLocationChange={handleLocationChange}/>
                     <DropdownItem title={"Main disconnect amperage"} item={pdp} property={"amp"} options={pdpOptions.amperageOptions} index={pdpIndex}/>
                     <DropdownItem title={"Enclosure size"} item={pdp} property={"enclosureSize"} options={pdpOptions.enclosureSizeOptions} index={pdpIndex}/>
                     <InputTextItem title={"Enclosure nameplate FLA (e.g., 275 A)"} item={pdp} property={"FLA"} index={pdpIndex}/>
@@ -34,6 +37,9 @@ const PdpConfiguration = ({pdp, index}) => {
 
             {pdp.Opt_HotPwrEnable && (
                 <>
+                    <LineStationSelection 
+                        stationTitle={"HotPowerPanel Location"}  stationProperty={"hotPowerPanelLocation"}
+                        item={pdp} index={index}/>
                     <HotPowerConfiguration pdp={pdp} pdpIndex={index}/>
                 </>
             )}

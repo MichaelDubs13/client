@@ -16,10 +16,10 @@ export default class Fg_XPowerDistributionPanel extends Component{
 
     get Parameters(){
         return [
-            {name: "i_NumberOfPowerDrops1ph_8A", value: this._xpdp.branchCircuit["8A 1ph"] , type: "Integer"},
-            {name: "i_NumberOfPowerDrops1ph_15A", value: this._xpdp.branchCircuit["15A 1ph"], type: "Integer"},
-            {name: "i_NumberOfPowerDrops1ph_20A", value: this._xpdp.branchCircuit["20A 1ph"], type: "Integer"},
-            {name: "i_NumberOfPowerDrops3ph_20A", value:  this._xpdp.branchCircuit["20A 3ph"], type: "Integer"},
+            {name: "i_NumberOfPowerDrops1ph_8A", value: this._xpdp.branchCircuit["8A 1ph"].length, type: "Integer"},
+            {name: "i_NumberOfPowerDrops1ph_15A", value: this._xpdp.branchCircuit["15A 1ph"].length, type: "Integer"},
+            {name: "i_NumberOfPowerDrops1ph_20A", value: this._xpdp.branchCircuit["20A 1ph"].length, type: "Integer"},
+            {name: "i_NumberOfPowerDrops3ph_20A", value:  this._xpdp.branchCircuit["20A 3ph"].length, type: "Integer"},
             {name: "frmUI_EnclosureNameplateFLA", value: this._xpdp.amp, type: "String"},
             {name: "frmUI_s_TransformerSize", value: this._xpdp.xf_size, type: "String"},
             {name: "frmUI_s_XFMR_PhysicalLocation", value: this._xpdp.location, type: "String"},

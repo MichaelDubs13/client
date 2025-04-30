@@ -89,7 +89,7 @@ const networkSwitchConfiguration = {
     return ports;
   },
   getEthernetPowerPortOptions:(networkType, switchType, switchSpeed) => {
-    const ports = [];
+    var ports = [];
     if(networkType === "Local" && switchType === "Managed"){
       ports = [
         "L1 (M12 L-coded)",

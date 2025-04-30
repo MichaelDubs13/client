@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormItem, FormLabel, FormInputText} from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [value, setValue] = useState(defaultValue);
-      
+
     const handleValueChange = (event)=> {
         const reportedValue = event.target.value;
         setValue(reportedValue);
@@ -46,7 +46,13 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
 
     return (
         <>
-            {                
+            {               
+               readOnly? 
+               <FormItem className="form-item-readonly">
+                    <FormLabel className="form-label" htmlFor="context">{title}</FormLabel>
+                    <FormLabel className="form-label-readonly">{defaultValue}</FormLabel>
+                </FormItem> 
+                :
                 <FormItem className="form-item">
                     <FormLabel className="form-label" htmlFor="context">{title}</FormLabel>
                     <FormInputText
@@ -55,7 +61,7 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
                     placeholder={defaultValue}
                     value={value}
                     onChange={handleValueChange}/>
-                </FormItem>
+                </FormItem> 
             }
         </>
     );

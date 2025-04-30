@@ -103,7 +103,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
 
             <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"powerSourceDT"} 
                 options={cbOptions} index={index} onChange={handleDropChange}/>
-            <SetItemsNumberInputBox title={`alculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
+            <SetItemsNumberInputBox title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                     items={lpd.psus} addItems={setNumberOfPsus} index={lpdIndex}/>          
             {
                 lpd.psus.map((psu,index) => {

@@ -36,6 +36,7 @@ export const pdpModel = {
           Opt_SurgeProtectionDevice:false,
           PwrMonitorEnable:false,
           Opt_HotPwrEnable:false,
+          hotPowerPanelLocation:"",
           hotPowerDrops:[],
           UI:{
             expanded:false,

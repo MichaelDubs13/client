@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {addItems, circularReplacer, formatToTwoDigits, setModelValue} from './util'
+import {addBranchCircuit, addItems, circularReplacer, formatToTwoDigits, setModelValue} from './util'
 import {  pdpModel } from "./Models/PDPs/pdpModel";
 import { hotPowerBranchCircuitModel } from "./Models/PDPs/hotPowerBranchCircuitModel";
 import { pdpBranchCircuitModel } from "./Models/PDPs/pdpBranchCircuitModel";
@@ -184,11 +184,11 @@ const pdpStore = create()(
      * @param {String} amperage key of the branchCircuits to be updated, 
      * @param {String} value numberOfBranchCircuit to be created
      */
-    setNumberOfPowerDrps:(index, amperage, value)=>{
+    setNumberOfPowerDrps:(index, amperage, numberOfPowerDrops)=>{
       set((state) => {
         var newPdps = [...state.pdps];
-        console.log(newPdps);
-        var branchCircuit  = pdpConfiguration.createBranchCircuits(value, newPdps[index], amperage);
+        var branchCircuit = addBranchCircuit(newPdps[index].branchCircuit[amperage], newPdps[index], numberOfPowerDrops, pdpBranchCircuitModel.create, amperage)
+        console.log(branchCircuit)
         newPdps[index].branchCircuit[amperage] = branchCircuit;
         branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
         return { pdps: newPdps };

@@ -29,6 +29,21 @@ export function addItems(newItems, numberOfItems, create){
     return newItems;
 }
 
+export function addBranchCircuit(newItems, parent, numberOfItems, create,key){
+  const diff = numberOfItems - newItems.length
+  if(diff > 0){
+    for (let i = 0; i < diff; i++) {
+      const number = newItems.length
+      var item = create(parent, key);
+      newItems.push(item);
+    } 
+  } else if(diff < 0) {
+      newItems = newItems.slice(0, newItems.length + diff);
+  }
+
+  return newItems;
+}
+
 export function setNumberOfItems(newItems, numberOfItems, create, parent){
     const diff = numberOfItems - newItems.length
     if(diff > 0){
@@ -71,13 +86,7 @@ export function circularReplacer() {
 
 export function recreateArrayElement(parent, array, create){
   var newArray = array.map(item => {
-    if(parent.data.type ==='pdp'){
-      console.log(create)
-    } 
     const newItem = create();      
-    if(parent.data.type ==='pdp'){
-      console.log(newItem)
-    } 
       Object.assign(newItem, item);
       newItem.data.parent = parent;
       return newItem

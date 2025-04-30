@@ -54,6 +54,9 @@ export const ioModuleModel = {
             const indexObject = this.getIndexObject();
             ioModuleStore.getState().setIOModuleValue(indexObject, key, value,false, true);
           },
+          setPortType: function(indexObject, value){  
+            ioModuleStore.getState().setIOModulePortType(indexObject, value)
+          },
           getNodeData: function(){
             return [
               this.deviceTypeSelection,

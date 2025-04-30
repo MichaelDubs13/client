@@ -13,7 +13,9 @@ const IO_ModuleConfiguration = ({
   createNew,
 }) => {
   const index = createNew ? {} :  {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
-
+  const handlePortTypeChange = (value) => {
+    ioModule.setPortType(index, value);
+  }
   return (
     <div className="io-module-configuration">
       <div className="io-module-settings">
@@ -80,14 +82,16 @@ const IO_ModuleConfiguration = ({
         
         <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={ioModule} property={"localIP"} index={index}/>
         <DropdownItem title={"Enter the PLC Opteration Mode (i.e., OpMode) of the module (e.g., 01, 02, 03, etc.)"} item={ioModule} property={"opMode"} options={ioModuleGroupOptions.opModeOptions} index={index}/>
-        {ioModule.mioManufacturerName === "Balluff" && !ioModule.mioParts_Balluff === "BNI0052" &&
+        {ioModule.mioManufacturerName === "Balluff" && ioModule.mioParts_Balluff != "BNI0052" &&
           <>
-            <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection"} options={ioModuleGroupOptions.portTypeDefaultSelectionOptions} index={index}/>
+            <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection"} 
+              options={ioModuleGroupOptions.portTypeDefaultSelectionOptions} index={index} onChange={handlePortTypeChange}/>
           </>
         }
         {ioModule.mioManufacturerName === "Balluff" && ioModule.mioParts_Balluff === "BNI0052" &&
           <>
-            <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection_Balluff_BNI0052"} options={ioModuleGroupOptions.portTypeDefaultSelection_Balluff_BNI0052Options} index={index}/>
+            <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection_Balluff_BNI0052"} 
+              options={ioModuleGroupOptions.portTypeDefaultSelection_Balluff_BNI0052Options} index={index} onChange={handlePortTypeChange}/>
           </>
         }
         {

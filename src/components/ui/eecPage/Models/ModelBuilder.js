@@ -22,8 +22,8 @@ const ModelBuilder = {
         return ModelBuilder.doc;
     },
     
-    buildContent : (pdps, xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates) => {
-        const manufacturingEquipmentLINE = new ManufacturingEquipmentLINE();
+    buildContent : (customer, pdps, xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates) => {
+        const manufacturingEquipmentLINE = new ManufacturingEquipmentLINE(customer);
 
         if(pdps.length > 0){
             const fg_M_W_PowerDistributionPanel = new Fg_M_W_PowerDistributionPanel(manufacturingEquipmentLINE, pdps);
@@ -71,7 +71,7 @@ const ModelBuilder = {
         return node;
     },
 
-    buildIMX:(config, pdps,xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates)=>{
+    buildIMX:(config, customer, pdps,xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates)=>{
         ModelBuilder.doc = document.implementation.createDocument("", "", null);
         let imxElem = ModelBuilder.doc.createElement("imx");
         imxElem.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -81,7 +81,7 @@ const ModelBuilder = {
         ProjectConfiguration.set(config);
 
         var projectElem = ModelBuilder.doc.createElement("project");
-        projectElem.setAttribute("name", `${config.plant}_${config.shop}_${config.line}`);
+        projectElem.setAttribute("name", `NewProject`);
         projectElem.setAttribute("save", "true");
 
         var libraryElem = ModelBuilder.doc.createElement("libraries");
@@ -92,7 +92,7 @@ const ModelBuilder = {
         libraryElem.appendChild(addElem);
         projectElem.appendChild(libraryElem);
 
-        const contentElem = ModelBuilder.buildContent(pdps,xpdps, mcps, lpds, switches, devices, groupedIOModules, hmis, gates);
+        const contentElem = ModelBuilder.buildContent(customer,pdps,xpdps, mcps, lpds, switches, devices, groupedIOModules, hmis, gates);
         //post process
         const pi = ModelBuilder.doc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
         ModelBuilder.doc.insertBefore(pi, ModelBuilder.doc.firstChild);

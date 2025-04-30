@@ -24,6 +24,7 @@ import NetworkDiagram from "./Flow/NetworkDiagram";
 import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 import ClearButton from "./ClearButton";
 import { mcpModel } from "./Store/Models/MCPs/mcpModel";
+import { customerStore } from "./Store/customerStore";
 
 
 
@@ -32,6 +33,7 @@ const EecPage = () => {
     const [eplanPath, setEplanPath] = useState("");
     const getConfig = projectStore((state) => state.getConfig);
     const pdps = pdpStore((state) => state.pdps);
+    const customer = customerStore((state) => state.property);
     const xpdps = xpdpStore((state) => state.xpdps);
     const mcps = mcpStore((state) => state.mcps);
     const lpds = lpdStore((state) => state.lpds);
@@ -48,7 +50,6 @@ const EecPage = () => {
     const handleSumbit = (event) => {
       event.preventDefault();
       const config = getConfig();
-      var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
       const validatedPdps =pdpModel.generateData(pdps);
       const validatedXpdps =xpdpConfiguration.generateData(xpdps);
       const validatedMcps =mcpModel.generateData(mcps);
@@ -58,7 +59,8 @@ const EecPage = () => {
       const validatedSafetyGates = safetyGateConfiguration.generateData(safetyGates);
       const validatedIOModules = ioModuleGroupConfiguration.generateData(ioModuleGroups);
       var devices = []
-      var imx = ModelBuilder.buildIMX(config, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
+      var imx = ModelBuilder.buildIMX(config, customer, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
+      var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
       downloadXML(imx, name);
     }
 
@@ -104,7 +106,7 @@ const EecPage = () => {
             <div style={{display: "flex", justifyContent: "left", gap: "15px"}}>
                 <ModalCreateEecForm/>
                 <DownloadButton label="Download EEC Template" filePath="Templates\Eec_Template.xlsm"/>
-                <FormItemFileUpload
+                {/* <FormItemFileUpload
                   id="UploadFileForm"
                   accept=".txt"
                   multiple = {false}
@@ -112,7 +114,7 @@ const EecPage = () => {
                   placeholder="Upload File Handling Test"
                   value={eplanPath}
                   style={{ marginBottom: "5px"}}
-                  onChange={handleButtonClick}/>
+                  onChange={handleButtonClick}/> */}
             </div>
             <h2>
                 Diagram
