@@ -108,7 +108,13 @@ export const xpdpModel = {
      return branchCircuit;
   },
     merge: (state, currentState) => { 
-        const pdps = state.xpdps.map(pdp => {
+        const pdps = xpdpModel.recreate(state.xpdps);
+        state.xpdps = pdps;
+        Object.assign(currentState, state)
+        return currentState
+    },
+    recreate: (xpdps)=>{
+        const newPdps = xpdps.map(pdp => {
             var newPdp = recreateObject(pdp, xpdpModel.create)
             Object.keys(pdp.branchCircuit).forEach(key => { 
                 var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], branchCircuitModel.create);
@@ -117,8 +123,6 @@ export const xpdpModel = {
 
             return newPdp;
         })
-        state.xpdps = pdps;
-        Object.assign(currentState, state)
-        return currentState
-    } 
+        return newPdps;
+    }
 }

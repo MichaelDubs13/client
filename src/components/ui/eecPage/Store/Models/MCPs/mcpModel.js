@@ -147,14 +147,18 @@ export const mcpModel = {
        return mcps
     },
     merge: (state, currentState) => { 
-        const mcps = state.mcps.map(mcp => {
+        const mcps = mcpModel.recreate(state.mcps);
+        state.mcps = mcps;
+        Object.assign(currentState, state)
+        return currentState
+    },
+    recreate:(mcps)=>{
+        const newMcps = mcps.map(mcp => {
             var newMcp = recreateObject(mcp, mcpModel.create)
             var ports = recreateArrayElement(newMcp, mcp.ports, portModel.create)
             newMcp.ports = ports;
             return newMcp;
         })
-        state.mcps = mcps;
-        Object.assign(currentState, state)
-        return currentState
-    } 
+        return newMcps;
+    }
 }

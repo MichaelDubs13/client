@@ -201,7 +201,13 @@ export const pdpModel = {
       return branchCircuit;
     },
     merge: (state, currentState) => { 
-      const pdps = state.pdps.map(pdp => {
+      const pdps = pdpModel.recreate(state.pdps);
+      state.pdps = pdps;
+      Object.assign(currentState, state)
+      return currentState
+    },
+    recreate:(pdps) =>{
+      const newPdps = pdps.map(pdp => {
         var newPdp = recreateObject(pdp, pdpModel.create)
 
         Object.keys(pdp.branchCircuit).forEach(key => { 
@@ -219,8 +225,6 @@ export const pdpModel = {
         newPdp.hotPowerDrops = hotPowerDrops;
         return newPdp;
       })
-      state.pdps = pdps;
-      Object.assign(currentState, state)
-      return currentState
-    } 
+      return newPdps;
+    }
 }

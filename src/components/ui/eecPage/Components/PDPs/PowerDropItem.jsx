@@ -11,11 +11,16 @@ const PowerDropItem = ({
   branchCircuit,  
 }) => {
   const index = {pdpIndex:pdpIndex, branchCircuitIndex:branchCircuitIndex, amperage:amperage}
-  
+  const handleSparePowerChange = (value) =>{
+    console.log(value);
+    if(value){
+      branchCircuit.setValue(index, 'DropType', 'A-external')
+    }
+  }
   return (
     <div className="power-drop-item">
       <div className="power-drop-settings">
-        <CheckboxItem title={"Spare power drop"} item={branchCircuit} property={"PwrDrop_Spare"} index={index}/>
+        <CheckboxItem title={"Spare power drop"} item={branchCircuit} property={"PwrDrop_Spare"} index={index} onChange={handleSparePowerChange}/>
 
         {!branchCircuit.PwrDrop_Spare && (
           <>

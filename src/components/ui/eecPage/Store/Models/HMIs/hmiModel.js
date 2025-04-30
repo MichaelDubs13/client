@@ -137,15 +137,19 @@ export const hmiModel = {
         return extensionUnitPositions;
     },
     merge: (state, currentState) => { 
-    const hmis = state.hmis.map(hmi => {
-        var newHmi = recreateObject(hmi, hmiModel.create)
-        var newExtensionUnitPositions = recreateArrayElement(newHmi, hmi.extensionUnitPositions, extensionUnitPositionModel.create)
-        newHmi.extensionUnitPositions = newExtensionUnitPositions;
-        return newHmi;
-        })
+    const hmis = hmiModel.recreate(state.hmis);
         state.hmis = hmis;
         Object.assign(currentState, state)
         return currentState
+    },
+    recreate:(hmis)=>{
+        const newHmis = hmis.map(hmi => {
+            var newHmi = recreateObject(hmi, hmiModel.create)
+            var newExtensionUnitPositions = recreateArrayElement(newHmi, hmi.extensionUnitPositions, extensionUnitPositionModel.create)
+            newHmi.extensionUnitPositions = newExtensionUnitPositions;
+            return newHmi;
+        })
+        return newHmis;
     } 
      
 }

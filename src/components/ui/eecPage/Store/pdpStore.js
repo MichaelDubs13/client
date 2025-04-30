@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {addItems, circularReplacer, setModelValue} from './util'
+import {addItems, circularReplacer, formatToTwoDigits, setModelValue} from './util'
 import {  pdpModel } from "./Models/PDPs/pdpModel";
 import { hotPowerBranchCircuitModel } from "./Models/PDPs/hotPowerBranchCircuitModel";
 import { pdpBranchCircuitModel } from "./Models/PDPs/pdpBranchCircuitModel";
@@ -83,7 +83,7 @@ const pdpConfiguration = {
     var i = 1;
     Object.keys(branchCircuit).reverse().forEach(key => {
       branchCircuit[key].forEach(drop => {
-        drop.UI.CB_DT = `CB${i}`;
+        drop.UI.CB_DT = `CB${formatToTwoDigits(i)}`;
         i = i +1;
       })
     });

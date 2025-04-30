@@ -27,7 +27,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
 
         for(let i=0;i<branchCircuit.length;i++){
             powerDropItems.push(
-                <HeadingItem label={`${amperage} Branch circuit power drop ${i}: ${branchCircuit[i].UI.CB_DT}`}
+                <HeadingItem label={`${amperage} Branch circuit power drop ${i+1}: ${branchCircuit[i].UI.CB_DT}`}
                     size={18} margin={"20px"} open={false}
                     headerIcon={branchCircuit[i].UI.icon}
                     children={<PowerDropItem 
@@ -43,10 +43,10 @@ const PowerDropConfiguration = ({xpdp, index}) => {
     };
 
     const renderAllPowerDrops = () => {
-        var numberOfPwrDrop8A = renderPowerDrops("8A 1ph");
-        var numberOfPwrDrop15A = renderPowerDrops("15A 1ph");
-        var numberOfPwrDrop20A1p = renderPowerDrops("20A 1ph");
         var numberOfPwrDrop20A3p = renderPowerDrops("20A 3ph");
+        var numberOfPwrDrop20A1p = renderPowerDrops("20A 1ph");
+        var numberOfPwrDrop15A = renderPowerDrops("15A 1ph");
+        var numberOfPwrDrop8A = renderPowerDrops("8A 1ph");
         return [...numberOfPwrDrop8A, ...numberOfPwrDrop15A, ...numberOfPwrDrop20A1p, ...numberOfPwrDrop20A3p]
     }
 

@@ -4,6 +4,7 @@ import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
 import { lpdStore } from "./Store/lpdStore";
 import { projectStore } from "./Store/projectStore";
+import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 
 
 const LoadButton = () => {
@@ -36,6 +37,7 @@ const LoadButton = () => {
         try {
           var data = e.target.result;
           const jsonObject = JSON.parse(data);
+          pdpModel.merge()
           setConfig(jsonObject.config);
           setPdps(jsonObject.pdps);
           setXpdps(jsonObject.xpdps);

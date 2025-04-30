@@ -105,14 +105,18 @@ export const networkSwitchModel = {
     return ports;
   },
    merge: (state, currentState) => { 
-      const networkSwitches = state.networkSwitches.map(networkSwitch => {
-          var newNetworkSwitch = recreateObject(networkSwitch, networkSwitchModel.create)
-          var ports = recreateArrayElement(newNetworkSwitch, networkSwitch.ports, networkPortModel.create)
-          newNetworkSwitch.ports = ports;
-          return newNetworkSwitch;
-      })
+      const networkSwitches = networkSwitchModel.recreate(state.networkSwitches);
       state.networkSwitches = networkSwitches;
       Object.assign(currentState, state)
       return currentState
-  } 
+  } ,
+  recreate:(networkSwitches)=>{
+    const newNetworkSwitches = networkSwitches.map(networkSwitch => {
+        var newNetworkSwitch = recreateObject(networkSwitch, networkSwitchModel.create)
+        var ports = recreateArrayElement(newNetworkSwitch, networkSwitch.ports, networkPortModel.create)
+        newNetworkSwitch.ports = ports;
+        return newNetworkSwitch;
+    })
+    return newNetworkSwitches;
+  }
 }

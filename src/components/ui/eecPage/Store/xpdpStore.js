@@ -3,6 +3,7 @@ import { pdpConfiguration } from "./pdpStore";
 import {addItems, circularReplacer, setModelValue} from './util'
 import { xpdpModel } from "./Models/XPDPs/xpdpModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { branchCircuitModel } from "./Models/XPDPs/branchCircuitModel";
 
 const xpdpOptions = {
   xfmrSizeOptions: [
@@ -25,7 +26,7 @@ const xpdpConfiguration = {
   createBranchCircuits:(numberOfDrps, parent, amperage) => {
     var newPwrDrops = []
     for(let i=0; i<numberOfDrps; i++){
-        var newPwrDrop = xpdpModel.create(parent, amperage);
+        var newPwrDrop = branchCircuitModel.create(parent, amperage);
         newPwrDrops.push(newPwrDrop);
     }
     return newPwrDrops;
