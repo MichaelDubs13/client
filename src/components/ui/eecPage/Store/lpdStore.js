@@ -55,6 +55,30 @@ const lpdConfiguration = {
 const lpdStore = create(
   persist((set) => ({
     lpds:[],   
+    wipPsu:{},
+    setWipPsu: (psu) => {
+      set({wipPsu:psu});
+    },
+    addWipPsu: (line, location) => {
+      set((state) => {
+        const newPsu = {...state.wipPsu}
+        let newLpds = [...state.lpds]
+        const index = newLpds.findIndex(group => group.location === location && group.line === line);
+        if(index > -1){
+          newPsu.data.parent = newLpds[index];
+          newLpds[index].psus = [...newLpds[index].psus,newPsu ]
+        } else {
+          const newLpd = lpdModel.create();
+          newLpd.line = line;
+          newLpd.location = location;
+          newPsu.data.parent = newLpd;
+          newLpd.psus.push(newPsu);
+          newLpds = [...newLpds, newLpd]
+        }
+        
+        return {lpds:newLpds}
+      })    
+    },
     setLpds: (lpds) => {
       set({lpds:lpds});
     },  

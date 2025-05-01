@@ -27,9 +27,13 @@ export const portModel = {
               portIndex:portIndex,
             }
           },
-          setValue: function(indexObject, key, value){
-            mcpStore.getState().setPortValue(indexObject, key, value);
+          setValue: function(indexObject, key, value, isUI, isData){
+            mcpStore.getState().setPortValue(indexObject, key, value, isUI, isData);
           },
+          setDataValue: function(key, value){
+            const indexObject = this.getIndexObject();  
+             this.setValue(indexObject, key, value,false, true);
+           },
           getIndex: function(){
             return this.data.parent.ports.findIndex(port => port.data.id === this.data.id)
           },
@@ -51,6 +55,9 @@ export const portModel = {
               return [this.targetDT,]
             }
             return []
+          },
+          getSourceLine:function(){
+            return this.data.parent.line;
           },
           getSourceLocation:function(){
             return this.data.parent.location;

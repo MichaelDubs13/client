@@ -33,12 +33,12 @@ export const networkPortModel = {
               portIndex:portIndex,
             }
           },
-          setValue: function(indexObject, key, value){
-            networkSwitchStore.getState().setPortValue(indexObject, key, value);
+          setValue: function(indexObject, key, value, isUI, isData){
+            networkSwitchStore.getState().setPortValue(indexObject, key, value, isUI, isData);
           },
           setDataValue: function(key, value){
             const indexObject = this.getIndexObject();
-            networkSwitchStore.getState().setPortValue(indexObject, key, value,false, true);
+            this.setValue(indexObject, key, value,false, true);
           },
           setNetworkTarget:function(line, location, name){
             const indexObject = this.getIndexObject();

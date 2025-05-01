@@ -10,7 +10,7 @@ import { projectStore } from "./projectStore";
 import { ioModuleStore } from "./ioModuleStore";
 
 const lineOptions = {
-    addDeviceOptions:['LETH','HMI',"GS", 'SIO', 'MIO']
+    addDeviceOptions:['LETH','HMI',"GS", 'SIO', 'MIO', 'PSU']
 }
 
 const lineConfiguration = {
@@ -19,6 +19,7 @@ const lineConfiguration = {
     gateIndicator:'GS',
     safetyModuleIndicator:'SIO',
     ioModuleIndicator:'MIO',
+    powerSupplyIndicator:'PSU',
     getDeviceFullName:(location, device)=>{
         return `+${location}-${device}`;
     },
@@ -35,11 +36,6 @@ const lineConfiguration = {
     getLocations:(array, locations) => {
         array.map((item) => {
             if(item.location){
-                // if(item.line === line){
-                //     if(!locations.includes(item.location)){
-                //         locations.push(item.location)
-                //     }
-                // }
                 if(!locations.includes(item.location)){
                     locations.push(item.location)
                 }
@@ -79,7 +75,7 @@ const lineConfiguration = {
             if(foundItem) return foundItem;
         }
     },
-    getDeviceById:(id)=>{
+    getAllStoreItems:()=>{
         const pdps = pdpStore.getState().pdps;
         const xpdps= xpdpStore.getState().xpdps;
         const mcps = mcpStore.getState().mcps;
@@ -90,7 +86,11 @@ const lineConfiguration = {
         const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
 
         const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
-
+        return items;
+    },
+    getDeviceById:(id)=>{
+        const items = lineConfiguration.getAllStoreItems();
+        const pdps = pdpStore.getState().pdps;
         for(let i=0;i<items.length;i++){
             if(items[i].data.id === id) return items[i];
             var foundItem = pdps[i].getItemById(id);

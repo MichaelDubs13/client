@@ -52,12 +52,12 @@ export const safetyGateSwitchModel = {
         const safetyGateSwitchIndex = this.getIndex();
         return {safetyGateIndex:safetyGateIndex,safetyGateSwitchIndex:safetyGateSwitchIndex}
       },
-      setValue: function(indexObject, key, value){
-        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value);
+      setValue: function(indexObject, key, value, isUI, isData){
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value, isUI, isData);
       },
       setDataValue: function(key, value){
         const indexObject = this.getIndexObject();
-        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, key, value,false, true);
+        this.setValue(indexObject, key, value,false, true);
       },
       getNodeData: function(){
         return [
@@ -103,7 +103,7 @@ export const safetyGateSwitchModel = {
         return this.location;
       },
       getSourceDeviceTag:function(){
-        return this.deviceTag;
+        return this.location;
       },
       setPowerSource:function(line, location, name){
         const indexObject = this.getIndexObject();

@@ -41,12 +41,12 @@ export const ioModuleGroupModel = {
         const ioModuleGroupIndex = this.getIndex();
         return {ioModuleGroupIndex:ioModuleGroupIndex};
       },
-      setValue: function(indexObject, key, value){
-        ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value);
+      setValue: function(indexObject, key, value, isUI, isData){
+        ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value, isUI, isData);
       },
       setDataValue: function(key, value){
         const indexObject = this.getIndexObject();
-        ioModuleStore.getState().setIOModuleGroupValue(indexObject, key, value,false, true);
+        this.setValue(indexObject, key, value,false, true);
       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location);

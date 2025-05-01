@@ -2,20 +2,22 @@ import { Modal, ModalContent,  TooltipWrapper,Icon, IconButton, } from "@tesla/d
 import { useEffect, useState } from "react";
 import { Button } from "@tesla/design-system-react";
 import { iconPlus, } from '@tesla/design-system-icons';
-import { networkSwitchConfiguration, networkSwitchStore } from "../../Store/networkSwitchStore";
+import { networkSwitchStore } from "../../Store/networkSwitchStore";
 import NetworkSwitchConfiguration from "../NetworkSwitches/NetworkSwitchConfiguration";
 import { lineConfiguration } from "../../Store/lineStore";
-import { hmiConfiguration, hmiStore } from "../../Store/hmiStore";
+import { hmiStore } from "../../Store/hmiStore";
 import HmiConfiguration from "../HMIs/HmiConfiguration";
-import { safetyGateConfiguration, safetyGateStore } from "../../Store/safetyGateStore";
+import { safetyGateStore } from "../../Store/safetyGateStore";
 import SafetyGateSwitchConfiguration from "../SafetyGateSwitches/SafetyGateSwitchConfiguration";
-import IO_ModuleCollectionInstance from "../IO_Modules/IO_ModuleCollectionInstance";
 import IO_ModuleConfiguration from "../IO_Modules/IO_ModuleConfiguration";
-import { ioModuleGroupConfiguration, ioModuleStore } from "../../Store/ioModuleStore";
+import { ioModuleStore } from "../../Store/ioModuleStore";
 import { networkSwitchModel } from "../../Store/Models/NetworkSwitches/networkSwitchModel";
 import { hmiModel } from "../../Store/Models/HMIs/hmiModel";
 import { safetyGateSwitchModel } from "../../Store/Models/SafetyGates/safetyGateSwitchModel";
 import { ioModuleModel } from "../../Store/Models/IoModules/ioModuleModel";
+import LpdPsuItem from "../LPDs/LpdPsuItem";
+import { psuModel } from "../../Store/Models/LDPs/psuModel";
+import { lpdStore } from "../../Store/lpdStore";
 
 
 
@@ -33,6 +35,9 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
   const wipIoModule = ioModuleStore((state)=>state.wipIoModule)
   const setWipIoModule = ioModuleStore((state)=>state.setWipIoModule)
   const addWipIoModule = ioModuleStore((state)=>state.addWipIoModule)
+  const wipPsu = lpdStore((state)=>state.wipPsu)
+  const setWipPsu = lpdStore((state)=>state.setWipPsu)
+  const addWipPsu = lpdStore((state)=>state.addWipPsu)
 
   const handleFormSubmit = () => {
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
@@ -41,9 +46,10 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
       addWipHmi();
     }else if(name.startsWith(lineConfiguration.gateIndicator)){
       addWipSafetyGateSwitch();
-    }
-    else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
+    }else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
       addWipIoModule();
+    }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
+      addWipPsu(item.data.parent.line,item.data.parent.location);
     }
     setOpenModal(false)
   }
@@ -68,7 +74,7 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
   const getEthernetSource=(item, networkSource)=>{
     item.ethernetSourceLine = networkSource.getSourceLine();
     item.ethernetSourceLocation = networkSource.getSourceLocation();
-    item.ethernetSourceDT = networkSource.getSourceLocation();
+    item.ethernetSourceDT = networkSource.getSourceDeviceTag();
   }
   useEffect(() => {
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
@@ -87,6 +93,10 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
       var newIoModule = ioModuleModel.create();
       newIoModule = updateItem(newIoModule)
       setWipIoModule(newIoModule);
+    }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
+      var newPsu = psuModel.create();
+      newPsu = updateItem(newPsu)
+      setWipPsu(newPsu);
     }
 }, [name]);
   
@@ -100,6 +110,8 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
       return <SafetyGateSwitchConfiguration safetyGateSwitch={wipSafetyGateSwitch} createNew={true}/>
     }else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
       return <IO_ModuleConfiguration ioModule={wipIoModule} createNew={true}/>
+    }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
+      return <LpdPsuItem psu={wipPsu} createNew={true}/>
     }
     
   }

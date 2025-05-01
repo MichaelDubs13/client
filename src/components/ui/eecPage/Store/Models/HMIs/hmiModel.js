@@ -60,12 +60,12 @@ export const hmiModel = {
              const index = this.getIndex();
              return {hmiIndex:index}
            },
-           setValue: function(indexObject, key, value){
-             hmiStore.getState().setHmiValue(indexObject, key, value);
+           setValue: function(indexObject, key, value, isUI, isData){
+             hmiStore.getState().setHmiValue(indexObject, key, value, isUI, isData);
            },
            setDataValue: function(key, value){
             const indexObject = this.getIndexObject();  
-             hmiStore.getState().setHmiValue(indexObject, key, value,false, true);
+             this.setValue(indexObject, key, value,false, true);
            },
            getFullName: function() {
              return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);

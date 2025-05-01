@@ -67,6 +67,15 @@ export const xpdpModel = {
           this.amp,
         ]
       },
+      getSourceLine:function(){
+        return this.line
+        },
+      getSourceLocation:function(){
+        return this.location;
+      },
+      getSourceDeviceTag:function(){
+        return this.location;
+      },
       getStations: function(){
         var stations = []
         Object.keys(this.branchCircuit).forEach(key => {

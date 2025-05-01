@@ -79,9 +79,13 @@ export const mcpModel = {
               mcpIndex:mcpIndex,
             }
           },
-          setValue: function(indexObject, key, value){
-            mcpStore.getState().setMcpValue(indexObject, key, value);
+          setValue: function(indexObject, key, value, isUI, isData){
+            mcpStore.getState().setMcpValue(indexObject, key, value, isUI, isData);
           },
+          setDataValue: function(key, value){
+            const indexObject = this.getIndexObject();  
+             this.setValue(indexObject, key, value,false, true);
+           },
           getIndex: function(){
             const mcps = mcpStore.getState().mcps;
             return mcps.findIndex(mcp => mcp.data.id === this.data.id)

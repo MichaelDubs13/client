@@ -11,8 +11,9 @@ const LpdPsuItem = ({
   lpdIndex,
   lpd,
   psu,
+  createNew,
 }) => {   
-const index = {psuIndex:psuIndex, lpdIndex:lpdIndex}
+const index = createNew ?  {} : {psuIndex:psuIndex, lpdIndex:lpdIndex}
 const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
 
 return (
@@ -22,25 +23,28 @@ return (
             deviceTitle={"PSU Device Tag (e.g., PSU01)"} deviceProperty={"deviceTag"}
             stationTitle={"PSU Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/>                                
           {
+            lpd &&
             lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
             <>
-                {/* PSU-to-PSU cable length */}
                 <DropdownItem title={"Enter the cable length to the next cascaded PSU (m)"} item={psu} property={"cable_length"}
                    options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
             </>
           )}
-          {/* Number of 24V drops */}
-          <SetItemsNumberInputBox title={"Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)"} 
+          {
+            lpd && 
+            <>
+               <SetItemsNumberInputBox title={"Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)"} 
                     items={psu.drops} addItems={setNumberOfDrops} index={index}/>          
-          {/* Cascading PSUs within this configuration */}
-           {
-              psu.drops.map((drop, index) => {
-                return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
-                size={18} margin={"20px"} open={false} 
-                headerIcon={drop.UI.icon}
-                children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} drop={drop} lpd={lpd} psu={psu}/>}/>
-              })
-           } 
+                {
+                    psu.drops.map((drop, index) => {
+                      return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
+                      size={18} margin={"20px"} open={false} 
+                      headerIcon={drop.UI.icon}
+                      children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} drop={drop} lpd={lpd} psu={psu}/>}/>
+                    })
+                } 
+            </>
+          }
         </div>
       </div>
     );

@@ -47,12 +47,12 @@ export const ioModuleModel = {
             const ioModuleIndex = this.getIndex();
             return {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
           },
-          setValue: function(indexObject, key, value){
-            ioModuleStore.getState().setIOModuleValue(indexObject, key, value);
+          setValue: function(indexObject, key, value, isUI, isData){
+            ioModuleStore.getState().setIOModuleValue(indexObject, key, value, isUI, isData);
           },
           setDataValue: function(key, value){
             const indexObject = this.getIndexObject();
-            ioModuleStore.getState().setIOModuleValue(indexObject, key, value,false, true);
+            this.setValue(indexObject, key, value,false, true);
           },
           setPortType: function(indexObject, value){  
             ioModuleStore.getState().setIOModulePortType(indexObject, value)

@@ -27,9 +27,13 @@ export const safetyGateGroupModel = {
             safetyGateIndex:safetyGateIndex,
           }
         },
-        setValue: function(indexObject, key, value){
-          safetyGateStore.getState().setSafetyGateValue(indexObject, key, value);
+        setValue: function(indexObject, key, value, isUI, isData){
+          safetyGateStore.getState().setSafetyGateValue(indexObject, key, value, isUI, isData);
         },
+        setDataValue: function(key, value){
+          const indexObject = this.getIndexObject();  
+           this.setValue(indexObject, key, value,false, true);
+         },
         getFullName: function() {
           return lineConfiguration.getDeviceFullName(this.location);
         },

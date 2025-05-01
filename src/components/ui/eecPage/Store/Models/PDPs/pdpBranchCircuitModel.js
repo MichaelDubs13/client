@@ -58,6 +58,15 @@ export const pdpBranchCircuitModel = {
           `${this.targetCableLength}m`,
         ]
       },
+      getSourceLine:function(){
+        return this.data.parent.line
+        },
+      getSourceLocation:function(){
+        return this.data.parent.location;
+      },
+      getSourceDeviceTag:function(){
+        return this.data.parent.location;
+      },
       getStations: function(){
         return [this.targetLocation,]
       },

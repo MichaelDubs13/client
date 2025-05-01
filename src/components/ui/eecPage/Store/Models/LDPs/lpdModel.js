@@ -28,9 +28,13 @@ export const lpdModel = {
             const lpdIndex = this.getIndex();
             return {lpdIndex:lpdIndex}
           },
-          setValue: function(indexObject, key, value){
-            lpdStore.getState().setLpdValue(indexObject, key, value);
+          setValue: function(indexObject, key, value, isUI, isData){
+            lpdStore.getState().setLpdValue(indexObject, key, value, isUI, isData);
           },
+          setDataValue: function(key, value){
+            const indexObject = this.getIndexObject();  
+             this.setValue(indexObject, key, value,false, true);
+           },
           getMFG: function(){
             if(this.psu_selected){
               return this.psu_selected.split(':')[0];

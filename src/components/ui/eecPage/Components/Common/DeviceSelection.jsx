@@ -29,6 +29,7 @@ const DeviceSelection = ({
     const [deviceOptions, setDeviceOptions] = useState([])   
     
     useEffect(() => {
+        console.log(item)
         getLineOptions();        
     }, [item.line]);
 

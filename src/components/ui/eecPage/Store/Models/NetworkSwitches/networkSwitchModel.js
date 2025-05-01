@@ -48,9 +48,13 @@ export const networkSwitchModel = {
           networkSwitchIndex:networkSwitchIndex,
         }
       },
-      setValue: function(indexObject, key, value){
-        networkSwitchStore.getState().setNetworkSwitchValue(indexObject, key, value);
+      setValue: function(indexObject, key, value, isUI, isData){
+        networkSwitchStore.getState().setNetworkSwitchValue(indexObject, key, value, isUI, isData);
       },
+      setDataValue: function(key, value){
+        const indexObject = this.getIndexObject();  
+         this.setValue(indexObject, key, value,false, true);
+       },
       getFullName: function() {
         return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);
       },

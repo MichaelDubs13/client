@@ -33,12 +33,12 @@ export const powerDropModel = {
           dropIndex:dropIndex,
         }
       },
-      setValue: function(indexObject, key, value){
-        lpdStore.getState().setDropValue(indexObject, key, value);
+      setValue: function(indexObject, key, value, isUI, isData){
+        lpdStore.getState().setDropValue(indexObject, key, value, isUI, isData);
       },
       setDataValue: function(key, value){
         const indexObject = this.getIndexObject();
-        lpdStore.getState().setDropValue(indexObject, key, value,false, true);
+        this.setValue(indexObject, key, value,false, true);
       },
       setPowerTarget:function(line, location, name){
         const indexObject = this.getIndexObject();
