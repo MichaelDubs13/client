@@ -7,13 +7,13 @@ import { ioModuleStore } from "../../../Store/ioModuleStore";
 import DropdownItem from "../../Util/Table/Components/DropdownItem";
 import CreateableSelectItem from "../../Util/Table/Components/CreateableSelectItem";
 import { ioModuleGroupOptions } from "../../../Store/ioModuleStore";
-import { lineStore } from "../../../Store/lineStore";
+import CheckboxItem from "../../Util/Table/Components/CheckboxItem";
 
 const getHeaders = (stations)=>{
   const headers = [
     {header: "Port", type:'label', property:'portCounter'}, 
     {header: "Type", type:'dropdown', options:ioModuleGroupOptions.portTypeDefaultSelectionOptions, property:'pinType'}, 
-    {header: "Is an IO-Link Module", type:'dropdown', options:["yes",'no'], property:'isIOLink'}, 
+    {header: "Is an IO-Link Module", type:'checkbox', property:'isIOLink'}, 
     {header: "Inputs/Outputs Description", type:'input', property:'pinDescription'}, 
     {header: "PLC address", type:'input', property:'pinAddress'}, 
     {header: "Target part number", type:'input', property:'pinTargetPartNumber'}, 
@@ -41,6 +41,16 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex) => {
                 renderInput={(props) => (
                 <DropdownItem inputRef={props.inpRef} className="qz__data-table__editable-cell--input" 
                     options={header.options}  item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property}  
+                    index={index} {...props} onFocus={props.onFocus}/>
+              )}
+            />
+
+    case 'checkbox':
+      return <EditableCell
+              {...cell}
+                renderInput={(props) => (
+                <CheckboxItem inputRef={props.inpRef} className="qz__data-table__editable-cell--input" 
+                    item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property}  
                     index={index} {...props} onFocus={props.onFocus}/>
               )}
             />

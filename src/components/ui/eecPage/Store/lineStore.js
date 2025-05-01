@@ -65,28 +65,17 @@ const lineConfiguration = {
         })
         return devices;
     },
-    getDeviceByName:(item, name, location, line)=>{
-        if(item.line != line) return;
-        if(item.location != location) return;
-        if(item.deviceTag != name) return;
-        return item;
-    },
     getDeviceByNameGlobal:(name, location, line)=>{
+        const mcps = mcpStore.getState().mcps;
+        const lpds = lpdStore.getState().lpds;
         const networkSwitches = networkSwitchStore.getState().networkSwitches;
         const hmis = hmiStore.getState().hmis;
         const safetyGates = safetyGateStore.getState().safetyGates;
         const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
 
-        const items = networkSwitches.concat(hmis);
-        for(let i=0;i<safetyGates.length;i++){
-            items.push(...safetyGates[i].safetyGateSwitches);
-        }
-        for(let i=0;i<ioModuleGroups.length;i++){
-            items.push(...ioModuleGroups[i].ioModules);
-        }
-
+        const items = networkSwitches.concat(hmis, lpds, mcps, safetyGates, ioModuleGroups);
         for(let i=0;i<items.length;i++){
-            var foundItem = lineConfiguration.getDeviceByName(items[i], name, location, line)
+            var foundItem = items[i].getDeviceByName(name, location, line);
             if(foundItem) return foundItem;
         }
     },
@@ -205,19 +194,18 @@ const lineStore = create((set) => ({
         newStations = lineConfiguration.getStations(items, newStations);
         newStations = newStations.filter(station => station)
         newStations = [...new Set(newStations)];
-        newStations = newStations.map((station) => {
-            return {label:station, value:station}
-        })
 
         var newLocations = []
         newLocations = lineConfiguration.getLocations(items, newLocations); 
         newLocations = newLocations.filter(location => location);  
         newLocations = [...new Set(newLocations)];     
-        newLocations = newLocations.map((location) => {
-            return {label:location, value:location}
-        })
+        
         newStations.push(...newLocations);
         newStations = [...new Set(newStations)];
+        newStations = newStations.map((station) => {
+            return {label:station, value:station}
+        })
+        
         set((state) => {
             return {stations: newStations};
         })

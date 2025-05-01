@@ -7,14 +7,18 @@ import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { Icon } from '@tesla/design-system-react';
 
 
-
+/**
+ * type: powerTarget, powerSource, networkTarget, networkSource,
+ * @param {*} param0 
+ * @returns 
+ */
 const DeviceSelection = ({
     item, index,  
     lineTitle = "Manufacturing Line name (e.g., UBM1, DOR1)", 
     stationTitle, stationProperty,
     deviceTitle, deviceProperty,
     onDeviceChange, onStationChange,
-    powerSource, networkSource, 
+    type,
     canCreateDevice,
 }) => {
     const getLineOptions = lineStore((state) => state.getLineOptions)    
@@ -52,40 +56,74 @@ const DeviceSelection = ({
     }
 
     const renderAddDeviceModal=()=>{
-        if(canCreateDevice){
+        if(type){
             if(deviceExist()){
                 return <Icon data={iconStatusSuccess} style={{marginLeft:'15px',}}/>
             } else {
-                if(canAddDevice(lineOptions.addDeviceOptions,item[deviceProperty])){
-                    return <ModalAddDevice item={item} name={item[deviceProperty]} line={item.line} location={item[stationProperty]} 
-                            powerSource={powerSource} networkSource={networkSource}/>
+                if(canCreateDevice){
+                    if(canAddDevice(lineOptions.addDeviceOptions,item[deviceProperty])){
+                        return <ModalAddDevice item={item} name={item[deviceProperty]} line={item.line} location={item[stationProperty]} 
+                                powerSource={type === "powerTarget" ? item : null} networkSource={type === "networkTarget" ? item : null}/>
+                    }
                 }
             }
         }
     }
 
-    const getSourceDevice = (deviceTag, location) => {
-        var foundItem = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
-        if(foundItem){
-            if(powerSource){
-                foundItem.setPowerSource(powerSource.getSourceLine(), powerSource.getSourceLocation(), powerSource.getSourceDeviceTag()); 
-                powerSource.setDataValue("powerTarget", item.data.id)  
+    const getTargetDevice = (deviceTag, location) => {
+        var targetDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
+        if(targetDevice){
+            if(type === "powerTarget"){
+                targetDevice.setPowerSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
+                item.setDataValue("powerTarget", item.data.id)  
             }
     
-            if(networkSource){
-                foundItem.setNetworkSource(networkSource.getSourceLine(), networkSource.getSourceLocation(), networkSource.getSourceDeviceTag());   
-                networkSource.setDataValue("ethernetTarget", item.data.id)  
+            if(type === "networkTarget"){
+                targetDevice.setNetworkSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag());   
+                item.setDataValue("ethernetTarget", item.data.id)  
             }
         }
     }
+
+    const getSourceDevice = (deviceTag, location) => {
+        var sourceDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
+        if(sourceDevice){
+            if(type === "powerSource"){
+                sourceDevice.setPowerTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
+                sourceDevice.setDataValue("powerTarget", item.data.id)  
+            }
+    
+            if(type==="networkSource"){
+                sourceDevice.setNetworkTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag());   
+                sourceDevice.setDataValue("ethernetTarget", item.data.id)  
+            }
+        }
+    }
+
+
     const handleDeviceChange = (deviceTag) => {
-        getSourceDevice(deviceTag, item[stationProperty])
+
+        if(type === "powerTarget" || type==="networkTarget") {
+            getTargetDevice(deviceTag, item[stationProperty])
+        }
+        
+        if(type === "powerSource" || type==="networkSource"){
+            getSourceDevice(deviceTag, item[stationProperty])
+        }
+
         if(onDeviceChange){
             onDeviceChange();
         }
     }
     const handleStationChange = (location) => {
-        getSourceDevice(item[deviceProperty], location)
+        if(type === "powerTarget" || type==="networkTarget") {
+            getTargetDevice(item[deviceProperty], location)
+        }
+        
+        if(type === "powerSource" || type==="networkSource"){
+            getSourceDevice(item[deviceProperty], location)
+        }
+
         if(onStationChange){
             onStationChange();
         }

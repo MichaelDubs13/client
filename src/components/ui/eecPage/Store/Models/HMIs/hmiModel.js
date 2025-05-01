@@ -31,7 +31,9 @@ export const hmiModel = {
            mountingType: "Flange at Bottom", // EEC variable name: Mounting_Selection
            hmiVersion: "V17", // EEC variable name: Version_Selection
            rfidPosition: "Right", // EEC variable name: RFID_Side
-   
+           powerTargetLine: "", // EEC variable name: CascadingTo_PowerLine ***needs to be created in EEC
+            powerTargetLocation: "", // EEC variable name: CascadingTo_PowerStation
+            powerTargetDT: "", // EEC variable name: CascadingTo_PowerDT
            hmiCascadingToSelection: "", // EEC variable name: frmUI_HMI_Selection
            ethernetTargetLine: "", // EEC variable name: HMI_ETHOut_Line
            ethernetTargetLocation: "", // EEC variable name: HMI_ETHOut_Station
@@ -76,21 +78,41 @@ export const hmiModel = {
              if(this.data.id === id) return this;
              return null;
            },
+           getDeviceByName:function(name, location, line){
+            if(this.line != line) return;
+            if(this.location != location) return;
+            if(this.deviceTag != name) return;
+            return this;
+          },
            getNodeData: function(){
              return [
                this.deviceTag,
              ]
            },
            setPowerSource:function(line, location, name){
-             hmiStore.getState().setHmiValue(this, "powerSourceLine", line);
-             hmiStore.getState().setHmiValue(this, "powerSourceLocation", location);
-             hmiStore.getState().setHmiValue(this, "powerSourceDT", name);
+            const indexObject = this.getIndexObject();
+            hmiStore.getState().setHmiValue(indexObject, "powerSourceLine", line);
+            hmiStore.getState().setHmiValue(indexObject, "powerSourceLocation", location);
+            hmiStore.getState().setHmiValue(indexObject, "powerSourceDT", name);
            },
            setNetworkSource:function(line, location, name){
-             hmiStore.getState().setHmiValue(this, "ethernetSourceLine", line);
-             hmiStore.getState().setHmiValue(this, "ethernetSourceLocation", location);
-             hmiStore.getState().setHmiValue(this, "ethernetSourceDT", name);
+            const indexObject = this.getIndexObject();
+            hmiStore.getState().setHmiValue(indexObject, "ethernetSourceLine", line);
+            hmiStore.getState().setHmiValue(indexObject, "ethernetSourceLocation", location);
+            hmiStore.getState().setHmiValue(indexObject, "ethernetSourceDT", name);
            },
+           setPowerTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            hmiStore.getState().setHmiValue(indexObject, "powerTargetLine", line);
+            hmiStore.getState().setHmiValue(indexObject, "powerTargetLocation", location);
+            hmiStore.getState().setHmiValue(indexObject, "powerTargetDT", name);
+          },
+          setNetworkTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            hmiStore.getState().setHmiValue(indexObject, "ethernetTargetLine", line);
+            hmiStore.getState().setHmiValue(indexObject, "ethernetTargetLocation", location);
+            hmiStore.getState().setHmiValue(indexObject, "ethernetTargetDT", name);
+          },
            getStations: function(){
              return [this.location, this.powerSourceLocation, this.ethernetSourceLocation, this.ethernetTargetLocation]
            },
@@ -110,6 +132,15 @@ export const hmiModel = {
              }
              return devices;
            },
+           getSourceLine:function(){
+            return this.line
+            },
+            getSourceLocation:function(){
+              return this.location
+            },
+            getSourceDeviceTag:function(){
+              return this.deviceTag
+            },
            setRfidExtensionPosition: function(orientation){
             if(orientation == "Right"){
                 hmiStore.getState().setExtensionUnitPositionValue(this.extensionUnitPositions[this.extensionUnitPositions.length-1], "buttonSelection", "RFID Reader");

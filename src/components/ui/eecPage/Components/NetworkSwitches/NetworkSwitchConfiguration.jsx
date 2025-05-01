@@ -61,7 +61,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                         <>  
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
-                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/>                                
+                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}
+                                type="powerSource"/>                                
                             {/* <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"powerSourceDT"}
                                 stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/>        */}
@@ -78,7 +79,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                         <>
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
                                 deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
-                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/> 
+                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}
+                                type="powerSource"/> 
                         </>
                     )}
                     
@@ -113,7 +115,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     {/* The below code is to be used when the network switch type is "Plant" and the switch type is "Managed" */}
                     {networkSwitch.networkType === "Plant" && networkSwitch.switchSpeed === "Gigabit" && (
                         <>
-                            <DropdownItem title={"Number of ports"} item={networkSwitch} property={"ports_8or16or24"} options={networkSwitchOptions.ports_8or16or24Options} 
+                            <DropdownItem title={"Number of ports"} item={networkSwitch} property={"ports_8or16or24"} 
+                                options={networkSwitchOptions.ports_8or16or24Options} 
                                 onChange={setPorts} index={networkSwitchIndex}/>
                         </>
                     )}

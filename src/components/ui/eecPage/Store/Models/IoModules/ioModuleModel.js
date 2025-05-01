@@ -68,6 +68,21 @@ export const ioModuleModel = {
           getItemById:function(id){
             return getItemById(this.ports, id);
           },
+          getDeviceByName:function(name, location, line){
+            if(this.line != line) return;
+            if(this.location != location) return;
+            if(this.deviceTag != name) return;
+            return this;
+          },
+          getSourceLine:function(){
+            return this.line
+            },
+          getSourceLocation:function(){
+            return this.location;
+          },
+          getSourceDeviceTag:function(){
+            return this.deviceTag;
+          },
           getStations: function(){
             return [this.location,]
           },
@@ -88,6 +103,18 @@ export const ioModuleModel = {
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLine", line);
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLocation", location);
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceDT", name);
+          },
+          setPowerTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerTargetLine", line);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerTargetLocation", location);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerTargetDT", name);
+          },
+          setNetworkTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetTargetLine", line);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetTargetLocation", location);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetTargetDT", name);
           },
         }
     

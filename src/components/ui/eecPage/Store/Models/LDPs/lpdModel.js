@@ -65,6 +65,13 @@ export const lpdModel = {
           getItemById: function(id){
             return getItemById(this.psus, id);
           },
+          getDeviceByName:function(name, location, line){
+            for(let i=0;i<this.psus.length;i++){
+                var foundItem = this.psus[i].getDeviceByName(name, location, line);
+                if(foundItem) return foundItem;
+            }
+            return;
+          },
           getNodeData: function(){
             return [
               this.psu_selected,

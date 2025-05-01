@@ -28,12 +28,14 @@ const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
                         item={ioModuleGroup} index={ioModuleGroupIndex} 
                         lineTitle={"Power source LINE (e.g., UBM1)"} lineProperty={"powerSourceLine"}
                         stationTitle={"Power source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"powerSourceLocation"}
-                        deviceTitle={"Power source Device Tag (e.g., PSU01)"} deviceProperty={"powerSourceDT"}/>
+                        deviceTitle={"Power source Device Tag (e.g., PSU01)"} deviceProperty={"powerSourceDT"}
+                        type="powerSource"/>
                     <DeviceSelection
                         item={ioModuleGroup} index={ioModuleGroupIndex} 
                         lineTitle={"Network source LINE (e.g., UBM1, DOR1)"} lineProperty={"ethernetSourceLine"}
                         stationTitle={"Network source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetSourceLocation"}
-                        deviceTitle={"Network source Device Tag (e.g., LETH01)"} deviceProperty={"ethernetSourceDT"}/>
+                        deviceTitle={"Network source Device Tag (e.g., LETH01)"} deviceProperty={"ethernetSourceDT"}
+                        type="networkSource"/>
                         {/* need to include the device port dropdown here */}
                         {ioModuleGroup.ethernetSourceDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
                             <>

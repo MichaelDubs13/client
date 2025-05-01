@@ -89,6 +89,14 @@ export const mcpModel = {
           getItemById: function(id){
             return getItemById(this.portss, id);
           },
+          getDeviceByName:function(name, location, line){
+            if(this.line === line && this.location === location && this.deviceTag === name)return this;
+            // for(let i=0;i<this.ports.length;i++){
+            //     var foundItem = this.ports[i].getDeviceByName(name, location, line);
+            //     if(foundItem) return foundItem;
+            // }
+            return;
+          },
           getNodeData: function(){
             return [
               this.location,

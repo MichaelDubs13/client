@@ -22,6 +22,12 @@ export const ioModuleGroupModel = {
       ethernetSourceLocation:"", // EEC variable name: s_frmUI_IOModNetworkSourceLocation
       ethernetSourceDT:"", // EEC variable name: s_frmUI_IOModNetworkSourceDT
       ethernetSourceDevicePort:"", // EEC variable name: s_frmUI_IOModNetworkSourcePort
+      powerTargetLine: "", // EEC variable name: CascadingTo_PowerLine ***needs to be created in EEC
+      powerTargetLocation: "", // EEC variable name: CascadingTo_PowerStation
+      powerTargetDT: "", // EEC variable name: CascadingTo_PowerDT
+      ethernetTargetLine: "", // EEC variable name: HMI_ETHOut_Line
+      ethernetTargetLocation: "", // EEC variable name: HMI_ETHOut_Station
+      ethernetTargetDT: "", // EEC variable name: HMI_ETHOut_DT
       ioModules:[],
       UI:{
         expanded:false,
@@ -51,6 +57,13 @@ export const ioModuleGroupModel = {
       },
       getItemById: function(id){
         return getItemById(this.ioModules, id);
+      },
+      getDeviceByName:function(name, location, line){
+        for(let i=0;i<this.ioModules.length;i++){
+            var foundItem = this.ioModules[i].getDeviceByName(name, location, line);
+            if(foundItem) return foundItem;
+        }
+        return;
       },
       getNodeData: function(){
         return [

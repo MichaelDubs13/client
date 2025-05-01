@@ -86,10 +86,19 @@ export const safetyGateSwitchModel = {
         }
         return devices;
       },
+      getDeviceByName:function(name, location, line){
+        if(this.line != line) return;
+        if(this.location != location) return;
+        if(this.deviceTag != name) return;
+        return this;
+      },
       getIndex: function(){
         const index = this.data.parent.safetyGateSwitches.findIndex(gate => gate.data.id === this.data.id)
         return index;
       },
+      getSourceLine:function(){
+        return this.line
+        },
       getSourceLocation:function(){
         return this.location;
       },
@@ -107,6 +116,18 @@ export const safetyGateSwitchModel = {
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceLine", line);
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceLocation", location);
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceDT", name);
+      },
+      setPowerTarget:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerTargetLine", line);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerTargetLocation", location);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerTargetDT", name);
+      },
+      setNetworkTarget:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetTargetLine", line);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetTargetLocation", location);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetTargetDT", name);
       },
     }
   },

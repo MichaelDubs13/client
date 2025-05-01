@@ -57,6 +57,12 @@ export const psuModel = {
           getItemById:function(id){
             return getItemById(this.drops, id);
           },
+          getDeviceByName:function(name, location, line){
+            if(this.line != line) return;
+            if(this.location != location) return;
+            if(this.deviceTag != name) return;
+            return this;
+          },
           getNodeData: function(){
             return [
               this.location,
@@ -77,7 +83,31 @@ export const psuModel = {
               devices = [...devices, this.deviceTag]
             }
             return devices;
-          }
+          },
+          setPowerSource:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            lpdStore.getState().setPsuValue(indexObject, "powerSourceLine", line);
+            lpdStore.getState().setPsuValue(indexObject, "powerSourceLocation", location);
+            lpdStore.getState().setPsuValue(indexObject, "powerSourceDT", name);
+          },
+          setNetworkSource:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            lpdStore.getState().setPsuValue(indexObject, "ethernetSourceLine", line);
+            lpdStore.getState().setPsuValue(indexObject, "ethernetSourceLocation", location);
+            lpdStore.getState().setPsuValue(indexObject, "ethernetSourceDT", name);
+          },
+          setPowerTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            lpdStore.getState().setPsuValue(indexObject, "powerTargetLine", line);
+            lpdStore.getState().setPsuValue(indexObject, "powerTargetLocation", location);
+            lpdStore.getState().setPsuValue(indexObject, "powerTargetDT", name);
+          },
+          setNetworkTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            lpdStore.getState().setPsuValue(indexObject, "ethernetTargetLine", line);
+            lpdStore.getState().setPsuValue(indexObject, "ethernetTargetLocation", location);
+            lpdStore.getState().setPsuValue(indexObject, "ethernetTargetDT", name);
+          },
           
         }
         return psu;

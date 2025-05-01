@@ -40,6 +40,13 @@ export const safetyGateGroupModel = {
         getItemById: function(id){
           return getItemById(this.safetyGateSwitches, id);
         },
+        getDeviceByName:function(name, location, line){
+          for(let i=0;i<this.safetyGateSwitches.length;i++){
+              var foundItem = this.safetyGateSwitches[i].getDeviceByName(name, location, line);
+              if(foundItem) return foundItem;
+          }
+          return;
+        },
         getNodeData: function(){
           return [
             this.location,

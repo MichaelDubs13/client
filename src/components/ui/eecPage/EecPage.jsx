@@ -105,7 +105,6 @@ const EecPage = () => {
             </h2>
             <div style={{display: "flex", justifyContent: "left", gap: "15px"}}>
                 <ModalCreateEecForm/>
-                <DownloadButton label="Download EEC Template" filePath="Templates\Eec_Template.xlsm"/>
                 {/* <FormItemFileUpload
                   id="UploadFileForm"
                   accept=".txt"

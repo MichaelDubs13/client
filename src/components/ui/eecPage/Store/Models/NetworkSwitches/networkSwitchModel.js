@@ -64,6 +64,14 @@ export const networkSwitchModel = {
       getItemById: function(id){
         return getItemById(this.ports, id);
       },
+      getDeviceByName:function(name, location, line){
+        if(this.line === line && this.location === location && this.deviceTag === name)return this;
+        // for(let i=0;i<this.ports.length;i++){
+        //     var foundItem = this.ports[i].getDeviceByName(name, location, line);
+        //     if(foundItem) return foundItem;
+        // }
+        return;
+      },
       getNodeData: function(){
         return [
           this.deviceTag,
@@ -91,7 +99,25 @@ export const networkSwitchModel = {
         this.setValue(indexObject, "powerSourceLine", line)
         this.setValue(indexObject, "powerSourceLocation", location)
         this.setValue(indexObject, "powerSourceDT", deviceTag)
-      }
+      },
+      setNetworkSource:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        this.setValue(indexObject, "ethernetSourceLine", line);
+        this.setValue(indexObject, "ethernetSourceLocation", location);
+        this.setValue(indexObject, "ethernetSourceDT", name);
+      },
+      setPowerTarget:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        this.setValue(indexObject, "powerTargetLine", line);
+        this.setValue(indexObject, "powerTargetLocation", location);
+        this.setValue(indexObject, "powerTargetDT", name);
+      },
+      setNetworkTarget:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        this.setValue(indexObject, "ethernetTargetLine", line);
+        this.setValue(indexObject, "ethernetTargetLocation", location);
+        this.setValue(indexObject, "ethernetTargetDT", name);
+      },
     }
     networkSwitch.ports = networkSwitchModel.initializePorts(16, networkSwitch);
     return networkSwitch;

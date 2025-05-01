@@ -17,7 +17,8 @@ const McpLethPorts = ({
           <h7>Port {portIndex+1}</h7>
           <DeviceSelection item={port} index={index} 
               deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
-              stationTitle={"Target device location (e.g., 00010)"} stationProperty={"targetLocation"}/>    
+              stationTitle={"Target device location (e.g., 00010)"} stationProperty={"targetLocation"}
+              type="powerTarget"/>    
             
           <NetworkPortSelection title={"Select the port on the target switch this is connected to:"} item={port} 
                     index={index} property={"targetPort"} targetDT={port.targetDT} targetLocation={port.targetLocation} targetLine={port.line}/>

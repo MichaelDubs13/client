@@ -40,6 +40,12 @@ export const networkPortModel = {
             const indexObject = this.getIndexObject();
             networkSwitchStore.getState().setPortValue(indexObject, key, value,false, true);
           },
+          setNetworkTarget:function(line, location, name){
+            const indexObject = this.getIndexObject();
+            networkSwitchStore.getState().setPortValue(indexObject, "line", line);
+            networkSwitchStore.getState().setPortValue(indexObject, "targetLocation", location);
+            networkSwitchStore.getState().setPortValue(indexObject, "targetDT", name);
+          },
           getNodeData: function(){
             return [
               this.deviceTypeSelection,
@@ -58,6 +64,12 @@ export const networkPortModel = {
           getIndex: function(){
             const index = this.data.parent.ports.findIndex(port => port.data.id === this.data.id)
             return index;
+          },
+          getDeviceByName:function(name, location, line){
+            // if(this.line != line) return;
+            // if(this.targetLocation != location) return;
+            // if(this.targetDT != name) return;
+            // return this;
           },
           getSourceLine:function(){
             return this.data.parent.line;

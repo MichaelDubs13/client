@@ -47,7 +47,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
         var numberOfPwrDrop20A1p = renderPowerDrops("20A 1ph");
         var numberOfPwrDrop15A = renderPowerDrops("15A 1ph");
         var numberOfPwrDrop8A = renderPowerDrops("8A 1ph");
-        return [...numberOfPwrDrop8A, ...numberOfPwrDrop15A, ...numberOfPwrDrop20A1p, ...numberOfPwrDrop20A3p]
+        return [...numberOfPwrDrop20A3p,...numberOfPwrDrop20A1p, ...numberOfPwrDrop15A, ...numberOfPwrDrop8A]
     }
 
   

@@ -33,6 +33,12 @@ export const portModel = {
           getIndex: function(){
             return this.data.parent.ports.findIndex(port => port.data.id === this.data.id)
           },
+          getDeviceByName:function(name, location, line){
+            // if(this.line != line) return;
+            // if(this.targetLocation != location) return;
+            // if(this.targetDT != name) return;
+            // return this;
+          },
           getNodeData: function(){
             return [
             ]
