@@ -24,7 +24,7 @@ const PowerDropItem = ({
         {!branchCircuit.PwrDrop_Spare && (
           <>
             <DropdownItem title={"Power drop type"} item={branchCircuit} property={'DropType'} options={pdpOptions.dropTypeOptions} index={index}/>
-            <InputTextItem title={"Power drop description (i.e., function text)"} item={branchCircuit} property={'PwrDrop_DescTxt'} index={index}/>
+            <InputTextItem title={"Power drop description (i.e., function text)"} item={branchCircuit} property={'description'} index={index}/>
             <DeviceSelection item={branchCircuit} index={index} 
               deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
               stationTitle={"Target device location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}

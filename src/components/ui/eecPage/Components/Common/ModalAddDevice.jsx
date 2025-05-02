@@ -51,10 +51,10 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
       var wipItem = wipSafetyGateSwitch;
     }else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
       addWipIoModule();
-      var wipItem = addWipIoModule;
+      var wipItem = wipIoModule;
     }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
       addWipPsu(item.data.parent.line,item.data.parent.location);
-      var wipItem = addWipPsu;
+      var wipItem = wipPsu;
     }
     if(wipItem && onSubmit){
       onSubmit(wipItem);

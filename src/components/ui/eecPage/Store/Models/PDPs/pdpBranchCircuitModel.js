@@ -12,7 +12,7 @@ export const pdpBranchCircuitModel = {
     const branchCircuit= {
       PwrDrop_Spare: false,
       DropType: "A-external",
-      PwrDrop_DescTxt: "",
+      description: "",
       line:parent.line,
       targetLocation: "",
       targetDT: "",

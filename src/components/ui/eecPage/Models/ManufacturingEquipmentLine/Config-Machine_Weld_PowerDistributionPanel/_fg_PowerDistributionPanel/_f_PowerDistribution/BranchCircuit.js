@@ -16,7 +16,7 @@ export default class BranchCircuit extends Component {
  
     get Parameters(){
         return [
-            {name: "PwrDrop_DescTxt", value:  this._branchCircuit.PwrDrop_DescTxt, type: "String"}, //UI
+            {name: "PwrDrop_DescTxt", value:  this._branchCircuit.description, type: "String"}, //UI
             {name: "dbl_Cable_Length", value: this._branchCircuit.targetCableLength, type: "Double"}, 
             {name: "StrBox_DT_FLA", value: this._branchCircuit.targetFLA_Total, type: "String"}, //UI => TargetDevice_FLA
             {name: "StrBox_DT", value: this._branchCircuit.targetLocation, type: "String"}, //UI  => TargetDevice_DT
