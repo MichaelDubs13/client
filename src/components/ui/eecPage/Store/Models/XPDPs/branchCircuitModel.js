@@ -11,7 +11,7 @@ export const branchCircuitModel = {
       */
      create: (parent, amperage) => {
        return {
-         PwrDrop_Spare: false,
+         PwrDrop_Spare: true,
          DropType: "A-external",
          description: "",
          line:parent?.line,

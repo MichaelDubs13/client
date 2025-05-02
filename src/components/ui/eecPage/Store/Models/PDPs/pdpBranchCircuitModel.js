@@ -10,7 +10,7 @@ export const pdpBranchCircuitModel = {
    */
   create: (parent, amperage) => {
     const branchCircuit= {
-      PwrDrop_Spare: false,
+      PwrDrop_Spare: true,
       DropType: "A-external",
       description: "",
       line:parent.line,

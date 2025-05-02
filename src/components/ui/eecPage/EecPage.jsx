@@ -85,6 +85,9 @@ const EecPage = () => {
    
         <>
           <div style={{marginLeft:'50px'}}>
+            <div>
+              <p>Report any issues to miballinger@tesla.com</p>
+            </div>
             <h2>
                 Tools
                 <TooltipWrapper
