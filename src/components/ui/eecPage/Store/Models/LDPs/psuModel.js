@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { formatToTwoDigits, getItemById } from '../../util';
 import {  lpdStore } from '../../lpdStore';
+import { projectStore } from '../../projectStore';
 
 export const psuModel = {
     create: (parent, index) => {
@@ -32,6 +33,12 @@ export const psuModel = {
             type:'psu',
             id:uuidv4(),
             parent:parent,
+          },
+          getDescription: function(){
+            return 'Power Supply';
+          },
+          getFLA:function(){
+            return 0;
           },
           getIndexObject: function(){
             const lpdIndex = this.data.parent.getIndex();
@@ -74,6 +81,15 @@ export const psuModel = {
               this.MFG,
             ]
           },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
+            this.drops.forEach(drop => {
+                drop.setLine(line, newLine)
+              })
+          },
           getStations: function(){
             var stations = []
             stations = lineConfiguration.getStations(this.drops, stations);
@@ -111,6 +127,15 @@ export const psuModel = {
             lpdStore.getState().setPsuValue(indexObject, "ethernetTargetLine", line);
             lpdStore.getState().setPsuValue(indexObject, "ethernetTargetLocation", location);
             lpdStore.getState().setPsuValue(indexObject, "ethernetTargetDT", name);
+          },
+          getSourceLine:function(){
+            return this.line
+          },
+          getSourceLocation:function(){
+            return this.location;
+          },
+          getSourceDeviceTag:function(){
+            return this.deviceTag;
           },
           
         }

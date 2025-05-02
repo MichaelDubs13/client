@@ -15,7 +15,7 @@ import CreatableSelect from 'react-select/creatable';
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index}) =>{
+const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState({label:defaultValue , value:defaultValue });
     const [alloptions, setAllOptions]=useState(options);
@@ -67,7 +67,19 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
 
     return (
         <>
-            {                
+            {   
+            type === "condensed" ?
+                <CreatableSelect 
+                    selectOption
+                    options={alloptions} 
+                    getOptionLabel={(option) => option.label}
+                    getOptionValue={(option) => option.value}
+                    onChange={handleOptionSelect}
+                    onCreateOption={handleOptionCreation}
+                    placeholder={defaultValue}
+                    selected={selectedOption}
+                    value={selectedOption}
+                />:             
                 <FormItem className="form-item">
                     <FormLabel className="form-label"  htmlFor="context">{title}</FormLabel>
                     <div style={{ marginBottom: "5px", width:'700px'}}>

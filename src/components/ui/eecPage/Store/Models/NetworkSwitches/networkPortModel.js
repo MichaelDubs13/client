@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { networkSwitchStore, networkSwitchConfiguration } from '../../networkSwitchStore';
+import { projectStore } from '../../projectStore';
 
 export const networkPortModel = {
     create: (parent) => {
@@ -70,6 +71,12 @@ export const networkPortModel = {
             // if(this.targetLocation != location) return;
             // if(this.targetDT != name) return;
             // return this;
+          },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
           },
           getSourceLine:function(){
             return this.data.parent.line;

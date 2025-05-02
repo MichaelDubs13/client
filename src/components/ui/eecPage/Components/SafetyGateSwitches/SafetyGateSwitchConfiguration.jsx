@@ -42,7 +42,7 @@ const SafetyGateSwitchConfiguration = ({
                 lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}
                 type="networkSource"/>    
             <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
-                index={safetyGateSwitchIndex} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} 
+                index={index} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} 
                 targetLocation={safetyGateSwitch.ethernetSourceLocation} targetLine={safetyGateSwitch.line}
                 createNew={createNew}/>
           </>

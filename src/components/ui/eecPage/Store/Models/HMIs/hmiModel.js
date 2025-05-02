@@ -15,7 +15,7 @@ export const hmiModel = {
            location:"", // EEC variable name: HMI_Location
            deviceTag: index != null ? `HMI${formatToTwoDigits(index+1)}` : '', // EEC variable name: HMI_DT
            plcID: "", // EEC variable name: PLC_ID
-           localIP: "", // EEC variable name: Local_IP
+           localIP: "192.168.1.x", // EEC variable name: Local_IP
            plantIP: "", // EEC variable name: Plant_IP
            powerSourceLine: "", // EEC variable name: HMI_PwrIn_Line
            powerSourceLocation: "", // EEC variable name: HMI_PwrIn_Station
@@ -56,6 +56,12 @@ export const hmiModel = {
              powerTarget:'',
              ethernetTarget:'',
            },
+           getDescription: function(){
+            return 'HMI';
+          },
+          getFLA:function(){
+            return 0;
+          },
            getIndexObject: function(){
              const index = this.getIndex();
              return {hmiIndex:index}
@@ -91,27 +97,33 @@ export const hmiModel = {
            },
            setPowerSource:function(line, location, name){
             const indexObject = this.getIndexObject();
-            hmiStore.getState().setHmiValue(indexObject, "powerSourceLine", line);
-            hmiStore.getState().setHmiValue(indexObject, "powerSourceLocation", location);
-            hmiStore.getState().setHmiValue(indexObject, "powerSourceDT", name);
+            this.setValue(indexObject, "powerSourceLine", line);
+            this.setValue(indexObject, "powerSourceLocation", location);
+            this.setValue(indexObject, "powerSourceDT", name);
            },
            setNetworkSource:function(line, location, name){
             const indexObject = this.getIndexObject();
-            hmiStore.getState().setHmiValue(indexObject, "ethernetSourceLine", line);
-            hmiStore.getState().setHmiValue(indexObject, "ethernetSourceLocation", location);
-            hmiStore.getState().setHmiValue(indexObject, "ethernetSourceDT", name);
+            this.setValue(indexObject, "ethernetSourceLine", line);
+            this.setValue(indexObject, "ethernetSourceLocation", location);
+            this.setValue(indexObject, "ethernetSourceDT", name);
            },
            setPowerTarget:function(line, location, name){
             const indexObject = this.getIndexObject();
-            hmiStore.getState().setHmiValue(indexObject, "powerTargetLine", line);
-            hmiStore.getState().setHmiValue(indexObject, "powerTargetLocation", location);
-            hmiStore.getState().setHmiValue(indexObject, "powerTargetDT", name);
+            this.setValue(indexObject, "powerTargetLine", line);
+            this.setValue(indexObject, "powerTargetLocation", location);
+            this.setValue(indexObject, "powerTargetDT", name);
           },
           setNetworkTarget:function(line, location, name){
             const indexObject = this.getIndexObject();
-            hmiStore.getState().setHmiValue(indexObject, "ethernetTargetLine", line);
-            hmiStore.getState().setHmiValue(indexObject, "ethernetTargetLocation", location);
-            hmiStore.getState().setHmiValue(indexObject, "ethernetTargetDT", name);
+            this.setValue(indexObject, "ethernetTargetLine", line);
+            this.setValue(indexObject, "ethernetTargetLocation", location);
+            this.setValue(indexObject, "ethernetTargetDT", name);
+          },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
           },
            getStations: function(){
              return [this.location, this.powerSourceLocation, this.ethernetSourceLocation, this.ethernetTargetLocation]

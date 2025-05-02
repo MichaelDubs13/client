@@ -88,6 +88,13 @@ const lineConfiguration = {
         const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
         return items;
     },
+
+    setLines:(oldValue, newValue)=>{
+        var items = lineConfiguration.getAllStoreItems();
+        items.forEach(item => {
+            item.setLine(oldValue, newValue);
+        })
+    },
     getDeviceById:(id)=>{
         const items = lineConfiguration.getAllStoreItems();
         const pdps = pdpStore.getState().pdps;
@@ -118,16 +125,7 @@ const lineStore = create((set) => ({
     plcs:[],
 
     getLineOptions:()=>{
-        const pdps = pdpStore.getState().pdps;
-        const xpdps= xpdpStore.getState().xpdps;
-        const mcps = mcpStore.getState().mcps;
-        const lpds = lpdStore.getState().lpds;
-        const hmis = hmiStore.getState().hmis;
-        const safetyGates = safetyGateStore.getState().safetyGates;
-        const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
-        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
-
+        const items = lineConfiguration.getAllStoreItems();
         const line = projectStore.getState().line;
         var newLines = [line,]
         newLines = lineConfiguration.getLines(items, newLines);
@@ -149,15 +147,7 @@ const lineStore = create((set) => ({
         return plcOptions;
     },
     getLocationOptions:(line)=>{
-        const pdps = pdpStore.getState().pdps;
-        const xpdps= xpdpStore.getState().xpdps;
-        const mcps = mcpStore.getState().mcps;
-        const lpds = lpdStore.getState().lpds;
-        const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        const hmis = hmiStore.getState().hmis;
-        const safetyGates = safetyGateStore.getState().safetyGates;
-        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
-        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
+        const items = lineConfiguration.getAllStoreItems();
 
         var newLocations = []
         newLocations = lineConfiguration.getLocations(items, newLocations); 
@@ -181,15 +171,7 @@ const lineStore = create((set) => ({
     },
 
     getStationOptions:()=>{
-        const pdps = pdpStore.getState().pdps;
-        const xpdps= xpdpStore.getState().xpdps;
-        const mcps = mcpStore.getState().mcps;
-        const lpds = lpdStore.getState().lpds;
-        const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        const hmis = hmiStore.getState().hmis;
-        const safetyGates = safetyGateStore.getState().safetyGates;
-        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
-        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
+        const items = lineConfiguration.getAllStoreItems();
         var newStations = []
         newStations = lineConfiguration.getStations(items, newStations);
         newStations = newStations.filter(station => station)
@@ -220,15 +202,7 @@ const lineStore = create((set) => ({
      * @returns 
      */
     getDeviceOptions:(station)=>{
-        const pdps = pdpStore.getState().pdps;
-        const xpdps= xpdpStore.getState().xpdps;
-        const mcps = mcpStore.getState().mcps;
-        const lpds = lpdStore.getState().lpds;
-        const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        const hmis = hmiStore.getState().hmis;
-        const safetyGates = safetyGateStore.getState().safetyGates;
-        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
-        const items = pdps.concat(xpdps, mcps,lpds,networkSwitches,hmis,safetyGates,ioModuleGroups)
+        const items = lineConfiguration.getAllStoreItems();
         var newDevices = []
         newDevices = lineConfiguration.getDevices(items, newDevices,station);
         newDevices = newDevices.filter(device => device);

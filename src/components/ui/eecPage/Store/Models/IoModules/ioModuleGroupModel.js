@@ -70,6 +70,18 @@ export const ioModuleGroupModel = {
           this.ioModuleDT,
         ]
       },
+      getSourceLine:function(){
+        return this.line
+        },
+      getSourceLocation:function(){
+        return this.location;
+      },
+      getSourceDeviceTag:function(){
+        if(this.ioModules.length > 0){
+          return this.ioModules[0].deviceTag;
+        }
+        return "";
+      },
       setPowerSource:function(line, location, name){
         const indexObject = this.getIndexObject();
         ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceLine", line);
@@ -81,6 +93,15 @@ export const ioModuleGroupModel = {
         ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLine", line);
         ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLocation", location);
         ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceDT", name);
+      },
+      setLine:function(line, newLine){
+        if(line === this.line){
+          const indexObject = this.getIndexObject();
+          this.setValue(indexObject, "line", newLine);
+        }
+        this.ioModules.forEach(ioModule => {
+          ioModule.setLine(line, newLine)
+        })
       },
       getStations: function(){
         var stations = []

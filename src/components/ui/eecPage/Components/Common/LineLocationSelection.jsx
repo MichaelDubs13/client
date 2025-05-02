@@ -3,6 +3,7 @@ import CreateableDropdownItem from '../Util/CreateableDropdownItem';
 import { lineStore } from '../../Store/lineStore';
 import { projectStore } from '../../Store/projectStore';
 import InputTextItem from '../Util/InputTextItem';
+import { FormItem, FormLabel } from '@tesla/design-system-react';
 import "../../Eec.css";
 
 const LineLocationSelection = ({
@@ -36,8 +37,13 @@ const LineLocationSelection = ({
                     <InputTextItem title={"Shop name"} placeHolder={shop} readOnly={true} />
                 </div>
             }
-            <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={onLineChange}/>
-            <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} onChange={onLocationChange}/>
+            <div style={{display:'flex'}}>
+                <FormItem className='form-item-device'>
+                    <FormLabel className="form-label-device">Panel Location (e.g., ++LINE+LOCATION)</FormLabel>
+                    <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={onLineChange} type="condensed"/>
+                    <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} onChange={onLocationChange} type="condensed"/>
+                </FormItem>
+            </div>
         </div>
     );
 };

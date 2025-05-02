@@ -14,9 +14,20 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew}) =>{
+const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [value, setValue] = useState(defaultValue);
+    const [finishedInput, setFinishedInput] = useState('');
+    const [typingTimeout, setTypingTimeout] = useState(0);
+    const delayTime = 500;
+
+    useEffect(() => {
+        if (finishedInput) {
+        if(onTypingFinished){
+            onTypingFinished(value);
+        }
+        }
+    }, [finishedInput]);
 
     const handleValueChange = (event)=> {
         const reportedValue = event.target.value;
@@ -37,6 +48,13 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
         }  else {
             item[property] = reportedValue;
         }
+
+        clearTimeout(typingTimeout);
+        setTypingTimeout(
+            setTimeout(() => {
+                setFinishedInput(reportedValue);
+            }, delayTime)
+        );
         
         if(onChange){
             onChange(reportedValue);

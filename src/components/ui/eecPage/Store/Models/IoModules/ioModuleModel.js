@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { formatToTwoDigits, getItemById } from '../../util';
 import { ioModuleStore, ioModuleGroupConfiguration } from '../../ioModuleStore';
 import { ioModulePortModel } from './ioModulePortModel';
+import { projectStore } from '../../projectStore';
 
 
 export const ioModuleModel = {
@@ -31,7 +32,7 @@ export const ioModuleModel = {
           localIP: "192.168.1.x", // EEC variable name: s_frmUI_IOModIPv_IP_Address
           opMode: "01", // EEC variable name: s_frmUI_OpMode
     
-          portTypeDefaultSelection: "", // EEC variable name: s_frmUI_DefaultPortTypeSelection
+          portTypeDefaultSelection: "IO-Link", // EEC variable name: s_frmUI_DefaultPortTypeSelection
           ports:[],
           UI:{
             expanded:false,
@@ -40,7 +41,17 @@ export const ioModuleModel = {
           data:{
             parent:parent,
             type:'ioModule',
+
             id:uuidv4(),
+          },
+          getDescription: function(){
+            if(this.safetyRated){
+              return 'Safety IO Module';
+            }
+            return 'IO Module';
+          },
+          getFLA:function(){
+            return 0;
           },
           getIndexObject: function(){
             const ioModuleGroupIndex = this.data.parent.getIndex();
@@ -82,6 +93,15 @@ export const ioModuleModel = {
           },
           getSourceDeviceTag:function(){
             return this.deviceTag;
+          },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
+            this.ports.forEach(port => {
+              port.setLine(line, newLine)
+            })
           },
           getStations: function(){
             return [this.location,]

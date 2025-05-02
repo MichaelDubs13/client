@@ -8,8 +8,9 @@ import DropdownItem from "../../Util/Table/Components/DropdownItem";
 import CreateableSelectItem from "../../Util/Table/Components/CreateableSelectItem";
 import { ioModuleGroupOptions } from "../../../Store/ioModuleStore";
 import CheckboxItem from "../../Util/Table/Components/CheckboxItem";
+import { lineStore } from "../../../Store/lineStore";
 
-const getHeaders = (stations)=>{
+const getHeaders = ()=>{
   const headers = [
     {header: "Port", type:'label', property:'portCounter'}, 
     {header: "Type", type:'dropdown', options:ioModuleGroupOptions.portTypeDefaultSelectionOptions, property:'pinType'}, 
@@ -18,7 +19,7 @@ const getHeaders = (stations)=>{
     {header: "PLC address", type:'input', property:'pinAddress'}, 
     {header: "Target part number", type:'input', property:'pinTargetPartNumber'}, 
     {header: "Target LOCATION", type:'creatableSelect',options:[], property:'pinTargetLocation'}, 
-    {header: "Target Device Tag", type:'input', property:'pinTargetDT'}, 
+    {header: "Target Device Tag", type:'creatableSelect', options:[],property:'pinTargetDT'}, 
   ]
   return headers
 }
@@ -73,7 +74,7 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex) => {
   }
 }
 export const getColumns = (ioModuleGroupIndex, ioModuleIndex) => {
-  //const stations = lineStore((state) => state.stations)  
+  // const stations = lineStore((state) => state.stations)  
   const headers = getHeaders(); 
   const columns = headers.map(header => {
     return {

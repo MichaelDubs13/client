@@ -2,7 +2,7 @@ import "../../Eec.css";
 import { projectStore } from "../../Store/projectStore";
 import InputTextItem from "../Util/InputTextItem";
 import DropdownItem from "../Util/DropdownItem";
-import { lineStore } from "../../Store/lineStore";
+import { lineConfiguration, lineStore } from "../../Store/lineStore";
 import { customerStore } from "../../Store/customerStore";
 
 
@@ -20,7 +20,10 @@ const ManufacturingLineNameAndLocation = () => {
     const line = projectStore.getState().line;
     const installation_location = projectStore.getState().installation_location;
     
-
+    const handleLineChange = (value)=>{
+        lineConfiguration.setLines(line, value);
+        getLineOptions();
+    }
     const handleInstallationLocationChange = (value) => {
         if(value === "UL"){
             setValue("480VAC", "TeslaProjectVoltage")
@@ -35,7 +38,7 @@ const ManufacturingLineNameAndLocation = () => {
         <>  
             <InputTextItem title={"Tesla GigaFactory Name"} placeHolder={plant} setModelValue={setPlant} readOnly={false} />
             <InputTextItem title={"Manufacturing Shop Name"} placeHolder={shop} setModelValue={setShop} readOnly={false} />
-            <InputTextItem title={"Manufacturing Line Name"} placeHolder={line} setModelValue={setLine} onChange={getLineOptions}/>
+            <InputTextItem title={"Manufacturing Line Name"} placeHolder={line} setModelValue={setLine} onTypingFinished={handleLineChange}/>
             <DropdownItem title={"InstallationLocation"} placeHolder={installation_location} setModelValue={setinstallation_location} 
                 options={installation_location_options} onChange={handleInstallationLocationChange}/>
         </>           

@@ -81,6 +81,15 @@ export const lpdModel = {
               this.psu_selected,
             ]
           },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
+            this.psus.forEach(psu => {
+              psu.setLine(line, newLine)
+            })
+          },
           getStations: function(){
             var stations = []
             stations = lineConfiguration.getStations(this.psus, stations);

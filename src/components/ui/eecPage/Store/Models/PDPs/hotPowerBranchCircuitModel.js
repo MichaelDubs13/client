@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pdpStore } from "../../pdpStore";
+import { projectStore } from '../../projectStore';
 
 export const hotPowerBranchCircuitModel = {
     /**
@@ -36,12 +37,24 @@ export const hotPowerBranchCircuitModel = {
           
         ]
       },
+      setLine:function(line){
+
+      },
       getStations: function(){
         return [this.HotPwrDrp_Target_Location,]
       },
       getDevices: function(){
         return [this.HotPwrDrp_Target_DT,]
-      }
+      },
+      getSourceLine:function(){
+        return this.data.parent.line
+        },
+      getSourceLocation:function(){
+        return this.data.parent.location;
+      },
+      getSourceDeviceTag:function(){
+        return this.data.parent.location;
+      },
     }
   },
 }

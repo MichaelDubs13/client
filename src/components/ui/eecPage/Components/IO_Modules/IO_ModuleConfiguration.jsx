@@ -5,6 +5,7 @@ import InputTextItem from '../Util/InputTextItem';
 import { ioModuleGroupOptions } from "../../Store/ioModuleStore";
 import DeviceSelection from "../Common/DeviceSelection";
 import IO_ConfigurationTable from "./Table/IO_ConfigurationTable";
+import { useState } from "react";
 
 const IO_ModuleConfiguration = ({ 
   ioModuleGroupIndex,
@@ -13,9 +14,19 @@ const IO_ModuleConfiguration = ({
   createNew,
 }) => {
   const index = createNew ? {} :  {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
+  const [defaultPortOption, setDefaultPortOption] = useState(ioModuleGroupOptions.portTypeDefaultSelectionOptions);
   const handlePortTypeChange = (value) => {
     ioModule.setPortType(index, value);
   }
+
+  const handlePartNumberChange = (value)=>{
+    if(value === "BNI0052"){
+      setDefaultPortOption(ioModuleGroupOptions.portTypeDefaultSelection_Balluff_BNI0052Options);
+      ioModule.setValue(index, "portTypeDefaultSelection", "Input")
+      ioModule.setPortType(index, "Input");
+    }
+  }
+
   return (
     <div className="io-module-configuration">
       <div className="io-module-settings">
@@ -54,7 +65,8 @@ const IO_ModuleConfiguration = ({
             <DropdownItem title={"Select a manufacturer:"} item={ioModule} property={"mioManufacturerName"} options={ioModuleGroupOptions.mioManufacturerNameOptions} index={index}/>
             {ioModule.mioManufacturerName === "Balluff" &&
               <>
-                <DropdownItem title={"Select a part number:"} item={ioModule} property={"mioParts_Balluff"} options={ioModuleGroupOptions.mioParts_BalluffOptions} index={index}/>
+                <DropdownItem title={"Select a part number:"} item={ioModule} property={"mioParts_Balluff"} 
+                    options={ioModuleGroupOptions.mioParts_BalluffOptions} index={index} onChange={handlePartNumberChange}/>
               </>
             }
             {ioModule.mioManufacturerName === "Beckhoff (WIP)" &&
@@ -82,16 +94,10 @@ const IO_ModuleConfiguration = ({
         
         <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={ioModule} property={"localIP"} index={index}/>
         <DropdownItem title={"Enter the PLC Opteration Mode (i.e., OpMode) of the module (e.g., 01, 02, 03, etc.)"} item={ioModule} property={"opMode"} options={ioModuleGroupOptions.opModeOptions} index={index}/>
-        {ioModule.mioManufacturerName === "Balluff" && ioModule.mioParts_Balluff != "BNI0052" &&
+        {ioModule.mioManufacturerName === "Balluff" && 
           <>
             <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection"} 
-              options={ioModuleGroupOptions.portTypeDefaultSelectionOptions} index={index} onChange={handlePortTypeChange}/>
-          </>
-        }
-        {ioModule.mioManufacturerName === "Balluff" && ioModule.mioParts_Balluff === "BNI0052" &&
-          <>
-            <DropdownItem title={"Select the default port type for the module (manual configuration can be done at anytime):"} item={ioModule} property={"portTypeDefaultSelection_Balluff_BNI0052"} 
-              options={ioModuleGroupOptions.portTypeDefaultSelection_Balluff_BNI0052Options} index={index} onChange={handlePortTypeChange}/>
+              options={defaultPortOption} index={index} onChange={handlePortTypeChange}/>
           </>
         }
         {

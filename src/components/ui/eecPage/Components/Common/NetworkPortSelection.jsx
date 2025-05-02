@@ -3,10 +3,11 @@ import { networkSwitchConfiguration } from '../../Store/networkSwitchStore';
 import "../../Eec.css";
 import DropdownItem from '../Util/DropdownItem';
 import { useState, useEffect } from 'react';
+import CreateableDropdownItem from '../Util/CreateableDropdownItem';
 
 
 
-const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portSelect='network',createNew}) => {
+const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portSelect='network',createNew, isCreatable}) => {
     const [portOptions, setPortOptions] = useState([]);
     const itemIndex = createNew ? {} : index;
     useEffect(() => {
@@ -31,7 +32,12 @@ const NetworkPortSelection = ({item, title, index, property, targetDT, targetLoc
         <div>
              {targetDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
                     <>
-                        <DropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions}/>
+                        {
+                           isCreatable ? 
+                           <CreateableDropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions}/>:
+                           <DropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions}/>
+                        }
+                        
                     </>
              )
             }

@@ -10,7 +10,7 @@ import NetworkPortSelection from "../Common/NetworkPortSelection";
     dropIndex,
     drop,
     lpd,
-    psu,
+    onFlaChange,
   }) => {
     const index = {lpdIndex:lpdIndex,psuIndex:psuIndex,dropIndex:dropIndex }
     const outputPortBrandOptions = ['Turck', 'Puls', 'Balluff-BAE0133']
@@ -47,7 +47,7 @@ import NetworkPortSelection from "../Common/NetworkPortSelection";
               index={index} property={"ethernetSourceDevicePort"} targetDT={drop.targetDT} targetLocation={drop.targetLocation} targetLine={drop.line}
               portSelect="power"/>
           <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
-          <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"}/>              
+          <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"} onChange={onFlaChange}/>              
         </div>
       </div>
     );

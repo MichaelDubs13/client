@@ -5,6 +5,8 @@ import HeadingItem from '../Util/HeadingItem';
 import DropdownItem from '../Util/DropdownItem';
 import { lpdStore, lpdOptions } from '../../Store/lpdStore';
 import DeviceSelection from '../Common/DeviceSelection';
+import InputTextItem from "../Util/InputTextItem";
+import { useEffect, useState } from "react";
 
 const LpdPsuItem = ({ 
   psuIndex,
@@ -15,13 +17,20 @@ const LpdPsuItem = ({
 }) => {   
 const index = createNew ?  {} : {psuIndex:psuIndex, lpdIndex:lpdIndex}
 const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
-
+const [totalFLA, setTotalFLA]= useState(0);
+const handleFlaChange =() => {
+  var totalFLA = 0;
+  psu.drops.forEach(drop => {
+    totalFLA = totalFLA + Number(drop.fla);
+  })
+  setTotalFLA(totalFLA);
+}
 return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
           <DeviceSelection item={psu} index={index} 
             deviceTitle={"PSU Device Tag (e.g., PSU01)"} deviceProperty={"deviceTag"}
-            stationTitle={"PSU Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/>                                
+            stationTitle={"PSU Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/>                             
           {
             lpd &&
             lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
@@ -30,6 +39,7 @@ return (
                    options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
             </>
           )}
+          <InputTextItem title={"FLA Sum"} placeHolder={`${totalFLA}A`} readOnly={true} />   
           {
             lpd && 
             <>
@@ -40,7 +50,9 @@ return (
                       return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
                       size={18} margin={"20px"} open={false} 
                       headerIcon={drop.UI.icon}
-                      children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} drop={drop} lpd={lpd} psu={psu}/>}/>
+                      children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} 
+                        drop={drop} lpd={lpd} psu={psu}
+                        onFlaChange={handleFlaChange}/>}/>
                     })
                 } 
             </>

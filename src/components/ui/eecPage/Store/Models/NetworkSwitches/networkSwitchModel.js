@@ -19,10 +19,10 @@ export const networkSwitchModel = {
       plantIP: "", // EEC variable name: Plant_IP
       switchType: "Managed", // EEC variable name: Switch_Type_Selection
       switchSpeed: "Gigabit", // EEC variable name: Switch_Speed_Selection
-      power1InLocation: "", // EEC variable name: PWR1_IN_Location
-      power1InDT: "", // EEC variable name: PWR1_IN_DT
-      power2InLocation: "", // EEC variable name: PWR2_IN_Location
-      power2InDT: "", // EEC variable name: PWR2_IN_DT
+      // power1InLocation: "", // EEC variable name: PWR1_IN_Location
+      // power1InDT: "", // EEC variable name: PWR1_IN_DT
+      // power2InLocation: "", // EEC variable name: PWR2_IN_Location
+      // power2InDT: "", // EEC variable name: PWR2_IN_DT
       powerSourceLine: "", // EEC variable name: PWR_IN_Location
       powerSourceLocation: "", // EEC variable name: PWR_IN_Location
       powerSourceDT: "", // EEC variable name: PWR_IN_DT
@@ -40,7 +40,15 @@ export const networkSwitchModel = {
       },
       data:{
         type:'networkSwitch',
+        description:'Ethernet Switch',
+        fla:'',
         id:uuidv4(),
+      },
+      getDescription: function(){
+        return 'Local Network Switch';
+      },
+      getFLA:function(){
+        return 0;
       },
       getIndexObject: function(){
         const networkSwitchIndex = this.getIndex();
@@ -80,6 +88,15 @@ export const networkSwitchModel = {
         return [
           this.deviceTag,
         ]
+      },
+      setLine:function(line, newLine){
+        if(line === this.line){
+          const indexObject = this.getIndexObject();
+          this.setValue(indexObject, "line", newLine);
+        }
+        this.ports.forEach(port => {
+          port.setLine(line, newLine)
+        })
       },
       getStations: function(){
         var stations = []
@@ -121,6 +138,15 @@ export const networkSwitchModel = {
         this.setValue(indexObject, "ethernetTargetLine", line);
         this.setValue(indexObject, "ethernetTargetLocation", location);
         this.setValue(indexObject, "ethernetTargetDT", name);
+      },
+      getSourceLine:function(){
+        return this.line
+      },
+      getSourceLocation:function(){
+        return this.location;
+      },
+      getSourceDeviceTag:function(){
+        return this.deviceTag;
       },
     }
     networkSwitch.ports = networkSwitchModel.initializePorts(16, networkSwitch);

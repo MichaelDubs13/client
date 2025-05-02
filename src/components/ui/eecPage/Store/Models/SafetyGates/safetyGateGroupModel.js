@@ -56,6 +56,15 @@ export const safetyGateGroupModel = {
             this.location,
           ]
         },
+        setLine:function(line, newLine){
+          if(line === this.line){
+            const indexObject = this.getIndexObject();
+            this.setValue(indexObject, "line", newLine);
+          }
+          this.safetyGateSwitches.forEach(gate => {
+            gate.setLine(line, newLine)
+          })
+        },
         getStations: function(){
           var stations = []
           stations = lineConfiguration.getStations(this.safetyGateSwitches, stations);

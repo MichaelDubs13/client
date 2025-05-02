@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pdpStore } from "../../pdpStore";
 import { xpdpStore } from '../../xpdpStore';
+import { projectStore } from '../../projectStore';
 
 
 export const branchCircuitModel = {
@@ -59,6 +60,21 @@ export const branchCircuitModel = {
              `${this.targetCableLength}m`,
            ]
          },
+        getSourceLine:function(){
+        return this.data.parent.line
+        },
+        getSourceLocation:function(){
+          return this.data.parent.location;
+        },
+        getSourceDeviceTag:function(){
+          return this.data.parent.location;
+        },
+        setLine:function(line, newLine){
+          if(line === this.line){
+            const indexObject = this.getIndexObject();
+            this.setValue(indexObject, "line", newLine);
+          }
+        },
          getStations: function(){
            return [this.targetLocation,]
          },

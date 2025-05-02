@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ioModuleStore } from '../../ioModuleStore';
+import { projectStore } from '../../projectStore';
 
 
 export const ioModulePortModel = {
@@ -7,7 +8,7 @@ export const ioModulePortModel = {
         return {
           portCounter: index,
           isIOLink: 'no',
-          pinType: "", // EEC variable name: s_pin_type_selected
+          pinType: "IO-Link", // EEC variable name: s_pin_type_selected
           pinDescription: "", // EEC variable name: s_pin_description
           pinAddress: "%I0.0", // EEC variable name: s_pin_PLCaddress
           pinTargetPartNumber: "", // EEC variable name: s_TargetDevicePartNumber
@@ -43,6 +44,18 @@ export const ioModulePortModel = {
           getIndex: function(){
             const index = this.data.parent.ports.findIndex(port => port.data.id === this.data.id)
             return index;
+          },
+          setLine:function(line, newLine){
+  
+          },
+          getSourceLine:function(){
+            return this.data.parent.line
+          },
+          getSourceLocation:function(){
+            return this.data.parent.location;
+          },
+          getSourceDeviceTag:function(){
+            return this.data.parent.deviceTag;
           },
         }
       },

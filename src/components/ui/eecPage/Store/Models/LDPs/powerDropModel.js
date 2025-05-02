@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { lpdStore } from '../../lpdStore';
+import { projectStore } from '../../projectStore';
 
 export const powerDropModel = {
   create:(parent)=>{
@@ -68,6 +69,12 @@ export const powerDropModel = {
       getSourceDeviceTag:function(){
         const psu = this.data.parent
         return psu.deviceTag;
+      },
+      setLine:function(line, newLine){
+        if(line === this.line){
+          const indexObject = this.getIndexObject();
+          this.setValue(indexObject, "line", newLine);
+        }
       },
       getStations: function(){
         return [this.targetLocation,]

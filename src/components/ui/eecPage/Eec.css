@@ -5,15 +5,26 @@
     width: 650px;
 }
 
+.form-item-device{
+  margin-left: 30px;
+  display:flex;
+  align-items: center;
+  width: 800px;
+}
+
 .form-label{
-    width: 800px;
+    width: 1100px; 
+}
+
+.form-label-device{
+  width: 400px; 
 }
 .form-item-readonly{
   margin-left: 30px;
   margin-bottom: 5px;
   display:flex;
   align-items: center;
-  width: 650px;
+  width: 660px;
 }
 .form-label-readonly{
   width: 700px;
@@ -23,7 +34,7 @@
   margin-left: 30px;
   display:flex;
   align-items: center;
-  width: 600px;
+  width: 560px;
 }
 .form-set-label{
   width: 900px;

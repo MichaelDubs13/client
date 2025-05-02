@@ -151,6 +151,7 @@ const lpdStore = create(
         const psus = newLpds[lpdIndex].psus;
         const drops = psus[psuIndex].drops;
         setModelValue(drops[dropIndex], key, value, isUI, isData);
+        console.log(newLpds)
         return { lpds: newLpds };
       });
     },

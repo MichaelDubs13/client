@@ -22,12 +22,14 @@ const safetyGateOptions = {
 
 const safetyGateConfiguration = {
   getSafetyGateOptions:(safetyGates)=>{
-    const safetyGateOptions = safetyGates.map((safetyGate => {
-        const value = lineConfiguration.getDeviceFullName(safetyGate.location, safetyGate.deviceTag);
-        return {label:value, value:value}
-    }))
-
-    return safetyGateOptions;
+    const options = [];
+    safetyGates.forEach(safetyGate => {
+      safetyGate.safetyGateSwitches.forEach(safetyGateSwitch => {
+        const value = lineConfiguration.getDeviceFullName(safetyGateSwitch.location, safetyGateSwitch.deviceTag);
+        options.push({label:value, value:value});
+      })
+    })
+    return options;
   },
 
   generateData: (safetyGates) => {
@@ -61,9 +63,9 @@ const safetyGateStore = create(
           newSafetyGate.safetyGateSwitches.push(newGate);
           newSafetyGates = [...newSafetyGates, newSafetyGate]
         }
-        
+        get().setSafetyGatesOptions(newSafetyGates);
         return {safetyGates:newSafetyGates}
-      })    
+      })
     },
     setSafetyGatesOptions:(safetyGates)=>{
       var safetyGatesOptions= safetyGateConfiguration.getSafetyGateOptions(safetyGates);
@@ -85,6 +87,7 @@ const safetyGateStore = create(
       set((state) => {
         let newSafetyGates =[...state.safetyGates];
         newSafetyGates = addItems(newSafetyGates, numberOfSafetyGate, safetyGateGroupModel.create);
+        get().setSafetyGatesOptions(newSafetyGates);
         return {safetyGates:newSafetyGates}
       })    
     },
@@ -124,6 +127,7 @@ const safetyGateStore = create(
       set((state) => {
         const newSafetyGates = [...state.safetyGates];
         newSafetyGates[index].safetyGateSwitches = setNumberOfItems(newSafetyGates[index].safetyGateSwitches, numberOfSafetyGateSwitches, safetyGateSwitchModel.create, newSafetyGates[index]);
+        get().setSafetyGatesOptions(newSafetyGates);
         return { safetyGates: newSafetyGates };
       });
   },
@@ -136,6 +140,7 @@ const safetyGateStore = create(
         const newSafetyGates = [...state.safetyGates];
         const safetyGate = newSafetyGates[safetyGateIndex].safetyGateSwitches[safetyGateSwitchIndex]
         setModelValue(safetyGate, key, value, isUI, isData);
+        get().setSafetyGatesOptions(newSafetyGates);
         return { safetyGates: newSafetyGates };
       });
     } else {

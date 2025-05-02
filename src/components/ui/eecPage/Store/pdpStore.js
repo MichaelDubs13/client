@@ -188,7 +188,6 @@ const pdpStore = create()(
       set((state) => {
         var newPdps = [...state.pdps];
         var branchCircuit = addBranchCircuit(newPdps[index].branchCircuit[amperage], newPdps[index], numberOfPowerDrops, pdpBranchCircuitModel.create, amperage)
-        console.log(branchCircuit)
         newPdps[index].branchCircuit[amperage] = branchCircuit;
         branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
         return { pdps: newPdps };

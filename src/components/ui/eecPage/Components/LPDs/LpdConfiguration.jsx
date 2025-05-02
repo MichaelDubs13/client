@@ -10,6 +10,7 @@ import LineLocationSelection from '../Common/LineLocationSelection';
 import { lineStore } from '../../Store/lineStore';
 import { pdpStore } from '../../Store/pdpStore';
 import { xpdpStore } from '../../Store/xpdpStore';
+import CreateableDropdownItem from "../Util/CreateableDropdownItem";
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    
@@ -44,27 +45,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
         setCbOptions(options);
     }, [lpd.location]);
 
-    // Initilize lpdPsuItems based on numberOfPsu and psuSelection
-    // this was intended to limit the number of psu items based on the psuSelection
-    // but it is not working as expected
-    // useEffect(() => {
-    //     const InitializePsuItems = () => {
-    //         if (psuSelection === "Balluff-BAE00ET" || psuSelection === "Balluff-BAE00FL") {
-    //             return {[psuSelection]: 2};
-    //         } else if (psuSelection === "Balluff-BAE0133") {
-    //             return {[psuSelection]: 3};
-    //         } else if (psuSelection === "Siemens") {
-    //             return {[psuSelection]: 15};
-    //         } else if (psuSelection === "Turck") {
-    //             return {[psuSelection]: 8};
-    //         } else if (psuSelection === "Puls") {
-    //             return {[psuSelection]: 8};
-    //         } else {
-    //             return {};
-    //         }
-    //     };
-    //     setLpdPsuItems(InitializePsuItems());
-    // }, [psuSelection, numberOfPsu]);
 
     const handleSetpsuSelectionChange = (event)=> {
         const value = event.value;
@@ -100,8 +80,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             <LineLocationSelection item={lpd} index={index}
                         lineTitle='Enter the power source Line name: (e.g., UBM01)'
                         locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
-
-            <DropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"powerSourceDT"} 
+            <CreateableDropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"powerSourceDT"} 
                 options={cbOptions} index={index} onChange={handleDropChange}/>
             <SetItemsNumberInputBox title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                     items={lpd.psus} addItems={setNumberOfPsus} index={lpdIndex}/>          

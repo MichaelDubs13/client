@@ -4,7 +4,7 @@ import { lineStore, lineOptions, lineConfiguration } from '../../Store/lineStore
 import "../../Eec.css";
 import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
-import { Icon } from '@tesla/design-system-react';
+import { FormLabel, Icon, FormItem } from '@tesla/design-system-react';
 
 
 /**
@@ -14,7 +14,7 @@ import { Icon } from '@tesla/design-system-react';
  */
 const DeviceSelection = ({
     item, index,  
-    lineTitle = "Manufacturing Line name (e.g., UBM1, DOR1)", 
+    lineTitle, 
     stationTitle, stationProperty,
     deviceTitle, deviceProperty,
     onDeviceChange, onStationChange,
@@ -27,9 +27,8 @@ const DeviceSelection = ({
     const stations = lineStore((state) => state.stations)   
     const lines = lineStore((state) => state.lines)  
     const [deviceOptions, setDeviceOptions] = useState([])   
-    
+
     useEffect(() => {
-        console.log(item)
         getLineOptions();        
     }, [item.line]);
 
@@ -42,6 +41,20 @@ const DeviceSelection = ({
         setDeviceOptions(deviceOptions)
     }, [item[deviceProperty], item[stationProperty], item.line]);
 
+    const getTitle=()=>{
+        switch(type){
+            case 'powerTarget':
+                return "Power target Device tag (e.g., ++LINE+LOCATION-DT):";
+            case 'networkTarget':
+                return "Network target Device tag (e.g., ++LINE+LOCATION-DT):";
+            case 'powerSource':
+                return "Power source Device tag (e.g., ++LINE+LOCATION-DT):";
+            case 'networkSource':
+                return "Network source Device tag (e.g., ++LINE+LOCATION-DT):";
+            default:
+                return "Enter the Device tag (e.g., ++LINE+LOCATION-DT):";
+        }
+    }
     const canAddDevice=(arr, value) =>{
         for(let i=0;i<arr.length;i++){
             if(value.startsWith(arr[i])){
@@ -56,6 +69,11 @@ const DeviceSelection = ({
         return foundItem;
     }
 
+    const handleSubmit=(wipItem)=>{
+        console.log(wipItem)
+        item.setValue(index, "description", wipItem.getDescription());
+        //item.setValue(index, "fla", wipItem.getFLA());
+    }
     const renderAddDeviceModal=()=>{
         if(type){
             if(deviceExist()){
@@ -64,7 +82,8 @@ const DeviceSelection = ({
                 if(canCreateDevice){
                     if(canAddDevice(lineOptions.addDeviceOptions,item[deviceProperty])){
                         return <ModalAddDevice item={item} name={item[deviceProperty]} line={item.line} location={item[stationProperty]} 
-                                powerSource={type === "powerTarget" ? item : null} networkSource={type === "networkTarget" ? item : null}/>
+                                powerSource={type === "powerTarget" ? item : null} networkSource={type === "networkTarget" ? item : null}
+                                onSubmit={handleSubmit}/>
                     }
                 }
             }
@@ -77,11 +96,13 @@ const DeviceSelection = ({
             if(type === "powerTarget"){
                 targetDevice.setPowerSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
                 item.setDataValue("powerTarget", item.data.id)  
+                item.setValue(index, "description", targetDevice.data.description);
             }
     
             if(type === "networkTarget"){
                 targetDevice.setNetworkSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag());   
                 item.setDataValue("ethernetTarget", item.data.id)  
+                item.setValue(index, "description", targetDevice.data.description);
             }
         }
     }
@@ -129,20 +150,22 @@ const DeviceSelection = ({
             onStationChange();
         }
     }
+
+    const title = getTitle();
     return (
         
-        <div>
-            <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index}/>
-            <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} options={stations} index={index} onChange={handleStationChange}/>
-            {
-                <div style={{display:'flex', alignContent:'center', alignItems:'center'}}>
-                    <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} options={deviceOptions} index={index} onChange={handleDeviceChange}/>
-                    {
-                        renderAddDeviceModal()
-                    }
-                </div>
-            }
-            
+        <div style={{display:'flex'}}>
+            <FormItem className='form-item-device'>
+                <FormLabel className="form-label-device">{title}</FormLabel>
+                <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index} type="condensed"/>
+                <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} 
+                    options={stations} index={index} onChange={handleStationChange} type="condensed"/>
+                <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} 
+                    options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed"/>
+                {
+                    renderAddDeviceModal()
+                }
+            </FormItem>
         </div>
     );
 };

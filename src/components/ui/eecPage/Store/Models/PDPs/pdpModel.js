@@ -77,6 +77,20 @@ export const pdpModel = {
               this.enclosureSize,
             ]
           },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
+            Object.keys(this.branchCircuit).forEach(key => {
+              this.branchCircuit[key].forEach(cb => {
+                cb.setLine(line, newLine);
+              })
+            })
+            this.hotPowerDrops.forEach(drop => {
+              drop.setLine(line, newLine);
+            })
+          },
           getStations: function(){
             var stations = []
             Object.keys(this.branchCircuit).forEach(key => {

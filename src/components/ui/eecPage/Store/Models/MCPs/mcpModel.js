@@ -109,6 +109,24 @@ export const mcpModel = {
           getPlc: function(){
             return `${this.line}-${this.location}-PLC01`;
           },
+          getSourceLine:function(){
+            return this.line
+          },
+          getSourceLocation:function(){
+            return this.location;
+          },
+          getSourceDeviceTag:function(){
+            return this.deviceTag;
+          },
+          setLine:function(line, newLine){
+            if(line === this.line){
+              const indexObject = this.getIndexObject();
+              this.setValue(indexObject, "line", newLine);
+            }
+            this.ports.forEach(port => {
+                port.setLine(line, newLine)
+              })
+          },
           getStations: function(){
             var stations = []
             stations = lineConfiguration.getStations(this.ports, stations);

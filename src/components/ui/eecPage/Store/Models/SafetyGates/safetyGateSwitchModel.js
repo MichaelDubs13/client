@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { safetyGateStore } from '../../safetyGateStore';
 import { formatToTwoDigits } from '../../util';
+import { projectStore } from '../../projectStore';
 
 export const safetyGateSwitchModel = {
   create: (parent, number) => {
@@ -13,7 +14,7 @@ export const safetyGateSwitchModel = {
         safetyGateSwitchType: "PROFINET", // EEC variable name: GateSwitch_Type
         safetyGateSwitchHandle: "Right", // EEC variable name: GateSwitch_HandleSide
         plcID: "", // EEC variable name: PLC_ID
-        localIP: "", // EEC variable name: Local_IP
+        localIP: "192.168.1.x", // EEC variable name: Local_IP
         gateSwitchCascadingFrom: false, // EEC variable name: CascadingFrom
 
         powerSourceLine: "", // EEC variable name: PowerLine ***needs to be created in EEC
@@ -47,6 +48,12 @@ export const safetyGateSwitchModel = {
         powerTarget:'',
         ethernetTarget:'',
       },
+      getDescription: function(){
+        return 'Safety Gate';
+      },
+      getFLA:function(){
+        return 0;
+      },
       getIndexObject: function(){
         const safetyGateIndex = this.data.parent.getIndex();
         const safetyGateSwitchIndex = this.getIndex();
@@ -63,6 +70,12 @@ export const safetyGateSwitchModel = {
         return [
           this.deviceTypeSelection,
         ]
+      },
+      setLine:function(line, newLine){
+        if(line === this.line){
+          const indexObject = this.getIndexObject();
+          this.setValue(indexObject, "line", newLine);
+        }
       },
       getStations: function(){
         return [this.location, this.powerSourceLocation, this.ethernetSourceLocation, this.powerTargetLocation, this.ethernetTargetLocation];

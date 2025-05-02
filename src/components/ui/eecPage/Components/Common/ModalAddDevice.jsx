@@ -21,7 +21,7 @@ import { lpdStore } from "../../Store/lpdStore";
 
 
 
-const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}) => {
+const ModalAddDevice = ({item, name, line, location, powerSource, networkSource, onSubmit}) => {
   const [openModal, setOpenModal] = useState(false);
   const addWipNetworkSwitch = networkSwitchStore((state) => state.addWipNetworkSwitch);
   const setWipNetworkSwitch = networkSwitchStore((state) => state.setWipNetworkSwitch);   
@@ -42,14 +42,22 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource}
   const handleFormSubmit = () => {
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
       addWipNetworkSwitch()
+      var wipItem = wipNetworkSwitch;
     } else if(name.startsWith(lineConfiguration.hmiIndicator)){
       addWipHmi();
+      var wipItem = wipHmi;
     }else if(name.startsWith(lineConfiguration.gateIndicator)){
       addWipSafetyGateSwitch();
+      var wipItem = wipSafetyGateSwitch;
     }else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
       addWipIoModule();
+      var wipItem = addWipIoModule;
     }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
       addWipPsu(item.data.parent.line,item.data.parent.location);
+      var wipItem = addWipPsu;
+    }
+    if(wipItem && onSubmit){
+      onSubmit(wipItem);
     }
     setOpenModal(false)
   }
