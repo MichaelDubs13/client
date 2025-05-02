@@ -63,15 +63,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                                 deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
                                 stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}
                                 type="powerSource"/>                                
-                            {/* <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
-                                deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"powerSourceDT"}
-                                stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}/>        */}
-                            {/* <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
-                                deviceTitle={"Power 1 in device tag (e.g., PSU01)"}  deviceProperty={"power1InDT"}
-                                stationTitle={"Power 1 in location (e.g., 00010)"} stationProperty={"power1InLocation"}/>                                
-                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
-                                deviceTitle={"Power 2 in device tag (e.g., PSU02)"}  deviceProperty={"power2InDT"}
-                                stationTitle={"Power 2 in location (e.g., 00010)"} stationProperty={"power2InLocation"}/>                               */}
+
                         </>
                     )}
 

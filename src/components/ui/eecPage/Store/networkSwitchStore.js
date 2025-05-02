@@ -231,13 +231,19 @@ const networkSwitchStore = create(
     //const indexObject = item.getIndexObject();
     const networkSwitchIndex = indexObject.networkSwitchIndex;
     const portIndex = indexObject.portIndex;
-
+    
     set((state) => {
-      const newNetworkSwitches = [...state.networkSwitches];
-      const ports = newNetworkSwitches[networkSwitchIndex].ports;
-      setModelValue(ports[portIndex], key, value, isUI, isData);
 
-      return { networkSwitches: newNetworkSwitches };
+      if(networkSwitchIndex){
+        const newNetworkSwitches = [...state.networkSwitches];
+        const ports = newNetworkSwitches[networkSwitchIndex].ports;
+        setModelValue(ports[portIndex], key, value, isUI, isData);
+        return { networkSwitches: newNetworkSwitches };
+      } else {
+        var wipNetworkSwitch = {...state.wipNetworkSwitch};
+        wipNetworkSwitch.ports[portIndex][key] = value;
+        return { wipNetworkSwitch: wipNetworkSwitch };
+      }
     });
     }, 
   }),

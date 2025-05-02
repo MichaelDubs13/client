@@ -157,9 +157,12 @@ const DeviceSelection = ({
         <div style={{display:'flex'}}>
             <FormItem className='form-item-device'>
                 <FormLabel className="form-label-device">{title}</FormLabel>
+                <FormLabel>++</FormLabel>
                 <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index} type="condensed"/>
+                <FormLabel>+</FormLabel>
                 <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} 
                     options={stations} index={index} onChange={handleStationChange} type="condensed"/>
+                <FormLabel>-</FormLabel>
                 <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} 
                     options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed"/>
                 {

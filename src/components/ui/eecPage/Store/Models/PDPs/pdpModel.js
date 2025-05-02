@@ -160,11 +160,9 @@ export const pdpModel = {
     recreate:(pdps) =>{
       const newPdps = pdps.map(pdp => {
         var newPdp = recreateObject(pdp, pdpModel.create)
-
         Object.keys(pdp.branchCircuit).forEach(key => { 
             var array = pdp.branchCircuit[key];
             var branchCircuit = array.map(item => { 
-              //const newItem = pdpBranchCircuitModel.create(newPdp, key); 
               const newItem = pdpBranchCircuitModel.create(newPdp, key) 
               Object.assign(newItem, item);
               newItem.data.parent = newPdp;

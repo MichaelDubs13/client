@@ -5,6 +5,17 @@ import { mcpStore } from "./Store/mcpStore";
 import { lpdStore } from "./Store/lpdStore";
 import { projectStore } from "./Store/projectStore";
 import { pdpModel } from "./Store/Models/PDPs/pdpModel";
+import { xpdpModel } from "./Store/Models/XPDPs/xpdpModel";
+import { mcpModel } from "./Store/Models/MCPs/mcpModel";
+import { lpdModel } from "./Store/Models/LDPs/lpdModel";
+import { safetyGateGroupModel } from "./Store/Models/SafetyGates/safetyGateGroupModel";
+import { networkSwitchModel } from "./Store/Models/NetworkSwitches/networkSwitchModel";
+import { hmiModel } from "./Store/Models/HMIs/hmiModel";
+import { ioModuleGroupModel } from "./Store/Models/IoModules/ioModuleGroupModel";
+import { safetyGateStore } from "./Store/safetyGateStore";
+import { networkSwitchStore } from "./Store/networkSwitchStore";
+import { hmiStore } from "./Store/hmiStore";
+import { ioModuleStore } from "./Store/ioModuleStore";
 
 
 const LoadButton = () => {
@@ -37,12 +48,28 @@ const LoadButton = () => {
         try {
           var data = e.target.result;
           const jsonObject = JSON.parse(data);
-          pdpModel.merge()
           setConfig(jsonObject.config);
-          setPdps(jsonObject.pdps);
-          setXpdps(jsonObject.xpdps);
-          setMcps(jsonObject.mcps);
-          setLpds(jsonObject.lpds);
+          var pdps = pdpModel.recreate(jsonObject.pdps)
+          var xpdps = xpdpModel.recreate(jsonObject.xpdps)
+          var mcps = mcpModel.recreate(jsonObject.mcps)
+          var lpds = lpdModel.recreate(jsonObject.lpds)
+          var safetyGates = safetyGateGroupModel.recreate(jsonObject.safetyGates)
+          var networkSwitches = networkSwitchModel.recreate(jsonObject.networkSwitches)
+          var hmis = hmiModel.recreate(jsonObject.hmis)
+          var ioModuleGroups = ioModuleGroupModel.recreate(jsonObject.ioModuleGroups)
+          
+          Object.assign(pdpStore.getState().pdps, pdps);
+          Object.assign(xpdpStore.getState().xpdps, xpdps);
+          Object.assign(mcpStore.getState().mcps, mcps);
+          Object.assign(lpdStore.getState().lpds, lpds);
+          Object.assign(safetyGateStore.getState().safetyGates, safetyGates);
+          Object.assign(networkSwitchStore.getState().networkSwitches, networkSwitches);
+          Object.assign(hmiStore.getState().hmis, hmis);
+          Object.assign(ioModuleStore.getState().ioModuleGroups, ioModuleGroups);
+          
+          // setXpdps(jsonObject.xpdps);
+          // setMcps(jsonObject.mcps);
+          // setLpds(jsonObject.lpds);
         } catch (error) {
           console.error("Error parsing JSON:", error);
           alert("Invalid JSON file");

@@ -98,8 +98,6 @@ export function recreateArrayElement(parent, array, create){
 export function recreateBranchCircuit(parent, amperage, array, create){     
   console.log(parent);
   var newArray = array.map(item => { 
-    console.log(parent)
-    console.log(amperage)
     const newItem = create(parent, amperage); 
     // console.log(newItem)
     Object.assign(newItem, item);

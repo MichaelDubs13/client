@@ -104,7 +104,8 @@ export default class Component {
                 }
             } else if(parameter.type == "Double"){
                 if(parameter.value != null){
-                    elem.setAttribute("value", parseFloat(parameter.value.toFixed(2)));            
+                    var number = Number(parameter.value)
+                    elem.setAttribute("value", parseFloat(number.toFixed(2)));            
                 } else {
                     elem.setAttribute("value", "0.0"); 
                 }

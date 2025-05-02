@@ -3,7 +3,6 @@ import DropdownItem from "../Util/DropdownItem";
 import { networkSwitchOptions } from "../../Store/networkSwitchStore";
 import "../../Eec.css";
 import NetworkPortSelection from "../Common/NetworkPortSelection";
-import { useEffect } from "react";
 
 const McpLethPorts = ({ 
     mcpIndex,

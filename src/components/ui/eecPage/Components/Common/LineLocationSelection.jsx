@@ -40,7 +40,9 @@ const LineLocationSelection = ({
             <div style={{display:'flex'}}>
                 <FormItem className='form-item-device'>
                     <FormLabel className="form-label-device">Panel Location (e.g., ++LINE+LOCATION)</FormLabel>
+                    <FormLabel>++</FormLabel>
                     <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={onLineChange} type="condensed"/>
+                    <FormLabel>+</FormLabel>
                     <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} onChange={onLocationChange} type="condensed"/>
                 </FormItem>
             </div>

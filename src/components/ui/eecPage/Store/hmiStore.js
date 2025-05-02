@@ -178,10 +178,16 @@ const hmiConfiguration = {
       const hmiIndex = indexObject.hmiIndex;
       const extensionUnitPositionIndex = indexObject.extensionUnitPositionIndex;
       set((state) => {
-        const newHmis = [...state.hmis];
-        const extensionUnitPositions = newHmis[hmiIndex].extensionUnitPositions;
-        setModelValue(extensionUnitPositions[extensionUnitPositionIndex], key, value, isUI, isData);
-        return { hmis: newHmis };
+        if(hmiIndex){
+          const newHmis = [...state.hmis];
+          const extensionUnitPositions = newHmis[hmiIndex].extensionUnitPositions;
+          setModelValue(extensionUnitPositions[extensionUnitPositionIndex], key, value, isUI, isData);
+          return { hmis: newHmis };
+        } else {
+          var wipHmi = {...state.wipHmi};
+          wipHmi.extensionUnitPositions[extensionUnitPositionIndex][key] = value;
+          return { wipHmi: wipHmi };
+        }
       });
     },     
   }),
