@@ -15,7 +15,7 @@ export const networkSwitchModel = {
       deviceTag: index > -1 ? `LETH${formatToTwoDigits(index+1)}` : '', // EEC variable name: Switch_DT
       plcID: "", // EEC variable name: PLC_ID
       networkType: "Local", // EEC variable name: Network_Type_Selection
-      localIP: "", // EEC variable name: Local_IP
+      localIP: "192.168.1.x", // EEC variable name: Local_IP
       plantIP: "", // EEC variable name: Plant_IP
       switchType: "Managed", // EEC variable name: Switch_Type_Selection
       switchSpeed: "Gigabit", // EEC variable name: Switch_Speed_Selection

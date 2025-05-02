@@ -40,7 +40,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
                     <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} 
                         options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
-                    <InputTextItem title={"Local IP address (e.g., 192.168.1.xt)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"}/>
+                    <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"}/>
                     <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={networkSwitch} index={networkSwitchIndex} property={"plantIP"}/>
                     
                     {networkSwitch.networkType === "Local" && (
