@@ -13,7 +13,7 @@ const SafetyGateInstances = ({safetyGate, index}) => {
         
         <div>
             <div>
-                <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
+                <DataTable border={4} className='data-table'> 
                      <LineStationSelection 
                         stationTitle={"Safety Gate Switches Location (i.e., Station number) (e.g., 00010)"}  stationProperty={"location"}
                         lineTitle={"Manufacturing Line name (e.g., UBM1, DOR1)"}

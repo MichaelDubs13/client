@@ -12,7 +12,6 @@ const EditableCell=({
   const [value, setValue] = useState(initialValue);
   const inpRef = useRef(null);
   const key = `${index}-${id}`;
-
   useEffect(() => {
     if (table.focusedCell === key) {
       inpRef.current?.focus();
@@ -21,14 +20,16 @@ const EditableCell=({
     }
   });
 
+  useEffect(() => {
+    console.log("table rerender")
+  }, [renderInput]);
+
   const onValueChange = (value) => {
     setValue(value);
-    console.log(value);
     table.options.meta?.updateCellData(index, id, value);
   };
 
   const onChange = (value) => {
-    console.log(value);
     setValue(value);
     table.options.meta?.updateCellData(index, id, value);
   };
@@ -39,19 +40,23 @@ const EditableCell=({
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
+
+  
   return (
     <div
       // onDoubleClick={onDoubleClick}
       // className="qz__data-table__editable-cell--editing"
       // tabIndex={0}
     >
-      {renderInput({
-        value,
-        inpRef,
-        onChange,
-        onFocus:handleOnFocus,
-        onValueChange,
-      })}
+      {
+        renderInput({
+          value,
+          inpRef,
+          onChange,
+          onFocus:handleOnFocus,
+          onValueChange,
+        })
+      }
     </div>
   );
 }

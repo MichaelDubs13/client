@@ -61,6 +61,18 @@ export const xpdpModel = {
       getItemById: function(id){
         return pdpConfiguration.getItemById(this, id);
       },
+      getDeviceByName:function(name, location, line){
+        if(this.line != line) return;
+        if(this.location != location) return;
+        var keys = Object.keys(this.branchCircuit);
+        for(let i=0;i<keys.length;i++){
+          const key = keys[i]
+          for(let j=0;j<this.branchCircuit[key].length;j++){
+            var foundDevice = this.branchCircuit[key][j].getDeviceByName(name, location, line);
+            if(foundDevice) return foundDevice;
+          }
+        }
+      },
       getNodeData: function(){
         return [
           this.location,
@@ -87,6 +99,13 @@ export const xpdpModel = {
             })
           })
       },
+      getNumberOfCBs: function(){
+        var cbCount = 0;
+        Object.keys(this.branchCircuit).forEach(key => {
+          cbCount = this.branchCircuit[key].length + cbCount;
+        })
+        return cbCount;
+      },
       getStations: function(){
         var stations = []
         Object.keys(this.branchCircuit).forEach(key => {
@@ -107,8 +126,8 @@ export const xpdpModel = {
         if(this.location === location){
           Object.keys(this.branchCircuit).forEach(key => {
             this.branchCircuit[key].forEach(drop => {
-                  if(drop.UI.CB_DT){
-                      cbs.push(drop.UI.CB_DT);
+                  if(drop.deviceDTCB_DT){
+                      cbs.push(drop.deviceDT);
                   }
               })
           })

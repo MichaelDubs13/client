@@ -15,7 +15,7 @@ const xpdpConfiguration = {
   getCB:(branchCircuit, cb_dt) =>{
     Object.keys(branchCircuit).reverse().forEach(key => {
       branchCircuit[key].forEach(drop => {
-        if(drop.UI.CB_DT = cb_dt) return drop;
+        if(drop.deviceDT === cb_dt) return drop;
       })
     });
 
@@ -84,7 +84,7 @@ const xpdpStore = create(
         const newPdps = [...state.xpdps];
         var branchCircuit = addBranchCircuit(newPdps[index].branchCircuit[amperage], newPdps[index], numberOfPowerDrops, branchCircuitModel.create, amperage)
         newPdps[index].branchCircuit[amperage] = branchCircuit;
-        branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
+        //branchCircuit = pdpConfiguration.updateBranchCircuitDT(newPdps[index].branchCircuit);
         return { xpdps: newPdps };
       });
     },

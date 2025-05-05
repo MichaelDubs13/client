@@ -24,7 +24,7 @@ const PdpConfiguration = ({pdp, index}) => {
         
         <div>
             <div>
-                <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
+                <DataTable border={4} className='data-table'> 
                     <LineLocationSelection item={pdp} index={pdpIndex} showPlantShop={true} onLocationChange={handleLocationChange}/>
                     <DropdownItem title={"Main disconnect amperage"} item={pdp} property={"amp"} options={pdpOptions.amperageOptions} index={pdpIndex}/>
                     <DropdownItem title={"Enclosure size"} item={pdp} property={"enclosureSize"} options={pdpOptions.enclosureSizeOptions} index={pdpIndex}/>

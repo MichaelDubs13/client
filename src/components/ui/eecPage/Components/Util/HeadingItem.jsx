@@ -28,7 +28,7 @@ const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons})
 
     return (
         
-        <div style={{marginTop:'20px', marginLeft:margin}}>
+        <div style={{marginTop:'20px', marginLeft:margin, overflow:'visible'}}>
              <tr className={`heading-tr`}
                     onClick={handleToggleClick}>
                     <TD style={{alignContent:'center'}}>

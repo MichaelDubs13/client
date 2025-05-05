@@ -71,7 +71,7 @@ const xpdpParser = {
                     }
                 }
             }
-            pdpConfiguration.updateBranchCircuitCB_DT(xpdp.branchCircuit)
+            //pdpConfiguration.updateBranchCircuitDT(xpdp.branchCircuit)
             pdpConfiguration.calculateAllBranchFLA(xpdp);
         })        
         return xpdps;

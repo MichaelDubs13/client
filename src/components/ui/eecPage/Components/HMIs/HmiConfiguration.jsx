@@ -38,7 +38,7 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
         
         <div>
             <div>
-                <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
+                <DataTable border={4} className='data-table'> 
                     <DeviceSelection item={hmi} index={hmiIndex}
                         deviceTitle={"HMI device tag (e.g., HMI01)"}  deviceProperty={"deviceTag"} onDeviceChange={handleDeviceChange}
                         stationTitle={"HMI Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 

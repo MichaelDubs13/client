@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pdpStore } from "../../pdpStore";
-import { projectStore } from '../../projectStore';
+import { formatToTwoDigits } from '../../util';
 
 
 export const pdpBranchCircuitModel = {
@@ -8,7 +8,7 @@ export const pdpBranchCircuitModel = {
    * creates a new branch circuit with default values
    * @returns 
    */
-  create: (parent, amperage) => {
+  create: (parent, amperage, index) => {
     const branchCircuit= {
       PwrDrop_Spare: true,
       DropType: "A-external",
@@ -19,9 +19,9 @@ export const pdpBranchCircuitModel = {
       targetFLA: 0,
       targetFLA_Total: 0,
       targetCableLength:0,
+      deviceDT: index > -1 ? `CB${formatToTwoDigits(1+index)}` : "",
       UI:{
         expanded:false,
-        CB_DT:"",
         icon:"/powerdrop.png",
       },
 
@@ -52,6 +52,15 @@ export const pdpBranchCircuitModel = {
         const indexObject = this.getIndexObject();
         pdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, true);
       },
+      setPowerTarget:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        pdpStore.getState().setBranchCircuitValue(indexObject, "line", line);
+        pdpStore.getState().setBranchCircuitValue(indexObject, "targetLocation", location);
+        pdpStore.getState().setBranchCircuitValue(indexObject, "targetDT", name);
+      },
+      setPowerSource:function(line, location, name){
+        //not available
+      },
       getNodeData: function(){
         return [
           this.data.amperage,
@@ -73,6 +82,12 @@ export const pdpBranchCircuitModel = {
           const indexObject = this.getIndexObject();
           this.setValue(indexObject, "line", newLine);
         }
+      },
+      getDeviceByName:function(name, location, line){
+        if(this.data.parent.line != line) return;
+        if(this.data.parent.location != location) return;
+        if(this.deviceDT != name) return;
+        return this;
       },
       getStations: function(){
         return [this.targetLocation,]

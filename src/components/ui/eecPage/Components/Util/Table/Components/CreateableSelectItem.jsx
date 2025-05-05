@@ -1,7 +1,6 @@
 import { useState, useEffect} from "react";
 import CreatableSelect from 'react-select/creatable';
 import PropTypes from "prop-types";
-import { all } from "axios";
 
 
 /**
@@ -18,7 +17,7 @@ import { all } from "axios";
 const CreateableSelectItem = ({inputRef, className, item, property, options, onChange,onFocus, index}) =>{
     const [selectedOption, setSelectedOption] = useState({label:item[property] , value:item[property] });
     const [alloptions, setAllOptions]=useState(options);
-    const defaultValue = item[property] 
+    const defaultValue = item[property]
     
 
     useEffect(() => {
@@ -41,7 +40,6 @@ const CreateableSelectItem = ({inputRef, className, item, property, options, onC
 
     const handleOptionSelect = async (event) =>{
         if(!event) return;
-        
         const reportedValue = event.value;
         setSelectedOption(event.value);
         setValue(reportedValue)
@@ -53,23 +51,25 @@ const CreateableSelectItem = ({inputRef, className, item, property, options, onC
 
     const handleOptionCreation = (inputValue) => {
         if(inputValue){
-        var newOption = {label:inputValue, value: inputValue};
-        setAllOptions([...alloptions,newOption])
-        setSelectedOption(newOption)
-        setValue(inputValue)
-        console.log(alloptions)
+            var newOption = {label:inputValue, value: inputValue};
+            setAllOptions([...alloptions,newOption])
+            setSelectedOption(newOption)
+            setValue(inputValue)
         }
     };
+    const handleBlur = () => {
+        console.log("blur");
+    }
 
-
+    const handleFocus = () => {
+        console.log("focus");
+    }
     return (
         <>
             {                
                 <div style={{ width:'200px'}}>
                     <CreatableSelect 
                         selectOption
-                        // menuPortalTarget={document.body}
-                        // menuPosition="fixed"
                         ref={inputRef}
                         className={className}
                         options={alloptions} 
@@ -77,7 +77,8 @@ const CreateableSelectItem = ({inputRef, className, item, property, options, onC
                         getOptionValue={(option) => option.value}
                         onChange={handleOptionSelect}
                         onCreateOption={handleOptionCreation}
-                        onFocus={onFocus}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
                         placeholder={defaultValue}
                         selected={selectedOption}
                         value={selectedOption}/>    

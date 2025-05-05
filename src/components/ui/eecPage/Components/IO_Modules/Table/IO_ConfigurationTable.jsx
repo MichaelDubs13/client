@@ -1,11 +1,10 @@
 import { DataTable } from "../../Util/Table/DataTable/DataTable";
 import { useDataTable } from "../../Util/Table/DataTable/useDataTable";
-import { getColumns } from "./columns";
+import { useColumns } from "./columns";
 import React, { useEffect } from "react";
 
 const IO_ConfigurationTable = ({ports, ioModuleGroupIndex,ioModuleIndex })=>{
-    const columns = getColumns(ioModuleGroupIndex, ioModuleIndex);
-    
+    const columns = useColumns(ioModuleGroupIndex, ioModuleIndex);
     const createData = (port) => {
       return {
           Port: port.portCounter,

@@ -45,7 +45,7 @@ export const powerDropModel = {
         const indexObject = this.getIndexObject();
         lpdStore.getState().setDropValue(indexObject, "line", line);
         lpdStore.getState().setDropValue(indexObject, "targetLocation", location);
-        lpdStore.getState().setDropValue(indexObject, "targetPort", name);
+        lpdStore.getState().setDropValue(indexObject, "targetDT", name);
       },
       getIndex: function(){
         return this.data.parent.drops.findIndex(drop => drop.data.id === this.data.id)

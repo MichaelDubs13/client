@@ -27,7 +27,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
 
         for(let i=0;i<branchCircuit.length;i++){
             powerDropItems.push(
-                <HeadingItem label={`${amperage} Branch circuit power drop ${i+1}: ${branchCircuit[i].UI.CB_DT}`}
+                <HeadingItem label={`${amperage} Branch circuit power drop ${i+1}: ${branchCircuit[i].deviceDT}`}
                     size={18} margin={"20px"} open={false}
                     headerIcon={branchCircuit[i].UI.icon}
                     children={<PowerDropItem 

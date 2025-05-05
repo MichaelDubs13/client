@@ -69,6 +69,18 @@ export const pdpModel = {
           getItemById: function(id){
             return pdpConfiguration.getItemById(this, id);
           },
+          getDeviceByName:function(name, location, line){
+            if(this.line != line) return;
+            if(this.location != location) return;
+            var keys = Object.keys(this.branchCircuit);
+            for(let i=0;i<keys.length;i++){
+              const key = keys[i]
+              for(let j=0;j<this.branchCircuit[key].length;j++){
+                var foundDevice = this.branchCircuit[key][j].getDeviceByName(name, location, line);
+                if(foundDevice) return foundDevice;
+              }
+            }
+          },
           getNodeData: function(){
             return [
               this.location,
@@ -91,6 +103,13 @@ export const pdpModel = {
               drop.setLine(line, newLine);
             })
           },
+          getNumberOfCBs: function(){
+            var cbCount = 0;
+            Object.keys(this.branchCircuit).forEach(key => {
+              cbCount = this.branchCircuit[key].length + cbCount;
+            })
+            return cbCount;
+          },
           getStations: function(){
             var stations = []
             Object.keys(this.branchCircuit).forEach(key => {
@@ -110,15 +129,15 @@ export const pdpModel = {
             if(this.location === location){
               Object.keys(this.branchCircuit).forEach(key => {
                 this.branchCircuit[key].forEach(drop => {
-                      if(drop.UI.CB_DT){
-                          cbs.push(drop.UI.CB_DT);
+                      if(drop.deviceDT){
+                          cbs.push(drop.deviceDT);
                       }
                   })
               })
             }
             return cbs;
           },
-          setHotPowerBranchCircuit:function(){
+            setHotPowerBranchCircuit:function(){
             pdpStore.getState().setHotPowerBranchCircuit(this);
           }
         }
@@ -161,13 +180,16 @@ export const pdpModel = {
       const newPdps = pdps.map(pdp => {
         var newPdp = recreateObject(pdp, pdpModel.create)
         Object.keys(pdp.branchCircuit).forEach(key => { 
-            var array = pdp.branchCircuit[key];
-            var branchCircuit = array.map(item => { 
-              const newItem = pdpBranchCircuitModel.create(newPdp, key) 
-              Object.assign(newItem, item);
-              newItem.data.parent = newPdp;
-              return newItem;
-            })
+            // var array = pdp.branchCircuit[key];
+            // var branchCircuit = array.map(item => { 
+            //   var cbCount = pdp.getNumberOfCBs()
+            //   const newItem = pdpBranchCircuitModel.create(newPdp, key,cbCount) 
+            //   Object.assign(newItem, item);
+            //   newItem.data.parent = newPdp;
+            //   return newItem;
+            // })
+            // newPdp.branchCircuit[key] = branchCircuit;
+            var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], pdpBranchCircuitModel.create);
             newPdp.branchCircuit[key] = branchCircuit;
         });
         var hotPowerDrops = recreateArrayElement(newPdp, pdp.hotPowerDrops, hotPowerBranchCircuitModel.create)

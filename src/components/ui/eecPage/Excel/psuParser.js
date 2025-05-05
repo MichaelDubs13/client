@@ -78,14 +78,15 @@ const psuParser = {
     },
 
     createLpd(deviceTag, panel, psu, results, pdps, xpdps){
-        var foundGroup = results.find(group => group.powerSourceDT === deviceTag && group.panel === panel)
+        var foundGroup = results.find(group => group.powerSourceDT === deviceTag && group.powerSourceLocation === panel)
         if(foundGroup){
             foundGroup.psus.push(psu)
             psu.data.parent = foundGroup;
         } else {
             const group = lpdModel.create()
             group.powerSourceDT = deviceTag;
-            group.panel = panel;
+            group.powerSourceLocation = panel;
+            group.powerSourceLine =  ProjectConfiguration.line;;
             group.psus = [psu,];
             group.supplyVoltage = psu.supplyVoltage;
             group.psu_selected = `${psu.MFG}:${psu.partNumber}`

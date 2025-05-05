@@ -67,7 +67,7 @@ const pdpConfiguration = {
       const key = keys[i];
       for(let j=0;j<branchCircuit[key].length;j++){
         const drop = branchCircuit[key][j];
-        if(drop.UI.CB_DT === cb_dt) return drop;
+        if(drop.deviceDT === cb_dt) return drop;
       }
     }
 
@@ -79,23 +79,15 @@ const pdpConfiguration = {
    * @param {*} branchCircuit all branchCircuits in a PDP
    * @returns 
    */
-  updateBranchCircuitCB_DT:(branchCircuit) => {
+  updateBranchCircuitDT:(branchCircuit) => {
     var i = 1;
     Object.keys(branchCircuit).reverse().forEach(key => {
       branchCircuit[key].forEach(drop => {
-        drop.UI.CB_DT = `CB${formatToTwoDigits(i)}`;
+        drop.deviceDT = `CB${formatToTwoDigits(i)}`;
         i = i +1;
       })
     });
     return branchCircuit;  
-  },
-  createBranchCircuits: (numberOfDrps, parent, amperage) => {
-    var newPwrDrops = []
-    for(let i=0; i<numberOfDrps; i++){
-        var newPwrDrop = pdpBranchCircuitModel.create(parent, amperage);
-        newPwrDrops.push(newPwrDrop);
-    }
-    return newPwrDrops;
   },
 }
 const pdpStore = create()(
@@ -189,7 +181,7 @@ const pdpStore = create()(
         var newPdps = [...state.pdps];
         var branchCircuit = addBranchCircuit(newPdps[index].branchCircuit[amperage], newPdps[index], numberOfPowerDrops, pdpBranchCircuitModel.create, amperage)
         newPdps[index].branchCircuit[amperage] = branchCircuit;
-        branchCircuit = pdpConfiguration.updateBranchCircuitCB_DT(newPdps[index].branchCircuit);
+        //branchCircuit = pdpConfiguration.updateBranchCircuitDT(newPdps[index].branchCircuit);
         return { pdps: newPdps };
       });
     },

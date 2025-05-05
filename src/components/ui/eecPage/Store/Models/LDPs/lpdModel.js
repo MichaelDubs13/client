@@ -10,8 +10,10 @@ export const lpdModel = {
     create: () => { 
         return {
           line:projectStore.getState().line,
+          location:"",
+          powerSourceLine:"",
+          powerSourceLocation:"",
           powerSourceDT:"",
-          panel:"",
           location:"",
           supplyVoltage:"",
           psu_selected:"", //only used for UI
@@ -93,13 +95,16 @@ export const lpdModel = {
           getStations: function(){
             var stations = []
             stations = lineConfiguration.getStations(this.psus, stations);
-            stations = [...stations, this.location]
+            stations = [...stations, this.powerSourceLocation]
             return stations;
           },
           getDevices: function(station){
             var devices = []
             devices = lineConfiguration.getDevices(this.psus, devices, station);
             devices = [...devices, ]
+            if(station === this.powerSourceLocation){
+              devices = [...devices, this.powerSourceDT];
+            }
             return devices;
           }
         }

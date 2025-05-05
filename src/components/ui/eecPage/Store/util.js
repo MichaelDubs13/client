@@ -33,8 +33,8 @@ export function addBranchCircuit(newItems, parent, numberOfItems, create,key){
   const diff = numberOfItems - newItems.length
   if(diff > 0){
     for (let i = 0; i < diff; i++) {
-      const number = newItems.length
-      var item = create(parent, key);
+      var cbCount = parent.getNumberOfCBs()
+      var item = create(parent, key, cbCount);
       newItems.push(item);
     } 
   } else if(diff < 0) {
@@ -96,9 +96,9 @@ export function recreateArrayElement(parent, array, create){
 }
 
 export function recreateBranchCircuit(parent, amperage, array, create){     
-  console.log(parent);
   var newArray = array.map(item => { 
-    const newItem = create(parent, amperage); 
+    var cbCount = parent.getNumberOfCBs()
+    const newItem = create(parent, amperage, cbCount); 
     // console.log(newItem)
     Object.assign(newItem, item);
     newItem.data.parent = parent;

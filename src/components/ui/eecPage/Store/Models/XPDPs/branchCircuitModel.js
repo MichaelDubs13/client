@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { pdpStore } from "../../pdpStore";
+import { formatToTwoDigits } from '../../util';
 import { xpdpStore } from '../../xpdpStore';
-import { projectStore } from '../../projectStore';
+
 
 
 export const branchCircuitModel = {
@@ -9,7 +9,7 @@ export const branchCircuitModel = {
       * creates a new branch circuit with default values
       * @returns 
       */
-     create: (parent, amperage) => {
+     create: (parent, amperage, index) => {
        return {
          PwrDrop_Spare: true,
          DropType: "A-external",
@@ -20,8 +20,8 @@ export const branchCircuitModel = {
          targetFLA: 0,
          targetFLA_Total: 0,
          targetCableLength:0,
+         deviceDT: index > -1 ? `CB${formatToTwoDigits(1+index)}` : "",
          UI:{
-           CB_DT:"",
            expanded:false,
            icon:"/powerdrop.png",
          },
@@ -53,6 +53,15 @@ export const branchCircuitModel = {
           const indexObject = this.getIndexObject();
            xpdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, true);
          },
+         setPowerTarget:function(line, location, name){
+          const indexObject = this.getIndexObject();
+          xpdpStore.getState().setBranchCircuitValue(indexObject, "line", line);
+          xpdpStore.getState().setBranchCircuitValue(indexObject, "targetLocation", location);
+          xpdpStore.getState().setBranchCircuitValue(indexObject, "targetDT", name);
+        },
+        setPowerSource:function(line, location, name){
+          //not available
+        },
          getNodeData: function(){
            return [
              this.data.amperage,
@@ -60,6 +69,12 @@ export const branchCircuitModel = {
              `${this.targetCableLength}m`,
            ]
          },
+         getDeviceByName:function(name, location, line){
+          if(this.data.parent.line != line) return;
+          if(this.data.parent.location != location) return;
+          if(this.deviceDT != name) return;
+          return this;
+        },
         getSourceLine:function(){
         return this.data.parent.line
         },

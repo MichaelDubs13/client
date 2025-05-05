@@ -65,7 +65,7 @@ export default class Fg_24VPowerDistribution extends Component{
     get Parameters(){
         return [
             {name: "Location", value:  this._lpd.location, type: "String"},
-            {name: "LocationDesignation", value: this._lpd.location, type: "String"},
+            {name: "LocationDesignation", value: this._lpd.powerSourceLocation, type: "String"},
             {name: "DeviceTag", value: this._lpd.powerSourceDT, type: "String"},
             {name: "_PSUSupplyVoltage_", value: this._lpd.supplyVoltage, type: "String"},
             {name: "LocalDisconnectRequired", value: false, type: "Boolean"},

@@ -32,7 +32,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
         
         <div>
             <div>
-                <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
+                <DataTable border={4} className='data-table'> 
                     <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
                         deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"deviceTag"}
                         stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 

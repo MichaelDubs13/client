@@ -69,6 +69,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
         <>
             {   
             type === "condensed" ?
+                <div style={{minWidth:'100px'}}>
                 <CreatableSelect 
                     selectOption
                     options={alloptions} 
@@ -79,7 +80,9 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                     placeholder={defaultValue}
                     selected={selectedOption}
                     value={selectedOption}
-                />:             
+                />
+                </div>
+                :             
                 <FormItem className="form-item">
                     <FormLabel className="form-label"  htmlFor="context">{title}</FormLabel>
                     <div style={{ marginBottom: "5px", width:'700px'}}>

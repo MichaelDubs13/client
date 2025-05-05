@@ -18,7 +18,7 @@ const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
         
         <div>
             <div>
-                <DataTable border={4} style={{ backgroundColor:"white", overflow:'hidden'}}> 
+                <DataTable border={4} className='data-table'> 
                      <LineStationSelection 
                         stationTitle={"I/O Module LOCATION (i.e., Station number) (e.g., 00010)"}  stationProperty={"location"}
                         lineTitle={"I/O Module LINE (e.g., UBM1, DOR1)"} 

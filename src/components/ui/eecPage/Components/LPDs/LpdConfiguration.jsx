@@ -11,6 +11,7 @@ import { lineStore } from '../../Store/lineStore';
 import { pdpStore } from '../../Store/pdpStore';
 import { xpdpStore } from '../../Store/xpdpStore';
 import CreateableDropdownItem from "../Util/CreateableDropdownItem";
+import DeviceSelection from "../Common/DeviceSelection";
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    
@@ -56,7 +57,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             for(let i=0;i<pdps.length;i++){
                 var cb = pdps[i].getCB(lpd.location, value);
                 if(cb){
-                    cb.setDataValue("targetDevice", lpd.data.id)
+                        cb.setDataValue("targetDevice", lpd.data.id)
                     return;
                 }
             }
@@ -77,11 +78,17 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                 options={lpdOptions.psuSupplyVoltageOptions} index={index}/>
             <DropdownItem title={"Select the PSU:"} item={lpd} property={"psu_selected"} 
                 options={psuOptions} index={index} onChange={handleSetpsuSelectionChange}/>
-            <LineLocationSelection item={lpd} index={index}
+            {/* <LineLocationSelection item={lpd} index={index}
                         lineTitle='Enter the power source Line name: (e.g., UBM01)'
                         locationTitle='Enter the power source location designation: (e.g., XPDP01)'/>
             <CreateableDropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"powerSourceDT"} 
-                options={cbOptions} index={index} onChange={handleDropChange}/>
+                options={cbOptions} index={index} onChange={handleDropChange}/> */}
+            <DeviceSelection item={lpd} index={index} 
+                lineTitle={"Power source LINE (e.g., UBM1)"} lineProperty={"powerSourceLine"}
+                stationTitle={"Power source LOCATION (i.e., Panel) (e.g., PDP01)"} stationProperty={"powerSourceLocation"}
+                deviceTitle={"Power source Device Tag (e.g., CB01)"} deviceProperty={"powerSourceDT"}
+                type="powerSource"
+                canCreateDevice={true}/>    
             <SetItemsNumberInputBox title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 
                     items={lpd.psus} addItems={setNumberOfPsus} index={lpdIndex}/>          
             {

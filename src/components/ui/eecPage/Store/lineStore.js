@@ -62,14 +62,7 @@ const lineConfiguration = {
         return devices;
     },
     getDeviceByNameGlobal:(name, location, line)=>{
-        const mcps = mcpStore.getState().mcps;
-        const lpds = lpdStore.getState().lpds;
-        const networkSwitches = networkSwitchStore.getState().networkSwitches;
-        const hmis = hmiStore.getState().hmis;
-        const safetyGates = safetyGateStore.getState().safetyGates;
-        const ioModuleGroups = ioModuleStore.getState().ioModuleGroups;
-
-        const items = networkSwitches.concat(hmis, lpds, mcps, safetyGates, ioModuleGroups);
+        var items = lineConfiguration.getAllStoreItems();
         for(let i=0;i<items.length;i++){
             var foundItem = items[i].getDeviceByName(name, location, line);
             if(foundItem) return foundItem;
