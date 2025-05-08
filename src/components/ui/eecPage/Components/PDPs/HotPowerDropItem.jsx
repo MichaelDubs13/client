@@ -1,6 +1,7 @@
 import DropdownItem from '../Util/DropdownItem';
 import { pdpOptions } from '../../Store/pdpStore';
 import InputTextItem from '../Util/InputTextItem';
+import DeviceSelection from '../Common/DeviceSelection';
 import "../../Eec.css";
   
   const HotPowerDropItem = ({ 
@@ -18,9 +19,11 @@ import "../../Eec.css";
 
           {hotPowerDrop.HotPwrDropType ==="Device" && (
             <>              
-              <InputTextItem title={"Hot power drop target location (i.e., Station number) (e.g., 00010)"} item={hotPowerDrop} property={"HotPwrDrp_Target_Location"} index={index} />
-              <InputTextItem title={"Hot power drop target device tag (e.g., PSU01)"} item={hotPowerDrop} property={"HotPwrDrp_Target_DT"} index={index}/>
-              <InputTextItem title={"Hot power target device description (i.e., function text)"} item={hotPowerDrop} property={"HotPwrDrp_Target_Desc"} index={index}/>
+              <DeviceSelection item={hotPowerDrop} index={index} 
+                deviceTitle={"Hot power drop target device tag (e.g., PSU01)"} deviceProperty={"targetDT"}
+                stationTitle={"Hot power drop target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
+                canCreateDevice={true} type="powerTarget"/>      
+              <InputTextItem title={"Hot power target device description (i.e., function text)"} item={hotPowerDrop} property={"description"} index={index}/>
             </>
             )}
         </div>

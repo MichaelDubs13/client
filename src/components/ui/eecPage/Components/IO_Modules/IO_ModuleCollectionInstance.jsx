@@ -20,8 +20,7 @@ const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
             <div>
                 <DataTable border={4} className='data-table'> 
                      <LineStationSelection 
-                        stationTitle={"I/O Module LOCATION (i.e., Station number) (e.g., 00010)"}  stationProperty={"location"}
-                        lineTitle={"I/O Module LINE (e.g., UBM1, DOR1)"} 
+                        title={"I/O Module LOCATION (e.g., ++LINE+LOCATION)"}  stationProperty={"location"}
                         item={ioModuleGroup} index={ioModuleGroupIndex}/>
                     <PlcIDSelection item={ioModuleGroup} title={"The I/O Modules are controlled by PLC ID:"} index={ioModuleGroupIndex}/>
                     <DeviceSelection

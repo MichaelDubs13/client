@@ -14,7 +14,7 @@ const XpdpConfiguration = ({xpdp, xpdpIndex}) => {
         <div>
             <div>
                 <LineLocationSelection item={xpdp} index={index} showPlantShop={true}/>
-                <LineStationSelection stationTitle={"Location designation in which the Transformer is physically located: (i.e., Station number) (e.g., 00010)"} 
+                <LineStationSelection title={"Location designation in which the Transformer is physically located in (e.g., ++LINE+LOCATION)"} 
                     item={xpdp} index={index} stationProperty={"xfmrLocation"}/>    
                 <InputTextItem title={"Enter the cable length from the Transformer to the XPDP maind disconnect (m):"} 
                             item={xpdp} index={index} property={"xf_cable_length"} validation={isNumberValidation}/>

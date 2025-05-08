@@ -10,6 +10,7 @@ import "../../Eec.css";
 import PlcIDSelection from '../Common/PlcIDSelection';
 import { lineConfiguration } from '../../Store/lineStore';
 import NetworkPortSelection from '../Common/NetworkPortSelection';
+import { isValidIP } from '../Util/Validations';
 
 const HmiConfiguration = ({hmi, index, createNew}) => {
     const hmisOptions = hmiStore((state) => state.hmisOptions);
@@ -43,8 +44,8 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
                         deviceTitle={"HMI device tag (e.g., HMI01)"}  deviceProperty={"deviceTag"} onDeviceChange={handleDeviceChange}
                         stationTitle={"HMI Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
                     <PlcIDSelection item={hmi} title={"HMI is controlled by PLC ID:"} index={hmiIndex} createNew={createNew}/>
-                    <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={hmi} index={hmiIndex} property={"localIP"}/>
-                    <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={hmi} index={hmiIndex} property={"plantIP"}/>
+                    <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={hmi} index={hmiIndex} property={"localIP"} validation={isValidIP}/>
+                    <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={hmi} index={hmiIndex} property={"plantIP"} validation={isValidIP}/>
                     
                     <DeviceSelection item={hmi} index={hmiIndex} 
                         deviceTitle={"Power source Device Tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}

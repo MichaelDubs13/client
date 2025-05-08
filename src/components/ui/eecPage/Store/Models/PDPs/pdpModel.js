@@ -137,7 +137,7 @@ export const pdpModel = {
             }
             return cbs;
           },
-            setHotPowerBranchCircuit:function(){
+          setHotPowerBranchCircuit:function(){
             pdpStore.getState().setHotPowerBranchCircuit(this);
           }
         }

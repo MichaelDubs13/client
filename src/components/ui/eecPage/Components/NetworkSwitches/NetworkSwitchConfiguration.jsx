@@ -9,6 +9,7 @@ import DeviceSelection from '../Common/DeviceSelection';
 import { mcpStore } from '../../Store/mcpStore';
 import { useEffect } from 'react';
 import { lineStore } from '../../Store/lineStore';
+import { isValidIP } from "../Util/Validations";
 
 const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
     const mcps = mcpStore((state)=> state.mcps);
@@ -40,8 +41,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
                     <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} 
                         options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
-                    <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"}/>
-                    <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={networkSwitch} index={networkSwitchIndex} property={"plantIP"}/>
+                    <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"} validation={isValidIP}/>
+                    <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={networkSwitch} index={networkSwitchIndex} property={"plantIP"} validation={isValidIP}/>
                     
                     {networkSwitch.networkType === "Local" && (
                         <>

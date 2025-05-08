@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import PlcIDSelection from "../Common/PlcIDSelection";
 import { lineConfiguration } from "../../Store/lineStore";
 import NetworkPortSelection from "../Common/NetworkPortSelection";
+import { isValidIP } from "../Util/Validations";
 
 const SafetyGateSwitchConfiguration = ({ 
   safetyGateIndex,
@@ -27,7 +28,7 @@ const SafetyGateSwitchConfiguration = ({
         <DropdownItem title={"Gate switch type:"} item={safetyGateSwitch} property={"safetyGateSwitchType"} options={safetyGateOptions.gateSwitchTypeOptions} index={index}/>
         <DropdownItem title={"Left or Right handed gate switch?"} item={safetyGateSwitch} property={"safetyGateSwitchHandle"} options={safetyGateOptions.gateSwitchHandleOptions} index={index}/>
         <PlcIDSelection item={safetyGateSwitch} title={"Safety Gate Switch controlled by PLC ID:"} index={index}/>
-        <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={safetyGateSwitch} property={"localIP"} index={index}/>
+        <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={safetyGateSwitch} property={"localIP"} index={index} validation={isValidIP}/>
         <CheckboxItem title={"Check if this gate switch gets power and/or network from another gate switch in this configuration:"} item={safetyGateSwitch} property={"gateSwitchCascadingFrom"} index={index}/>
         {!safetyGateSwitch.gateSwitchCascadingFrom &&
           <>

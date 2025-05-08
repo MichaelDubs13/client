@@ -6,6 +6,7 @@ import { ioModuleGroupOptions } from "../../Store/ioModuleStore";
 import DeviceSelection from "../Common/DeviceSelection";
 import IO_ConfigurationTable from "./Table/IO_ConfigurationTable";
 import { useState } from "react";
+import { isValidIP } from "../Util/Validations";
 
 const IO_ModuleConfiguration = ({ 
   ioModuleGroupIndex,
@@ -92,7 +93,7 @@ const IO_ModuleConfiguration = ({
           </>
         )}
         
-        <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={ioModule} property={"localIP"} index={index}/>
+        <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={ioModule} property={"localIP"} index={index} validation={isValidIP}/>
         <DropdownItem title={"Enter the PLC Opteration Mode (i.e., OpMode) of the module (e.g., 01, 02, 03, etc.)"} item={ioModule} property={"opMode"} options={ioModuleGroupOptions.opModeOptions} index={index}/>
         {ioModule.mioManufacturerName === "Balluff" && 
           <>

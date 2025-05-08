@@ -10,9 +10,10 @@ export const hotPowerBranchCircuitModel = {
   create: (parent) => {
     return {
       HotPwrDropType: "Spare",
-      HotPwrDrp_Target_Location: "",
-      HotPwrDrp_Target_DT: "",
-      HotPwrDrp_Target_Desc: "",
+      line:"",
+      targetLocation: "",
+      targetDT: "",
+      description: "",
       data:{
         type:'hotPower',
         id:uuidv4(),
@@ -32,6 +33,16 @@ export const hotPowerBranchCircuitModel = {
       setValue: function(indexObject, key, value){
         pdpStore.getState().setHotPowerValue(indexObject, key, value);
       },
+      setDataValue: function(key, value){
+        const indexObject = this.getIndexObject();
+        this.setValue(indexObject, key, value,false, true);
+      },
+      setPowerTarget:function(line, location, name){
+        const indexObject = this.getIndexObject();
+        this.setValue(indexObject, "line", line);
+        this.setValue(indexObject, "targetLocation", location);
+        this.setValue(indexObject, "targetDT", name);
+      },
       getNodeData: function(){
         return [
           
@@ -41,10 +52,10 @@ export const hotPowerBranchCircuitModel = {
 
       },
       getStations: function(){
-        return [this.HotPwrDrp_Target_Location,]
+        return [this.targetLocation,]
       },
       getDevices: function(){
-        return [this.HotPwrDrp_Target_DT,]
+        return [this.targetDT,]
       },
       getSourceLine:function(){
         return this.data.parent.line

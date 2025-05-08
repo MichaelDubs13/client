@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import CreateableDropdownItem from '../Util/CreateableDropdownItem';
 import "../../Eec.css";
 import { lineStore } from '../../Store/lineStore';
+import { isNumberValidation } from '../Util/Validations';
+import { FormItem, FormLabel } from '@tesla/design-system-react';
 
 
 const LineStationSelection = ({
     item, 
     index, 
-    lineTitle,
-    stationTitle,
+    title,
     stationProperty,
     onLineChange,
 }) => {
@@ -29,11 +30,16 @@ const LineStationSelection = ({
     return (
         
         <div>
-            {
-                lineTitle && 
-                <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={onLineChange}/>
-            }
-            <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} options={stations} index={index}/>
+             <div style={{display:'flex'}}>
+                <FormItem className='form-item-device'>
+                    <FormLabel className="form-label-device">{title? title:"Device Location (e.g., ++LINE+LOCATION)" }</FormLabel>
+                    <FormLabel>++</FormLabel>
+                    <CreateableDropdownItem item={item} options={lines} index={index} property={"line"} onChange={onLineChange} isRequired={true} type="condensed"/>
+                    <FormLabel>+</FormLabel>
+                    <CreateableDropdownItem item={item} property={stationProperty} options={stations} index={index} type="condensed"
+                            validation={isNumberValidation} isRequired={true}/>
+                </FormItem>
+            </div>
         </div>
     );
 };

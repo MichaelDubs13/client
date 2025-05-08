@@ -38,8 +38,8 @@ const PdpConfiguration = ({pdp, index}) => {
             {pdp.Opt_HotPwrEnable && (
                 <>
                     <LineStationSelection 
-                        stationTitle={"HotPowerPanel Location"}  stationProperty={"hotPowerPanelLocation"}
-                        item={pdp} index={index}/>
+                        title={"HotPowerPanel mounted in (e.g., ++LINE+LOCATION)"}  stationProperty={"hotPowerPanelLocation"}
+                        item={pdp} index={pdpIndex}/>
                     <HotPowerConfiguration pdp={pdp} pdpIndex={index}/>
                 </>
             )}

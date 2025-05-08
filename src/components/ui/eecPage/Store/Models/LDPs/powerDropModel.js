@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { lpdStore } from '../../lpdStore';
-import { projectStore } from '../../projectStore';
 
 export const powerDropModel = {
   create:(parent)=>{

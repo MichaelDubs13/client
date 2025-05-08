@@ -16,7 +16,7 @@ import { useForm, Controller } from "react-hook-form";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation}) =>{
+const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation, isRequired}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState({label:defaultValue , value:defaultValue });
     const [alloptions, setAllOptions]=useState(options);
@@ -38,7 +38,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
     
     const setItemValue = (reportedValue) => {
         if(item){
-            if(property && index){
+            if(property != null && index != null){
                 item.setValue(index, property, reportedValue)
             } else if(property && !index){
                 item.setValue(reportedValue, property);
@@ -70,10 +70,21 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
         }
     };
     const validate = async () => {
-        if(validation){
+        if(validation || isRequired){
             await trigger(validationProperty);
         }
     };
+
+    const validateData = (value) => {
+        console.log("made")
+        if(isRequired){
+            if(!value){
+                return 'value is required';
+            }
+        }
+
+        if(validation)return validation(value)
+    }
 
     return (
         <>
@@ -104,7 +115,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                             />
                         )}
                         control={control}
-                        rules={{ validate:value => validation(value)}}
+                        rules={{ validate:value => validateData(value)}}
                     />
                      {errors[validationProperty] && <p style={{color:'red'}}>{errors[validationProperty].message}</p>}
                 </div>
