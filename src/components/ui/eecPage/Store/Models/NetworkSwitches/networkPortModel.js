@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { networkSwitchStore, networkSwitchConfiguration } from '../../networkSwitchStore';
-import { projectStore } from '../../projectStore';
 
 export const networkPortModel = {
     create: (parent) => {
@@ -86,6 +85,9 @@ export const networkPortModel = {
           },
           getSourceDeviceTag:function(){
             return this.data.parent.deviceTag;
+          },
+          getSourceNetworkPort:function(){
+            return networkSwitchConfiguration.getEthernetNetworkPortOption(this.data.parent.networkType, this.data.parent.switchType, this.getIndex()+1)
           },
         }
       },

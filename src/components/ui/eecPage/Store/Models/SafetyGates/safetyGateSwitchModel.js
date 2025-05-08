@@ -124,11 +124,12 @@ export const safetyGateSwitchModel = {
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerSourceLocation", location);
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "powerSourceDT", name);
       },
-      setNetworkSource:function(line, location, name){
+      setNetworkSource:function(line, location, name, port){
         const indexObject = this.getIndexObject();
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceLine", line);
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceLocation", location);
         safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceDT", name);
+        safetyGateStore.getState().setSafetyGateSwitchValue(indexObject, "ethernetSourceDevicePort", port);
       },
       setPowerTarget:function(line, location, name){
         const indexObject = this.getIndexObject();

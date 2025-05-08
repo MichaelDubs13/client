@@ -4,6 +4,7 @@ import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import DeviceSelection from "../Common/DeviceSelection";
 import { pdpOptions } from '../../Store/pdpStore';
+import { isNumberValidation } from "../Util/Validations";
 const PowerDropItem = ({ 
   pdpIndex,
   branchCircuitIndex,
@@ -29,10 +30,12 @@ const PowerDropItem = ({
               deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
               stationTitle={"Target device location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
               canCreateDevice={true} type="powerTarget"/>                                
-            <InputTextItem title={"Cable length from PDP to target device (meters)"} item={branchCircuit} property={'targetCableLength'} index={index}/>
-            <InputTextItem title={"Target device FLA (Amps) (e.g., 12)"} item={branchCircuit} property={'targetFLA'} index={index}/>
+            <InputTextItem title={"Cable length from PDP to target device (meters)"} item={branchCircuit} property={'targetCableLength'} 
+                      index={index} validation={isNumberValidation}/>
+            <InputTextItem title={"Target device FLA (Amps) (e.g., 12)"} item={branchCircuit} property={'targetFLA'} 
+                    index={index} validation={isNumberValidation}/>
             <InputTextItem title={"Enter FLA of this power drop (Amps) (e.g., 10) (i.e., add up all current consuming devices connected to this power drop)"} 
-                      item={branchCircuit} property={'targetFLA_Total'} index={index}/>
+                      item={branchCircuit} property={'targetFLA_Total'} index={index} validation={isNumberValidation}/>
           </>
         )}
       </div>

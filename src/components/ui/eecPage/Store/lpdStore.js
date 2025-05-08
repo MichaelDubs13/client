@@ -59,7 +59,7 @@ const lpdStore = create(
     setWipPsu: (psu) => {
       set({wipPsu:psu});
     },
-    addWipPsu: (line, location) => {
+    addWipPsu: (line, location, deviceTag) => {
       set((state) => {
         const newPsu = {...state.wipPsu}
         let newLpds = [...state.lpds]
@@ -71,6 +71,9 @@ const lpdStore = create(
           const newLpd = lpdModel.create();
           newLpd.line = line;
           newLpd.location = location;
+          newLpd.powerSourceLine = line;
+          newLpd.powerSourceLocation = location;
+          newLpd.powerSourceDT = deviceTag;
           newPsu.data.parent = newLpd;
           newLpd.psus.push(newPsu);
           newLpds = [...newLpds, newLpd]
@@ -151,7 +154,6 @@ const lpdStore = create(
         const psus = newLpds[lpdIndex].psus;
         const drops = psus[psuIndex].drops;
         setModelValue(drops[dropIndex], key, value, isUI, isData);
-        console.log(newLpds)
         return { lpds: newLpds };
       });
     },

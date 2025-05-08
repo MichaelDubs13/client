@@ -5,6 +5,7 @@ import "../../Eec.css";
 import PowerDropItem from '../PDPs/PowerDropItem';
 import HeadingItem from "../Util/HeadingItem";
 import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
+import { isNumberLessThanValidation } from '../Util/Validations';
 
 const PowerDropConfiguration = ({xpdp, index}) => {
     const setNumberOfPowerDrps = xpdpStore((state) => state.setNumberOfPowerDrps);
@@ -50,14 +51,15 @@ const PowerDropConfiguration = ({xpdp, index}) => {
         return [...numberOfPwrDrop20A3p,...numberOfPwrDrop20A1p, ...numberOfPwrDrop15A, ...numberOfPwrDrop8A]
     }
 
-  
     return (
         
         <div>
             {/* Input fields for each amperage */}
             {Object.keys(xpdp.branchCircuit).reverse().map(amperage => (
                 <SetItemsNumberInputBox title={`Number of ${amperage} power drops:`} 
-                items={xpdp.branchCircuit[amperage]} addItems={setNumberOfPowerDrps} index={index} property={amperage}/>   
+                items={xpdp.branchCircuit[amperage]} addItems={setNumberOfPowerDrps} index={index} property={amperage}
+                validation={(value)=>{return isNumberLessThanValidation(2,value)}}/>   
+                //amperage === '20A 3ph'  && 
             ))}
             
              {/* Read-only field for total number of drops */}

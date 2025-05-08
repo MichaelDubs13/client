@@ -53,7 +53,7 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
       addWipIoModule();
       var wipItem = wipIoModule;
     }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
-      addWipPsu(item.data.parent.line,item.data.parent.location);
+      addWipPsu(item.data.parent.line,item.data.parent.location, item.deviceDT);
       var wipItem = wipPsu;
     }
     if(wipItem && onSubmit){
@@ -83,6 +83,9 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
     item.ethernetSourceLine = networkSource.getSourceLine();
     item.ethernetSourceLocation = networkSource.getSourceLocation();
     item.ethernetSourceDT = networkSource.getSourceDeviceTag();
+    if(networkSource.getSourceNetworkPort){
+      item.ethernetSourceDevicePort = networkSource.getSourceNetworkPort();
+    }
   }
   useEffect(() => {
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
@@ -97,8 +100,15 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
       var newGate = safetyGateSwitchModel.create()
       newGate = updateItem(newGate)
       setWipSafetyGateSwitch(newGate);
-    } else if(name.startsWith(lineConfiguration.safetyModuleIndicator) || name.startsWith(lineConfiguration.ioModuleIndicator)){
+    } else if(name.startsWith(lineConfiguration.safetyModuleIndicator)){
       var newIoModule = ioModuleModel.create();
+      newIoModule.safetyRated = true;
+      newIoModule.portTypeDefaultSelection = "Input"
+      newIoModule = updateItem(newIoModule)
+      setWipIoModule(newIoModule);
+    }else if(name.startsWith(lineConfiguration.ioModuleIndicator)){
+      var newIoModule = ioModuleModel.create();
+      newIoModule.safetyRated = false;
       newIoModule = updateItem(newIoModule)
       setWipIoModule(newIoModule);
     }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){

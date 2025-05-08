@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { formatToTwoDigits, getItemById } from '../../util';
 import { ioModuleStore, ioModuleGroupConfiguration } from '../../ioModuleStore';
 import { ioModulePortModel } from './ioModulePortModel';
-import { projectStore } from '../../projectStore';
 
 
 export const ioModuleModel = {
@@ -118,11 +117,12 @@ export const ioModuleModel = {
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceLocation", location);
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "powerSourceDT", name);
           },
-          setNetworkSource:function(line, location, name){
+          setNetworkSource:function(line, location, name, port){
             const indexObject = this.getIndexObject();
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLine", line);
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceLocation", location);
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceDT", name);
+            ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetSourceDevicePort", port);
           },
           setPowerTarget:function(line, location, name){
             const indexObject = this.getIndexObject();

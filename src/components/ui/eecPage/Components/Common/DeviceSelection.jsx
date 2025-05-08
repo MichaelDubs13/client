@@ -5,6 +5,7 @@ import "../../Eec.css";
 import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { FormLabel, Icon, FormItem } from '@tesla/design-system-react';
+import { isNumberValidation } from '../Util/Validations';
 
 
 /**
@@ -70,7 +71,6 @@ const DeviceSelection = ({
     }
 
     const handleSubmit=(wipItem)=>{
-        console.log(wipItem)
         item.setValue(index, "description", wipItem.getDescription());
         //item.setValue(index, "fla", wipItem.getFLA());
     }
@@ -100,7 +100,9 @@ const DeviceSelection = ({
             }
     
             if(type === "networkTarget"){
-                targetDevice.setNetworkSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag());   
+                var port = '';
+                if(item.getSourceNetworkPort) port = item.getSourceNetworkPort();
+                targetDevice.setNetworkSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag(), port);   
                 item.setDataValue("ethernetTarget", item.data.id)  
                 item.setValue(index, "description", targetDevice.data.description);
             }
@@ -161,7 +163,7 @@ const DeviceSelection = ({
                 <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index} type="condensed"/>
                 <FormLabel>+</FormLabel>
                 <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} 
-                    options={stations} index={index} onChange={handleStationChange} type="condensed"/>
+                    options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isNumberValidation}/>
                 <FormLabel>-</FormLabel>
                 <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} 
                     options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed"/>

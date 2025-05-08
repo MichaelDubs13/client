@@ -1,5 +1,6 @@
 .form-item{
     margin-left: 30px;
+    margin-bottom: 10px;
     display:flex;
     align-items: center;
     width: 650px;
@@ -19,6 +20,10 @@
 
 .form-label{
     width: 1100px; 
+}
+
+.form-input{
+  width: 700px; 
 }
 
 .form-label-device{

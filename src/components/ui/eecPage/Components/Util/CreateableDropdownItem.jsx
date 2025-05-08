@@ -3,6 +3,7 @@ import { FormItem, FormLabel, } from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
 import CreatableSelect from 'react-select/creatable';
+import { useForm, Controller } from "react-hook-form";
 
 /**
  * This Dropdown component is used to set values in objects from the stores and updates the UI
@@ -15,11 +16,17 @@ import CreatableSelect from 'react-select/creatable';
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type}) =>{
+const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState({label:defaultValue , value:defaultValue });
     const [alloptions, setAllOptions]=useState(options);
-    
+    const { control, trigger, setValue, formState: { errors } } = useForm();
+    const validationProperty = "select"
+
+    useEffect(() => {
+        setValue(validationProperty, defaultValue);
+        validate();
+    }, []);
 
     useEffect(() => {
         setAllOptions(options);
@@ -29,8 +36,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
         setSelectedOption({label:defaultValue, value:defaultValue});
     }, [defaultValue]);
     
-    const setValue = (reportedValue) => {
-        
+    const setItemValue = (reportedValue) => {
         if(item){
             if(property && index){
                 item.setValue(index, property, reportedValue)
@@ -46,10 +52,9 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
 
     const handleOptionSelect = async (event) =>{
         if(!event) return;
-        console.log(item);
         const reportedValue = event.value;
         setSelectedOption(event.value);
-        setValue(reportedValue)
+        setItemValue(reportedValue)
         
         if(onChange){
             onChange(reportedValue);
@@ -61,7 +66,12 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
           var newOption = {label:inputValue, value: inputValue};
           setAllOptions([...alloptions,newOption])
           setSelectedOption(newOption)
-          setValue(inputValue)
+          setItemValue(inputValue)
+        }
+    };
+    const validate = async () => {
+        if(validation){
+            await trigger(validationProperty);
         }
     };
 
@@ -70,17 +80,33 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
             {   
             type === "condensed" ?
                 <div style={{minWidth:'100px'}}>
-                <CreatableSelect 
-                    selectOption
-                    options={alloptions} 
-                    getOptionLabel={(option) => option.label}
-                    getOptionValue={(option) => option.value}
-                    onChange={handleOptionSelect}
-                    onCreateOption={handleOptionCreation}
-                    placeholder={defaultValue}
-                    selected={selectedOption}
-                    value={selectedOption}
-                />
+                    <Controller
+                        name={validationProperty}
+                        render={({ field }) => (
+                            <CreatableSelect 
+                                selectOption
+                                options={alloptions} 
+                                getOptionLabel={(option) => option.label}
+                                getOptionValue={(option) => option.value}
+                                onChange={(event) => {
+                                    field.onChange(event.value);
+                                    validate();
+                                    handleOptionSelect(event)
+                                }}
+                                onCreateOption={(value) => {
+                                    field.onChange(value);
+                                    validate();
+                                    handleOptionCreation(value);
+                                }}
+                                placeholder={defaultValue}
+                                selected={selectedOption}
+                                value={selectedOption}
+                            />
+                        )}
+                        control={control}
+                        rules={{ validate:value => validation(value)}}
+                    />
+                     {errors[validationProperty] && <p style={{color:'red'}}>{errors[validationProperty].message}</p>}
                 </div>
                 :             
                 <FormItem className="form-item">

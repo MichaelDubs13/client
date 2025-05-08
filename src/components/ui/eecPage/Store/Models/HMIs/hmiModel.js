@@ -101,12 +101,13 @@ export const hmiModel = {
             this.setValue(indexObject, "powerSourceLocation", location);
             this.setValue(indexObject, "powerSourceDT", name);
            },
-           setNetworkSource:function(line, location, name){
+           setNetworkSource:function(line, location, name, port){
             const indexObject = this.getIndexObject();
             this.setValue(indexObject, "ethernetSourceLine", line);
             this.setValue(indexObject, "ethernetSourceLocation", location);
             this.setValue(indexObject, "ethernetSourceDT", name);
-           },
+            this.setValue(indexObject, "ethernetSourceDevicePort", port);
+          },
            setPowerTarget:function(line, location, name){
             const indexObject = this.getIndexObject();
             this.setValue(indexObject, "powerTargetLine", line);

@@ -71,19 +71,21 @@ const networkSwitchConfiguration = {
 
     return networkSwitchOptions;
   },
+  getEthernetNetworkPortOption:(networkType, switchType, portNumber) => {
+    const xCodedPorts = [10,12,14,16];
+    var port = "";
+    if(networkType === "Local" && switchType === "Managed" && xCodedPorts.includes(portNumber)){
+      port = `P${portNumber} (M12 X-Coded)`;
+    } else {
+      port = `P${portNumber} (M12 D-Coded)`;
+    }
+    return port;
+  },
   getEthernetNetworkPortOptions:(numberOfPorts, networkType, switchType) => {
     const ports = [];
     for(let i=0;i<numberOfPorts;i++){
       const portNumber = i+1;
-
-      const xCodedPorts = [10,12,14,16];
-      var port = "";
-      if(networkType === "Local" && switchType === "Managed" && xCodedPorts.includes(portNumber)){
-        port = `P${portNumber} (M12 X-Coded)`;
-      } else {
-        port = `P${portNumber} (M12 D-Coded)`;
-      }
-
+      var port = networkSwitchConfiguration.getEthernetNetworkPortOption(networkType, switchType, portNumber);
       ports.push(port)
     }
     return ports;
@@ -231,10 +233,9 @@ const networkSwitchStore = create(
     //const indexObject = item.getIndexObject();
     const networkSwitchIndex = indexObject.networkSwitchIndex;
     const portIndex = indexObject.portIndex;
-    
     set((state) => {
 
-      if(networkSwitchIndex){
+      if(Object.keys(indexObject).length > 0){
         const newNetworkSwitches = [...state.networkSwitches];
         const ports = newNetworkSwitches[networkSwitchIndex].ports;
         setModelValue(ports[portIndex], key, value, isUI, isData);

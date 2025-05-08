@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { FormItem, FormLabel, FormInputText} from '@tesla/design-system-react';
+import { FormItem, FormLabel, FormInputText, FormFeedback} from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
-
+import { useForm, Controller } from "react-hook-form";
 /**
  * This InputText component is used to set values in objects from the stores and updates the UI
  * @param {string} title - label of the input text component
@@ -14,24 +14,30 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished}) =>{
+const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished, validation}) =>{
+    const { control, trigger, setValue, formState: { errors } } = useForm();
     const defaultValue = item? item[property] : placeHolder;
-    const [value, setValue] = useState(defaultValue);
+    const [itemValue, setItemValue] = useState(defaultValue);
     const [finishedInput, setFinishedInput] = useState('');
     const [typingTimeout, setTypingTimeout] = useState(0);
     const delayTime = 500;
+    const validationProperty = "input"
+    useEffect(() => {
+        setValue(validationProperty, defaultValue);
+        validate();
+    }, []);
 
     useEffect(() => {
         if (finishedInput) {
         if(onTypingFinished){
-            onTypingFinished(value);
+            onTypingFinished(itemValue);
         }
         }
     }, [finishedInput]);
 
     const handleValueChange = (event)=> {
         const reportedValue = event.target.value;
-        setValue(reportedValue);
+        setItemValue(reportedValue);
 
         if(!createNew){
             if(item){
@@ -60,7 +66,11 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
             onChange(reportedValue);
         }
     }
-
+    const validate = async () => {
+        if(validation){
+            await trigger(validationProperty);
+        }
+    };
 
     return (
         <>
@@ -73,12 +83,26 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
                 :
                 <FormItem className="form-item">
                     <FormLabel className="form-label" htmlFor="context">{title}</FormLabel>
-                    <FormInputText
-                    id="context"
-                    readOnly={readOnly}
-                    placeholder={defaultValue}
-                    value={value}
-                    onChange={handleValueChange}/>
+                    <div className="form-input">
+                        <Controller
+                            name={validationProperty}
+                            render={({ field }) => (
+                                <FormInputText
+                                id="context"
+                                readOnly={readOnly}
+                                placeholder={defaultValue}
+                                value={itemValue}
+                                onChange={(event) => {
+                                    field.onChange(event.target.value);
+                                    validate();
+                                    handleValueChange(event)
+                                }}/>
+                            )}
+                        control={control}
+                        rules={{ validate:value => validation(value)}}
+                    />
+                     {errors[validationProperty] && <p style={{color:'red'}}>{errors[validationProperty].message}</p>}
+                    </div>
                 </FormItem> 
             }
         </>
