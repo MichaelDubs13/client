@@ -58,8 +58,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
             {Object.keys(xpdp.branchCircuit).reverse().map(amperage => (
                 <SetItemsNumberInputBox title={`Number of ${amperage} power drops:`} 
                 items={xpdp.branchCircuit[amperage]} addItems={setNumberOfPowerDrps} index={index} property={amperage}
-                validation={(value)=>{return isNumberLessThanValidation(2,value)}}/>   
-                //amperage === '20A 3ph'  && 
+                validation={amperage === '20A 3ph' ? (value)=>{return isNumberLessThanValidation(2,value)} : null}/>   
             ))}
             
              {/* Read-only field for total number of drops */}
