@@ -25,6 +25,7 @@ import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 import ClearButton from "./ClearButton";
 import { mcpModel } from "./Store/Models/MCPs/mcpModel";
 import { customerStore } from "./Store/customerStore";
+import EditableSelect from "./Components/Util/EditableSelect";
 
 
 
@@ -117,6 +118,7 @@ const EecPage = () => {
                   value={eplanPath}
                   style={{ marginBottom: "5px"}}
                   onChange={handleButtonClick}/> */}
+                  <EditableSelect/>
             </div>
             <h2>
                 Diagram

@@ -4,6 +4,7 @@ import "../../Eec.css";
 import PropTypes from "prop-types";
 import CreatableSelect from 'react-select/creatable';
 import { useForm, Controller } from "react-hook-form";
+import EditableSelect from "./EditableSelect";
 
 /**
  * This Dropdown component is used to set values in objects from the stores and updates the UI
@@ -19,7 +20,6 @@ import { useForm, Controller } from "react-hook-form";
 const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation, isRequired}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState({label:defaultValue , value:defaultValue });
-    const [alloptions, setAllOptions]=useState(options);
     const { control, trigger, setValue, formState: { errors } } = useForm();
     const validationProperty = "select"
 
@@ -27,10 +27,6 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
         setValue(validationProperty, defaultValue);
         validate();
     }, []);
-
-    useEffect(() => {
-        setAllOptions(options);
-    }, [options]);
 
     useEffect(() => {
         setSelectedOption({label:defaultValue, value:defaultValue});
@@ -51,11 +47,8 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
     }
 
     const handleOptionSelect = async (event) =>{
-        if(!event) return;
-        const reportedValue = event.value;
-        setSelectedOption(event.value);
+        const reportedValue = event ? event.value : '';
         setItemValue(reportedValue)
-        
         if(onChange){
             onChange(reportedValue);
         }
@@ -63,9 +56,6 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
 
     const handleOptionCreation = (inputValue) => {
         if(inputValue){
-          var newOption = {label:inputValue, value: inputValue};
-          setAllOptions([...alloptions,newOption])
-          setSelectedOption(newOption)
           setItemValue(inputValue)
         }
     };
@@ -76,7 +66,6 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
     };
 
     const validateData = (value) => {
-        console.log("made")
         if(isRequired){
             if(!value){
                 return 'value is required';
@@ -94,13 +83,13 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                     <Controller
                         name={validationProperty}
                         render={({ field }) => (
-                            <CreatableSelect 
-                                selectOption
-                                options={alloptions} 
-                                getOptionLabel={(option) => option.label}
-                                getOptionValue={(option) => option.value}
+                            <EditableSelect
+                                options={options}
+                                selected={selectedOption}
+                                placeHolder={defaultValue}
                                 onChange={(event) => {
-                                    field.onChange(event.value);
+                                    var value = event ? event.value : '';
+                                    field.onChange(value);
                                     validate();
                                     handleOptionSelect(event)
                                 }}
@@ -109,9 +98,6 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                                     validate();
                                     handleOptionCreation(value);
                                 }}
-                                placeholder={defaultValue}
-                                selected={selectedOption}
-                                value={selectedOption}
                             />
                         )}
                         control={control}
@@ -123,17 +109,30 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                 <FormItem className="form-item">
                     <FormLabel className="form-label"  htmlFor="context">{title}</FormLabel>
                     <div style={{ marginBottom: "5px", width:'700px'}}>
-                        <CreatableSelect 
-                            selectOption
-                            options={alloptions} 
-                            getOptionLabel={(option) => option.label}
-                            getOptionValue={(option) => option.value}
-                            onChange={handleOptionSelect}
-                            onCreateOption={handleOptionCreation}
-                            placeholder={defaultValue}
-                            selected={selectedOption}
-                            value={selectedOption}
-                        />
+                        <Controller
+                        name={validationProperty}
+                        render={({ field }) => (
+                            <EditableSelect
+                                options={options}
+                                selected={selectedOption}
+                                placeHolder={defaultValue}
+                                onChange={(event) => {
+                                    var value = event ? event.value : '';
+                                    field.onChange(value);
+                                    validate();
+                                    handleOptionSelect(event)
+                                }}
+                                onCreateOption={(value) => {
+                                    field.onChange(value);
+                                    validate();
+                                    handleOptionCreation(value);
+                                }}
+                            />
+                        )}
+                        control={control}
+                        rules={{ validate:value => validateData(value)}}
+                    />
+                     {errors[validationProperty] && <p style={{color:'red'}}>{errors[validationProperty].message}</p>}
                     </div>
                 </FormItem>
             }
