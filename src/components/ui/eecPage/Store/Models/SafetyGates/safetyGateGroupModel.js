@@ -87,12 +87,14 @@ export const safetyGateGroupModel = {
      
       return safetyGate;
     },
-
-     merge: (state, currentState) => { 
-        const gates = safetyGateGroupModel.recreate(state.safetyGates);
-        state.safetyGates = gates;
-        Object.assign(currentState, state)
-        return currentState
+    generateData: (safetyGateGroups) => {
+      return safetyGateGroups;
+    },
+    merge: (state, currentState) => { 
+      const gates = safetyGateGroupModel.recreate(state.safetyGates);
+      state.safetyGates = gates;
+      Object.assign(currentState, state)
+      return currentState
     },
     recreate:(safetyGates) =>{
       const gates = safetyGates.map(gate => {

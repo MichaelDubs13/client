@@ -116,10 +116,6 @@ const networkSwitchConfiguration = {
   },
 
 
-  generateData: (networkSwitches) => {
-    return networkSwitches;
-  },
-
   calculateNumberOfPorts: (numberOfPorts, networkSwitch) => {
         // set the numberOfPorts to the value of ports_8, ports_8or16, or ports_8or16or24
         // this will be used to create the ports for the network switch

@@ -157,16 +157,19 @@ export const mcpModel = {
           for(let i=0; i < length; i++){
             const port = mcp.ports[i];
             if(i === 1){
+              mcp.leth_port2_target_line = port.line;
               mcp.leth_port2_target_location = port.targetLocation;
               mcp.leth_port2_target_dt = port.targetDT;
               mcp.leth_port2_target_port = port.targetPort;
               mcp.gb_Port2_CableLength = port.targetCableLength;
             } else if(i===2){
+              mcp.leth_port3_target_line = port.line;
               mcp.leth_port3_target_location = port.targetLocation;
               mcp.leth_port3_target_dt = port.targetDT;
               mcp.leth_port3_target_port = port.targetPort;
               mcp.gb_Port3_CableLength = port.targetCableLength;
             } else if(i===3){
+              mcp.leth_port4_target_line = port.line;
               mcp.leth_port4_target_location = port.targetLocation;
               mcp.leth_port4_target_dt = port.targetDT;
               mcp.leth_port4_target_port = port.targetPort;

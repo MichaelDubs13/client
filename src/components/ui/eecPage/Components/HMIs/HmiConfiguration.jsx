@@ -41,25 +41,25 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
             <div>
                 <DataTable border={4} className='data-table'> 
                     <DeviceSelection item={hmi} index={hmiIndex}
-                        deviceTitle={"HMI device tag (e.g., HMI01)"}  deviceProperty={"deviceTag"} onDeviceChange={handleDeviceChange}
-                        stationTitle={"HMI Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
+                        deviceProperty={"deviceTag"} onDeviceChange={handleDeviceChange}
+                        stationProperty={"location"}/> 
                     <PlcIDSelection item={hmi} title={"HMI is controlled by PLC ID:"} index={hmiIndex} createNew={createNew}/>
                     <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={hmi} index={hmiIndex} property={"localIP"} validation={isValidIP}/>
                     <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={hmi} index={hmiIndex} property={"plantIP"} validation={isValidIP}/>
                     
                     <DeviceSelection item={hmi} index={hmiIndex} 
-                        deviceTitle={"Power source Device Tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
-                        stationTitle={"Power source LOCATION (e.g., 00010)"} stationProperty={"powerSourceLocation"}
-                        lineTitle={"Power source LINE (e.g., UBM1)"} lineProperty={"powerSourceLine"}
+                        deviceProperty={"powerSourceDT"}
+                        stationProperty={"powerSourceLocation"}
+                        lineProperty={"powerSourceLine"}
                         type="powerSource"/>                                
                     
                     <CheckboxItem title={"Check if this HMI gets its network from another HMI in this configuration"} item={hmi} index={hmiIndex} property={"ethernetCascadingFrom"}/>
                     {!hmi.ethernetCascadingFrom && (
                         <>
                             <DeviceSelection item={hmi} index={hmiIndex} 
-                                deviceTitle={"Network source Device Tag (e.g., LETH01)"}  deviceProperty={"ethernetSourceDT"}
-                                stationTitle={"Network source LOCATION (e.g., 00010)"} stationProperty={"ethernetSourceLocation"} 
-                                lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}
+                                deviceProperty={"ethernetSourceDT"}
+                                stationProperty={"ethernetSourceLocation"} 
+                                lineProperty={"ethernetSourceLine"}
                                 type="networkSource"/>
                             <NetworkPortSelection title={"What device port does this HMI get network from? (e.g., 1)"} item={hmi} 
                                 index={hmiIndex} property={"ethernetSourceDevicePort"} targetDT={hmi.ethernetSourceDT} 
@@ -80,9 +80,9 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
                             {hmi.ethernetCascadingToOutside && (
                                 <>
                                     <DeviceSelection item={hmi} index={hmiIndex} 
-                                        deviceTitle={"Network target Device Tag (e.g., LETH01)"}  deviceProperty={"ethernetTargetDT"}
-                                        stationTitle={"Network target LOCATION (e.g., 00010)"} stationProperty={"ethernetTargetLocation"} 
-                                        lineTitle={"Network target LINE (e.g., UBM1)"} lineProperty={"ethernetTargetLine"}
+                                        deviceProperty={"ethernetTargetDT"}
+                                        stationProperty={"ethernetTargetLocation"} 
+                                        lineProperty={"ethernetTargetLine"}
                                         type="networkTarget"/>
                                 </>
                             )}

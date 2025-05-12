@@ -19,10 +19,12 @@ export default class C_LETH_Interface extends Component{
     }
 
     build(){
-         for(let i=0; i<this._mcp.ports.length;i++){
-            const drop = this._mcp.ports[i];
-            const networkDrop = new C_Network_Drop(this,i+1, drop);
-            networkDrop.build();
+        if(this._mcp.ports.length > 4){
+            for(let i=4; i<this._mcp.ports.length;i++){
+                const drop = this._mcp.ports[i];
+                const networkDrop = new C_Network_Drop(this,i+1, drop);
+                networkDrop.build();
+            }
         }
     }   
 }

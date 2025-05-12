@@ -19,10 +19,12 @@ export const networkSwitchModel = {
       plantIP: "", // EEC variable name: Plant_IP
       switchType: "Managed", // EEC variable name: Switch_Type_Selection
       switchSpeed: "Gigabit", // EEC variable name: Switch_Speed_Selection
-      // power1InLocation: "", // EEC variable name: PWR1_IN_Location
-      // power1InDT: "", // EEC variable name: PWR1_IN_DT
-      // power2InLocation: "", // EEC variable name: PWR2_IN_Location
-      // power2InDT: "", // EEC variable name: PWR2_IN_DT
+      power1InLine: "", 
+      power1InLocation: "", // EEC variable name: PWR1_IN_Location
+      power1InDT: "", // EEC variable name: PWR1_IN_DT
+      power2InLine: "", 
+      power2InLocation: "", // EEC variable name: PWR2_IN_Location
+      power2InDT: "", // EEC variable name: PWR2_IN_DT
       powerSourceLine: "", // EEC variable name: PWR_IN_Location
       powerSourceLocation: "", // EEC variable name: PWR_IN_Location
       powerSourceDT: "", // EEC variable name: PWR_IN_DT
@@ -151,6 +153,20 @@ export const networkSwitchModel = {
     }
     networkSwitch.ports = networkSwitchModel.initializePorts(16, networkSwitch);
     return networkSwitch;
+  },
+  generateData: (networkSwitches) => {
+    networkSwitches.forEach(networkSwitch => {
+        if(networkSwitch.switchType === "Managed"){
+            networkSwitch.power1InLine = networkSwitch.powerSourceLine;
+            networkSwitch.power1InLocation = networkSwitch.powerSourceLocation;
+            networkSwitch.power1InDT = networkSwitch.powerSourceDT;
+            networkSwitch.powerSourceLine="";
+            networkSwitch.powerSourceLocation="";
+            networkSwitch.powerSourceDT="";
+        }
+        
+    });
+    return networkSwitches;
   },
   initializePorts: (numberOfPorts, parent) => {
     var ports = [];

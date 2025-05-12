@@ -25,8 +25,8 @@ import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 import ClearButton from "./ClearButton";
 import { mcpModel } from "./Store/Models/MCPs/mcpModel";
 import { customerStore } from "./Store/customerStore";
-import EditableSelect from "./Components/Util/EditableSelect";
-
+import { safetyGateGroupModel } from "./Store/Models/SafetyGates/safetyGateGroupModel";
+import { networkSwitchModel } from "./Store/Models/NetworkSwitches/networkSwitchModel";
 
 
 const EecPage = () => {
@@ -55,9 +55,9 @@ const EecPage = () => {
       const validatedXpdps =xpdpConfiguration.generateData(xpdps);
       const validatedMcps =mcpModel.generateData(mcps);
       const validatedLpds = lpdConfiguration.generateData(lpds);
-      const validatedNetworkSwitches = networkSwitchConfiguration.generateData(networkSwitches);
+      const validatedNetworkSwitches = networkSwitchModel.generateData(networkSwitches);
       const validatedHmis = hmiConfiguration.generateData(hmis);
-      const validatedSafetyGates = safetyGateConfiguration.generateData(safetyGates);
+      const validatedSafetyGates = safetyGateGroupModel.generateData(safetyGates);
       const validatedIOModules = ioModuleGroupConfiguration.generateData(ioModuleGroups);
       var devices = []
       var imx = ModelBuilder.buildIMX(config, customer, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
@@ -118,7 +118,6 @@ const EecPage = () => {
                   value={eplanPath}
                   style={{ marginBottom: "5px"}}
                   onChange={handleButtonClick}/> */}
-                  <EditableSelect/>
             </div>
             <h2>
                 Diagram

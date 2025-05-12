@@ -13,6 +13,7 @@ export default class f_MountingLocation_Config extends Component{
 
     get Parameters(){
         return [
+            {name: "Line", value: this._gateGroup.line, type: "String"},
             {name: "MountingLocation", value: this._gateGroup.location, type: "String"},
             {name: "GateSwitch_Count_Selection", value:this._gateGroup.safetyGateSwitches.length, type: "Integer"},
         ];

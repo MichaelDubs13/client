@@ -25,15 +25,15 @@ const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
                     <PlcIDSelection item={ioModuleGroup} title={"The I/O Modules are controlled by PLC ID:"} index={ioModuleGroupIndex}/>
                     <DeviceSelection
                         item={ioModuleGroup} index={ioModuleGroupIndex} 
-                        lineTitle={"Power source LINE (e.g., UBM1)"} lineProperty={"powerSourceLine"}
-                        stationTitle={"Power source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"powerSourceLocation"}
-                        deviceTitle={"Power source Device Tag (e.g., PSU01)"} deviceProperty={"powerSourceDT"}
+                        lineProperty={"powerSourceLine"}
+                        stationProperty={"powerSourceLocation"}
+                        deviceProperty={"powerSourceDT"}
                         type="powerSource"/>
                     <DeviceSelection
                         item={ioModuleGroup} index={ioModuleGroupIndex} 
-                        lineTitle={"Network source LINE (e.g., UBM1, DOR1)"} lineProperty={"ethernetSourceLine"}
-                        stationTitle={"Network source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetSourceLocation"}
-                        deviceTitle={"Network source Device Tag (e.g., LETH01)"} deviceProperty={"ethernetSourceDT"}
+                        lineProperty={"ethernetSourceLine"}
+                        stationProperty={"ethernetSourceLocation"}
+                        deviceProperty={"ethernetSourceDT"}
                         type="networkSource"/>
                         {/* need to include the device port dropdown here */}
                         {ioModuleGroup.ethernetSourceDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (

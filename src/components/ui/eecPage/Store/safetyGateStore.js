@@ -32,10 +32,6 @@ const safetyGateConfiguration = {
     return options;
   },
 
-  generateData: (safetyGates) => {
-    return safetyGates;
-  },
-
 }
   
 const safetyGateStore = create(

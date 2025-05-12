@@ -15,11 +15,14 @@ export default class Fg_IOModule extends Component{
 
     get Parameters(){
         return [
-            {name: "s_frmUI_IOModNetworkSourcePort", value: this._ioModuleGroup.ethernetSourceDevicePort, type: "String"},
+            {name: "s_frmUI_IOModNetworkSourceLine", value: this._ioModuleGroup.ethernetSourceLine, type: "String"},
             {name: "s_frmUI_IOModNetworkSourceLocation", value: this._ioModuleGroup.ethernetSourceLocation, type: "String"},
             {name: "s_frmUI_IOModNetworkSourceDT", value: this._ioModuleGroup.ethernetSourceDT, type: "String"},
+            {name: "s_frmUI_IOModNetworkSourcePort", value: this._ioModuleGroup.ethernetSourceDevicePort, type: "String"},
+            {name: "s_frmUI_IOModPSUSourceLine", value: this._ioModuleGroup.powerSourceLine, type: "String"},
             {name: "s_frmUI_IOModPSUSourceLocation", value: this._ioModuleGroup.powerSourceLocation, type: "String"},
             {name: "s_frmUI_IOModPSUSourceDT", value: this._ioModuleGroup.powerSourceDT, type: "String"},
+            {name: "s_frmUI_InstallationSite", value: this._ioModuleGroup.line, type: "String"},
             {name: "s_frmUI_IOModLocation", value: this._ioModuleGroup.location, type: "String"},
             {name: "PLC_ID", value: this._ioModuleGroup.plcID, type: "String"},
         ];

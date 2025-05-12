@@ -9,12 +9,12 @@ const KedPortConfiguration = ({mcp, index}) => {
     return ( 
          <div>
             <DeviceSelection item={mcp} index={mcpIndex} 
-                deviceTitle={"Port 4 - Target device (e.g., MIO01)"} deviceProperty={"ked_port4_target_dt"}
-                stationTitle={"Port 4 - Target location (e.g., 00010)"} stationProperty={"ked_port4_target_location"}
+                deviceProperty={"ked_port4_target_dt"}
+                stationProperty={"ked_port4_target_location"}
                 type="networkTarget"/>  
             <DeviceSelection item={mcp} index={mcpIndex} 
-                deviceTitle={"Port 5 - Target device (e.g., MIO01)"} deviceProperty={"ked_port5_target_dt"}
-                stationTitle={"Port 5 - Target location (e.g., 00010)"} stationProperty={"ked_port5_target_location"}
+                deviceProperty={"ked_port5_target_dt"}
+                stationProperty={"ked_port5_target_location"}
                 type="networkTarget"/>  
         </div>
     );

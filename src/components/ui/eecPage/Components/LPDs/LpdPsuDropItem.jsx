@@ -39,8 +39,8 @@ import NetworkPortSelection from "../Common/NetworkPortSelection";
             </>
           )}     
           <DeviceSelection item={drop} index={index} 
-              deviceTitle={"Device Tag (e.g., MIO01)"} deviceProperty={"targetDT"}
-              stationTitle={"Location designation(i.e., Station number)"} stationProperty={"targetLocation"}
+              deviceProperty={"targetDT"}
+              stationProperty={"targetLocation"}
               type="powerTarget"
               canCreateDevice={true}/>                                
           <NetworkPortSelection title={"Enter the device port to be connected to"} item={drop} 

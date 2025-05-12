@@ -20,8 +20,8 @@ import "../../Eec.css";
           {hotPowerDrop.HotPwrDropType ==="Device" && (
             <>              
               <DeviceSelection item={hotPowerDrop} index={index} 
-                deviceTitle={"Hot power drop target device tag (e.g., PSU01)"} deviceProperty={"targetDT"}
-                stationTitle={"Hot power drop target location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
+                deviceProperty={"targetDT"}
+                stationProperty={"targetLocation"}
                 canCreateDevice={true} type="powerTarget"/>      
               <InputTextItem title={"Hot power target device description (i.e., function text)"} item={hotPowerDrop} property={"description"} index={index}/>
             </>

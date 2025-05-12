@@ -15,8 +15,8 @@ const McpLethPorts = ({
         <div className="com-drop-header">
           <h7>Port {portIndex+1}</h7>
           <DeviceSelection item={port} index={index} 
-              deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
-              stationTitle={"Target device location (e.g., 00010)"} stationProperty={"targetLocation"}
+              deviceProperty={"targetDT"}
+              stationProperty={"targetLocation"}
               type="networkTarget" canCreateDevice={true}/>    
             
           <NetworkPortSelection title={"Select the port on the target switch this is connected to:"} item={port} 

@@ -17,8 +17,9 @@ export default class f_Device_DropConfig extends Component{
             return [
                 {name: "Interruption_InOrOut", value: this._drop.communicationFlow, type: "String"}, //if i have network switch going to another network switch 
                 {name: "Device_Type_Selection", value: this._drop.deviceTypeSelection, type: "String"}, //device, spare or switch
-                {name: "TargetDevice_DT", value: this._drop.targetDT, type: "String"}, //device DT: SIO01
+                {name: "Target_Line", value: this._drop.line, type: "String"},
                 {name: "Target_Location", value: this._drop.targetLocation, type: "String"}, //station number : 10000
+                {name: "TargetDevice_DT", value: this._drop.targetDT, type: "String"}, //device DT: SIO01
                 {name: "Cable_Length_Selection", value: this._drop.targetCableLength, type: "String"},
                 {name: "Switch_Cascading", value: this._drop.cascadingSwitch, type: "Boolean"}, //if its a switch not going to MCP then its true
                 {name: "frmUI_DevicePortSelection", value: this._drop.targetPort, type: "String"}, //only needs this if its switch to another switch

@@ -14,20 +14,24 @@ export default class f_HMI_Config extends Component{
 
     get Parameters(){
         return [
-            // {name: "HMI_Line", value: this._hmi.line, type: "String"},
+            {name: "HMI_Line", value: this._hmi.line, type: "String"},
             {name: "HMI_Location", value: this._hmi.location, type: "String"},
             {name: "HMI_DT", value: this._hmi.deviceTag, type: "String"},
             {name: "Local_IP", value: this._hmi.localIP, type: "String"},
             {name: "Plant_IP", value: this._hmi.plantIP, type: "String"},
             {name: "PLC_ID", value: this._hmi.plcID, type: "String"},
-            // {name: "HMI_PwrIn_Line", value: this._hmi.powerSourceLine, type: "String"},
+            {name: "HMI_PwrIn_Line", value: this._hmi.powerSourceLine, type: "String"},
             {name: "HMI_PWRIn_Station", value: this._hmi.powerSourceLocation, type: "String"},
             {name: "HMI_PWRIn_DT", value: this._hmi.powerSourceDT, type: "String"},
             {name: "HMI_CascadingFrom", value: this._hmi.ethernetCascadingFrom, type: "Boolean"}, //if the network direct is another HMI then true, else false
-            // {name: "HMI_NetworkIn_Line", value: this._hmi.ethernetSourceLine, type: "String"},
+            {name: "HMI_ETHIn_Line", value: this._hmi.ethernetSourceLine, type: "String"},
             {name: "HMI_ETHIn_Station", value: this._hmi.ethernetSourceLocation, type: "String"},
             {name: "HMI_ETHIn_DT", value: this._hmi.ethernetSourceDT, type: "String"},
             {name: "HMI_ETHIn_DevicePort", value: this._hmi.ethernetSourceDevicePort, type: "String"},
+            {name: "HMI_ETHOut_Line", value: this._hmi.ethernetTargetLine, type: "String"},
+            {name: "HMI_ETHOut_Station", value: this._hmi.ethernetTargetLocation, type: "String"},
+            {name: "HMI_ETHOut_DT", value: this._hmi.ethernetTargetDT, type: "String"},
+            {name: "HMI_ETHOut_DevicePort", value: this._hmi.ethernetTargetDevicePort, type: "String"},
             {name: "HMI_CascadingTo", value: this._hmi.ethernetCascadingTo, type: "Boolean"}, //if upstream network is a HMI then true, else false
             {name: "HMI_CascadingTo_Outside", value: this._hmi.ethernetCascadingToOutside, type: "Boolean"},
             {name: "HMI_ScreenSize", value: this._hmi.hmiScreenSize, type: "String"},

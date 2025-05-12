@@ -27,8 +27,8 @@ const PowerDropItem = ({
             <DropdownItem title={"Power drop type"} item={branchCircuit} property={'DropType'} options={pdpOptions.dropTypeOptions} index={index}/>
             <InputTextItem title={"Power drop description (i.e., function text)"} item={branchCircuit} property={'description'} index={index}/>
             <DeviceSelection item={branchCircuit} index={index} 
-              deviceTitle={"Target device tag (e.g., RBC01)"} deviceProperty={"targetDT"}
-              stationTitle={"Target device location (i.e., Station number) (e.g., 00010)"} stationProperty={"targetLocation"}
+              deviceProperty={"targetDT"}
+              stationProperty={"targetLocation"}
               canCreateDevice={true} type="powerTarget"/>                                
             <InputTextItem title={"Cable length from PDP to target device (meters)"} item={branchCircuit} property={'targetCableLength'} 
                       index={index} validation={isNumberValidation}/>

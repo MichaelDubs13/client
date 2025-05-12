@@ -15,9 +15,9 @@ import { isNumberValidation } from '../Util/Validations';
  */
 const DeviceSelection = ({
     item, index,  
-    lineTitle, 
-    stationTitle, stationProperty,
-    deviceTitle, deviceProperty,
+    lineProperty,
+    stationProperty,
+    deviceProperty,
     onDeviceChange, onStationChange,
     type,
     canCreateDevice,
@@ -50,6 +50,8 @@ const DeviceSelection = ({
                 return "Network target Device tag (e.g., ++LINE+LOCATION-DT):";
             case 'powerSource':
                 return "Power source Device tag (e.g., ++LINE+LOCATION-DT):";
+            case 'power2Source':
+                return "2nd Power source Device tag (e.g., ++LINE+LOCATION-DT):";
             case 'networkSource':
                 return "Network source Device tag (e.g., ++LINE+LOCATION-DT):";
             default:
@@ -97,9 +99,7 @@ const DeviceSelection = ({
                 targetDevice.setPowerSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
                 item.setDataValue("powerTarget", item.data.id)  
                 item.setValue(index, "description", targetDevice.data.description);
-            }
-    
-            if(type === "networkTarget"){
+            } else if(type === "networkTarget"){
                 var port = '';
                 if(item.getSourceNetworkPort) port = item.getSourceNetworkPort();
                 targetDevice.setNetworkSource(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag(), port);   
@@ -115,9 +115,10 @@ const DeviceSelection = ({
             if(type === "powerSource"){
                 sourceDevice.setPowerTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
                 sourceDevice.setDataValue("powerTarget", item.data.id)  
-            }
-    
-            if(type==="networkSource"){
+            } else if(type === "power2Source"){
+                sourceDevice.setPowerTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
+                sourceDevice.setDataValue("powerTarget", item.data.id)  
+            } else if(type==="networkSource"){
                 sourceDevice.setNetworkTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag());   
                 sourceDevice.setDataValue("ethernetTarget", item.data.id)  
             }
@@ -126,12 +127,12 @@ const DeviceSelection = ({
 
 
     const handleDeviceChange = (deviceTag) => {
-
         if(type === "powerTarget" || type==="networkTarget") {
             getTargetDevice(deviceTag, item[stationProperty])
         }
         
-        if(type === "powerSource" || type==="networkSource"){
+        if(type === "powerSource" || type === "power2Source" || 
+            type==="networkSource"){
             getSourceDevice(deviceTag, item[stationProperty])
         }
 
@@ -144,7 +145,8 @@ const DeviceSelection = ({
             getTargetDevice(item[deviceProperty], location)
         }
         
-        if(type === "powerSource" || type==="networkSource"){
+        if(type === "powerSource" || type === "power2Source" || 
+            type==="networkSource"){
             getSourceDevice(item[deviceProperty], location)
         }
 
@@ -160,12 +162,12 @@ const DeviceSelection = ({
             <FormItem className='form-item-device'>
                 <FormLabel className="form-label-device">{title}</FormLabel>
                 <FormLabel>++</FormLabel>
-                <CreateableDropdownItem title={lineTitle} item={item} property={"line"} options={lines} index={index} type="condensed" isRequired={true}/>
+                <CreateableDropdownItem item={item} property={lineProperty ? lineProperty : "line"} options={lines} index={index} type="condensed" isRequired={true}/>
                 <FormLabel>+</FormLabel>
-                <CreateableDropdownItem title={stationTitle} item={item} property={stationProperty} 
+                <CreateableDropdownItem item={item} property={stationProperty} 
                     options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isNumberValidation} isRequired={true}/>
                 <FormLabel>-</FormLabel>
-                <CreateableDropdownItem title={deviceTitle} item={item} property={deviceProperty} 
+                <CreateableDropdownItem item={item} property={deviceProperty} 
                     options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true}/>
                 {
                     renderAddDeviceModal()

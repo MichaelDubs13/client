@@ -32,9 +32,9 @@ const IO_ModuleConfiguration = ({
     <div className="io-module-configuration">
       <div className="io-module-settings">
         <DeviceSelection item={ioModule} index={index} 
-            lineTitle={"IO module LINE (e.g., UBM1)"} lineProperty={"line"}
-            stationTitle={"IO module LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}
-            deviceTitle={"IO module Device Tag (e.g., MIO01, SIO01)"} deviceProperty={"deviceTag"}/>
+            lineProperty={"line"}
+            stationProperty={"location"}
+            deviceProperty={"deviceTag"}/>
         <CheckboxItem title={"Is this module safety rated (i.e., Safety I/O):"} item={ioModule} property={"safetyRated"} index={index}/>
         {ioModule.safetyRated && (
           <>

@@ -20,10 +20,15 @@ export default class F_Network_SwitchConfig extends Component{
     get Parameters(){
         return [
             {name: "PLC_ID", value: this._networkSwitch.plcID, type: "String"},
+            {name: "PWR_IN_Line", value: this._networkSwitch.powerSourceLine, type: "String"}, //for Balluf
             {name: "PWR_IN_Location", value: this._networkSwitch.powerSourceLocation, type: "String"}, //for Balluf
             {name: "PWR_IN_DT", value: this._networkSwitch.powerSourceDT, type: "String"}, //for Balluf
+            {name: "PWR1_IN_Line", value: this._networkSwitch.pwr1_in_line, type: "String"}, //for Siemens
             {name: "PWR1_IN_Location", value: this._networkSwitch.pwr1_in_location, type: "String"}, //for Siemens
             {name: "PWR1_IN_DT", value: this._networkSwitch.pwr1_in_dt, type: "String"}, //for Siemens
+            {name: "PWR2_IN_Line", value: this._networkSwitch.pwr2_in_line, type: "String"}, //for secondary
+            {name: "PWR2_IN_Location", value: this._networkSwitch.pwr2_in_location, type: "String"}, //for secondary
+            {name: "PWR2_IN_DT", value: this._networkSwitch.pwr2_in_dt, type: "String"}, //for secondary
             {name: "Local_IP", value: this._networkSwitch.localIP, type: "String"},
             {name: "Network_Type_Selection", value: this._networkSwitch.networkType, type: "String"},
             {name: "Switch_Location", value: this._networkSwitch.location, type: "String"},

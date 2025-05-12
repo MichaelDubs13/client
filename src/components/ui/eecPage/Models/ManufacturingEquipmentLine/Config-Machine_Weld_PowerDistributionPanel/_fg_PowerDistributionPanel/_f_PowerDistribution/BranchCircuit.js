@@ -20,8 +20,10 @@ export default class BranchCircuit extends Component {
             {name: "dbl_Cable_Length", value: this._branchCircuit.targetCableLength, type: "Double"}, 
             {name: "StrBox_DT_FLA", value: this._branchCircuit.targetFLA_Total, type: "String"}, //UI => TargetDevice_FLA
             {name: "StrBox_DT", value: this._branchCircuit.targetLocation, type: "String"}, //UI  => TargetDevice_DT
-            {name: "TargetDevice_FLA", value: this._branchCircuit.targetFLA, type: "String"}, 
+            {name: "TargetDevice_Line", value: this._branchCircuit.line, type: "String"}, 
+            {name: "TargetDevice_Location", value: this._branchCircuit.targetLocation, type: "String"}, 
             {name: "TargetDevice_DT", value: this._branchCircuit.targetDT, type: "String"}, 
+            {name: "TargetDevice_FLA", value: this._branchCircuit.targetFLA, type: "String"}, 
             {name: "PwrDrop_Spare", value: this._branchCircuit.PwrDrop_Spare, type: "Boolean"},
             ];
     }   

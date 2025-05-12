@@ -48,6 +48,7 @@ export default class IO_Module extends Component{
 
     get Parameters(){
         return [
+            {name: "s_frmUI_IOModLine", value: this._ioModule.line, type: "String"},
             {name: "s_frmUI_IOModLocation", value: this._ioModule.location, type: "String"},
             {name: "s_IOModuleDT", value: this._ioModule.deviceTag, type: "String"},
             {name: "b_frmUI_SafetyIO", value: this._isSIO, type: "Boolean"},            

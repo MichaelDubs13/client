@@ -13,6 +13,7 @@ export default class C_Network_Drop extends Component{
 
     get Parameters(){
         return [
+            {name: "Device_Line", value: this._drop.line, type: "String"},
             {name: "Device_Location", value: this._drop.targetLocation, type: "String"}, //need to set the parameter for the value, typical for all 4 rows
             {name: "Device_DT", value: this._drop.targetDT, type: "String"},
             {name: "Device_TargetPort", value: this._drop.targetPort, type: "String"},

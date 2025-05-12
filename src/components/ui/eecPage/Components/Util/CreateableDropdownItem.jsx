@@ -2,7 +2,6 @@ import { useEffect, useState} from "react";
 import { FormItem, FormLabel, } from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
-import CreatableSelect from 'react-select/creatable';
 import { useForm, Controller } from "react-hook-form";
 import EditableSelect from "./EditableSelect";
 

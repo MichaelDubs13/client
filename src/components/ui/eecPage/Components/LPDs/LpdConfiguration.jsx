@@ -84,9 +84,9 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             <CreateableDropdownItem title={"Enter the power source device tag: (e.g., CB01)"} item={lpd} property={"powerSourceDT"} 
                 options={cbOptions} index={index} onChange={handleDropChange}/> */}
             <DeviceSelection item={lpd} index={index} 
-                lineTitle={"Power source LINE (e.g., UBM1)"} lineProperty={"powerSourceLine"}
-                stationTitle={"Power source LOCATION (i.e., Panel) (e.g., PDP01)"} stationProperty={"powerSourceLocation"}
-                deviceTitle={"Power source Device Tag (e.g., CB01)"} deviceProperty={"powerSourceDT"}
+                lineProperty={"powerSourceLine"}
+                stationProperty={"powerSourceLocation"}
+                deviceProperty={"powerSourceDT"}
                 type="powerSource"
                 canCreateDevice={true}/>    
             <SetItemsNumberInputBox title={`Calculate and enter the total number of PSU(s) needed for this cascading group: (${psuCascadingLimit})`} 

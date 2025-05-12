@@ -35,8 +35,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
             <div>
                 <DataTable border={4} className='data-table'> 
                     <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
-                        deviceTitle={"Network switch device tag (e.g., LETH01)"}  deviceProperty={"deviceTag"}
-                        stationTitle={"Network Switch Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/> 
+                        deviceProperty={"deviceTag"}
+                        stationProperty={"location"}/> 
                     
                     <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
                     <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} 
@@ -61,9 +61,11 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     {networkSwitch.switchType === "Managed" && (
                         <>  
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
-                                deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
-                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}
-                                type="powerSource"/>                                
+                                lineProperty={"powerSourceLine"}  deviceProperty={"powerSourceDT"} stationProperty={"powerSourceLocation"}
+                                type="powerSource"/>  
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
+                                lineProperty={"power2InLine"} deviceProperty={"power2InDT"} stationProperty={"power2InLocation"}
+                                type="power2Source"/>  
 
                         </>
                     )}
@@ -71,9 +73,13 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     {networkSwitch.switchType === "Unmanaged" && (
                         <>
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
-                                deviceTitle={"Power in device tag (e.g., PSU01)"}  deviceProperty={"powerSourceDT"}
-                                stationTitle={"Power in location (e.g., 00010)"} stationProperty={"powerSourceLocation"}
+                                lineProperty={"powerSourceLine"}  
+                                deviceProperty={"powerSourceDT"}
+                                stationProperty={"powerSourceLocation"}
                                 type="powerSource"/> 
+                           <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
+                                lineProperty={"power2InLine"} deviceProperty={"power2InDT"} stationProperty={"power2InLocation"}
+                                type="power2Source"/>  
                         </>
                     )}
                     

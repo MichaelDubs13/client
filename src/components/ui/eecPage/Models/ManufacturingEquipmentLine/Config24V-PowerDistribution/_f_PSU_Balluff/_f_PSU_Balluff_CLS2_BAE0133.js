@@ -14,6 +14,7 @@ export default class _f_PSU_Balluff_CLS2_BAE0133 extends Component{
     get Parameters(){
         return [
             {name: "NumberOf24V_PowerDrops", value: this._psu.drops.length, type: "Integer"},
+            {name: "Line", value: this._psu.line, type: "String"},
             {name: "Location", value: this._psu.location, type: "String"},
             {name: "PSU_DT", value: this._psu.deviceTag, type: "String"},
         ];

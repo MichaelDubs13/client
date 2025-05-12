@@ -22,6 +22,7 @@ export default class Fg_XPowerDistributionPanel extends Component{
             {name: "i_NumberOfPowerDrops3ph_20A", value:  this._xpdp.branchCircuit["20A 3ph"].length, type: "Integer"},
             {name: "frmUI_EnclosureNameplateFLA", value: this._xpdp.amp, type: "String"},
             {name: "frmUI_s_TransformerSize", value: this._xpdp.xf_size, type: "String"},
+            {name: "s_Line", value: this._xpdp.line, type: "String"},
             {name: "frmUI_s_XFMR_PhysicalLocation", value: this._xpdp.location, type: "String"},
             {name: "s_XfmrToDS_CBL_Length", value: this._xpdp.xf_cable_length, type: "String"},
         ];

@@ -4,9 +4,7 @@ import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import { safetyGateStore, safetyGateOptions } from "../../Store/safetyGateStore";
 import DeviceSelection from "../Common/DeviceSelection";
-import { useEffect, useState } from "react";
 import PlcIDSelection from "../Common/PlcIDSelection";
-import { lineConfiguration } from "../../Store/lineStore";
 import NetworkPortSelection from "../Common/NetworkPortSelection";
 import { isValidIP } from "../Util/Validations";
 
@@ -23,8 +21,8 @@ const SafetyGateSwitchConfiguration = ({
     <div className="safety-gate-switch-configuration">
       <div className="safety-gate-switch-settings">
         <DeviceSelection item={safetyGateSwitch} index={index} 
-            stationTitle={"Safety Gate Switches Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}
-            deviceTitle={"Target device tag (e.g., GS01)"} deviceProperty={"deviceTag"}/>
+            stationProperty={"location"}
+            deviceProperty={"deviceTag"}/>
         <DropdownItem title={"Gate switch type:"} item={safetyGateSwitch} property={"safetyGateSwitchType"} options={safetyGateOptions.gateSwitchTypeOptions} index={index}/>
         <DropdownItem title={"Left or Right handed gate switch?"} item={safetyGateSwitch} property={"safetyGateSwitchHandle"} options={safetyGateOptions.gateSwitchHandleOptions} index={index}/>
         <PlcIDSelection item={safetyGateSwitch} title={"Safety Gate Switch controlled by PLC ID:"} index={index}/>
@@ -33,14 +31,14 @@ const SafetyGateSwitchConfiguration = ({
         {!safetyGateSwitch.gateSwitchCascadingFrom &&
           <>
             <DeviceSelection item={safetyGateSwitch} index={index}
-                deviceTitle={"Power source Device Tag (e.g., PSU01)"} deviceProperty={"powerSourceDT"}
-                stationTitle={"Power source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"powerSourceLocation"}
-                lineTitle={"Power source LINE (e.g., UBM1)"} lineProperty={"powerSourceLine"}
+                deviceProperty={"powerSourceDT"}
+                stationProperty={"powerSourceLocation"}
+                lineProperty={"powerSourceLine"}
                 type="powerSource"/>
             <DeviceSelection item={safetyGateSwitch} index={index}
-                deviceTitle={"Network source Device Tag (e.g., LETH01)"} deviceProperty={"ethernetSourceDT"}
-                stationTitle={"Network source LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetSourceLocation"}
-                lineTitle={"Network source LINE (e.g., UBM1)"} lineProperty={"ethernetSourceLine"}
+                deviceProperty={"ethernetSourceDT"}
+                stationProperty={"ethernetSourceLocation"}
+                lineProperty={"ethernetSourceLine"}
                 type="networkSource"/>    
             <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
                 index={index} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} 
@@ -62,14 +60,14 @@ const SafetyGateSwitchConfiguration = ({
             {safetyGateSwitch.safetyGateCascadingToOutside &&
               <>
                 <DeviceSelection item={safetyGateSwitch} index={index}
-                    deviceTitle={"Power target Device Tag (e.g., PSU01)"} deviceProperty={"powerTargetDT"}
-                    stationTitle={"Power target LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"powerTargetLocation"}
-                    lineTitle={"Power target LINE (e.g., UBM1)"} lineProperty={"powerTargetLine"}
+                    deviceProperty={"powerTargetDT"}
+                    stationProperty={"powerTargetLocation"}
+                    lineProperty={"powerTargetLine"}
                     type="powerTarget"/>
                 <DeviceSelection item={safetyGateSwitch} index={index}
-                    deviceTitle={"Network target Device Tag (e.g., PSU01)"} deviceProperty={"ethernetTargetDT"}
-                    stationTitle={"Network target LOCATION (i.e., Station number) (e.g., 00010)"} stationProperty={"ethernetTargetLocation"}
-                    lineTitle={"Network target LINE (e.g., UBM1)"} lineProperty={"ethernetTargetLine"}
+                    deviceProperty={"ethernetTargetDT"}
+                    stationProperty={"ethernetTargetLocation"}
+                    lineProperty={"ethernetTargetLine"}
                     type="networkTarget"/>    
                 <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
                     index={safetyGateSwitchIndex} property={"ethernetTargetDevicePort"} targetDT={safetyGateSwitch.ethernetTargeteDT} 

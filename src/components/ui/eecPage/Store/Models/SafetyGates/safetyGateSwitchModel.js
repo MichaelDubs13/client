@@ -145,6 +145,5 @@ export const safetyGateSwitchModel = {
       },
     }
   },
-
     
 }

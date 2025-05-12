@@ -19,11 +19,7 @@ import { ioModuleStore } from "./Store/ioModuleStore";
 
 
 const LoadButton = () => {
-  const setConfig =  projectStore((state) => state.setConfig);
-  const setPdps =  pdpStore((state) => state.setPdps);
-  const setXpdps =  xpdpStore((state) => state.setXpdps);
-  const setMcps =  mcpStore((state) => state.setMcps);
-  const setLpds =  lpdStore((state) => state.setLpds);
+  const setConfig =  projectStore((state) => state.setConfig)
   const { toasts, addToast } = useToastContainerState();
   
 

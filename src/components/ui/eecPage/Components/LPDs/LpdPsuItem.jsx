@@ -29,8 +29,8 @@ return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
           <DeviceSelection item={psu} index={index} 
-            deviceTitle={"PSU Device Tag (e.g., PSU01)"} deviceProperty={"deviceTag"}
-            stationTitle={"PSU Location (i.e., Station number) (e.g., 00010)"} stationProperty={"location"}/>                             
+            deviceProperty={"deviceTag"}
+            stationProperty={"location"}/>                             
           {
             lpd &&
             lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
