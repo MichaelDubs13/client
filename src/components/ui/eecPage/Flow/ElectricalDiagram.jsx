@@ -68,7 +68,7 @@ const ElectricalDiagram = ()=> {
     const createTargetDeviceNode = (item, parentNode, layer, nodeWidth, nodeHeight, nodes, edges) => {
         if(!item) return;
         if (Object.keys(item).length === 0) return;
-        const targetDeviceId = item.data.targetDevice;
+        const targetDeviceId = item.data.powerTarget;
         if(targetDeviceId){
             var targetDevice = lineConfiguration.getDeviceById(targetDeviceId);
             if(targetDevice){                

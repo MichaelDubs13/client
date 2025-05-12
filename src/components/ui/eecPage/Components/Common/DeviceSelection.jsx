@@ -6,6 +6,7 @@ import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { FormLabel, Icon, FormItem } from '@tesla/design-system-react';
 import { isNumberValidation } from '../Util/Validations';
+import { set } from 'react-hook-form';
 
 
 /**
@@ -28,6 +29,12 @@ const DeviceSelection = ({
     const stations = lineStore((state) => state.stations)   
     const lines = lineStore((state) => state.lines)  
     const [deviceOptions, setDeviceOptions] = useState([])   
+    const [duplicateExist, setDuplicateExist]=useState(false)
+
+    useEffect(() => {
+        var exist = getDuplicateDevice(item[deviceProperty], item[stationProperty])
+        setDuplicateExist(exist);
+    }, []);
 
     useEffect(() => {
         getLineOptions();        
@@ -125,15 +132,33 @@ const DeviceSelection = ({
         }
     }
 
+    const getDuplicateDevice = (deviceTag, location) =>{
+        if(type === "powerTarget" || type==="networkTarget" || 
+        type === "powerSource" || type === "power2Source" || type==="networkSource"){
+            return false
+        }
+        
+        var targetDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
+        if(targetDevice){
+            if(targetDevice.data.id != item.data.id){
+                console.log("found")
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     const handleDeviceChange = (deviceTag) => {
         if(type === "powerTarget" || type==="networkTarget") {
             getTargetDevice(deviceTag, item[stationProperty])
-        }
-        
-        if(type === "powerSource" || type === "power2Source" || 
+        } else if(type === "powerSource" || type === "power2Source" || 
             type==="networkSource"){
             getSourceDevice(deviceTag, item[stationProperty])
+        } else {
+            var exist = getDuplicateDevice(deviceTag, item[stationProperty])
+            console.log(exist);
+            setDuplicateExist(exist);
         }
 
         if(onDeviceChange){
@@ -143,13 +168,13 @@ const DeviceSelection = ({
     const handleStationChange = (location) => {
         if(type === "powerTarget" || type==="networkTarget") {
             getTargetDevice(item[deviceProperty], location)
-        }
-        
-        if(type === "powerSource" || type === "power2Source" || 
+        } else if(type === "powerSource" || type === "power2Source" || 
             type==="networkSource"){
             getSourceDevice(item[deviceProperty], location)
+        } else {
+            var exist = getDuplicateDevice(item[deviceProperty], location)
+            setDuplicateExist(exist);
         }
-
         if(onStationChange){
             onStationChange();
         }
@@ -168,7 +193,7 @@ const DeviceSelection = ({
                     options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isNumberValidation} isRequired={true}/>
                 <FormLabel>-</FormLabel>
                 <CreateableDropdownItem item={item} property={deviceProperty} 
-                    options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true}/>
+                    options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true} duplicateExist={duplicateExist}/>
                 {
                     renderAddDeviceModal()
                 }

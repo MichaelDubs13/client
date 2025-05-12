@@ -90,10 +90,8 @@ const lineConfiguration = {
     },
     getDeviceById:(id)=>{
         const items = lineConfiguration.getAllStoreItems();
-        const pdps = pdpStore.getState().pdps;
         for(let i=0;i<items.length;i++){
-            if(items[i].data.id === id) return items[i];
-            var foundItem = pdps[i].getItemById(id);
+            var foundItem = items[i].getItemById(id);
             if(foundItem) return foundItem;
         }
     },

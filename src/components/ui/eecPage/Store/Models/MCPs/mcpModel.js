@@ -91,15 +91,13 @@ export const mcpModel = {
             return mcps.findIndex(mcp => mcp.data.id === this.data.id)
           },
           getItemById: function(id){
-            return getItemById(this.portss, id);
+            return getItemById(this.ports, id);
           },
           getDeviceByName:function(name, location, line){
-            if(this.line === line && this.location === location && this.deviceTag === name)return this;
-            // for(let i=0;i<this.ports.length;i++){
-            //     var foundItem = this.ports[i].getDeviceByName(name, location, line);
-            //     if(foundItem) return foundItem;
-            // }
-            return;
+            if(this.line != line) return;
+            if(this.location != location) return;
+            if(name == null) return;
+            return this;
           },
           getNodeData: function(){
             return [

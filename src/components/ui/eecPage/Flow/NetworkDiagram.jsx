@@ -55,7 +55,7 @@ const NetworkDiagram = ()=> {
     const createTargetDeviceNode = (item, parentNode, layer, nodeWidth, nodeHeight, nodes, edges) => {
             if(!item) return;
             if (Object.keys(item).length === 0) return;
-            const targetDeviceId = item.data.targetDevice;
+            const targetDeviceId = item.data.ethernetTarget;
             if(targetDeviceId){
                 var targetDevice = lineConfiguration.getDeviceById(targetDeviceId);
                 if(targetDevice){                

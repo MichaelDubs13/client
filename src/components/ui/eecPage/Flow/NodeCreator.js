@@ -73,7 +73,7 @@ export const createXpdpNode = (pdp, layer, nodeWidth, nodeHeight)=>{
 
 export const createBranchCircuitNode = (branchCircuit, layer, nodeWidth, nodeHeight)=>{
     const pdp = branchCircuit.data.parent;
-    const key = `${pdp.location}_${branchCircuit.UI.CB_DT}`;
+    const key = `${pdp.location}_${branchCircuit.deviceDT}`;
     const icon = branchCircuit.UI.icon;
     const target = `${key}_${layer}`;
     const label = [key, ...branchCircuit.getNodeData()];
@@ -109,7 +109,7 @@ export const createPsuNode = (psu, lpd, layer, nodeWidth, nodeHeight)=>{
 
 export const createNetworkSwitchNode = (networkSwitch,layer, nodeWidth, nodeHeight)=>{
     const index = networkSwitch.getIndex();
-    const key = `${networkSwitch.location}_${networkSwitch.switchDT}_${index}`;
+    const key = `${networkSwitch.location}_${networkSwitch.deviceTag}_${index}`;
     const icon = networkSwitch.UI.icon;
     const target = `${key}_${layer}`;
     const label = [key,...networkSwitch.getNodeData()];

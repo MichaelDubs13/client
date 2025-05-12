@@ -72,6 +72,7 @@ export const pdpModel = {
           getDeviceByName:function(name, location, line){
             if(this.line != line) return;
             if(this.location != location) return;
+            if(name == null) return this;
             var keys = Object.keys(this.branchCircuit);
             for(let i=0;i<keys.length;i++){
               const key = keys[i]

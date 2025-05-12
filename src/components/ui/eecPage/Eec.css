@@ -34,11 +34,14 @@
   margin-bottom: 5px;
   display:flex;
   align-items: center;
-  width: 660px;
+}
+.form-item-readonly-notitle{
+  margin-bottom: 5px;
+  display:flex;
+  align-items: center;
 }
 .form-label-readonly{
-  width: 700px;
-  font-size: 14px;
+  font-size: 15px;
 }
 .form-set-item{
   margin-left: 30px;

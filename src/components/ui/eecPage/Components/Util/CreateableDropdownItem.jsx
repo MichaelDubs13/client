@@ -16,7 +16,7 @@ import EditableSelect from "./EditableSelect";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation, isRequired}) =>{
+const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation, isRequired, duplicateExist}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState({label:defaultValue , value:defaultValue });
     const { control, trigger, setValue, formState: { errors } } = useForm();
@@ -26,6 +26,10 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
         setValue(validationProperty, defaultValue);
         validate();
     }, []);
+
+    useEffect(() => {
+        validate();
+    }, [duplicateExist]);
 
     useEffect(() => {
         setSelectedOption({label:defaultValue, value:defaultValue});
@@ -70,6 +74,9 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                 return 'value is required';
             }
         }
+        if(duplicateExist){
+            return 'same device already exist'
+        }
 
         if(validation)return validation(value)
     }
@@ -88,14 +95,14 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                                 placeHolder={defaultValue}
                                 onChange={(event) => {
                                     var value = event ? event.value : '';
+                                    handleOptionSelect(event)
                                     field.onChange(value);
                                     validate();
-                                    handleOptionSelect(event)
                                 }}
                                 onCreateOption={(value) => {
+                                    handleOptionCreation(value);
                                     field.onChange(value);
                                     validate();
-                                    handleOptionCreation(value);
                                 }}
                             />
                         )}
