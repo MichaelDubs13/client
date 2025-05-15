@@ -8,16 +8,20 @@ import HotPowerConfiguration from './HotPowerConfiguration';
 import { DataTable } from '@tesla/design-system-react';
 import LineLocationSelection from '../Common/LineLocationSelection';
 import LineStationSelection from "../Common/LineStationSelection";
+import { getTrailingNumbers } from "../../Store/util";
 
 const PdpConfiguration = ({pdp, index}) => {
     const pdpIndex = {pdpIndex:index}
     const handleSetOpt_HotPwrChange = (value)=> {
         if(value){
             pdp.setHotPowerBranchCircuit();
+            var trailingNumbers = getTrailingNumbers(pdp.location);
+            pdp.setValue(pdpIndex, "hotPowerPanelLocation", `HPDP${trailingNumbers}`)
         }
     }
     const handleLocationChange = (value) => {
-        pdp.setValue(pdpIndex, "hotPowerPanelLocation", `H${value}`)
+        var trailingNumbers = getTrailingNumbers(value);
+        pdp.setValue(pdpIndex, "hotPowerPanelLocation", `HPDP${trailingNumbers}`)
     }
 
     return (

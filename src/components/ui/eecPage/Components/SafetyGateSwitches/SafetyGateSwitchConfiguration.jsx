@@ -5,7 +5,6 @@ import InputTextItem from '../Util/InputTextItem';
 import { safetyGateStore, safetyGateOptions } from "../../Store/safetyGateStore";
 import DeviceSelection from "../Common/DeviceSelection";
 import PlcIDSelection from "../Common/PlcIDSelection";
-import NetworkPortSelection from "../Common/NetworkPortSelection";
 import { isValidIP } from "../Util/Validations";
 
 const SafetyGateSwitchConfiguration = ({ 
@@ -39,11 +38,16 @@ const SafetyGateSwitchConfiguration = ({
                 deviceProperty={"ethernetSourceDT"}
                 stationProperty={"ethernetSourceLocation"}
                 lineProperty={"ethernetSourceLine"}
-                type="networkSource"/>    
-            <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
-                index={index} property={"ethernetSourceDevicePort"} targetDT={safetyGateSwitch.ethernetSourceDT} 
-                targetLocation={safetyGateSwitch.ethernetSourceLocation} targetLine={safetyGateSwitch.line}
-                createNew={createNew}/>
+                type="networkSource"
+                portConfig ={{
+                  title:"Select the network port of the network switch (e.g., 1)",
+                  property:"ethernetSourceDevicePort",
+                  type:"network",
+                  targetDT:safetyGateSwitch.ethernetSourceDT,
+                  targetLocation:safetyGateSwitch.ethernetSourceLocation,
+                  targetLine:safetyGateSwitch.line,
+                  createNew:createNew
+              }}/>    
           </>
         }
 
@@ -68,11 +72,16 @@ const SafetyGateSwitchConfiguration = ({
                     deviceProperty={"ethernetTargetDT"}
                     stationProperty={"ethernetTargetLocation"}
                     lineProperty={"ethernetTargetLine"}
-                    type="networkTarget"/>    
-                <NetworkPortSelection title={"Select the network port of the network switch (e.g., 1)"} item={safetyGateSwitch} 
-                    index={safetyGateSwitchIndex} property={"ethernetTargetDevicePort"} targetDT={safetyGateSwitch.ethernetTargeteDT} 
-                    targetLocation={safetyGateSwitch.ethernetTargetLocation} targetLine={safetyGateSwitch.line}
-                    createNew={createNew}/>
+                    type="networkTarget"
+                    portConfig ={{
+                    title:"Select the network port of the network switch (e.g., 1)",
+                    property:"ethernetTargetDevicePort",
+                    type:"network",
+                    targetDT:safetyGateSwitch.ethernetTargeteDT,
+                    targetLocation:safetyGateSwitch.ethernetTargetLocation,
+                    targetLine:safetyGateSwitch.line,
+                    createNew:createNew
+                }}/>    
               </>
             }
           </>

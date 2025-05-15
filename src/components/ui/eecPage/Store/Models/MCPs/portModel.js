@@ -21,18 +21,18 @@ export const portModel = {
         id:uuidv4(),
         },
         getIndexObject: function(){
-        const mcpIndex = this.data.parent.getIndex();
-        const portIndex = this.getIndex();
-        return {
-            mcpIndex:mcpIndex,
-            portIndex:portIndex,
-        }
+            const mcpIndex = this.data.parent.getIndex();
+            const portIndex = this.getIndex();
+            return {
+                mcpIndex:mcpIndex,
+                portIndex:portIndex,
+            }
         },
         setValue: function(indexObject, key, value, isUI, isData){
-        mcpStore.getState().setPortValue(indexObject, key, value, isUI, isData);
+            mcpStore.getState().setPortValue(indexObject, key, value, isUI, isData);
         },
         setDataValue: function(key, value){
-        const indexObject = this.getIndexObject();  
+            const indexObject = this.getIndexObject();  
             this.setValue(indexObject, key, value,false, true);
         },
         getIndex: function(){

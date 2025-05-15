@@ -5,6 +5,7 @@ import { projectStore } from '../../Store/projectStore';
 import InputTextItem from '../Util/InputTextItem';
 import { FormItem, FormLabel } from '@tesla/design-system-react';
 import "../../Eec.css";
+import { isValidLocation } from '../Util/Validations';
 
 const LineLocationSelection = ({
     item, index,
@@ -81,8 +82,9 @@ const LineLocationSelection = ({
                     <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={handleLineChange} type="condensed" 
                         isRequired={true} />
                     <FormLabel>+</FormLabel>
-                    <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} onChange={handleLocationChange} type="condensed" 
-                        isRequired={true} duplicateExist={duplicateExist}/>
+                    <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} 
+                        onChange={handleLocationChange} type="condensed" isRequired={true} duplicateExist={duplicateExist}
+                        validation={isValidLocation} />
                 </FormItem>
             </div>
         </div>

@@ -11,3 +11,49 @@ export const isValidIP = (str)=> {
   
     return (!str ? true : ipv4Regex.test(str)) || 'Please enter a valid ip address'
 }
+
+export function getTrailingNumbers(str) {
+  const match = str.match(/(\d+)$/);
+  return match ? match[1] : null;
+}
+
+export function isAAANN(str) {
+  const regex = /^[a-zA-Z]{3}\d{2}$/;
+  return regex.test(str);
+}
+
+export function isAAAANN(str) {
+  const regex = /^[a-zA-Z]{4}\d{2}$/;
+  return regex.test(str);
+}
+
+export function isNNNNN(str) {
+  const regex = /^\d{5}$/;
+  return regex.test(str);
+}
+
+export function isAAANN_NNN(str) {
+  const regex = /^[a-zA-Z]{3}\.\d{3}$/;
+  return regex.test(str);
+}
+
+export function isAAAANN_NNN(str) {
+  const regex = /^[a-zA-Z]{4}\.\d{3}$/;
+  return regex.test(str);
+}
+
+export function isNNNNN_NNN(str) {
+ const regex = /^\d{5}\.\d{3}$/;
+  return regex.test(str);
+}
+
+export function isValidLocation(str){
+  if(isAAANN(str)) return true;
+  if(isAAAANN(str)) return true;
+  if(isNNNNN(str)) return true;
+  if(isAAANN_NNN(str)) return true;
+  if(isAAAANN_NNN(str)) return true;
+  if(isNNNNN_NNN(str)) return true;
+
+  return 'not valid location name'
+}

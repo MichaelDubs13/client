@@ -37,7 +37,7 @@ const IO_ModuleCascadingCollection = () => {
                 
                 {   
                     ioModuleGroups.map((ioModuleGroup, index) => {
-                        return <HeadingItem label={`${index+1}:I/O Modules in: ++${line}+${ioModuleGroup.location}`} 
+                        return <HeadingItem label={`${index+1}:I/O Modules in: ++${ioModuleGroup.line}+${ioModuleGroup.location}`} 
                                 size={18} margin={"20px"} open={false}
                                 headerIcon={ioModuleGroup.UI.icon}
                                 children={<IO_ModuleCollectionInstance ioModuleGroup={ioModuleGroup} index={index}/>}

@@ -7,7 +7,7 @@ export const ioModulePortModel = {
     create:(parent, index)=>{
         return {
           portCounter: index,
-          isIOLink: 'no',
+          isIOLink: false,
           pinType: "IO-Link", // EEC variable name: s_pin_type_selected
           pinDescription: "", // EEC variable name: s_pin_description
           pinAddress: "%I0.0", // EEC variable name: s_pin_PLCaddress

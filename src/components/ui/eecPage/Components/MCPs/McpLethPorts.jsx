@@ -2,7 +2,6 @@ import DeviceSelection from "../Common/DeviceSelection";
 import DropdownItem from "../Util/DropdownItem";
 import { networkSwitchOptions } from "../../Store/networkSwitchStore";
 import "../../Eec.css";
-import NetworkPortSelection from "../Common/NetworkPortSelection";
 
 const McpLethPorts = ({ 
     mcpIndex,
@@ -17,10 +16,16 @@ const McpLethPorts = ({
           <DeviceSelection item={port} index={index} 
               deviceProperty={"targetDT"}
               stationProperty={"targetLocation"}
-              type="networkTarget" canCreateDevice={true}/>    
+              type="networkTarget" canCreateDevice={true}
+              portConfig ={{
+                  title:"Select the port on the target switch this is connected to:",
+                  property:"targetPort",
+                  type:"power",
+                  targetDT:port.targetDT,
+                  targetLocation:port.targetLocation,
+                  targetLine:port.line,
+              }}/>    
             
-          <NetworkPortSelection title={"Select the port on the target switch this is connected to:"} item={port} 
-                    index={index} property={"targetPort"} targetDT={port.targetDT} targetLocation={port.targetLocation} targetLine={port.line}/>
           <DropdownItem title={"Cable length (m)"} item={port} property={"targetCableLength"}  options={networkSwitchOptions.cableLengthOptions} index={index}/>
         </div>
       </div>

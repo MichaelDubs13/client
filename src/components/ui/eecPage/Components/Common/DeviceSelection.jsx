@@ -5,8 +5,8 @@ import "../../Eec.css";
 import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { FormLabel, Icon, FormItem } from '@tesla/design-system-react';
-import { isNumberValidation } from '../Util/Validations';
-import { set } from 'react-hook-form';
+import { isNumberValidation, isValidLocation } from '../Util/Validations';
+import NetworkPortSelection from './NetworkPortSelection';
 
 
 /**
@@ -22,6 +22,7 @@ const DeviceSelection = ({
     onDeviceChange, onStationChange,
     type,
     canCreateDevice,
+    portConfig,
 }) => {
     const getLineOptions = lineStore((state) => state.getLineOptions)    
     const getStationOptions = lineStore((state) => state.getStationOptions)     
@@ -30,6 +31,7 @@ const DeviceSelection = ({
     const lines = lineStore((state) => state.lines)  
     const [deviceOptions, setDeviceOptions] = useState([])   
     const [duplicateExist, setDuplicateExist]=useState(false)
+    const [updatePortSelect, setUpdatePortSelect]= useState(0);
 
     useEffect(() => {
         var exist = getDuplicateDevice(item[deviceProperty], item[stationProperty])
@@ -79,9 +81,12 @@ const DeviceSelection = ({
         return foundItem;
     }
 
-    const handleSubmit=(wipItem)=>{
+    const handleAddDeviceSubmit=(wipItem)=>{
         item.setValue(index, "description", wipItem.getDescription());
-        //item.setValue(index, "fla", wipItem.getFLA());
+        if(portConfig){
+            const value = updatePortSelect+1;
+            setUpdatePortSelect(value);
+        }
     }
     const renderAddDeviceModal=()=>{
         if(type){
@@ -92,13 +97,12 @@ const DeviceSelection = ({
                     if(canAddDevice(lineOptions.addDeviceOptions,item[deviceProperty])){
                         return <ModalAddDevice item={item} name={item[deviceProperty]} line={item.line} location={item[stationProperty]} 
                                 powerSource={type === "powerTarget" ? item : null} networkSource={type === "networkTarget" ? item : null}
-                                onSubmit={handleSubmit}/>
+                                onSubmit={handleAddDeviceSubmit}/>
                     }
                 }
             }
         }
     }
-
     const getTargetDevice = (deviceTag, location) => {
         var targetDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
         if(targetDevice){
@@ -115,7 +119,6 @@ const DeviceSelection = ({
             }
         }
     }
-
     const getSourceDevice = (deviceTag, location) => {
         var sourceDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
         if(sourceDevice){
@@ -131,7 +134,6 @@ const DeviceSelection = ({
             }
         }
     }
-
     const getDuplicateDevice = (deviceTag, location) =>{
         if(type === "powerTarget" || type==="networkTarget" || 
         type === "powerSource" || type === "power2Source" || type==="networkSource"){
@@ -141,14 +143,11 @@ const DeviceSelection = ({
         var targetDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
         if(targetDevice){
             if(targetDevice.data.id != item.data.id){
-                console.log("found")
                 return true;
             }
         }
         return false;
     }
-
-
     const handleDeviceChange = (deviceTag) => {
         if(type === "powerTarget" || type==="networkTarget") {
             getTargetDevice(deviceTag, item[stationProperty])
@@ -182,22 +181,33 @@ const DeviceSelection = ({
 
     const title = getTitle();
     return (
-        
-        <div style={{display:'flex'}}>
-            <FormItem className='form-item-device'>
-                <FormLabel className="form-label-device">{title}</FormLabel>
-                <FormLabel>++</FormLabel>
-                <CreateableDropdownItem item={item} property={lineProperty ? lineProperty : "line"} options={lines} index={index} type="condensed" isRequired={true}/>
-                <FormLabel>+</FormLabel>
-                <CreateableDropdownItem item={item} property={stationProperty} 
-                    options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isNumberValidation} isRequired={true}/>
-                <FormLabel>-</FormLabel>
-                <CreateableDropdownItem item={item} property={deviceProperty} 
-                    options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true} duplicateExist={duplicateExist}/>
+        <div>
+            <div style={{display:'flex'}}>
+                <FormItem className='form-item-device'>
+                    <FormLabel className="form-label-device">{title}</FormLabel>
+                    <FormLabel>++</FormLabel>
+                    <CreateableDropdownItem item={item} property={lineProperty ? lineProperty : "line"} options={lines} index={index} type="condensed" isRequired={true}/>
+                    <FormLabel>+</FormLabel>
+                    <CreateableDropdownItem item={item} property={stationProperty} 
+                        options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isValidLocation} isRequired={true}/>
+                    <FormLabel>-</FormLabel>
+                    <CreateableDropdownItem item={item} property={deviceProperty} 
+                        options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true} duplicateExist={duplicateExist}/>
+                    {
+                        renderAddDeviceModal()
+                    }
+                </FormItem>
+            </div>
+            <div>
                 {
-                    renderAddDeviceModal()
+                    portConfig &&
+                      <NetworkPortSelection title={portConfig.title} item={item} 
+                            index={index} property={portConfig.property} targetDT={portConfig.targetDT} 
+                            targetLocation={portConfig.targetLocation} targetLine={portConfig.targetLine}
+                            isCreatable={portConfig.isCreatable} createNew={portConfig.createNew} portType={portConfig.type}
+                            update={updatePortSelect}/>
                 }
-            </FormItem>
+            </div>
         </div>
     );
 };

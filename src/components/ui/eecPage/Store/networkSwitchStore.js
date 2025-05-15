@@ -230,8 +230,7 @@ const networkSwitchStore = create(
     const networkSwitchIndex = indexObject.networkSwitchIndex;
     const portIndex = indexObject.portIndex;
     set((state) => {
-
-      if(Object.keys(indexObject).length > 0){
+      if(Object.keys(indexObject).length > 1){
         const newNetworkSwitches = [...state.networkSwitches];
         const ports = newNetworkSwitches[networkSwitchIndex].ports;
         setModelValue(ports[portIndex], key, value, isUI, isData);

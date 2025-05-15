@@ -1,5 +1,4 @@
 import InputTextItem from "../Util/InputTextItem";
-import {mcpStore} from "../../Store/mcpStore";
 import HeadingItem from "../Util/HeadingItem";
 import PlcPortConfiguration from './PlcPortConfiguration'
 import "../../Eec.css";
@@ -7,7 +6,6 @@ import { isValidIP } from "../Util/Validations";
 
 
 const PlcConfiguration = ({mcp, index}) => {
-    const setMcpValue = mcpStore((state) => state.setMcpValue);
     const mcpIndex = {mcpIndex:index}
 
     return ( 

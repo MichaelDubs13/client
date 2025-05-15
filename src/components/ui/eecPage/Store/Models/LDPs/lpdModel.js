@@ -39,7 +39,7 @@ export const lpdModel = {
            },
           getMFG: function(){
             if(this.psu_selected){
-              return this.psu_selected.split(':')[0];
+              return this.psu_selected.split(':')[0].trim();
             } else {
               return '';
             }
@@ -49,7 +49,7 @@ export const lpdModel = {
             if(this.psu_selected){
               var psuElements = this.psu_selected.split(':')
               if(psuElements.length == 2){
-                return psuElements[1];
+                return psuElements[1].trim();
               }else{
                 return '';
               }

@@ -138,6 +138,17 @@ export const pdpModel = {
             }
             return cbs;
           },
+          setPowerSource:function(line, location, deviceTag){
+
+          },
+          setNetworkSource:function(line, location, name){
+
+          },
+          setPowerTarget:function(line, location, name){
+
+          },
+          setNetworkTarget:function(line, location, name){
+          },
           setHotPowerBranchCircuit:function(){
             pdpStore.getState().setHotPowerBranchCircuit(this);
           }

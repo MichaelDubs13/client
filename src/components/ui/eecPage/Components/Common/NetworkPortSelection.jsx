@@ -7,26 +7,21 @@ import CreateableDropdownItem from '../Util/CreateableDropdownItem';
 
 
 
-const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portSelect='network',createNew, isCreatable}) => {
+const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portType,createNew, isCreatable, update}) => {
     const [portOptions, setPortOptions] = useState([]);
     const itemIndex = createNew ? {} : index;
     useEffect(() => {
         var ports = []
         var foundItem = lineConfiguration.getDeviceByNameGlobal(targetDT, targetLocation, targetLine);
         if(foundItem && foundItem.data.type ==='networkSwitch'){
-            if(portSelect === 'network'){
+            if(portType === 'network'){
                 ports = networkSwitchConfiguration.getEthernetNetworkPortOptions(foundItem.ports.length, foundItem.networkType, foundItem.switchType);
-            } else if(portSelect ==='power') {
+            } else if(portType ==='power') {
                 ports = networkSwitchConfiguration.getEthernetPowerPortOptions(foundItem.networkType, foundItem.switchType, foundItem.switchSpeed);
             }
         }
         setPortOptions(ports);
-    }, [targetDT, targetLocation, targetLine]);
-
-
-
-
-
+    }, [targetDT, targetLocation, targetLine, update]);
 
     return (
         <div>

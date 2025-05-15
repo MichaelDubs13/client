@@ -143,21 +143,18 @@ const lineStore = create((set) => ({
         var newLocations = []
         newLocations = lineConfiguration.getLocations(items, newLocations); 
         newLocations = newLocations.filter(location => location);  
-        newLocations = [...new Set(newLocations)];     
-        newLocations = newLocations.map((location) => {
-            return {label:location, value:location}
-        })
 
         var newStations = []
         newStations = lineConfiguration.getStations(items, newStations);
         newStations = newStations.filter(station => station)
-        newStations = [...new Set(newStations)];
-        newStations = newStations.map((station) => {
-            return {label:station, value:station}
-        })
-
+        
         newLocations.push(...newStations);
-        newLocations = [...new Set(newLocations)];   
+        newLocations = [...new Set(newLocations)];  
+        newLocations = newLocations.sort();
+        newLocations = newLocations.map((item) => {
+            return {label:item, value:item}
+        })
+        
         return newLocations;
     },
 
@@ -166,15 +163,14 @@ const lineStore = create((set) => ({
         var newStations = []
         newStations = lineConfiguration.getStations(items, newStations);
         newStations = newStations.filter(station => station)
-        newStations = [...new Set(newStations)];
 
         var newLocations = []
         newLocations = lineConfiguration.getLocations(items, newLocations); 
         newLocations = newLocations.filter(location => location);  
-        newLocations = [...new Set(newLocations)];     
         
         newStations.push(...newLocations);
         newStations = [...new Set(newStations)];
+        newStations = newStations.sort();
         newStations = newStations.map((station) => {
             return {label:station, value:station}
         })

@@ -12,6 +12,7 @@ export default class Fg_XPowerDistributionPanel extends Component{
         this._class = "fg_XPowerDistributionPanel";
         this._name = `fg_XPowerDistributionPanel${index > 1 ? index : ""}`;
         this._xpdp = xpdp        
+        this._amp = this._xpdp.amp.toLowerCase().endsWith("a") ? this._xpdp.amp : `${this._xpdp.amp}A`;
     }
 
     get Parameters(){
@@ -20,10 +21,10 @@ export default class Fg_XPowerDistributionPanel extends Component{
             {name: "i_NumberOfPowerDrops1ph_15A", value: this._xpdp.branchCircuit["15A 1ph"].length, type: "Integer"},
             {name: "i_NumberOfPowerDrops1ph_20A", value: this._xpdp.branchCircuit["20A 1ph"].length, type: "Integer"},
             {name: "i_NumberOfPowerDrops3ph_20A", value:  this._xpdp.branchCircuit["20A 3ph"].length, type: "Integer"},
-            {name: "frmUI_EnclosureNameplateFLA", value: this._xpdp.amp, type: "String"},
+            {name: "frmUI_EnclosureNameplateFLA", value: this._amp, type: "String"},
             {name: "frmUI_s_TransformerSize", value: this._xpdp.xf_size, type: "String"},
-            {name: "s_Line", value: this._xpdp.line, type: "String"},
             {name: "frmUI_s_XFMR_PhysicalLocation", value: this._xpdp.location, type: "String"},
+            {name: "s_Line", value: this._xpdp.line, type: "String"},
             {name: "s_XfmrToDS_CBL_Length", value: this._xpdp.xf_cable_length, type: "String"},
         ];
     }

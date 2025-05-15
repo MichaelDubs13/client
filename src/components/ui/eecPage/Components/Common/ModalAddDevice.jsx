@@ -2,7 +2,7 @@ import { Modal, ModalContent,  TooltipWrapper,Icon, IconButton, } from "@tesla/d
 import { useEffect, useState } from "react";
 import { Button } from "@tesla/design-system-react";
 import { iconPlus, } from '@tesla/design-system-icons';
-import { networkSwitchStore } from "../../Store/networkSwitchStore";
+import { networkSwitchConfiguration, networkSwitchStore } from "../../Store/networkSwitchStore";
 import NetworkSwitchConfiguration from "../NetworkSwitches/NetworkSwitchConfiguration";
 import { lineConfiguration } from "../../Store/lineStore";
 import { hmiStore } from "../../Store/hmiStore";
@@ -43,6 +43,13 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
       addWipNetworkSwitch()
       var wipItem = wipNetworkSwitch;
+      if(item.data.type === "lethPort"){
+        var portIndex = wipItem.ports.findIndex(i => i.line === item.data.parent.line && i.targetLocation === item.data.parent.location)
+        if(portIndex > -1){
+          item.targetPort = networkSwitchConfiguration.getEthernetNetworkPortOption(wipNetworkSwitch.networkType, wipNetworkSwitch.switchType, portIndex + 1)
+        }
+      }
+      
     } else if(name.startsWith(lineConfiguration.hmiIndicator)){
       addWipHmi();
       var wipItem = wipHmi;
@@ -53,7 +60,11 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
       addWipIoModule();
       var wipItem = wipIoModule;
     }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
-      addWipPsu(item.data.parent.line,item.data.parent.location, item.deviceDT);
+      var createNewLpd = false;
+      if(item.data.type === "cb"){
+        createNewLpd = true;
+      }
+      addWipPsu(item.data.parent.line,item.data.parent.location, item.deviceDT, createNewLpd);
       var wipItem = wipPsu;
     }
     if(wipItem && onSubmit){
@@ -91,7 +102,13 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
     if(name.startsWith(lineConfiguration.networkSwitchIndicator)){
       var newNetworkSwitch = networkSwitchModel.create()
       newNetworkSwitch = updateItem(newNetworkSwitch)
-      setWipNetworkSwitch(newNetworkSwitch)   
+      if(item.data.type === "lethPort"){
+        newNetworkSwitch.ports[15].deviceTypeSelection = "Network Switch";
+        newNetworkSwitch.ports[15].line = item.data.parent.line;
+        newNetworkSwitch.ports[15].targetLocation = item.data.parent.location;
+        newNetworkSwitch.ports[15].targetDT = "LETH";
+      }
+      setWipNetworkSwitch(newNetworkSwitch)
     } else if(name.startsWith(lineConfiguration.hmiIndicator)){
       var newHmi = hmiModel.create()
       newHmi = updateItem(newHmi)

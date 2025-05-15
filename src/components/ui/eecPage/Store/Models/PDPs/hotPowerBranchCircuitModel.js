@@ -10,7 +10,7 @@ export const hotPowerBranchCircuitModel = {
   create: (parent) => {
     return {
       HotPwrDropType: "Spare",
-      line:"",
+      line:parent.line,
       targetLocation: "",
       targetDT: "",
       description: "",

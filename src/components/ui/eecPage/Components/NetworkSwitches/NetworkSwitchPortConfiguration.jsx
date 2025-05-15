@@ -2,7 +2,7 @@ import NetworkSwitchPort from './NetworkSwitchPort';
 import HeadingItem from '../Util/HeadingItem';
 import "../../Eec.css";
 
-const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => {
+const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex, createNew}) => {
     return (
         
         <div>
@@ -17,6 +17,7 @@ const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex}) => 
                         port={port}
                         networkSwitchIndex={networkSwitchIndex}
                         portIndex={index}
+                        createNew={createNew}
                         />}
                     />})
             }

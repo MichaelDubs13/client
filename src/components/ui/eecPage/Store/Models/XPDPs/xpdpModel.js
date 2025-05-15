@@ -134,7 +134,18 @@ export const xpdpModel = {
           })
         }
         return cbs;
-      }
+      },
+      setPowerSource:function(line, location, deviceTag){
+
+      },
+      setNetworkSource:function(line, location, name){
+
+      },
+      setPowerTarget:function(line, location, name){
+
+      },
+      setNetworkTarget:function(line, location, name){
+      },
     }  
   },
   initializeBranchCircuits: () => {

@@ -14,15 +14,15 @@ const lpdOptions = {
   ],
 
   psuSelection120_240Options:[
-    {value: "Balluff:BAE00ET", label: "Balluff:BAE00ET"},
-    {value: "Balluff-BAE00FL", label: "Balluff:BAE00FL"},
-    {value: "Balluff:BAE0133", label: "Balluff:BAE0133"},
+    {value: "Balluff: BAE00ET", label: "Balluff: BAE00ET"},
+    {value: "Balluff: BAE00FL", label: "Balluff: BAE00FL"},
+    {value: "Balluff: BAE0133", label: "Balluff: BAE0133"},
   ],
 
   psuSelection400_480Options:[
-    {value: "Siemens:6ES7148-4PC00-0HA0", label: "Siemens:6ES7148-4PC00-0HA0"},
-    {value: "Turck:PSU67-3P-1MP-2M5-24200-F", label: "Turck:PSU67-3P-1MP-2M5-24200-F"},
-    {value: "Puls:FPT500.247-064-102", label: "Puls:FPT500.247-064-102"},
+    {value: "Siemens: 6ES7148-4PC00-0HA0", label: "Siemens: 6ES7148-4PC00-0HA0"},
+    {value: "Turck: PSU67-3P-1MP-2M5-24200-F", label: "Turck: PSU67-3P-1MP-2M5-24200-F"},
+    {value: "Puls: FPT500.247-064-102", label: "Puls: FPT500.247-064-102"},
   ],
   psuToPsuCableLengthOptions:[
     { value: "TBD", label: "TBD" },
@@ -59,12 +59,12 @@ const lpdStore = create(
     setWipPsu: (psu) => {
       set({wipPsu:psu});
     },
-    addWipPsu: (line, location, deviceTag) => {
+    addWipPsu: (line, location, deviceTag, createNew) => {
       set((state) => {
         const newPsu = {...state.wipPsu}
         let newLpds = [...state.lpds]
         const index = newLpds.findIndex(group => group.location === location && group.line === line);
-        if(index > -1){
+        if(index > -1 && !createNew){
           newPsu.data.parent = newLpds[index];
           newLpds[index].psus = [...newLpds[index].psus,newPsu ]
         } else {
@@ -78,6 +78,16 @@ const lpdStore = create(
           newLpd.psus.push(newPsu);
           newLpds = [...newLpds, newLpd]
         }
+
+        const newLpd = lpdModel.create();
+        newLpd.line = line;
+        newLpd.location = location;
+        newLpd.powerSourceLine = line;
+        newLpd.powerSourceLocation = location;
+        newLpd.powerSourceDT = deviceTag;
+        newPsu.data.parent = newLpd;
+        newLpd.psus.push(newPsu);
+        newLpds = [...newLpds, newLpd]
         
         return {lpds:newLpds}
       })    

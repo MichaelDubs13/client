@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import CreateableDropdownItem from '../Util/CreateableDropdownItem';
 import "../../Eec.css";
 import { lineStore } from '../../Store/lineStore';
-import { isNumberValidation } from '../Util/Validations';
+import { isNumberValidation, isValidLocation } from '../Util/Validations';
 import { FormItem, FormLabel } from '@tesla/design-system-react';
 
 
@@ -37,7 +37,7 @@ const LineStationSelection = ({
                     <CreateableDropdownItem item={item} options={lines} index={index} property={"line"} onChange={onLineChange} isRequired={true} type="condensed"/>
                     <FormLabel>+</FormLabel>
                     <CreateableDropdownItem item={item} property={stationProperty} options={stations} index={index} type="condensed"
-                            validation={isNumberValidation} isRequired={true}/>
+                            validation={isValidLocation} isRequired={true}/>
                 </FormItem>
             </div>
         </div>

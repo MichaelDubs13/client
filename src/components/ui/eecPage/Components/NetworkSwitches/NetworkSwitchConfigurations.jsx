@@ -34,7 +34,7 @@ const NetworkSwitchConfigurations = () => {
                 <SetItemsNumberInputBox title={"Enter the number of Network Switches required for this line:"} items={networkSwitches} addItems={addNetworkSwitches}/>                   
                 {   
                     networkSwitches.map((networkSwitch, index) => {
-                        return <HeadingItem label={`${index+1}:Network Switch ++${line}+${networkSwitch.location}-${networkSwitch.deviceTag} Parameters`} 
+                        return <HeadingItem label={`${index+1}:Network Switch ++${networkSwitch.line}+${networkSwitch.location}-${networkSwitch.deviceTag} Parameters`} 
                                 size={18} margin={"20px"} open={false}
                                 headerIcon={networkSwitch.UI.icon}
                                 children={<NetworkSwitchConfiguration networkSwitch={networkSwitch} index={index}/>}

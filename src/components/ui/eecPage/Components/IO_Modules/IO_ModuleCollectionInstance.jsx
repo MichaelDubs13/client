@@ -1,7 +1,6 @@
 import LineStationSelection from '../Common/LineStationSelection';
 import { ioModuleGroupOptions, ioModuleStore } from '../../Store/ioModuleStore';
 import IO_ModuleConfigurations from './IO_ModuleConfigurations';
-import { networkSwitchConfiguration } from '../../Store/networkSwitchStore';
 import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
 import { DataTable } from '@tesla/design-system-react';
 import "../../Eec.css";
@@ -13,7 +12,6 @@ import { lineConfiguration } from '../../Store/lineStore';
 const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
     const setNumberOfIOModules = ioModuleStore((state) => state.setNumberOfIOModules);
     const ioModuleGroupIndex = {ioModuleGroupIndex:index}
-    const networkPortOptions = networkSwitchConfiguration.getEthernetNetworkPortOptions(16)
     return (
         
         <div>
@@ -34,13 +32,15 @@ const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
                         lineProperty={"ethernetSourceLine"}
                         stationProperty={"ethernetSourceLocation"}
                         deviceProperty={"ethernetSourceDT"}
-                        type="networkSource"/>
-                        {/* need to include the device port dropdown here */}
-                        {ioModuleGroup.ethernetSourceDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
-                            <>
-                                <DropdownItem title={"Select the network port of the network switch (e.g., 1)"} item={ioModuleGroup} index={ioModuleGroupIndex} options={networkPortOptions} property={"ethernetSourceDevicePort"}/>
-                            </>
-                        )}
+                        type="networkSource"
+                        portConfig ={{
+                            title:"Select the network port of the network switch (e.g., 1)",
+                            property:"ethernetSourceDevicePort",
+                            type:"network",
+                            targetDT:ioModuleGroup.ethernetSourceDT,
+                            targetLocation:ioModuleGroup.ethernetSourceLocation,
+                            targetLine:ioModuleGroup.line,
+                        }}/>
 
                     <SetItemsNumberInputBox title={"Enter the total number of I/O modules within this cascading group:"} 
                         items={ioModuleGroup.ioModules} addItems={setNumberOfIOModules} index={index}/>           

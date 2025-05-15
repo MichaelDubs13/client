@@ -10,10 +10,11 @@ const NetworkSwitchPort = ({
   networkSwitchIndex,
   portIndex,
   port,
+  createNew,
 }) => {
   const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
   const networkSwitchesOptions = networkSwitchStore((state) => state.networkSwitchesOptions);
-  const index = {networkSwitchIndex:networkSwitchIndex, portIndex:portIndex};
+  const index = createNew? {portIndex:portIndex} : {networkSwitchIndex:networkSwitchIndex, portIndex:portIndex};
   const [portOptions, setPortOptions] = useState([]) 
 
   useEffect(() => {

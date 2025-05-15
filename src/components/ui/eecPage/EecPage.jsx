@@ -1,7 +1,7 @@
 import { Button, } from "@tesla/design-system-react";
 import LineConfiguration from "./Components/LineConfiguration";
 import ModelBuilder from "./Models/ModelBuilder";
-import { Icon, Tooltip, TooltipWrapper, useTooltipState, FormItemFileUpload} from '@tesla/design-system-react';
+import { Icon, Tooltip, TooltipWrapper, useTooltipState, FormItemFileUpload, Link} from '@tesla/design-system-react';
 import { iconInfo } from '@tesla/design-system-icons';
 import ModalCreateEecForm from "./ModalCreateEecForm";
 import DownloadButton from "../libraryPage/DownloadButton";
@@ -87,7 +87,7 @@ const EecPage = () => {
         <>
           <div style={{marginLeft:'50px'}}>
             <div>
-              <p>Report any issues to miballinger@tesla.com</p>
+              <p style={{fontSize:'18px', fontWeight:'bold'}}>Report any issues to <Link variant="vertical" href={`https://issues.teslamotors.com/browse/EPLAN-191`} rel="noopener noreferrer" target="_blank">EPLAN-191</Link></p>
             </div>
             <h2>
                 Tools

@@ -2,7 +2,6 @@ import "../../Eec.css";
 import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import DeviceSelection from "../Common/DeviceSelection";
-import NetworkPortSelection from "../Common/NetworkPortSelection";
   
   const LpdPsuDropItem = ({ 
     lpdIndex,
@@ -13,8 +12,8 @@ import NetworkPortSelection from "../Common/NetworkPortSelection";
     onFlaChange,
   }) => {
     const index = {lpdIndex:lpdIndex,psuIndex:psuIndex,dropIndex:dropIndex }
-    const outputPortBrandOptions = ['Turck', 'Puls', 'Balluff-BAE0133']
-    const outputPortOptions = lpd.psu_selection === 'Balluff-BAE0133' ?
+    const outputPortBrandOptions = ['Turck', 'Puls', 'Balluff: BAE0133']
+    const outputPortOptions = lpd.psu_selection === 'Balluff: BAE0133' ?
     [
         {value: "X3", label: "X3"},
         {value: "X4", label: "X4"},
@@ -42,10 +41,16 @@ import NetworkPortSelection from "../Common/NetworkPortSelection";
               deviceProperty={"targetDT"}
               stationProperty={"targetLocation"}
               type="powerTarget"
-              canCreateDevice={true}/>                                
-          <NetworkPortSelection title={"Enter the device port to be connected to"} item={drop} 
-              index={index} property={"ethernetSourceDevicePort"} targetDT={drop.targetDT} targetLocation={drop.targetLocation} targetLine={drop.line}
-              portSelect="power"/>
+              canCreateDevice={true}
+              portConfig ={{
+                  title:"Enter the device port to be connected to",
+                  property:"ethernetSourceDevicePort",
+                  type:"power",
+                  targetDT:drop.targetDT,
+                  targetLocation:drop.targetLocation,
+                  targetLine:drop.line,
+              }}/>                                
+       
           <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
           <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"} onChange={onFlaChange}/>              
         </div>

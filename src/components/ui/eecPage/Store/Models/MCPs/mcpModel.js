@@ -136,7 +136,24 @@ export const mcpModel = {
             devices = lineConfiguration.getDevices(this.ports, devices, station);
             devices = [...devices, ]
             return devices;
-          }
+          },
+          setPortsLine: function(line){
+            this.ports.forEach(port => {
+              const indexObject = port.getIndexObject();
+              port.setValue(indexObject, "line", line);
+            })
+          },
+          setPowerSource:function(line, location, deviceTag){
+
+          },
+          setNetworkSource:function(line, location, name){
+
+          },
+          setPowerTarget:function(line, location, name){
+
+          },
+          setNetworkTarget:function(line, location, name){
+          },
       }
       mcp.ports = mcpModel.initializePorts(3, mcp);
       return mcp;
