@@ -114,3 +114,7 @@ export function recreateObject(item, create){
   return newItem;
 }
 
+export function getTrailingNumbers(str) {
+  const match = str.match(/(\d+)$/);
+  return match ? match[1] : null;
+}

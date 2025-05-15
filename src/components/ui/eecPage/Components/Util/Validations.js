@@ -12,11 +12,6 @@ export const isValidIP = (str)=> {
     return (!str ? true : ipv4Regex.test(str)) || 'Please enter a valid ip address'
 }
 
-export function getTrailingNumbers(str) {
-  const match = str.match(/(\d+)$/);
-  return match ? match[1] : null;
-}
-
 export function isAAANN(str) {
   const regex = /^[a-zA-Z]{3}\d{2}$/;
   return regex.test(str);
