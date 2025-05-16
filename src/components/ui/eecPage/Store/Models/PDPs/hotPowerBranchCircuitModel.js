@@ -10,7 +10,7 @@ export const hotPowerBranchCircuitModel = {
   create: (parent) => {
     return {
       HotPwrDropType: "Spare",
-      line:parent.line,
+      line:parent?.line,
       targetLocation: "",
       targetDT: "",
       description: "",
@@ -51,12 +51,16 @@ export const hotPowerBranchCircuitModel = {
       setLine:function(line){
 
       },
-      getStations: function(){
+      getStations: function(line){
+        if(this.line != line) return [];
         return [this.targetLocation,]
       },
-      getDevices: function(){
+      getDevices: function(line, station){
+        if(this.line != line) return []
+        if(this.targetLocation != station) return []
         return [this.targetDT,]
       },
+      
       getSourceLine:function(){
         return this.data.parent.line
         },
@@ -66,6 +70,7 @@ export const hotPowerBranchCircuitModel = {
       getSourceDeviceTag:function(){
         return this.data.parent.location;
       },
+      
     }
   },
 }

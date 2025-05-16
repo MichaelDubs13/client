@@ -90,16 +90,16 @@ export const psuModel = {
                 drop.setLine(line, newLine)
               })
           },
-          getStations: function(){
+          getStations: function(line){
             var stations = []
-            stations = lineConfiguration.getStations(this.drops, stations);
-            stations = [...stations, this.location]
+            stations = lineConfiguration.getStations(this.drops,line, stations);
+            if(this.line === line)stations = [...stations,this.location]
             return stations;
           },
-          getDevices: function(station){
+          getDevices: function(line, station){
             var devices = []
-            devices = lineConfiguration.getDevices(this.drops, devices, station);
-            if(this.location === station){
+            devices = lineConfiguration.getDevices(this.drops, devices, line, station);
+            if(this.location === station && this.line === line){
               devices = [...devices, this.deviceTag]
             }
             return devices;

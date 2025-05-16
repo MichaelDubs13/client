@@ -10,10 +10,12 @@ export default class _c_DC_PowerDrop_Balluff_CLS2_120VPSU extends Component{
     }
     get Parameters(){
         return [
+            {name: "_s_DropLine_", value: this._drop.line, type: "String"},
             {name: "_s_DropLocation_", value: this._drop.targetLocation, type: "String"},
             {name: "_s_DropName_", value: this._drop.targetDT, type: "String"},
             {name: "DC_PowerDrop_FLA", value: this._drop.fla, type: "Double"},
-            {name: "DescriptionTargetDevice", value: this._drop.description, type: "String"}, //what is this
+            {name: "DescriptionTargetDevice", value: this._drop.description, type: "String"},
+            {name: "Output_Port", value: this._drop.outputPort, type: "String"}, 
         ];
     }
 

@@ -51,12 +51,13 @@ export const networkPortModel = {
               this.deviceTypeSelection,
             ]
           },
-          getStations: function(){
+          getStations: function(line){
+            if(this.line != line) return [];
             return [this.targetLocation]
           },
-          getDevices: function(station){
+          getDevices: function(line, station){
             var devices = []
-            if(this.targetLocation === station){
+            if(this.targetLocation === station && this.line === line){
               devices = [...devices, this.targetDT]
             }
             return devices;

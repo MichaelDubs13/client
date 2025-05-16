@@ -6,6 +6,9 @@ import { powerDropModel } from "./Models/LDPs/powerDropModel";
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 const lpdOptions = {
+  turk:'Turck: PSU67-3P-1MP-2M5-24200-F',
+  puls:'Puls: FPT500.247-064-102',
+  ballufBAE0133:'Balluff: BAE0133',
   psuSupplyVoltageOptions: [
     { value: "120", label: "120V" },
     { value: "240", label: "240V" },

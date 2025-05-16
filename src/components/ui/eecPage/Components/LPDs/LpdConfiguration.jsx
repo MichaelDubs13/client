@@ -13,7 +13,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    
     const [psuCascadingLimit, setPsuCascadingLimit]=useState("");
     const getCbOptions = lineStore((state)=> state.getCbOptions)
-    const line = projectStore((state) => state.line);
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
     const [cbOptions, setCbOptions] = useState([])
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?

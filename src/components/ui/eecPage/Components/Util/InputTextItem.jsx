@@ -14,7 +14,7 @@ import { useForm, Controller } from "react-hook-form";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished, validation}) =>{
+const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished, validation, valueStyle}) =>{
     const { control, trigger, setValue, formState: { errors } } = useForm();
     const defaultValue = item? item[property] : placeHolder;
     const [itemValue, setItemValue] = useState(defaultValue);
@@ -80,7 +80,7 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
                     {
                         title  && <FormLabel className="form-label" htmlFor="context">{title}</FormLabel>
                     }
-                    <FormLabel className="form-label-readonly">{defaultValue}</FormLabel>
+                    <FormLabel className="form-label-readonly" style={valueStyle}>{defaultValue}</FormLabel>
                 </FormItem> 
                 :
                 <FormItem className="form-item">
@@ -91,6 +91,7 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
                             render={({ field }) => (
                                 <FormInputText
                                 id="context"
+                                style={valueStyle}
                                 readOnly={readOnly}
                                 placeholder={defaultValue}
                                 value={itemValue}

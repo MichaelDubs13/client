@@ -18,13 +18,51 @@ const LpdPsuItem = ({
 const index = createNew ?  {} : {psuIndex:psuIndex, lpdIndex:lpdIndex}
 const setNumberOfDrops =  lpdStore((state) => state.setNumberOfDrops);
 const [totalFLA, setTotalFLA]= useState(0);
+const [totalXD2FLA, setTotalXD2FLA]= useState(0);
+const [totalXD3FLA, setTotalXD3FLA]= useState(0);
+const [totalClass2FLA, setTotalClass2FLA]= useState(0);
+const [totalXD4FLA, setTotalXD4FLA]= useState(0);
+const [totalXD5FLA, setTotalXD5FLA]= useState(0);
+const [updateOutputPort, setUpdateOutputPort]=useState(0);
+var accumulatedFla = 0;
 const handleFlaChange =() => {
   var totalFLA = 0;
+  var totalX2FLA = 0;
+  var totalX3FLA = 0;
+  var totalClass2FLA = 0;
+  var totalX4FLA = 0;
+  var totalX5FLA = 0;
   psu.drops.forEach(drop => {
     totalFLA = totalFLA + Number(drop.fla);
+    if(drop.outputPort === "XD2") totalX2FLA = totalX2FLA + Number(drop.fla);
+    if(drop.outputPort === "XD3" || "X3") totalX3FLA = totalX3FLA + Number(drop.fla);
+    if(drop.outputPort === "Class 2") totalClass2FLA = totalClass2FLA + Number(drop.fla);
+    if(drop.outputPort === "X4") totalX4FLA = totalX4FLA + Number(drop.fla);
+    if(drop.outputPort === "X5") totalX5FLA = totalX5FLA + Number(drop.fla);
   })
   setTotalFLA(totalFLA);
+  setTotalXD2FLA(totalX2FLA);
+  setTotalXD3FLA(totalX3FLA);
+  setTotalClass2FLA(totalClass2FLA);
+  setTotalXD4FLA(totalX4FLA);
+  setTotalXD5FLA(totalX5FLA);
+  setUpdateOutputPort(updateOutputPort+1);
 }
+
+const getColorStyle=(fla, capacity)=>{
+  if(fla > capacity){
+    return {color:'red'}
+  } else if (fla > (capacity * 0.8)){
+    return {color:'#E4D00A'}
+  }
+}
+
+const getCapacity = ()=>{
+  if(lpd.psu_selected === lpdOptions.turk)return 20;
+  if(lpd.psu_selected === lpdOptions.puls)return 20;
+  if(lpd.psu_selected === lpdOptions.ballufBAE0133)return 12.5;
+}
+
 return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
@@ -39,7 +77,35 @@ return (
                    options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
             </>
           )}
-          <InputTextItem title={"FLA Sum"} placeHolder={`${totalFLA}A`} readOnly={true} />   
+          {
+            lpd && 
+            <div>
+                <InputTextItem title={"FLA Sum"} placeHolder={`${totalFLA}A`} readOnly={true} valueStyle={getColorStyle(totalFLA, getCapacity())}/> 
+                {
+                    lpd.psu_selected === lpdOptions.turk && 
+                    <div>
+                      <InputTextItem title={"Summation XD2 FLA"} placeHolder={`${totalXD2FLA}A`} readOnly={true} /> 
+                      <InputTextItem title={"Summation XD3 FLA "} placeHolder={`${totalXD3FLA}A`} readOnly={true} /> 
+                    </div>
+                }
+                {
+                    lpd.psu_selected === lpdOptions.puls && 
+                    <div>
+                      <InputTextItem title={"Summation Class 2 FLA"} placeHolder={`${totalClass2FLA}A`} readOnly={true} valueStyle={getColorStyle(totalClass2FLA, 4)}/> 
+                      <InputTextItem title={"Summation X4 FLA "} placeHolder={`${totalXD4FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD4FLA+totalXD5FLA, 20)}/>
+                      <InputTextItem title={"Summation X5 FLA "} placeHolder={`${totalXD5FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD4FLA+totalXD5FLA, 20)}/> 
+                    </div>
+                }        
+                {
+                    lpd.psu_selected === lpdOptions.ballufBAE0133 && 
+                    <div>
+                      <InputTextItem title={"Summation X3 FLA"} placeHolder={`${totalXD3FLA}A`} readOnly={true} /> 
+                      <InputTextItem title={"Summation X4 FLA"} placeHolder={`${totalXD4FLA}A`} readOnly={true} />
+                      <InputTextItem title={"Summation X5 FLA"} placeHolder={`${totalXD5FLA}A`} readOnly={true} /> 
+                    </div>
+                }      
+            </div>
+          }  
           {
             lpd && 
             <>
@@ -47,12 +113,13 @@ return (
                     items={psu.drops} addItems={setNumberOfDrops} index={index}/>          
                 {
                     psu.drops.map((drop, index) => {
+                      accumulatedFla = accumulatedFla + (drop.outputPort != "Class 2" ? Number(drop.fla) : 0);
                       return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
                       size={18} margin={"20px"} open={false} 
                       headerIcon={drop.UI.icon}
                       children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} 
-                        drop={drop} lpd={lpd} psu={psu}
-                        onFlaChange={handleFlaChange}/>}/>
+                        drop={drop} lpd={lpd} psu={psu} accumulatedFla={accumulatedFla}
+                        onFlaChange={handleFlaChange} updateOutputPort={updateOutputPort}/>}/>
                     })
                 } 
             </>

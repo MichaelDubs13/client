@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import { FormItem, FormLabel, FormInputDropdown } from '@tesla/design-system-react';
 import "../../Eec.css";
 import PropTypes from "prop-types";
@@ -18,7 +18,11 @@ import PropTypes from "prop-types";
 const DropdownItem = ({title, item, property, placeHolder, setModelValue, options,onChange, index}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState(defaultValue);
-
+    
+    useEffect(() => {
+        setSelectedOption(defaultValue);
+    }, [defaultValue]);
+    
     const handleOptionSelect = async (event) =>{
         const reportedValue = event.value;
         setSelectedOption(event.value);

@@ -16,7 +16,7 @@ import EditableSelect from "./EditableSelect";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation, isRequired, duplicateExist}) =>{
+const CreateableDropdownItem = ({title, item, property, placeHolder, setModelValue, options, onChange, index, type, validation, isRequired, duplicateExist, capitalizeValues}) =>{
     const defaultValue = item? item[property] : placeHolder;
     const [selectedOption, setSelectedOption] = useState({label:defaultValue , value:defaultValue });
     const { control, trigger, setValue, formState: { errors } } = useForm();
@@ -59,6 +59,9 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
 
     const handleOptionCreation = (inputValue) => {
         if(inputValue){
+          if(capitalizeValues){
+            inputValue = inputValue.toUpperCase();
+          }
           setItemValue(inputValue)
         }
     };

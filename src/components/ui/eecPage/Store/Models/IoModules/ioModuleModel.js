@@ -102,11 +102,12 @@ export const ioModuleModel = {
               port.setLine(line, newLine)
             })
           },
-          getStations: function(){
+          getStations: function(line){
+            if(this.line != line) return []
             return [this.location,]
           },
-          getDevices: function(station){
-            if(this.location  === station){
+          getDevices: function(line, station){
+            if(this.location  === station && this.line === line){
               return [this.deviceTag,]
             }
             return []

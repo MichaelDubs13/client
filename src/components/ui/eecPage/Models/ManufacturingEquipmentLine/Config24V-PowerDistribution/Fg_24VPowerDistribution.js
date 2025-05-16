@@ -35,7 +35,11 @@ export default class Fg_24VPowerDistribution extends Component{
         this.b_PSU_Selection_240_ = false;
 
         this._Balluff_CLS2_BAE0133 = [];
+        this._Balluf_BAE00FL_BAE00ET = [];
+        this._Balluff_CLS2_BAE012P = [];
         this._Turck = [];
+        this._Puls = [];
+        this._Siemens = [];
         this.update();
     }
 
@@ -55,10 +59,13 @@ export default class Fg_24VPowerDistribution extends Component{
                 this.PSU_Selection_120 = ``;
                 this.s_PSU_Selection_120_240 = ``;
                 this.s_PSU_Selection_480_400 = `${psu.MFG}`;
+            } else if(psu.MFG === "Puls"){
+                this._Puls.push(psu);
+                this.PSU_Selection_120 = ``;
+                this.s_PSU_Selection_120_240 = ``;
+                this.s_PSU_Selection_480_400 = `${psu.MFG}`;
             }
         })
-        this.Balluff_CLS2_BAE0133_NumberOfPSU = this._Balluff_CLS2_BAE0133.length;
-        this.Turck_NumberOfPSU = this._Turck.length;
     }
 
 
@@ -70,11 +77,13 @@ export default class Fg_24VPowerDistribution extends Component{
             {name: "DeviceTag", value: this._lpd.powerSourceDT, type: "String"},
             {name: "_PSUSupplyVoltage_", value: this._lpd.supplyVoltage, type: "String"},
             {name: "LocalDisconnectRequired", value: false, type: "Boolean"},
-            {name: "Turck_NumberOfPSU", value: this.Turck_NumberOfPSU, type: "Integer"},
-            {name: "Puls_NumberOfPSU", value: this.Puls_NumberOfPSU, type: "Integer"},
-            {name: "Siemens_NumberOfPSU", value: this.Siemens_NumberOfPSU, type: "Integer"},
-            {name: "Balluf_BAE00FL_BAE00ET_NumberOfPSU", value: this.Balluf_BAE00FL_BAE00ET_NumberOfPSU, type: "Integer"},
-            {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this.numberOfBAE0133, type: "Integer"},
+
+            {name: "Turck_NumberOfPSU", value: this._Turck.length, type: "Integer"},
+            {name: "Puls_NumberOfPSU", value: this._Puls.length, type: "Integer"},
+            {name: "Siemens_NumberOfPSU", value: this._Siemens.length, type: "Integer"},
+            {name: "Balluf_BAE00FL_BAE00ET_NumberOfPSU", value: this._Balluf_BAE00FL_BAE00ET.length, type: "Integer"},
+            {name: "Balluff_CLS2_BAE0133_NumberOfPSU", value: this._Balluff_CLS2_BAE0133.length, type: "Integer"},
+
             {name: "s_PSU_Selection_480_400", value: this.s_PSU_Selection_480_400, type: "String"},
             {name: "s_PSU_Selection_120_240", value: this.s_PSU_Selection_120_240, type: "String"},
         ];

@@ -25,36 +25,58 @@ const lineConfiguration = {
     },
     getLines:(array, lines) => {
         array.map((item) => {
-            if(item.line){
-                if(!lines.includes(item.line)){
-                    lines.push(item.line);
-                }
-            }
+            lines.push(...item.getLines());
         })
         return lines;
     },    
-    getLocations:(array, locations) => {
+
+    getStations:(array, line, stations) => {
         array.map((item) => {
-            if(item.location){
-                if(!locations.includes(item.location)){
-                    locations.push(item.location)
-                }
-            } 
-        })
-        return locations;
-    },   
-    getStations:(array, stations) => {
-        array.map((item) => {
-            const foundStations = item.getStations();
+            const foundStations = item.getStations(line);
             if(foundStations.length > 0){
                 stations.push(...foundStations);
             }
         })
         return stations;
     },    
-    getDevices:(array, devices, station) => {
+
+    getStationOptions:(line)=>{
+        const items = lineConfiguration.getAllStoreItems();
+        var newStations = []
+        newStations = lineConfiguration.getStations(items,line, newStations);
+        newStations = newStations.filter(station => station)
+
+        newStations = [...new Set(newStations)];
+        newStations = newStations.sort();
+        newStations = newStations.map((station) => {
+            return {label:station, value:station}
+        })
+
+        return newStations;
+    },
+
+    /**
+     * get all devices created in the UI
+     * change this to auto parse
+     * @param {*} station 
+     * @returns 
+     */
+    getDeviceOptions:(line, station)=>{
+        const items = lineConfiguration.getAllStoreItems();
+        var newDevices = []
+        newDevices = lineConfiguration.getDevices(items, newDevices,line, station);
+        newDevices = newDevices.filter(device => device);
+        newDevices = [...new Set(newDevices)];
+        newDevices = newDevices.sort();
+        newDevices = newDevices.map((device) => {
+            return {label:device, value:device}
+        })
+        return newDevices;
+    },
+
+    getDevices:(array, devices, line, station) => {
         array.map((item) => {
-            const foundDevices = item.getDevices(station);
+            const foundDevices = item.getDevices(line, station);
             if(foundDevices.length > 0){
                 devices.push(...foundDevices); 
             }
@@ -120,6 +142,8 @@ const lineStore = create((set) => ({
         const line = projectStore.getState().line;
         var newLines = [line,]
         newLines = lineConfiguration.getLines(items, newLines);
+        newLines = [...new Set(newLines)];  
+        newLines = newLines.sort();
         newLines = newLines.map((line) => {
             return {label:line, value:line}
         })
@@ -136,68 +160,6 @@ const lineStore = create((set) => ({
             return {plcs: plcOptions};
         })
         return plcOptions;
-    },
-    getLocationOptions:(line)=>{
-        const items = lineConfiguration.getAllStoreItems();
-
-        var newLocations = []
-        newLocations = lineConfiguration.getLocations(items, newLocations); 
-        newLocations = newLocations.filter(location => location);  
-
-        var newStations = []
-        newStations = lineConfiguration.getStations(items, newStations);
-        newStations = newStations.filter(station => station)
-        
-        newLocations.push(...newStations);
-        newLocations = [...new Set(newLocations)];  
-        newLocations = newLocations.sort();
-        newLocations = newLocations.map((item) => {
-            return {label:item, value:item}
-        })
-        
-        return newLocations;
-    },
-
-    getStationOptions:()=>{
-        const items = lineConfiguration.getAllStoreItems();
-        var newStations = []
-        newStations = lineConfiguration.getStations(items, newStations);
-        newStations = newStations.filter(station => station)
-
-        var newLocations = []
-        newLocations = lineConfiguration.getLocations(items, newLocations); 
-        newLocations = newLocations.filter(location => location);  
-        
-        newStations.push(...newLocations);
-        newStations = [...new Set(newStations)];
-        newStations = newStations.sort();
-        newStations = newStations.map((station) => {
-            return {label:station, value:station}
-        })
-        
-        set((state) => {
-            return {stations: newStations};
-        })
-
-        return newStations;
-    },
-
-    /**
-     * get all devices created in the UI
-     * change this to auto parse
-     * @param {*} station 
-     * @returns 
-     */
-    getDeviceOptions:(station)=>{
-        const items = lineConfiguration.getAllStoreItems();
-        var newDevices = []
-        newDevices = lineConfiguration.getDevices(items, newDevices,station);
-        newDevices = newDevices.filter(device => device);
-        newDevices = [...new Set(newDevices)];
-        newDevices = newDevices.map((device) => {
-            return {label:device, value:device}
-        })
-        return newDevices;
     },
 
     getCbOptions:(location)=>{
