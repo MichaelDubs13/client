@@ -103,22 +103,31 @@ export const ioModuleGroupModel = {
           ioModule.setLine(line, newLine)
         })
       },
-      getStations: function(){
+      getStations: function(line){
         var stations = []
-        stations = lineConfiguration.getStations(this.ioModules, stations);
-        return [...stations, this.powerSourceLocation, this.location]
+        stations = lineConfiguration.getStations(this.ioModules, line, stations);
+        if(this.line === line)stations = [...stations,this.location]
+        if(this.powerSourceLine === line)stations = [...stations,this.powerSourceLocation]
+        return stations;
       },
-      getDevices: function(station){
+      getDevices: function(line, station){
         var devices = []
-        devices = lineConfiguration.getDevices(this.ioModules, devices);
-        if(this.powerSourceLocation === station){
-          devices = [...devices, this.powerSourceDT]
-        }
-        if(this.ethernetSourceLocation === station){
-          devices = [...devices, this.ethernetSourceDT]
-        }
+        devices = lineConfiguration.getDevices(this.ioModules, devices, line, station);
+        if(this.line != line) return devices;
+        if(this.powerSourceLocation === station) devices = [...devices, this.powerSourceDT]
+        if(this.ethernetSourceLocation === station) devices = [...devices, this.ethernetSourceDT]
         return devices;
-      }
+      },
+      getLines:function(){
+        var lines = [this.line,this.powerSourceLine, this.powerTargetLine, this.ethernetSourceLine, this.ethernetTargetLine,]
+        this.ioModules.forEach(ioModule => {
+          if(!lines.includes(ioModule.line)){
+              lines.push(ioModule.line);
+          }
+        })
+
+        return lines;
+      },
     }
    
     return ioModuleGroup;

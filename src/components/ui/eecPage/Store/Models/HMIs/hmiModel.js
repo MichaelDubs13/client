@@ -126,23 +126,21 @@ export const hmiModel = {
               this.setValue(indexObject, "line", newLine);
             }
           },
-           getStations: function(){
-             return [this.location, this.powerSourceLocation, this.ethernetSourceLocation, this.ethernetTargetLocation]
+           getStations: function(line){
+              var stations=[];
+              if(this.line === line)stations = [...stations,this.location]
+              if(this.powerSourceLine === line)stations = [...stations,this.powerSourceLocation]
+              if(this.ethernetSourceLine === line)stations = [...stations,this.ethernetSourceLocation]
+              if(this.ethernetTargetLine === line)stations = [...stations,this.ethernetTargetLocation]
+             return stations;
            },
-           getDevices: function(station){
+           getDevices: function(line, station){
              var devices = []
-             if(this.location === station){
-               devices = [...devices, this.deviceTag]
-             }
-             if(this.powerSourceLocation === station){
-               devices = [...devices, this.powerSourceDT]
-             }
-             if(this.ethernetSourceLocation === station){
-               devices = [...devices, this.ethernetSourceDT]
-             }
-             if(this.ethernetTargetLocation === station){
-               devices = [...devices, this.ethernetTargetDT]
-             }
+             if(this.line != line) return devices;
+             if(this.location === station) devices = [...devices, this.deviceTag]
+             if(this.powerSourceLocation === station) devices = [...devices, this.powerSourceDT]
+             if(this.ethernetSourceLocation === station) devices = [...devices, this.ethernetSourceDT]
+             if(this.ethernetTargetLocation === station) devices = [...devices, this.ethernetTargetDT]
              return devices;
            },
            getSourceLine:function(){
@@ -153,6 +151,10 @@ export const hmiModel = {
             },
             getSourceDeviceTag:function(){
               return this.deviceTag
+            },
+            getLines:function(){
+              var lines = [this.line,this.powerSourceLine, this.ethernetSourceLine, this.ethernetTargetLine,]
+              return lines;
             },
            setRfidExtensionPosition: function(orientation){
             if(orientation == "Right"){

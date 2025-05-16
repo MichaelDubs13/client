@@ -75,11 +75,12 @@ export const powerDropModel = {
           this.setValue(indexObject, "line", newLine);
         }
       },
-      getStations: function(){
+      getStations: function(line){
+        if(this.line != line) return []
         return [this.targetLocation,]
       },
-      getDevices: function(station){
-        if(this.targetLocation  === station){
+      getDevices: function(line, station){
+        if(this.targetLocation  === station && this.line === line){
           return [this.targetDT,]
         }
         return []

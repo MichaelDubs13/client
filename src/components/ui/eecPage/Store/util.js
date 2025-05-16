@@ -85,12 +85,17 @@ export function circularReplacer() {
 }
 
 export function recreateArrayElement(parent, array, create){
-  var newArray = array.map(item => {
-    const newItem = create();      
-      Object.assign(newItem, item);
-      newItem.data.parent = parent;
-      return newItem
-  })
+  if(array){
+    var newArray = array.map(item => {
+        const newItem = create();      
+          Object.assign(newItem, item);
+          newItem.data.parent = parent;
+          return newItem
+      })
+  } else {
+    return [];
+  }
+  
 
   return newArray;
 }

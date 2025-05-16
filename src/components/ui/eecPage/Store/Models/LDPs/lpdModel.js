@@ -14,7 +14,6 @@ export const lpdModel = {
           powerSourceLine:"",
           powerSourceLocation:"",
           powerSourceDT:"",
-          location:"",
           supplyVoltage:"",
           psu_selected:"", //only used for UI
           psus:[],
@@ -92,21 +91,46 @@ export const lpdModel = {
               psu.setLine(line, newLine)
             })
           },
-          getStations: function(){
+          getStations: function(line){
             var stations = []
-            stations = lineConfiguration.getStations(this.psus, stations);
-            stations = [...stations, this.powerSourceLocation]
+            stations = lineConfiguration.getStations(this.psus, line, stations);
+            if(this.line === line)stations = [...stations,this.location]
+            if(this.powerSourceLine === line)stations = [...stations,this.powerSourceLocation]
+            
             return stations;
           },
-          getDevices: function(station){
+          getDevices: function(line, station){
             var devices = []
-            devices = lineConfiguration.getDevices(this.psus, devices, station);
-            devices = [...devices, ]
-            if(station === this.powerSourceLocation){
+            devices = lineConfiguration.getDevices(this.psus, devices,line,  station);
+            if(station === this.powerSourceLocation && this.powerSourceLine === line){
               devices = [...devices, this.powerSourceDT];
             }
             return devices;
-          }
+          },
+           getLines:function(){
+            var lines = [this.line,this.powerSourceLine,]
+            this.psus.forEach(psu => {
+              if(!lines.includes(psu.line)){
+                  lines.push(psu.line);
+              }
+              psu.drops.forEach(drop => {
+                if(!lines.includes(drop.line)){
+                  lines.push(drop.line);
+              }
+              })
+            })
+
+            return lines;
+          },
+           getSourceLine:function(){
+            return this.line
+          },
+          getSourceLocation:function(){
+            return this.location;
+          },
+          getSourceDeviceTag:function(){
+            return "";
+          },
         }
       },
       merge: (state, currentState) => { 

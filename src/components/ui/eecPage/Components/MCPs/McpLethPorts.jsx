@@ -20,7 +20,7 @@ const McpLethPorts = ({
               portConfig ={{
                   title:"Select the port on the target switch this is connected to:",
                   property:"targetPort",
-                  type:"power",
+                  type:"network",
                   targetDT:port.targetDT,
                   targetLocation:port.targetLocation,
                   targetLine:port.line,

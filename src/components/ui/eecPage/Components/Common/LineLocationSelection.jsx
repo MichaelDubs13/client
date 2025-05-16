@@ -18,14 +18,13 @@ const LineLocationSelection = ({
     const plant = projectStore((state) => state.plant);
     const shop = projectStore((state) => state.shop);
     const getLineOptions = lineStore((state) => state.getLineOptions)     
-    const getLocationOptions = lineStore((state) => state.getLocationOptions) 
     const lines = lineStore((state) => state.lines)   
     const [locationOptions, setLocationOptions] = useState([]);
     const [duplicateExist, setDuplicateExist]=useState(false)
 
     useEffect(() => {
         getLineOptions();
-        var locations = getLocationOptions(item.line);
+        var locations = lineConfiguration.getStationOptions(item.line);
         setLocationOptions(locations);
     }, [item.line]);
 
@@ -80,10 +79,10 @@ const LineLocationSelection = ({
                     <FormLabel className="form-label-device">Panel Location (e.g., ++LINE+LOCATION)</FormLabel>
                     <FormLabel>++</FormLabel>
                     <CreateableDropdownItem title={lineTitle} item={item} options={lines} index={index} property={"line"} onChange={handleLineChange} type="condensed" 
-                        isRequired={true} />
+                        isRequired={true} capitalizeValues={true}/>
                     <FormLabel>+</FormLabel>
                     <CreateableDropdownItem title={locationTitle} item={item} options={locationOptions} index={index} property={"location"} 
-                        onChange={handleLocationChange} type="condensed" isRequired={true} duplicateExist={duplicateExist}
+                        onChange={handleLocationChange} type="condensed" isRequired={true} duplicateExist={duplicateExist} capitalizeValues={true}
                         validation={isValidLocation} />
                 </FormItem>
             </div>

@@ -100,19 +100,21 @@ export const networkSwitchModel = {
           port.setLine(line, newLine)
         })
       },
-      getStations: function(){
+      getStations: function(line){
         var stations = []
-        stations = lineConfiguration.getStations(this.ports, stations);
-        stations = [...stations, this.location, this.powerSourceLocation]
+        stations = lineConfiguration.getStations(this.ports,line, stations);
+
+        if(this.line === line) stations = [...stations, this.location];  
+        if(this.powerSourceLine === line)stations = [...stations,this.powerSourceLocation]
         return stations;
       },
-      getDevices: function(station){
+      getDevices: function(line, station){
         var devices = []
-        devices = lineConfiguration.getDevices(this.ports, devices, station);
-        if(this.location === station){
+        devices = lineConfiguration.getDevices(this.ports, devices, line, station);
+        if(this.location === station && this.line === line){
           devices = [...devices, this.deviceTag]
         }
-        if(this.powerSourceLocation === station){
+        if(this.powerSourceLocation === station && this.powerSourceLine === line){
           devices = [...devices, this.powerSourceDT]
         }
         return devices;
@@ -149,6 +151,16 @@ export const networkSwitchModel = {
       },
       getSourceDeviceTag:function(){
         return this.deviceTag;
+      },
+      getLines:function(){
+        var lines = [this.line,this.power1InLine, this.power2InLine, this.powerSourceLine]
+        this.ports.forEach(port => {
+          if(!lines.includes(port.line)){
+              lines.push(port.line);
+          }
+        })
+
+        return lines;
       },
     }
     networkSwitch.ports = networkSwitchModel.initializePorts(16, networkSwitch);

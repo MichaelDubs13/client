@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { safetyGateStore } from '../../safetyGateStore';
 import { formatToTwoDigits } from '../../util';
-import { projectStore } from '../../projectStore';
 
 export const safetyGateSwitchModel = {
   create: (parent, number) => {
@@ -77,26 +76,23 @@ export const safetyGateSwitchModel = {
           this.setValue(indexObject, "line", newLine);
         }
       },
-      getStations: function(){
-        return [this.location, this.powerSourceLocation, this.ethernetSourceLocation, this.powerTargetLocation, this.ethernetTargetLocation];
+      getStations: function(line){
+        var lines = []
+        if(this.line === line)lines = [...lines, this.location];
+        if(this.powerSourceLine === line)lines = [...lines, this.powerSourceLocation];
+        if(this.ethernetSourceLine === line)lines = [...lines, this.ethernetSourceLocation];
+        if(this.powerTargetLine === line)lines = [...lines, this.powerTargetLocation];
+        if(this.ethernetTargetLine === line)lines = [...lines, this.ethernetTargetLocation];
+        return lines;
       },
-      getDevices: function(station){
-        var devices = []
-        if(this.location === station){
-          devices = [...devices, this.deviceTag];
-        }
-        if(this.powerSourceLocation === station){
-          devices = [...devices, this.powerSourceDT];
-        }
-        if(this.ethernetSourceLocation === station){
-          devices = [...devices, this.ethernetSourceDT];
-        }
-        if(this.powerTargetLocation === station){
-          devices = [...devices, this.powerTargetDT];
-        }
-        if(this.ethernetTargetLocation === station){
-          devices = [...devices, this.ethernetTargetDT];
-        }
+      getDevices: function(line, station){
+        var devices = [];
+        if(this.line != line) return devices;
+        if(this.location === station) devices = [...devices, this.deviceTag];
+        if(this.powerSourceLocation === station) devices = [...devices, this.powerSourceDT];
+        if(this.ethernetSourceLocation === station) devices = [...devices, this.ethernetSourceDT];
+        if(this.powerTargetLocation === station) devices = [...devices, this.powerTargetDT];
+        if(this.ethernetTargetLocation === station) devices = [...devices, this.ethernetTargetDT];
         return devices;
       },
       getDeviceByName:function(name, location, line){
@@ -117,6 +113,10 @@ export const safetyGateSwitchModel = {
       },
       getSourceDeviceTag:function(){
         return this.location;
+      },
+      getLines:function(){
+        var lines = [this.line,this.powerSourceLine, this.ethernetSourceLine, this.powerTargetLine, this.ethernetTargetLine]
+          return lines;
       },
       setPowerSource:function(line, location, name){
         const indexObject = this.getIndexObject();

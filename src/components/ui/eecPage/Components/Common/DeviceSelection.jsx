@@ -5,7 +5,7 @@ import "../../Eec.css";
 import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { FormLabel, Icon, FormItem } from '@tesla/design-system-react';
-import { isNumberValidation, isValidLocation } from '../Util/Validations';
+import {  isValidLocation } from '../Util/Validations';
 import NetworkPortSelection from './NetworkPortSelection';
 
 
@@ -24,10 +24,8 @@ const DeviceSelection = ({
     canCreateDevice,
     portConfig,
 }) => {
-    const getLineOptions = lineStore((state) => state.getLineOptions)    
-    const getStationOptions = lineStore((state) => state.getStationOptions)     
-    const getDeviceOptions = lineStore((state) => state.getDeviceOptions)     
-    const stations = lineStore((state) => state.stations)   
+    const getLineOptions = lineStore((state) => state.getLineOptions)         
+    const [stations, setStations]=useState([])
     const lines = lineStore((state) => state.lines)  
     const [deviceOptions, setDeviceOptions] = useState([])   
     const [duplicateExist, setDuplicateExist]=useState(false)
@@ -43,11 +41,12 @@ const DeviceSelection = ({
     }, [item.line]);
 
     useEffect(() => {
-        getStationOptions();
+        var stations = lineConfiguration.getStationOptions(item.line);
+        setStations(stations);
     }, [item[stationProperty], item.line]);
 
     useEffect(() => {
-        var deviceOptions = getDeviceOptions(item[stationProperty]);
+        var deviceOptions = lineConfiguration.getDeviceOptions(item.line, item[stationProperty]);
         setDeviceOptions(deviceOptions)
     }, [item[deviceProperty], item[stationProperty], item.line]);
 
@@ -186,13 +185,16 @@ const DeviceSelection = ({
                 <FormItem className='form-item-device'>
                     <FormLabel className="form-label-device">{title}</FormLabel>
                     <FormLabel>++</FormLabel>
-                    <CreateableDropdownItem item={item} property={lineProperty ? lineProperty : "line"} options={lines} index={index} type="condensed" isRequired={true}/>
+                    <CreateableDropdownItem item={item} property={lineProperty ? lineProperty : "line"} options={lines} index={index} type="condensed" 
+                       isRequired={true} capitalizeValues={true}/>
                     <FormLabel>+</FormLabel>
                     <CreateableDropdownItem item={item} property={stationProperty} 
-                        options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isValidLocation} isRequired={true}/>
+                        options={stations} index={index} onChange={handleStationChange} type="condensed" validation={isValidLocation} 
+                        isRequired={true} capitalizeValues={true}/>
                     <FormLabel>-</FormLabel>
                     <CreateableDropdownItem item={item} property={deviceProperty} 
-                        options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true} duplicateExist={duplicateExist}/>
+                        options={deviceOptions} index={index} onChange={handleDeviceChange} type="condensed" isRequired={true} 
+                        duplicateExist={duplicateExist} capitalizeValues={true}/>
                     {
                         renderAddDeviceModal()
                     }

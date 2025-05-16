@@ -107,18 +107,20 @@ export const xpdpModel = {
         })
         return cbCount;
       },
-      getStations: function(){
+      getStations: function(line){
         var stations = []
         Object.keys(this.branchCircuit).forEach(key => {
-          stations = lineConfiguration.getStations(this.branchCircuit[key], stations);
+          stations = lineConfiguration.getStations(this.branchCircuit[key], line, stations);
         })
-        stations = [...stations, this.xfmrLocation]
+        if(this.line === line){
+          stations = [...stations, this.xfmrLocation, this.location]
+        }
         return stations;
       },
-      getDevices: function(station){
+      getDevices: function(line, station){
         var devices = []
         Object.keys(this.branchCircuit).forEach(key => {
-          devices = lineConfiguration.getDevices(this.branchCircuit[key], devices, station);
+          devices = lineConfiguration.getDevices(this.branchCircuit[key], devices, line, station);
         })
         return devices;
       },
@@ -134,6 +136,17 @@ export const xpdpModel = {
           })
         }
         return cbs;
+      },
+      getLines:function(){
+        var lines = [this.line,]
+        Object.keys(this.branchCircuit).forEach(key => {
+            this.branchCircuit[key].forEach(drop => {
+                  if(!lines.includes(drop.line)){
+                      lines.push(drop.line);
+                  }
+            })
+        })
+        return lines;
       },
       setPowerSource:function(line, location, deviceTag){
 

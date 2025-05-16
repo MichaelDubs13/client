@@ -111,18 +111,24 @@ export const pdpModel = {
             })
             return cbCount;
           },
-          getStations: function(){
+          getStations: function(line){
             var stations = []
             Object.keys(this.branchCircuit).forEach(key => {
-              stations = lineConfiguration.getStations(this.branchCircuit[key], stations);
+              stations = lineConfiguration.getStations(this.branchCircuit[key], line, stations);
             })
+
+            if(this.line === line){
+              stations = [...stations, this.location]
+            }
+
             return stations;
           },
-          getDevices: function(station){
+          getDevices: function(line, station){
             var devices = []
             Object.keys(this.branchCircuit).forEach(key => {
-              devices = lineConfiguration.getDevices(this.branchCircuit[key], devices, station);
+              devices = lineConfiguration.getDevices(this.branchCircuit[key], devices, line, station);
             })
+            devices = lineConfiguration.getDevices(this.hotPowerDrops, devices, line, station);
             return devices;
           },
           getCBs:function(location){
@@ -137,6 +143,23 @@ export const pdpModel = {
               })
             }
             return cbs;
+          },
+          getLines:function(){
+            var lines = [this.line,]
+            Object.keys(this.branchCircuit).forEach(key => {
+              this.branchCircuit[key].forEach(drop => {
+                if(!lines.includes(drop.line)){
+                    lines.push(drop.line);
+                }
+            })
+            this.hotPowerDrops.forEach(drop => {
+              if(!lines.includes(drop.line)){
+                    lines.push(drop.line);
+              }
+            })
+
+            })
+            return lines;
           },
           setPowerSource:function(line, location, deviceTag){
 
@@ -192,15 +215,6 @@ export const pdpModel = {
       const newPdps = pdps.map(pdp => {
         var newPdp = recreateObject(pdp, pdpModel.create)
         Object.keys(pdp.branchCircuit).forEach(key => { 
-            // var array = pdp.branchCircuit[key];
-            // var branchCircuit = array.map(item => { 
-            //   var cbCount = pdp.getNumberOfCBs()
-            //   const newItem = pdpBranchCircuitModel.create(newPdp, key,cbCount) 
-            //   Object.assign(newItem, item);
-            //   newItem.data.parent = newPdp;
-            //   return newItem;
-            // })
-            // newPdp.branchCircuit[key] = branchCircuit;
             var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], pdpBranchCircuitModel.create);
             newPdp.branchCircuit[key] = branchCircuit;
         });

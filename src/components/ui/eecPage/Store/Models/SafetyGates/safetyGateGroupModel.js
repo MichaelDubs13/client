@@ -65,15 +65,17 @@ export const safetyGateGroupModel = {
             gate.setLine(line, newLine)
           })
         },
-        getStations: function(){
+        getStations: function(line){
           var stations = []
-          stations = lineConfiguration.getStations(this.safetyGateSwitches, stations);
-          stations = [...stations, this.location]
+          stations = lineConfiguration.getStations(this.safetyGateSwitches,line, stations);
+
+          if(this.line === line)stations = [...stations, this.location]
+          
           return stations;
         },
-        getDevices: function(station){
+        getDevices: function(line,station){
           var devices = []
-          devices = lineConfiguration.getDevices(this.safetyGateSwitches, devices, station);
+          devices = lineConfiguration.getDevices(this.safetyGateSwitches, devices, line, station);
           return devices;
         },
         getPowerSource: function(location, device, port){
@@ -82,6 +84,14 @@ export const safetyGateGroupModel = {
             if(drop) return drop;
           }
           return null;
+        },
+        getLines:function(){
+          var lines = [this.line,]
+          this.safetyGateSwitches.forEach(gate => {
+            lines.push(...gate.getLines());
+          })
+
+            return lines;
         },
       }
      

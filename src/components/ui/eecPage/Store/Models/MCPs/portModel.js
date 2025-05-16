@@ -48,14 +48,15 @@ export const portModel = {
         return [
         ]
         },
-        getStations: function(){
-        return [this.targetLocation,]
+        getStations: function(line){
+            if(this.line != line) return [];
+            return [this.targetLocation,]
         },
-        getDevices: function(station){
-        if(this.targetLocation  === station){
-            return [this.targetDT,]
-        }
-        return []
+        getDevices: function(line, station){
+            if(this.targetLocation  === station && this.line === line){
+                return [this.targetDT,]
+            }
+            return []
         },
         getSourceLine:function(){
         return this.data.parent.line;
@@ -65,6 +66,9 @@ export const portModel = {
         },
         getSourceDeviceTag:function(){
             return this.data.parent.deviceTag;
+        },
+        getDeviceName:function(){
+            return `XPF-ETH01:P${this.getIndex()+1}`
         },
         setLine:function(line, newLine){
             if(line === this.line){

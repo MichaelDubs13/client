@@ -73,6 +73,9 @@ export const mcpModel = {
             type:'mcp',
             id:uuidv4(),
           },
+          getDeviceFullName: function(){
+            return `++${this.line}+${this.location}`;
+          },
           getIndexObject: function(){
             const mcpIndex = this.getIndex();
             return {
@@ -125,17 +128,34 @@ export const mcpModel = {
                 port.setLine(line, newLine)
               })
           },
-          getStations: function(){
+          getStations: function(line){
             var stations = []
-            stations = lineConfiguration.getStations(this.ports, stations);
-            stations = [...stations, this.mcpMountingLocation, this.psu_location]
+            stations = lineConfiguration.getStations(this.ports, line, stations);
+            if(this.line === line)stations = [...stations,this.location]
             return stations;
           },
-          getDevices: function(station){
+          getDevices: function(line, station){
             var devices = []
-            devices = lineConfiguration.getDevices(this.ports, devices, station);
-            devices = [...devices, ]
+            devices = lineConfiguration.getDevices(this.ports, devices, line, station);
+            if(this.line != line) return devices;
+            if(this.location != station) return devices;
+
+            const portDTs = this.ports.map((port) => {
+              return port.getDeviceName();
+            })
+
+            devices = [...devices, ...portDTs];
             return devices;
+          },
+          getLines:function(){
+            var lines = [this.line,]
+            this.ports.forEach(port => {
+              if(!lines.includes(port.line)){
+                  lines.push(port.line);
+              }
+            })
+
+            return lines;
           },
           setPortsLine: function(line){
             this.ports.forEach(port => {

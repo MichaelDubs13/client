@@ -2,6 +2,7 @@ import {mcpStore} from "../../Store/mcpStore";
 import McpLethPorts from "./McpLethPorts";
 import SetItemsNumberDropdown from "../Common/SetItemsNumberDropdown";
 import "../../Eec.css";
+import { FormItem, FormLabel } from "@tesla/design-system-react";
 
 const LethPortConfiguration = ({mcp, index}) => {
     const setNumberOfLethPorts = mcpStore((state) => state.setNumberOfLethPorts);
@@ -22,13 +23,22 @@ const LethPortConfiguration = ({mcp, index}) => {
          <div>
             <SetItemsNumberDropdown title={`Enter the number of device connections required for this line (i.e., Total number of devices)`} 
                     items={mcp.ports} addItems={setNumberOfLethPorts} index={index} options={lethNumberOfPortOptions}/>   
+            <div style={{marginBottom:'30px'}}>
+                <h7>Port 1</h7>
+                <FormItem style={{display:'flex', marginLeft:'30px'}}>
+                    <FormLabel>Interface port:</FormLabel>
+                    <FormLabel>Internal (RJ45)</FormLabel>
+                </FormItem>
+                <FormItem style={{display:'flex', marginLeft:'30px'}}>
+                    <FormLabel>Target:</FormLabel>
+                    <FormLabel>++{mcp.line}+{mcp.location}-KED01:P6</FormLabel>
+                </FormItem>
+            </div>
             {
-                mcp.ports.map((port,portIndex) => {
-                    console.log(mcp)
-                    console.log(port)
+                mcp.ports.slice(1).map((port,portIndex) => {
                     return <McpLethPorts
                         mcpIndex={index}
-                        portIndex={portIndex}
+                        portIndex={portIndex+1}
                         port={port}
                     />
                 })

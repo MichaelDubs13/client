@@ -106,7 +106,7 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
         newNetworkSwitch.ports[15].deviceTypeSelection = "Network Switch";
         newNetworkSwitch.ports[15].line = item.data.parent.line;
         newNetworkSwitch.ports[15].targetLocation = item.data.parent.location;
-        newNetworkSwitch.ports[15].targetDT = "LETH";
+        newNetworkSwitch.ports[15].targetDT = item.getDeviceName();
       }
       setWipNetworkSwitch(newNetworkSwitch)
     } else if(name.startsWith(lineConfiguration.hmiIndicator)){
