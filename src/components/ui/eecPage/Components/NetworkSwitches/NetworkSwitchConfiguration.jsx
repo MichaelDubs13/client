@@ -73,11 +73,9 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     {networkSwitch.switchType === "Unmanaged" && (
                         <>
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
-                                lineProperty={"powerSourceLine"}  
-                                deviceProperty={"powerSourceDT"}
-                                stationProperty={"powerSourceLocation"}
+                                lineProperty={"powerSourceLine"} deviceProperty={"powerSourceDT"} stationProperty={"powerSourceLocation"}
                                 type="powerSource"/> 
-                           <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 lineProperty={"power2InLine"} deviceProperty={"power2InDT"} stationProperty={"power2InLocation"}
                                 type="power2Source"/>  
                         </>
@@ -119,9 +117,14 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                                 onChange={setPorts} index={networkSwitchIndex}/>
                         </>
                     )}
-
-                    {/* Input fields for each port */}
-                    {/* Render all network switch ports */}
+                    {networkSwitch.switchType === "Unmanaged" && networkSwitch.ports.length === 8 && (
+                        <>
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
+                                lineProperty={"ethernetSourceLine"} deviceProperty={"ethernetSourceDT"} stationProperty={"ethernetSourceLocation"}
+                                type="networkSource"/> 
+                        </>
+                    )}
+                    
                     <NetworkSwitchPortConfiguration networkSwitch={networkSwitch} networkSwitchIndex={index} createNew={createNew}/>
                     
                 </DataTable>

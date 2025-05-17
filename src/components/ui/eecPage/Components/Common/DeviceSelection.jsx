@@ -76,6 +76,9 @@ const DeviceSelection = ({
     }
 
     const deviceExist=()=>{
+        if(!item.line) return;
+        if(!item[stationProperty]) return;
+        if(!item[deviceProperty]) return;
         var foundItem = lineConfiguration.getDeviceByNameGlobal(item[deviceProperty], item[stationProperty], item.line);
         return foundItem;
     }

@@ -20,14 +20,10 @@ const EditableCell=({
     }
   });
 
-  useEffect(() => {
-    console.log("table rerender")
-  }, [renderInput]);
+  // useEffect(() => {
+  //   console.log("table rerender")
+  // }, [renderInput]);
 
-  const onValueChange = (value) => {
-    setValue(value);
-    table.options.meta?.updateCellData(index, id, value);
-  };
 
   const onChange = (value) => {
     setValue(value);
@@ -54,7 +50,6 @@ const EditableCell=({
           inpRef,
           onChange,
           onFocus:handleOnFocus,
-          onValueChange,
         })
       }
     </div>

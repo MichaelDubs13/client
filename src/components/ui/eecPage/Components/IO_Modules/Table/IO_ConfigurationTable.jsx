@@ -4,7 +4,7 @@ import { useColumns } from "./columns";
 import React, { useEffect } from "react";
 
 const IO_ConfigurationTable = ({ports, ioModuleGroupIndex,ioModuleIndex })=>{
-    const columns = useColumns(ioModuleGroupIndex, ioModuleIndex);
+    const columns = useColumns(ioModuleGroupIndex, ioModuleIndex, ports);
     const createData = (port) => {
       return {
           Port: port.portCounter,

@@ -34,7 +34,14 @@ const CheckboxItem = ({inputRef, className, item, property, onChange,onFocus, in
             onChange(reportedValue);
         }
       };
+    const handleOnFocus = async (event)=>{
+        console.log("onFocus")
+        onFocus(event);
+    }
 
+     const handleOnClick = async (event)=>{
+        console.log("onClick")
+    }
 
     return (
         <>
@@ -43,8 +50,9 @@ const CheckboxItem = ({inputRef, className, item, property, onChange,onFocus, in
                 className={className}
                 inputRef={inputRef}
                 checked={value} 
-                onFocus={onFocus}
-                onChange={handleValueChange}/>
+                onFocus={handleOnFocus}
+                onChange={handleValueChange}
+                onClick={handleOnClick}/>
             }
                 
             

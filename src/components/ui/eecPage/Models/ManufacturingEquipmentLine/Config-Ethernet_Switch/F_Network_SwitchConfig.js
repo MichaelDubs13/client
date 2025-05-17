@@ -14,12 +14,15 @@ export default class F_Network_SwitchConfig extends Component{
         this._name = `f_Network_SwitchConfig${index > 1 ? index : ""}`;
         this._networkSwitch = networkSwitch
         this._mcp = mcp;
-        
+        this.Unmanaged_Etherenet = networkSwitch.ethernetSourceLine && networkSwitch.ethernetSourceLocation && networkSwitch.ethernetSourceDT;
     }
 
     get Parameters(){
         return [
             {name: "PLC_ID", value: this._networkSwitch.plcID, type: "String"},
+            {name: "Ethernet_Line", value: this._networkSwitch.ethernetSourceLine, type: "String"}, 
+            {name: "Ethernet_Location", value: this._networkSwitch.ethernetSourceLocation, type: "String"},
+            {name: "Ethernet_DT", value: this._networkSwitch.ethernetSourceDT, type: "String"}, 
             {name: "PWR_IN_Line", value: this._networkSwitch.powerSourceLine, type: "String"}, //for Balluf
             {name: "PWR_IN_Location", value: this._networkSwitch.powerSourceLocation, type: "String"}, //for Balluf
             {name: "PWR_IN_DT", value: this._networkSwitch.powerSourceDT, type: "String"}, //for Balluf
@@ -42,15 +45,10 @@ export default class F_Network_SwitchConfig extends Component{
             {name: "8_ports", value: this._networkSwitch.ports.length, type: "Integer"},
             {name: "8or16_ports", value: this._networkSwitch.ports.length, type: "Integer"},
             {name: "8or16or24_ports", value: this._networkSwitch.ports.length, type: "Integer"},
+            {name: "Unmanaged_Etherenet", value: this.Unmanaged_Etherenet, type: "Boolean"}, //Reserved for plant networkSwitch
             //Parameters that might need to be added later
             // {name: "Plant_IP", value: "Undefined", type: "String"},
-            // {name: "PWR2_IN_Location", value: "Undefined", type: "String"},
-            // {name: "PWR2_IN_DT", value: "Undefined", type: "String"},
             // {name: "Cable_Length_Selection", value: "Undefined", type: "String"},
-            // {name: "8_ports", value: this._8_ports, type: "Integer"},
-            // {name: "8or16_ports", value: this._8or16_ports, type: "Integer"},
-            // {name: "8or16or24_ports", value: this._8or16or24_ports, type: "Integer"},
-         
         ];
     }
 

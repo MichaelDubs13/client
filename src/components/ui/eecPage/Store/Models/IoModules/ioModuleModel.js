@@ -137,6 +137,10 @@ export const ioModuleModel = {
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetTargetLocation", location);
             ioModuleStore.getState().setIOModuleGroupValue(indexObject, "ethernetTargetDT", name);
           },
+          getIoLinkSlaveModules:function(){
+            var ioLinkSlaveModules = this.ports.filter(port => port.isIOLink);
+            return ioLinkSlaveModules
+          }
         }
     
         ioModule.ports = ioModuleModel.initializePorts(8, ioModule);

@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const DropdownItem = ({inputRef, className, item, property, options, onChange,onFocus, index}) =>{
+const DropdownItem = ({inputRef, className, item, property, options, onChange,onFocus, index, width}) =>{
     const [selectedOption, setSelectedOption] = useState(item[property]);
     const defaultValue = item[property]
 
@@ -48,7 +48,7 @@ const DropdownItem = ({inputRef, className, item, property, options, onChange,on
                 options={options}
                 placeholder={defaultValue}
                 selected={selectedOption}
-                style={{ marginBottom: "5px", width:'150px'}}
+                style={{ marginBottom: "5px", width:width}}
                 ></FormInputDropdown>
             }
                 

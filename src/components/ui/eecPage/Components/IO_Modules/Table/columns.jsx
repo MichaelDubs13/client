@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useMemo } from "react";
 import { FormLabel } from "@tesla/design-system-react";
 import EditableCell from "../../Util/Table/DataTable/EditableCell";
 import './styles.css'
@@ -8,17 +7,37 @@ import DropdownItem from "../../Util/Table/Components/DropdownItem";
 import CreateableSelectItem from "../../Util/Table/Components/CreateableSelectItem";
 import { ioModuleGroupOptions } from "../../../Store/ioModuleStore";
 import CheckboxItem from "../../Util/Table/Components/CheckboxItem";
-const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex) => {
+import { useEffect } from "react";
+import { formatToTwoDigits } from "../../../Store/util";
+const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex, ports) => {
   const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);  
   const index = {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex, ioPortIndex:cell.row.id}
-  switch(header.type){
+  var type = header.type;
+  var options = header.options
+  var width = '150px';
+  if(header.header === "Target part number"){
+    const port = ports[cell.row.id];
+    if(port){
+      if(port.isIOLink){
+        type = 'dropdown';
+        options = ["Balluff: BNI00CN", "Balluff: BNI00CR"]
+        width = '200px';
+        const ioLinkSlaveModuleCount = port.data.parent.getIoLinkSlaveModules().length;
+        const ioLinkModuleName = `${port.data.parent.deviceTag}-MIO${formatToTwoDigits(ioLinkSlaveModuleCount + 1)}`;
+        if(!port.pinTargetDT && port.pinTargetDT != ioLinkModuleName){
+          port.setValue(index, "pinTargetDT", ioLinkModuleName);
+        }
+      }
+    }
+  } 
+  switch(type){
     case 'input':
       return <EditableCell
               {...cell}
                 renderInput={(props) => (
                 <InputTextItem inputRef={props.inpRef} className="qz__data-table__editable-cell--input" 
                     item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property} 
-                          index={index}  onFocus={props.onFocus}/>
+                          index={index}  onFocus={props.onFocus} onChange={props.onChange}/>
               )}
             />
     case 'dropdown':
@@ -26,8 +45,8 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex) => {
               {...cell}
                 renderInput={(props) => (
                 <DropdownItem inputRef={props.inpRef} className="qz__data-table__editable-cell--input" 
-                    options={header.options}  item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property}  
-                    index={index} onFocus={props.onFocus}/>
+                    options={options}  item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property}  
+                    index={index} onFocus={props.onFocus} onChange={props.onChange} width={width}/>
               )}
             />
 
@@ -37,7 +56,7 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex) => {
                 renderInput={(props) => (
                 <CheckboxItem inputRef={props.inpRef} className="qz__data-table__editable-cell--input" 
                     item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property}  
-                    index={index} onFocus={props.onFocus}/>
+                    index={index} onFocus={props.onFocus} onChange={props.onChange}/>
               )}
             />
     case 'creatableSelect':
@@ -46,7 +65,7 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex) => {
                 renderInput={(props) => (
                 <CreateableSelectItem inputRef={props.inpRef} className="qz__data-table__editable-cell--input" 
                     options={header.options}  item={ioModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[cell.row.id]} property={header.property}  
-                    index={index} onFocus={props.onFocus}/>
+                    index={index} onFocus={props.onFocus} onChange={props.onChange}/>
               )}
             />
     case 'label':
@@ -72,7 +91,7 @@ const getHeaders = ()=>{
   return headers
 }
 
-export const useColumns = (ioModuleGroupIndex, ioModuleIndex) => {
+export const useColumns = (ioModuleGroupIndex, ioModuleIndex, ports) => {
 
   const headers = getHeaders(); 
   const columns = headers.map(header => {
@@ -82,7 +101,7 @@ export const useColumns = (ioModuleGroupIndex, ioModuleIndex) => {
       cell: (cell) => (
           <div>
             {
-              renderInputs(cell, header, ioModuleGroupIndex, ioModuleIndex)
+              renderInputs(cell, header, ioModuleGroupIndex, ioModuleIndex, ports)
             }
           </div>
         ),

@@ -33,6 +33,9 @@ export const DataTable = ({
   const [, copy] = useCopyToClipboard();
 
   useEffect(() => {
+    console.log("table rerender")
+  });
+  useEffect(() => {
     const handleCopy = async (event) => {
       if (
         (event.ctrlKey || event.metaKey) &&
@@ -47,8 +50,6 @@ export const DataTable = ({
           table.getAllColumns()
         );
 
-        // TODO: it would be great to display a toast with success or error onCopy.
-        // The copy function returns a success or error boolean.
         await copy(clipboardData);
       }
     };
@@ -141,8 +142,6 @@ export const DataTable = ({
                         allowCellSelection &&
                           handleKeyDown(e, cell.row.id, cell.column.id);
                         if (e.key === "Enter") {
-                          // Tricky way to allow triggering of edit mode on Enter press
-                          // Call the child's handleKeyDownOnView method directly
                           const editableCell = cellRef.current?.querySelector(
                             ".qz__data-table__editable-cell--viewing"
                           );

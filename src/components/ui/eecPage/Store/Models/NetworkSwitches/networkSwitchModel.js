@@ -28,6 +28,9 @@ export const networkSwitchModel = {
       powerSourceLine: "", // EEC variable name: PWR_IN_Location
       powerSourceLocation: "", // EEC variable name: PWR_IN_Location
       powerSourceDT: "", // EEC variable name: PWR_IN_DT
+      ethernetSourceLine: "", // EEC variable name: Ethernet_Line
+      ethernetSourceLocation: "", // EEC variable name: Ethernet_Location
+      ethernetSourceDT: "", // EEC variable name: Ethernet_DT
       alarmEnable: false, // EEC variable name: Alarm_Output_Selection
       consoleEnable: false, // EEC variable name: Console_Output_Selection
       alarmName: "", // EEC variable name: Alarm_DT
