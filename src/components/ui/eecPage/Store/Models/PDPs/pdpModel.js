@@ -121,6 +121,10 @@ export const pdpModel = {
               stations = [...stations, this.location]
             }
 
+            if(this.line === line && this.Opt_HotPwrEnable){
+              stations = [...stations, this.hotPowerPanelLocation]
+            }
+
             return stations;
           },
           getDevices: function(line, station){
