@@ -60,6 +60,8 @@ const customerStore = create((set) => ({
         CreatorStreet_10235:"###Enter Data - Supplier Street",
         CreatoryZipCode_10237:"###Enter Data - Supplier Zip Code/City",
         CreatorCountry_10239:"###Enter Data - Supplier Country",
+        CreatorPhone_10240:"###Enter Data - Supplier Phone No.",
+        CreatorEmail_10242:"###Enter Data - Supplier Email or Website",
     },
     
     setValue(value, key){

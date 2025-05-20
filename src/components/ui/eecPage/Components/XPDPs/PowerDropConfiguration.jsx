@@ -10,7 +10,8 @@ import { isNumberLessThanValidation } from '../Util/Validations';
 const PowerDropConfiguration = ({xpdp, index}) => {
     const setNumberOfPowerDrps = xpdpStore((state) => state.setNumberOfPowerDrps);
     const setBranchCircuitValue =  xpdpStore((state) => state.setBranchCircuitValue);
-    const [numberOf1phDrops, setnumberOf1phDrops] = useState(0);
+    const numberOf1phDrops = xpdp.branchCircuit["8A 1ph"].length + xpdp.branchCircuit["15A 1ph"].length + xpdp.branchCircuit["20A 1ph"].length;
+    /* const [numberOf1phDrops, setnumberOf1phDrops] = useState(0);
     
     useEffect(()=>{
         calculate1phDrops();
@@ -19,7 +20,7 @@ const PowerDropConfiguration = ({xpdp, index}) => {
     const calculate1phDrops = () => {
         const total1phDrops = xpdp.branchCircuit["8A 1ph"].length + xpdp.branchCircuit["15A 1ph"].length + xpdp.branchCircuit["20A 1ph"].length
         setnumberOf1phDrops(total1phDrops);
-    }   
+    }    */
   
     // Create array of power drop items for each amperage
     const renderPowerDrops = (amperage) => {
