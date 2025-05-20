@@ -145,6 +145,10 @@ export const mcpModel = {
             })
 
             devices = [...devices, ...portDTs];
+
+            const extraOptions = ["KED01:P4","KED01:P5","LETH01","XPF-PLC01:X1P2","XPM01","XPM02"]
+            devices = [...devices, ...extraOptions];
+
             return devices;
           },
           getLines:function(){
