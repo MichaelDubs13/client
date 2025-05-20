@@ -66,21 +66,21 @@ const lpdStore = create(
       set((state) => {
         const newPsu = {...state.wipPsu}
         let newLpds = [...state.lpds]
-        const index = newLpds.findIndex(group => group.location === location && group.line === line);
-        if(index > -1 && !createNew){
-          newPsu.data.parent = newLpds[index];
-          newLpds[index].psus = [...newLpds[index].psus,newPsu ]
-        } else {
-          const newLpd = lpdModel.create();
-          newLpd.line = line;
-          newLpd.location = location;
-          newLpd.powerSourceLine = line;
-          newLpd.powerSourceLocation = location;
-          newLpd.powerSourceDT = deviceTag;
-          newPsu.data.parent = newLpd;
-          newLpd.psus.push(newPsu);
-          newLpds = [...newLpds, newLpd]
-        }
+        // const index = newLpds.findIndex(group => group.location === location && group.line === line);
+        // if(index > -1 && !createNew){
+        //   newPsu.data.parent = newLpds[index];
+        //   newLpds[index].psus = [...newLpds[index].psus,newPsu ]
+        // } else {
+        //   const newLpd = lpdModel.create();
+        //   newLpd.line = line;
+        //   newLpd.location = location;
+        //   newLpd.powerSourceLine = line;
+        //   newLpd.powerSourceLocation = location;
+        //   newLpd.powerSourceDT = deviceTag;
+        //   newPsu.data.parent = newLpd;
+        //   newLpd.psus.push(newPsu);
+        //   newLpds = [...newLpds, newLpd]
+        // }
 
         const newLpd = lpdModel.create();
         newLpd.line = line;
