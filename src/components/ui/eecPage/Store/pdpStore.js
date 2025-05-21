@@ -196,7 +196,7 @@ const pdpStore = create()(
 
       var newPwrDrops = []
       for(let i=0; i<3; i++){
-          var newPwrDrop = hotPowerBranchCircuitModel.create(item);
+          var newPwrDrop = hotPowerBranchCircuitModel.create(item, i);
           newPwrDrops.push(newPwrDrop);
       }
 

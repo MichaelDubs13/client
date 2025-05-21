@@ -122,7 +122,7 @@ export const lpdModel = {
 
             return lines;
           },
-           getSourceLine:function(){
+          getSourceLine:function(){
             return this.line
           },
           getSourceLocation:function(){

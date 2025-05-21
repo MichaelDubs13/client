@@ -1,19 +1,21 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pdpStore } from "../../pdpStore";
 import { projectStore } from '../../projectStore';
+import { formatToTwoDigits } from '../../util';
 
 export const hotPowerBranchCircuitModel = {
     /**
    * creates a new hotPower Branch circuit with default values
    * @returns 
    */
-  create: (parent) => {
+  create: (parent, index) => {
     return {
       HotPwrDropType: "Spare",
       line:parent?.line,
       targetLocation: "",
       targetDT: "",
       description: "",
+      deviceDT: index > -1 ? `CB${formatToTwoDigits(1+index)}` : "",
       data:{
         type:'hotPower',
         id:uuidv4(),
@@ -55,20 +57,27 @@ export const hotPowerBranchCircuitModel = {
         if(this.line != line) return [];
         return [this.targetLocation,]
       },
+
       getDevices: function(line, station){
-        if(this.line != line) return []
-        if(this.targetLocation != station) return []
-        return [this.targetDT,]
+        const devices = [];
+        if(this.data.parent.hotPowerPanelLocation === station && this.line === line){
+          devices.push(this.deviceDT)
+        }
+
+        if(this.targetLocation  === station && this.line === line){
+          devices.push(this.targetDT)
+        }
+        return devices;
       },
       
       getSourceLine:function(){
         return this.data.parent.line
         },
       getSourceLocation:function(){
-        return this.data.parent.location;
+        return this.data.parent.hotPowerPanelLocation;
       },
       getSourceDeviceTag:function(){
-        return this.data.parent.location;
+        return this.deviceDT;
       },
       
     }

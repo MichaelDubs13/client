@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
 import { formatToTwoDigits, getItemById } from '../../util';
 import {  lpdStore } from '../../lpdStore';
-import { projectStore } from '../../projectStore';
 
 export const psuModel = {
     create: (parent, index) => {

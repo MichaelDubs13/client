@@ -82,7 +82,7 @@ export const branchCircuitModel = {
           return this.data.parent.location;
         },
         getSourceDeviceTag:function(){
-          return this.data.parent.location;
+          return this.data.deviceDT;
         },
         setLine:function(line, newLine){
           if(line === this.line){
@@ -94,12 +94,17 @@ export const branchCircuitModel = {
            if(this.line != line) return [];
            return [this.targetLocation,]
          },
-         getDevices: function(line, station){
-           if(this.targetLocation  === station && this.line === line){
-             return [this.targetDT,]
-           }
-           return []
-         }
+        getDevices: function(line, station){
+        const devices = [];
+        if(this.data.parent.location === station && this.line === line){
+          devices.push(this.deviceDT)
+        }
+
+        if(this.targetLocation  === station && this.line === line){
+          devices.push(this.targetDT)
+        }
+        return devices;
+      }
        }
      },
 }

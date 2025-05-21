@@ -124,6 +124,7 @@ export const pdpModel = {
             if(this.line === line && this.Opt_HotPwrEnable){
               stations = [...stations, this.hotPowerPanelLocation]
             }
+            stations = lineConfiguration.getStations(this.hotPowerDrops, line, stations);
 
             return stations;
           },

@@ -85,9 +85,9 @@ const lpdStore = create(
         const newLpd = lpdModel.create();
         newLpd.line = line;
         newLpd.location = location;
-        newLpd.powerSourceLine = line;
-        newLpd.powerSourceLocation = location;
-        newLpd.powerSourceDT = deviceTag;
+        newLpd.powerSourceLine = newPsu.powerSourceLine;
+        newLpd.powerSourceLocation = newPsu.powerSourceLocation;
+        newLpd.powerSourceDT = newPsu.powerSourceDT;
         newPsu.data.parent = newLpd;
         newLpd.psus.push(newPsu);
         newLpds = [...newLpds, newLpd]

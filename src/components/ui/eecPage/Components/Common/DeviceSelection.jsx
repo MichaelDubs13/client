@@ -67,6 +67,7 @@ const DeviceSelection = ({
         }
     }
     const canAddDevice=(arr, value) =>{
+        if(!value) return false;
         for(let i=0;i<arr.length;i++){
             if(value.startsWith(arr[i])){
                 return true;

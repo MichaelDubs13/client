@@ -75,7 +75,7 @@ export const pdpBranchCircuitModel = {
         return this.data.parent.location;
       },
       getSourceDeviceTag:function(){
-        return this.data.parent.location;
+        return this.data.deviceDT;
       },
       setLine:function(line, newLine){
         if(line === this.line){
@@ -94,10 +94,15 @@ export const pdpBranchCircuitModel = {
         return [this.targetLocation,]
       },
       getDevices: function(line, station){
-        if(this.targetLocation  === station && this.line === line){
-          return [this.targetDT,]
+        const devices = [];
+        if(this.data.parent.location === station && this.line === line){
+          devices.push(this.deviceDT)
         }
-        return []
+
+        if(this.targetLocation  === station && this.line === line){
+          devices.push(this.targetDT)
+        }
+        return devices;
       }
     }
 
