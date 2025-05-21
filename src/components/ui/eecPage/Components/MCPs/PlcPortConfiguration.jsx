@@ -4,7 +4,6 @@ import "../../Eec.css";
 
 
 const PlcPortConfiguration = ({mcp, index}) => {
-    const setMcpValue = mcpStore((state) => state.setMcpValue);
     const mcpIndex = {mcpIndex:index}
 
     return ( 

@@ -46,7 +46,6 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
       if(item.data.type === "lethPort"){
         var portIndex = wipItem.ports.findIndex(i => i.line === item.data.parent.line && i.targetLocation === item.data.parent.location)
         if(portIndex > -1){
-          item.communicationFlow = 'In';
           item.targetPort = networkSwitchConfiguration.getEthernetNetworkPortOption(wipNetworkSwitch.networkType, wipNetworkSwitch.switchType, portIndex + 1)
         }
       }
@@ -107,6 +106,7 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
         newNetworkSwitch.ports[15].deviceTypeSelection = "Network Switch";
         newNetworkSwitch.ports[15].line = item.data.parent.line;
         newNetworkSwitch.ports[15].targetLocation = item.data.parent.location;
+        newNetworkSwitch.ports[15].communicationFlow = "In";
         newNetworkSwitch.ports[15].targetDT = item.getDeviceName();
       }
       setWipNetworkSwitch(newNetworkSwitch)

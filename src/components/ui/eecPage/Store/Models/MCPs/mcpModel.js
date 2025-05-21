@@ -151,6 +151,17 @@ export const mcpModel = {
 
             return devices;
           },
+           getPortDevices: function(){
+            var devices = []
+
+            const portDTs = this.ports.map((port) => {
+              return `${this.getDeviceFullName()}-${port.getDeviceName()}`
+            })
+
+            devices = [...devices, ...portDTs];
+
+            return devices;
+          },
           getLines:function(){
             var lines = [this.line,]
             this.ports.forEach(port => {

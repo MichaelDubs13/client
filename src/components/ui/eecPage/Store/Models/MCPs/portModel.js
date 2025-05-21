@@ -65,7 +65,7 @@ export const portModel = {
             return this.data.parent.location;
         },
         getSourceDeviceTag:function(){
-            return this.data.parent.deviceTag;
+            return this.getDeviceName();
         },
         getDeviceName:function(){
             return `XPF-ETH01:P${this.getIndex()+1}`

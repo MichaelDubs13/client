@@ -1,23 +1,23 @@
-import InputTextItem from "../Util/InputTextItem";
-import {mcpStore} from "../../Store/mcpStore";
 import "../../Eec.css";
 import { useEffect } from "react";
+import { lineStore } from "../../Store/lineStore";
+import DropdownItem from "../Util/DropdownItem";
 
 
 const EthPortConfiguration = ({mcp, index}) => {
-    const setMcpValue = mcpStore((state) => state.setMcpValue);
     const mcpIndex = {mcpIndex:index}
+    const getMcpPortOptions = lineStore((state) => state.getMcpPortOptions)        
+    const mcpPorts = lineStore((state) => state.mcpPorts)        
     useEffect(() => {
-        setMcpValue(mcpIndex, "eth_port1_target_location", `${mcp.getDeviceFullName()}-XPF-ETH01:P1`)
-        setMcpValue(mcpIndex, "eth_port2_target_location", `${mcp.getDeviceFullName()}-XPF-ETH01:P2`)
+        getMcpPortOptions();
     }, [mcp.location, mcp.line]);
 
     return ( 
 
         <div>
             <h7>Port 1 (Ring topology - In)</h7>
-            <InputTextItem title={"Target location (e.g., MCP01, MCP02)"} item={mcp} index={mcpIndex} property={"eth_port1_target_location"} />
-            <InputTextItem title={"Target location (e.g., MCP01, MCP02)"} item={mcp} index={mcpIndex} property={"eth_port2_target_location"} />
+            <DropdownItem title={"Target location (e.g., MCP01, MCP02)"} item={mcp} index={mcpIndex} property={"eth_port1_target_location"} options={mcpPorts}/>
+            <DropdownItem title={"Target location (e.g., MCP01, MCP02)"} item={mcp} index={mcpIndex} property={"eth_port2_target_location"} options={mcpPorts}/>
         </div>  
     );
 };

@@ -136,6 +136,7 @@ const lineStore = create((set) => ({
     lines:[],
     stations:[],
     plcs:[],
+    mcpPorts:[],
 
     getLineOptions:()=>{
         const items = lineConfiguration.getAllStoreItems();
@@ -160,6 +161,25 @@ const lineStore = create((set) => ({
             return {plcs: plcOptions};
         })
         return plcOptions;
+    },
+
+    getMcpPortOptions:()=>{
+        const mcps = mcpStore.getState().mcps;
+        var ports = [];
+        mcps.forEach((mcp) => {
+            const mcpPorts = mcp.getPortDevices();
+            ports.push(...mcpPorts);
+        });
+
+        
+        var portOptions = ports.map((port)=>{    
+            return {label:port, value:port}
+        })
+        set((state) => {
+            return {mcpPorts: portOptions};
+        })
+
+        return portOptions;
     },
 
     getCbOptions:(location)=>{
