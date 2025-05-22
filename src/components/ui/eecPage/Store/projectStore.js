@@ -4,9 +4,9 @@ import { circularReplacer } from "./util";
 
 const projectStore = create(
     persist((set) => ({
-    plant:"PLANT1",
-    shop:"SHOP1",
-    line:"LINE1", 
+    plant:"PLANT",
+    shop:"SHOP",
+    line:"LINE", 
     installation_location:"UL",
     installation_location_options:["UL", "EU"],
 
@@ -32,9 +32,9 @@ const projectStore = create(
     },
 
     clearConfig:()=>{
-        set({plant:"PLANT1"}); 
-        set({shop:"SHOP1"});  
-        set({line:"LINE1"});
+        set({plant:"PLANT"}); 
+        set({shop:"SHOP"});  
+        set({line:"LINE"});
         set({installation_location:"UL"});
     },
 
