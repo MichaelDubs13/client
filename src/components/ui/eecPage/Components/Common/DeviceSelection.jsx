@@ -126,6 +126,10 @@ const DeviceSelection = ({
         var sourceDevice = lineConfiguration.getDeviceByNameGlobal(deviceTag, location, item.line);
         if(sourceDevice){
             if(type === "powerSource"){
+                if(item.data.type === 'lpd') return; //lpd is not a concept not device, powersource's power target should be lpd's psu
+                sourceDevice.setPowerTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
+                sourceDevice.setDataValue("powerTarget", item.data.id)  
+            } else if(type === "parentPowerSource"){
                 sourceDevice.setPowerTarget(item.getSourceLine(), item.getSourceLocation(), item.getSourceDeviceTag()); 
                 sourceDevice.setDataValue("powerTarget", item.data.id)  
             } else if(type === "power2Source"){
@@ -154,8 +158,7 @@ const DeviceSelection = ({
     const handleDeviceChange = (deviceTag) => {
         if(type === "powerTarget" || type==="networkTarget") {
             getTargetDevice(deviceTag, item[stationProperty])
-        } else if(type === "powerSource" || type === "power2Source" || 
-            type==="networkSource"){
+        } else if(type === "powerSource" || type === "power2Source" || type==="networkSource" || type === "parentPowerSource"){
             getSourceDevice(deviceTag, item[stationProperty])
         } else {
             var exist = getDuplicateDevice(deviceTag, item[stationProperty])

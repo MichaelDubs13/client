@@ -3,18 +3,14 @@ import { useState, useEffect } from "react";
 import DropdownItem from '../Util/DropdownItem';
 import LpdPsuItem from './LpdPsuItem';
 import {lpdStore, lpdOptions} from "../../Store/lpdStore";
-import { projectStore } from '../../Store/projectStore';
 import HeadingItem from '../Util/HeadingItem';
 import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
-import { lineStore } from '../../Store/lineStore';
 import DeviceSelection from "../Common/DeviceSelection";
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    
     const [psuCascadingLimit, setPsuCascadingLimit]=useState("");
-    const getCbOptions = lineStore((state)=> state.getCbOptions)
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
-    const [cbOptions, setCbOptions] = useState([])
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
     lpdOptions.psuSelection120_240Options : 
     lpdOptions.psuSelection400_480Options;
@@ -34,10 +30,6 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
             setPsuCascadingLimit('maximum of 8');
         }
     }
-    useEffect(() => {
-        var options = getCbOptions(lpd.location)
-        setCbOptions(options);
-    }, [lpd.location]);
 
 
     const handleSetpsuSelectionChange = (event)=> {

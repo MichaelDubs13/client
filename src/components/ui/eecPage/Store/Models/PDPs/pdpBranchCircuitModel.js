@@ -75,7 +75,7 @@ export const pdpBranchCircuitModel = {
         return this.data.parent.location;
       },
       getSourceDeviceTag:function(){
-        return this.data.deviceDT;
+        return this.deviceDT;
       },
       setLine:function(line, newLine){
         if(line === this.line){
