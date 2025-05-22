@@ -68,7 +68,8 @@ return (
         <div className="lpd-psu-settings">
           <DeviceSelection item={psu} index={index} 
             deviceProperty={"deviceTag"}
-            stationProperty={"location"}/>                             
+            stationProperty={"location"}
+            type ={"parentPowerSource"}/>                             
           {
             lpd &&
             lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (

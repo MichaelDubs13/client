@@ -82,7 +82,7 @@ export const branchCircuitModel = {
           return this.data.parent.location;
         },
         getSourceDeviceTag:function(){
-          return this.data.deviceDT;
+          return this.deviceDT;
         },
         setLine:function(line, newLine){
           if(line === this.line){
@@ -90,7 +90,7 @@ export const branchCircuitModel = {
             this.setValue(indexObject, "line", newLine);
           }
         },
-         getStations: function(line){
+        getStations: function(line){
            if(this.line != line) return [];
            return [this.targetLocation,]
          },
