@@ -1,5 +1,4 @@
 import { iconRocket } from '@tesla/design-system-icons';
-import { Icon, IconButton } from '@tesla/design-system-react';
 import { pdpStore } from "./Store/pdpStore";
 import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
@@ -19,8 +18,14 @@ import { lpdModel } from './Store/Models/LDPs/lpdModel';
 import { hmiModel } from './Store/Models/HMIs/hmiModel';
 import { safetyGateGroupModel } from './Store/Models/SafetyGates/safetyGateGroupModel';
 import { ioModuleGroupModel } from './Store/Models/IoModules/ioModuleGroupModel';
+import ActionIcon from '../util/ActionIcon';
+import eecDataService from '../../../services/eecDataService';
+import useAuthStore from '../../../store/authStore';
+import useEecStore from '../../../store/eecStore';
 
 const GenerateButton = () => {
+  const {user} = useAuthStore();
+  const fetchJobHistory = useEecStore((state) => state.fetchJobHistory);
   const getConfig = projectStore((state) => state.getConfig);
   const pdps = pdpStore((state) => state.pdps);
   const customer = customerStore((state) => state.property);
@@ -32,7 +37,8 @@ const GenerateButton = () => {
   const safetyGates = safetyGateStore((state) => state.safetyGates);
   const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
 
-  const handleSumbit = (event) => {
+
+  const handleSumbit = async (event) => {
     event.preventDefault();
     const config = getConfig();
     const validatedPdps =pdpModel.generateData(pdps);
@@ -46,11 +52,34 @@ const GenerateButton = () => {
     var devices = []
     var imx = ModelBuilder.buildIMX(config, customer, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
     var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
-    downloadXML(imx, name);
+    downloadIMX(imx, name);
+
+    var imxFile = createFile(imx, name)
+    const formData = new FormData();
+    const payload = createPayload();
+    formData.set("imxFile", imxFile);
+    formData.set("data", JSON.stringify(payload));
+    var result = await eecDataService.createJob(formData)
+    fetchJobHistory();
   }
-
-
-  const downloadXML = (doc, name) => {
+  const createPayload = () => {
+    var email = ''
+    if(user){
+      email = user.email;
+    }
+    const payload = {
+      "user": email,
+    };
+    
+    return payload;
+  }
+  const createFile = (doc, name) => {
+    const fileData = doc;
+    const blob = new Blob([fileData], { type: "text/xml" });
+    var file = new File([blob], name);
+    return file;
+  }
+  const downloadIMX = (doc, name) => {
     const fileData = doc;
     const blob = new Blob([fileData], { type: "text/xml" });
     const url = URL.createObjectURL(blob);
@@ -59,13 +88,10 @@ const GenerateButton = () => {
     link.href = url;
     link.click();
   }
+
   return (
     <>
- 
-       <IconButton size="large" label="Generate EEC configuration"
-          onClick={handleSumbit}>
-            <Icon data={iconRocket} size="xl"/>
-        </IconButton>
+      <ActionIcon label="Generate EEC configuration" onClick={handleSumbit} icon={iconRocket}/>
     </>
   );
 };

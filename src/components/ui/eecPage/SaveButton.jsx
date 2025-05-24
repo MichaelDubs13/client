@@ -9,6 +9,7 @@ import { safetyGateStore } from "./Store/safetyGateStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
 import { Icon, IconButton } from '@tesla/design-system-react';
 import { iconZip } from '@tesla/design-system-icons';
+import ActionIcon from "../util/ActionIcon";
 
 
 const SaveButton = () => {
@@ -66,10 +67,7 @@ const SaveButton = () => {
 
   return (
     <>
-        <IconButton size="large" label="Save JSON"
-          onClick={handleSave}>
-            <Icon data={iconZip} size="xl"/>
-        </IconButton>
+        <ActionIcon label="Save JSON" icon={iconZip} onClick={handleSave}/>
     </>
   );
 };

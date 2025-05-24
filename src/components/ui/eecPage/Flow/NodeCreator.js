@@ -73,7 +73,7 @@ export const createXpdpNode = (pdp, layer, nodeWidth, nodeHeight)=>{
 
 export const createBranchCircuitNode = (branchCircuit, layer, nodeWidth, nodeHeight)=>{
     const pdp = branchCircuit.data.parent;
-    const key = `${pdp.location}_${branchCircuit.deviceDT}`;
+    const key = `${pdp.line}_${pdp.location}_${branchCircuit.deviceDT}`;
     const icon = branchCircuit.UI.icon;
     const target = `${key}_${layer}`;
     const label = [key, ...branchCircuit.getNodeData()];

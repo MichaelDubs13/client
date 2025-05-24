@@ -25,6 +25,11 @@ const [totalXD4FLA, setTotalXD4FLA]= useState(0);
 const [totalXD5FLA, setTotalXD5FLA]= useState(0);
 const [updateOutputPort, setUpdateOutputPort]=useState(0);
 var accumulatedFla = 0;
+
+useEffect(() => {
+  handleFlaChange();
+}, [psu.drops]);
+
 const handleFlaChange =() => {
   var totalFLA = 0;
   var totalX2FLA = 0;
@@ -32,13 +37,17 @@ const handleFlaChange =() => {
   var totalClass2FLA = 0;
   var totalX4FLA = 0;
   var totalX5FLA = 0;
-  psu.drops.forEach(drop => {
-    totalFLA = totalFLA + Number(drop.fla);
-    if(drop.outputPort === "XD2") totalX2FLA = totalX2FLA + Number(drop.fla);
-    if(drop.outputPort === "XD3" || "X3") totalX3FLA = totalX3FLA + Number(drop.fla);
-    if(drop.outputPort === "Class 2") totalClass2FLA = totalClass2FLA + Number(drop.fla);
-    if(drop.outputPort === "X4") totalX4FLA = totalX4FLA + Number(drop.fla);
-    if(drop.outputPort === "X5") totalX5FLA = totalX5FLA + Number(drop.fla);
+
+  psu.drops.forEach((drop) => {
+    var fla = drop.fla;
+    var outputPort = drop.outputPort;
+    totalFLA = totalFLA + Number(fla);
+    
+    if(outputPort === "XD2") totalX2FLA = totalX2FLA + Number(fla);
+    if(outputPort === "XD3" || outputPort === "X3") totalX3FLA = totalX3FLA + Number(fla);
+    if(outputPort === "Class 2") totalClass2FLA = totalClass2FLA + Number(fla);
+    if(outputPort === "X4") totalX4FLA = totalX4FLA + Number(fla);
+    if(outputPort === "X5") totalX5FLA = totalX5FLA + Number(fla);
   })
   setTotalFLA(totalFLA);
   setTotalXD2FLA(totalX2FLA);
@@ -48,6 +57,7 @@ const handleFlaChange =() => {
   setTotalXD5FLA(totalX5FLA);
   setUpdateOutputPort(updateOutputPort+1);
 }
+
 
 const getColorStyle=(fla, capacity)=>{
   if(fla > capacity){
@@ -85,8 +95,8 @@ return (
                 {
                     lpd.psu_selected === lpdOptions.turk && 
                     <div>
-                      <InputTextItem title={"Summation XD2 FLA"} placeHolder={`${totalXD2FLA}A`} readOnly={true} /> 
-                      <InputTextItem title={"Summation XD3 FLA "} placeHolder={`${totalXD3FLA}A`} readOnly={true} /> 
+                      <InputTextItem title={"Summation XD2 FLA"} placeHolder={`${totalXD2FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD2FLA, 20)}/> 
+                      <InputTextItem title={"Summation XD3 FLA "} placeHolder={`${totalXD3FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD3FLA, 20)}/> 
                     </div>
                 }
                 {

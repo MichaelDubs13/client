@@ -19,6 +19,7 @@ import { ioModuleStore } from "./Store/ioModuleStore";
 import { iconShare } from '@tesla/design-system-icons';
 import { Icon, IconButton } from '@tesla/design-system-react';
 import { useRef } from "react";
+import ActionIcon from "../util/ActionIcon";
 
 
 const LoadButton = ({onLoad}) => {
@@ -89,11 +90,9 @@ const LoadButton = ({onLoad}) => {
           ref={fileInput}
           style={{display:'none'}}
           onChange={handleLoad}/>
+      
       <ToastContainer toasts={toasts} />
-        <IconButton size="large" label="Load JSON"
-          onClick={handleIconClick}>
-            <Icon data={iconShare} size="xl"/>
-        </IconButton>
+       <ActionIcon label="Load JSON" icon={iconShare} onClick={handleIconClick}/>
     </>
   );
 };

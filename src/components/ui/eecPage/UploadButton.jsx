@@ -11,6 +11,7 @@ import { projectStore } from "./Store/projectStore";
 import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiStore } from "./Store/hmiStore";
 import { safetyGateStore } from "./Store/safetyGateStore";
+import ActionIcon from "../util/ActionIcon";
 
 
 const UploadButton = () => {
@@ -78,10 +79,7 @@ const UploadButton = () => {
           style={{display:'none'}}
           onChange={handleEecUpload}/>
       <ToastContainer toasts={toasts} />
-       <IconButton size="large" label="Upload EEC configuration"
-          onClick={handleIconClick}>
-            <Icon data={iconDocument} size="xl"/>
-        </IconButton>
+      <ActionIcon label="Upload EEC configuration" icon={iconDocument} onClick={handleIconClick}/>
     </>
   );
 };

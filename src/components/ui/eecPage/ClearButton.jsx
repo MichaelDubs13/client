@@ -10,6 +10,7 @@ import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { safetyGateStore } from "./Store/safetyGateStore";
 import { hmiStore } from "./Store/hmiStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
+import ActionIcon from "../util/ActionIcon";
 
 
 const ClearButton = () => {
@@ -42,10 +43,7 @@ const ClearButton = () => {
   return (
     <>
       <ToastContainer toasts={toasts} />
-      <IconButton size="large" label="Clear Data"
-          onClick={handleClear}>
-            <Icon data={iconDisabled} size="xl"/>
-        </IconButton>
+      <ActionIcon label="Clear Data" icon={iconDisabled} onClick={handleClear}/>
     </>
   );
 };

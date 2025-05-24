@@ -1,10 +1,9 @@
 import "../../Eec.css";
-import CustomerProperty from "./CustomerProperty";
 import { IconTrigger } from '@tesla/design-system-react';
 import { useState } from "react";
 
 
-const CustomerConfiguration = () => {
+const IconTriggerHeading = ({heading, children}) => {
    const [pressed, setPressed] = useState(false);
 
     return (
@@ -12,19 +11,20 @@ const CustomerConfiguration = () => {
         <div>
         
              <IconTrigger
-             style={{marginTop:'10px'}}
-                label="Project Property"
+                label={heading}
                 onClick={() => setPressed(!pressed)}
                 pressed={pressed}
                 invertColors
                 rotate
                 />
             {
-                pressed && <CustomerProperty/>
-                
+                pressed && 
+                <div>
+                    {children}     
+                </div>
             }
            
         </div>           
     );
 };
-export default CustomerConfiguration;
+export default IconTriggerHeading;

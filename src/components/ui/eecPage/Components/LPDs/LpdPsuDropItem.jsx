@@ -34,10 +34,14 @@ import { lpdOptions } from "../../Store/lpdStore";
     ] : []
 
     useEffect(() => {
-      assignOutputPort(accumulatedFla);
-    }, [drop.fla, updateOutputPort]);
+      assignOutputPort(accumulatedFla)
+      onFlaChange();
+    }, [drop.fla, drop.outputPort]);
+
+
 
     const assignOutputPort = (accumulatedFla) =>{
+      if(drop.fla > 0) return;
       if(lpd.psu_selected === lpdOptions.turk){
         if(accumulatedFla < 10){
           drop.setValue(index, "outputPort", "XD2");
@@ -47,18 +51,18 @@ import { lpdOptions } from "../../Store/lpdStore";
       }
       else if(lpd.psu_selected === lpdOptions.puls){
         if(accumulatedFla < 10){
-          drop.setValue(index, "outputPort", "X4");
+          drop.setValue(index, "outputPort", "X4"); 
         } else {
-          drop.setValue(index, "outputPort", "X5");
+          drop.setValue(index, "outputPort", "X5"); 
         }
       }
       else if(lpd.psu_selected === lpdOptions.ballufBAE0133){
         if(accumulatedFla < 4.16){
-          drop.setValue(index, "outputPort", "X3");
+          drop.setValue(index, "outputPort", "X3"); 
         } else if(accumulatedFla < 4.16 * 2) {
-          drop.setValue(index, "outputPort", "X4");
+          drop.setValue(index, "outputPort", "X4"); 
         } else {
-          drop.setValue(index, "outputPort", "X5");
+          drop.setValue(index, "outputPort", "X5"); 
         }
       }
     }
@@ -86,7 +90,7 @@ import { lpdOptions } from "../../Store/lpdStore";
               }}/>                                
        
           <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
-          <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"} onChange={onFlaChange}/>    
+          <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"}/>    
               
         </div>
       </div>
