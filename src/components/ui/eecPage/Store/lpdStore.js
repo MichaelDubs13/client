@@ -51,9 +51,6 @@ const lpdConfiguration = {
     return null;
   },
   
-  generateData: (lpds) => {
-    return lpds;
-  }
 }
 const lpdStore = create(
   persist((set) => ({

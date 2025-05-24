@@ -1,4 +1,3 @@
-import { Button} from "@tesla/design-system-react";
 import { pdpStore } from "./Store/pdpStore";
 import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
@@ -8,9 +7,11 @@ import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiStore } from "./Store/hmiStore";
 import { safetyGateStore } from "./Store/safetyGateStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
+import { Icon, IconButton } from '@tesla/design-system-react';
+import { iconZip } from '@tesla/design-system-icons';
 
 
-const ExportButton = () => {
+const SaveButton = () => {
   const getConfig =  projectStore((state) => state.getConfig);
   const pdps = pdpStore((state) => state.pdps);
   const xpdps = xpdpStore((state) => state.xpdps);
@@ -21,9 +22,7 @@ const ExportButton = () => {
   const safetyGates = safetyGateStore((state) => state.safetyGates);
   const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
   
-  
 
-  
   const getCircularReplacer=() =>{
     const seen = new WeakSet();
     return (key, value) => {
@@ -67,9 +66,12 @@ const ExportButton = () => {
 
   return (
     <>
-      <Button variant="secondary" onClick={handleSave} style={{marginTop:'5px'}}>Save</Button>
+        <IconButton size="large" label="Save JSON"
+          onClick={handleSave}>
+            <Icon data={iconZip} size="xl"/>
+        </IconButton>
     </>
   );
 };
 
-export default ExportButton;
+export default SaveButton;

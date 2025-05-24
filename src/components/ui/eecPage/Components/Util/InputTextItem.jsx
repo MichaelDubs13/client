@@ -78,7 +78,7 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
                readOnly? 
                <FormItem className={title? "form-item-readonly":"form-item-readonly-notitle"}>
                     {
-                        title  && <FormLabel className="form-label" htmlFor="context">{title}</FormLabel>
+                        title  && <FormLabel className="form-label-title-readonly" htmlFor="context">{title}</FormLabel>
                     }
                     <FormLabel className="form-label-readonly" style={valueStyle}>{defaultValue}</FormLabel>
                 </FormItem> 

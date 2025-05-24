@@ -129,14 +129,31 @@ const lineConfiguration = {
             var foundItem = items[i].getPowerSource(location, device);
             if(foundItem) return foundItem;
         }
-    }
+    },
+
+    getMcpPortOptions:()=>{
+        const mcps = mcpStore.getState().mcps;
+        var ports = [];
+        mcps.forEach((mcp) => {
+            const mcpPorts = mcp.getPortDevices();
+            ports.push(...mcpPorts);
+        });
+
+        var portOptions = [];
+        for(let i=0;i<2;i++){
+            const port = ports[i];
+            portOptions.push({label:port, value:port})
+        }
+        
+
+        return portOptions;
+    },
 
 }
 const lineStore = create((set) => ({
     lines:[],
     stations:[],
     plcs:[],
-    mcpPorts:[],
 
     getLineOptions:()=>{
         const items = lineConfiguration.getAllStoreItems();
@@ -161,25 +178,6 @@ const lineStore = create((set) => ({
             return {plcs: plcOptions};
         })
         return plcOptions;
-    },
-
-    getMcpPortOptions:()=>{
-        const mcps = mcpStore.getState().mcps;
-        var ports = [];
-        mcps.forEach((mcp) => {
-            const mcpPorts = mcp.getPortDevices();
-            ports.push(...mcpPorts);
-        });
-
-        
-        var portOptions = ports.map((port)=>{    
-            return {label:port, value:port}
-        })
-        set((state) => {
-            return {mcpPorts: portOptions};
-        })
-
-        return portOptions;
     },
 
     getCbOptions:(location)=>{

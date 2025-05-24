@@ -45,6 +45,12 @@ export const hotPowerBranchCircuitModel = {
         this.setValue(indexObject, "targetLocation", location);
         this.setValue(indexObject, "targetDT", name);
       },
+      setPowerSource:function(line, location, name){
+        //not available
+      },
+      setNetworkSource:function(line, location, name){
+        //not available
+      },
       getNodeData: function(){
         return [
           

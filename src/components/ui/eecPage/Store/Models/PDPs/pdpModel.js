@@ -71,14 +71,21 @@ export const pdpModel = {
           },
           getDeviceByName:function(name, location, line){
             if(this.line != line) return;
-            if(this.location != location) return;
-            if(name == null) return this;
-            var keys = Object.keys(this.branchCircuit);
-            for(let i=0;i<keys.length;i++){
-              const key = keys[i]
-              for(let j=0;j<this.branchCircuit[key].length;j++){
-                var foundDevice = this.branchCircuit[key][j].getDeviceByName(name, location, line);
-                if(foundDevice) return foundDevice;
+            if(this.location === location){
+              var keys = Object.keys(this.branchCircuit);
+              for(let i=0;i<keys.length;i++){
+                const key = keys[i]
+                for(let j=0;j<this.branchCircuit[key].length;j++){
+                  var foundDevice = this.branchCircuit[key][j].getDeviceByName(name, location, line);
+                  if(foundDevice) return foundDevice;
+                }
+              };
+            }
+            
+            for(let i=0;i<this.hotPowerDrops.length;i++){
+              if(this.hotPowerPanelLocation != location) continue;
+              if(this.hotPowerDrops[i].deviceDT === name){
+                return this.hotPowerDrops[i];
               }
             }
           },
@@ -134,6 +141,11 @@ export const pdpModel = {
               devices = lineConfiguration.getDevices(this.branchCircuit[key], devices, line, station);
             })
             devices = lineConfiguration.getDevices(this.hotPowerDrops, devices, line, station);
+
+            if(this.Opt_HotPwrEnable && this.line === line && this.hotPowerPanelLocation === station){
+              devices = [...devices, "DS01"]
+            }
+
             return devices;
           },
           getCBs:function(location){

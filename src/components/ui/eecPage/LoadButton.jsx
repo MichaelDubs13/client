@@ -1,4 +1,4 @@
-import { FormItemFileUpload, ToastContainer, useToastContainerState,} from "@tesla/design-system-react";
+import { ToastContainer, useToastContainerState,} from "@tesla/design-system-react";
 import { pdpStore } from "./Store/pdpStore";
 import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
@@ -16,12 +16,15 @@ import { safetyGateStore } from "./Store/safetyGateStore";
 import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiStore } from "./Store/hmiStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
+import { iconShare } from '@tesla/design-system-icons';
+import { Icon, IconButton } from '@tesla/design-system-react';
+import { useRef } from "react";
 
 
-const LoadButton = () => {
+const LoadButton = ({onLoad}) => {
   const setConfig =  projectStore((state) => state.setConfig)
   const { toasts, addToast } = useToastContainerState();
-  
+  const fileInput = useRef(null);
 
   const handleLoad = async (event) => {
       event.preventDefault();
@@ -62,10 +65,7 @@ const LoadButton = () => {
           Object.assign(networkSwitchStore.getState().networkSwitches, networkSwitches);
           Object.assign(hmiStore.getState().hmis, hmis);
           Object.assign(ioModuleStore.getState().ioModuleGroups, ioModuleGroups);
-          
-          // setXpdps(jsonObject.xpdps);
-          // setMcps(jsonObject.mcps);
-          // setLpds(jsonObject.lpds);
+          onLoad();
         } catch (error) {
           console.error("Error parsing JSON:", error);
           alert("Invalid JSON file");
@@ -73,19 +73,27 @@ const LoadButton = () => {
       };
 
       reader.readAsText(file);
-    }
+  }
+
+  const handleIconClick = () => {
+    fileInput.current.click();
+  }
 
   return (
     <>
       
-      <FormItemFileUpload
-              id="eec"
-              accept=".json"
-              multiple = {false}
-              label="Load"
-              variant='secondary'
-              onChange={handleLoad}/>
+      <input
+          type="file"
+          accept=".json"
+          multiple = {false}
+          ref={fileInput}
+          style={{display:'none'}}
+          onChange={handleLoad}/>
       <ToastContainer toasts={toasts} />
+        <IconButton size="large" label="Load JSON"
+          onClick={handleIconClick}>
+            <Icon data={iconShare} size="xl"/>
+        </IconButton>
     </>
   );
 };

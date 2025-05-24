@@ -20,7 +20,12 @@ import { lpdStore } from "../Store/lpdStore";
 import ManufacturingLineConfiguration from "./Project/ManufacturingLineConfiguration";
 import CustomerConfiguration from "./Project/CustomerConfiguration";
 
-const LineConfiguration = () => {
+/**
+ * loadCount is used to force refresh after load JSON(maybe theres a better way to do this)
+ * @param {*} param0 
+ * @returns 
+ */
+const LineConfiguration = ({loadCount}) => {
     // this is the data being used in the UI for the line configuration
     const [activeTab, setActiveTab] = useState('tab-1');
     const pdps = pdpStore((state) => state.pdps);

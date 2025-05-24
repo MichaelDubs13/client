@@ -67,10 +67,6 @@ const hmiConfiguration = {
     return hmiOptions;
   },
 
-  generateData: (hmis) => {
-    return hmis;
-  },
-
   calculateNumberOfExtensionUnitPositions: (numberOfExtensionUnitPositions, hmi) => {
     // set the numberOfExtensionUnitPositions to the value of 8 or 12
     // this will be used to create the Extension Unit Positions for the HMI's extension unit

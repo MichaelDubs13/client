@@ -62,6 +62,9 @@ export const branchCircuitModel = {
         setPowerSource:function(line, location, name){
           //not available
         },
+        setNetworkSource:function(line, location, name){
+          //not available
+        },
          getNodeData: function(){
            return [
              this.data.amperage,

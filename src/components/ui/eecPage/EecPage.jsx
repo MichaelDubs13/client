@@ -1,80 +1,29 @@
-import { Button, } from "@tesla/design-system-react";
 import LineConfiguration from "./Components/LineConfiguration";
-import ModelBuilder from "./Models/ModelBuilder";
 import { Icon, Tooltip, TooltipWrapper, useTooltipState, FormItemFileUpload, Link} from '@tesla/design-system-react';
 import { iconInfo } from '@tesla/design-system-icons';
 import ModalCreateEecForm from "./ModalCreateEecForm";
 import DownloadButton from "../libraryPage/DownloadButton";
-import { projectStore } from "./Store/projectStore";
-import { xpdpConfiguration, xpdpStore } from "./Store/xpdpStore";
-import { mcpConfiguration, mcpStore } from "./Store/mcpStore";
-import { lpdConfiguration, lpdStore } from "./Store/lpdStore";
-import {pdpStore} from "./Store/pdpStore";
 import LoadButton from "./LoadButton";
-import ExportButton from "./ExportButton";
+import SaveButton from "./SaveButton";
 import UploadButton from "./UploadButton";
-import { networkSwitchConfiguration, networkSwitchStore } from "./Store/networkSwitchStore";
-import { hmiConfiguration, hmiStore } from "./Store/hmiStore";
-import { safetyGateConfiguration, safetyGateStore } from "./Store/safetyGateStore";
-import { ioModuleGroupConfiguration, ioModuleStore } from "./Store/ioModuleStore";
 import HeadingItem from "./Components/Util/HeadingItem";
 import { useState } from "react";
 import ElectricalDiagram from "./Flow/ElectricalDiagram";
 import NetworkDiagram from "./Flow/NetworkDiagram";
-import { pdpModel } from "./Store/Models/PDPs/pdpModel";
 import ClearButton from "./ClearButton";
-import { mcpModel } from "./Store/Models/MCPs/mcpModel";
-import { customerStore } from "./Store/customerStore";
-import { safetyGateGroupModel } from "./Store/Models/SafetyGates/safetyGateGroupModel";
-import { networkSwitchModel } from "./Store/Models/NetworkSwitches/networkSwitchModel";
+import GenerateButton from "./GenerateButton";
 
 
 const EecPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [eplanPath, setEplanPath] = useState("");
-    const getConfig = projectStore((state) => state.getConfig);
-    const pdps = pdpStore((state) => state.pdps);
-    const customer = customerStore((state) => state.property);
-    const xpdps = xpdpStore((state) => state.xpdps);
-    const mcps = mcpStore((state) => state.mcps);
-    const lpds = lpdStore((state) => state.lpds);
-    const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
-    const hmis = hmiStore((state) => state.hmis);
-    const safetyGates = safetyGateStore((state) => state.safetyGates);
-    const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
+    const [loadCount, setLoadCount]=useState(0);
     const {
       open: openTool,
       handlers: handlersTool,
       wrapperRef: wrapperRefTool,
     } = useTooltipState({ initialOpen: false });
 
-    const handleSumbit = (event) => {
-      event.preventDefault();
-      const config = getConfig();
-      const validatedPdps =pdpModel.generateData(pdps);
-      const validatedXpdps =xpdpConfiguration.generateData(xpdps);
-      const validatedMcps =mcpModel.generateData(mcps);
-      const validatedLpds = lpdConfiguration.generateData(lpds);
-      const validatedNetworkSwitches = networkSwitchModel.generateData(networkSwitches);
-      const validatedHmis = hmiConfiguration.generateData(hmis);
-      const validatedSafetyGates = safetyGateGroupModel.generateData(safetyGates);
-      const validatedIOModules = ioModuleGroupConfiguration.generateData(ioModuleGroups);
-      var devices = []
-      var imx = ModelBuilder.buildIMX(config, customer, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
-      var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
-      downloadXML(imx, name);
-    }
-
-
-    const downloadXML = (doc, name) => {
-      const fileData = doc;
-      const blob = new Blob([fileData], { type: "text/xml" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.download = name;
-      link.href = url;
-      link.click();
-    }
     const handleButtonClick=async(event)=> {
       setSelectedFile(event.target.files[0])
       console.log(selectedFile.name);
@@ -82,6 +31,12 @@ const EecPage = () => {
       formData.append("file", selectedFile);
       //eplanDataService.uploadFile(formData);
     }
+
+    const handleLoad = () =>{
+      var count = loadCount+1;
+      setLoadCount(count)
+    }
+
     return (
    
         <>
@@ -89,7 +44,7 @@ const EecPage = () => {
             <div>
               <p style={{fontSize:'18px', fontWeight:'bold'}}>Report any issues to <Link variant="vertical" href={`https://issues.teslamotors.com/browse/EPLAN-191`} rel="noopener noreferrer" target="_blank">EPLAN-191</Link></p>
             </div>
-            <h2>
+            {/* <h2>
                 Tools
                 <TooltipWrapper
                 {...handlersTool}
@@ -109,7 +64,7 @@ const EecPage = () => {
             </h2>
             <div style={{display: "flex", justifyContent: "left", gap: "15px"}}>
                 <ModalCreateEecForm/>
-                {/* <FormItemFileUpload
+                <FormItemFileUpload
                   id="UploadFileForm"
                   accept=".txt"
                   multiple = {false}
@@ -117,8 +72,8 @@ const EecPage = () => {
                   placeholder="Upload File Handling Test"
                   value={eplanPath}
                   style={{ marginBottom: "5px"}}
-                  onChange={handleButtonClick}/> */}
-            </div>
+                  onChange={handleButtonClick}/> 
+            </div> */}
             <h2>
                 Diagram
             </h2>
@@ -134,14 +89,14 @@ const EecPage = () => {
                 Configurations  
             </h2>
             <div style={{display: "flex", justifyContent: "left", gap: "15px", alignContent:'center', alignItems:'center'}}>
+              <GenerateButton/>
               <UploadButton/>
-              <Button onClick={handleSumbit} style={{marginTop:'5px'}}>Generate</Button>
-              <ExportButton/>
-              <LoadButton/>
+              <SaveButton/>
+              <LoadButton onLoad={handleLoad}/>
               <ClearButton/>
             </div>
 
-            <LineConfiguration/>
+            <LineConfiguration loadCount={loadCount}/>
           </div>
         </>
     )

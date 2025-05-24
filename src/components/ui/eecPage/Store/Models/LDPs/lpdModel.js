@@ -133,6 +133,9 @@ export const lpdModel = {
           },
         }
       },
+      generateData: (lpds) => {
+        return lpds;
+      },
       merge: (state, currentState) => { 
           const lpds = lpdModel.recreate(state.lpds);
           state.lpds = lpds;

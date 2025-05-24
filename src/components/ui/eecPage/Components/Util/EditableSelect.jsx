@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Select, { components } from "react-select";
 
 const Input = (props) => <components.Input {...props} isHidden={false} />;
 
-const EditableSelect =({options, selected, placeHolder, inpRef, onChange, onCreateOption})=> {
+const EditableSelect =({options, selected, placeHolder, onChange, onCreateOption})=> {
   const [value, setValue] = useState(selected);
   const [inputValue, setInputValue] = useState(placeHolder);
   const [allOptions, setAllOptions] = useState(options);
+  const selectRef = useRef(null);
 
     useEffect(() => {
         setAllOptions(options);
@@ -19,6 +20,7 @@ const EditableSelect =({options, selected, placeHolder, inpRef, onChange, onCrea
   };
 
   const onKeyDown = (event) => {
+
     if (event.key === 'Enter') {
         event.preventDefault();
         var newOption = {label:inputValue, value:inputValue};
@@ -27,6 +29,7 @@ const EditableSelect =({options, selected, placeHolder, inpRef, onChange, onCrea
         setValue(newOption);
         setInputValue(inputValue);
         onCreateOption(inputValue);
+        selectRef.current.blur();
       }
   }
 
@@ -39,7 +42,7 @@ const EditableSelect =({options, selected, placeHolder, inpRef, onChange, onCrea
   return (
     <div style={{ fontFamily: "sans-serif", textAlign: "center" }}>
       <Select
-        ref={inpRef}
+        ref={selectRef}
         options={allOptions}
         isClearable={true}
         value={value}

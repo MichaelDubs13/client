@@ -171,22 +171,32 @@ export const xpdpModel = {
 
      return branchCircuit;
   },
-    merge: (state, currentState) => { 
-        const pdps = xpdpModel.recreate(state.xpdps);
-        state.xpdps = pdps;
-        Object.assign(currentState, state)
-        return currentState
-    },
-    recreate: (xpdps)=>{
-        const newPdps = xpdps.map(pdp => {
-            var newPdp = recreateObject(pdp, xpdpModel.create)
-            Object.keys(pdp.branchCircuit).forEach(key => { 
-                var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], branchCircuitModel.create);
-                newPdp.branchCircuit[key] = branchCircuit;
-            });
+  generateData: (xpdps) => {
+    xpdps.forEach(pdp => {
+      var branchCircuit3Ph = pdp.branchCircuit["20A 3ph"];
+      if(branchCircuit3Ph.length > 2){
+        branchCircuit3Ph = branchCircuit3Ph.slice(0, 1);
+        pdp.branchCircuit["20A 3ph"] = branchCircuit3Ph;
+      }
+    });
+   return xpdps;
+  },
+  merge: (state, currentState) => { 
+      const pdps = xpdpModel.recreate(state.xpdps);
+      state.xpdps = pdps;
+      Object.assign(currentState, state)
+      return currentState
+  },
+  recreate: (xpdps)=>{
+      const newPdps = xpdps.map(pdp => {
+          var newPdp = recreateObject(pdp, xpdpModel.create)
+          Object.keys(pdp.branchCircuit).forEach(key => { 
+              var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], branchCircuitModel.create);
+              newPdp.branchCircuit[key] = branchCircuit;
+          });
 
-            return newPdp;
-        })
-        return newPdps;
-    }
+          return newPdp;
+      })
+      return newPdps;
+  }
 }

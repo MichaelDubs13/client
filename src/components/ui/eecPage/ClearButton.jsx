@@ -1,4 +1,6 @@
-import { Button, FormItemFileUpload, ToastContainer, useToastContainerState,} from "@tesla/design-system-react";
+import { ToastContainer, useToastContainerState,} from "@tesla/design-system-react";
+import { iconDisabled } from '@tesla/design-system-icons';
+import { Icon, IconButton } from '@tesla/design-system-react';
 import { pdpStore } from "./Store/pdpStore";
 import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
@@ -23,7 +25,7 @@ const ClearButton = () => {
   const { toasts, addToast } = useToastContainerState();
   
 
-  const handleLoad = async (event) => {
+  const handleClear = async (event) => {
       event.preventDefault();
       clearConfig();
       setPdps([]);
@@ -39,8 +41,11 @@ const ClearButton = () => {
 
   return (
     <>
-      <Button variant="secondary" onClick={handleLoad}>Clear</Button>
       <ToastContainer toasts={toasts} />
+      <IconButton size="large" label="Clear Data"
+          onClick={handleClear}>
+            <Icon data={iconDisabled} size="xl"/>
+        </IconButton>
     </>
   );
 };

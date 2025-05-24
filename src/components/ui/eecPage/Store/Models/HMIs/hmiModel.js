@@ -182,6 +182,9 @@ export const hmiModel = {
         }
         return extensionUnitPositions;
     },
+    generateData: (hmis) => {
+      return hmis;
+    },
     merge: (state, currentState) => { 
     const hmis = hmiModel.recreate(state.hmis);
         state.hmis = hmis;

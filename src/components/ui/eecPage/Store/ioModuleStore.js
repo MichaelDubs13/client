@@ -98,10 +98,6 @@ const ioModuleGroupConfiguration = {
 
     return ioModuleGroupOptions;
   },
-  generateData: (ioModuleGroups) => {
-    return ioModuleGroups;
-  },
-
 }
   
 const ioModuleStore = create(

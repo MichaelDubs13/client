@@ -132,6 +132,9 @@ export const ioModuleGroupModel = {
    
     return ioModuleGroup;
   },
+  generateData: (ioModuleGroups) => {
+    return ioModuleGroups;
+  },
   merge: (state, currentState) => { 
       const ioModuleGroups = ioModuleGroupModel.recreate(state.ioModuleGroups)
       state.ioModuleGroups = ioModuleGroups;

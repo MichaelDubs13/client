@@ -1,6 +1,8 @@
-import { FormItemFileUpload, ToastContainer, useToastContainerState,FormLabel,FormItem} from "@tesla/design-system-react";
+import { ToastContainer, useToastContainerState} from "@tesla/design-system-react";
+import { iconDocument } from '@tesla/design-system-icons';
+import { Icon, IconButton } from '@tesla/design-system-react';
 import Parser from "./Excel/Parser";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { pdpStore } from "./Store/pdpStore";
 import { xpdpStore } from "./Store/xpdpStore";
 import { mcpStore } from "./Store/mcpStore";
@@ -23,7 +25,7 @@ const UploadButton = () => {
   const setSafetyGates = safetyGateStore((state)=>state.setSafetyGates)
   const setNetworkSwitches = networkSwitchStore((state)=>state.setNetworkSwitches)
   const { toasts, addToast } = useToastContainerState();
-  
+  const fileInput = useRef(null);
 
   const handleEecUpload = async (event) => {
       event.preventDefault();
@@ -59,21 +61,27 @@ const UploadButton = () => {
           setSafetyGates(gates);
         }
         reader.readAsBinaryString(file)
-    }
-
+  }
+  const handleIconClick = () => {
+    fileInput.current.click();
+  }
   return (
     <>
       
-      <FormItemFileUpload
-              id="eec"
-              accept=".xlsx, .xlsm"
-              multiple = {false}
-              label="Upload"
-              placeholder="Upload EEC configuration"
-              value={eecPath}
-              variant='secondary'
-              onChange={handleEecUpload}/>
+      <input
+          type="file"
+          accept=".xlsx, .xlsm"
+          multiple = {false}
+          label="Upload EEC configuration"
+          value={eecPath}
+          ref={fileInput}
+          style={{display:'none'}}
+          onChange={handleEecUpload}/>
       <ToastContainer toasts={toasts} />
+       <IconButton size="large" label="Upload EEC configuration"
+          onClick={handleIconClick}>
+            <Icon data={iconDocument} size="xl"/>
+        </IconButton>
     </>
   );
 };

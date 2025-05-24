@@ -31,16 +31,6 @@ const xpdpConfiguration = {
     }
     return newPwrDrops;
   },
-  generateData: (xpdps) => {
-    xpdps.forEach(pdp => {
-      var branchCircuit3Ph = pdp.branchCircuit["20A 3ph"];
-      if(branchCircuit3Ph.length > 2){
-        branchCircuit3Ph = branchCircuit3Ph.slice(0, 1);
-        pdp.branchCircuit["20A 3ph"] = branchCircuit3Ph;
-      }
-    });
-   return xpdps;
-  }
 }
 
 const xpdpStore = create(
