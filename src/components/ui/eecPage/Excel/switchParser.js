@@ -68,7 +68,7 @@ const switchParser = {
         return networkSwitches;
     },
     setSourcePwrDrop(networkSwitch, lpds){
-        var drop = lpdConfiguration.getDrop(lpds, networkSwitch.location, networkSwitch.deviceTag)
+        var drop = lpdConfiguration.getPowerSource(lpds, networkSwitch.location, networkSwitch.deviceTag)
         if(!drop) return null;
         drop.data.targetDevice = networkSwitch.data.id
     },
@@ -123,7 +123,7 @@ const switchParser = {
                 port.targetLocation = device.target_device_location;
                 port.targetDT = device.device_dt;
                 port.line = ProjectConfiguration.line
-                device.device_dt.startsWith('LETH') ? port.deviceTypeSelection = 'Network Switch' : port.deviceTypeSelection = 'Device';
+                device.device_dt?.startsWith('LETH') ? port.deviceTypeSelection = 'Network Switch' : port.deviceTypeSelection = 'Device';
                 port.targetCableLength = device.local_cable_length;
                 ports.push(port);
             })

@@ -92,7 +92,7 @@ const ioModuleGroupOptions = {
 const ioModuleGroupConfiguration = {
   getIOModuleGroupOptions:(ioModuleGroups)=>{
     const ioModuleGroupOptions = ioModuleGroups.map((ioModuleGroup => {
-        const value = lineConfiguration.getDeviceFullName(ioModuleGroup.location, ioModuleGroup.ioModuleDT);
+        const value = lineConfiguration.getDeviceFullName(ioModuleGroup.line, ioModuleGroup.location, ioModuleGroup.ioModuleDT);
         return {label:value, value:value}
     }))
 

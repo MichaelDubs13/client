@@ -35,7 +35,7 @@ export const safetyGateGroupModel = {
            this.setValue(indexObject, key, value,false, true);
          },
         getFullName: function() {
-          return lineConfiguration.getDeviceFullName(this.location);
+          return `++${this.line}+${this.location}`;
         },
         getIndex: function(){
           const safetyGates = safetyGateStore.getState().safetyGates;

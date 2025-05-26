@@ -69,7 +69,7 @@ export const networkSwitchModel = {
          this.setValue(indexObject, key, value,false, true);
        },
       getFullName: function() {
-        return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);
+        return lineConfiguration.getDeviceFullName(this.line, this.location, this.deviceTag);
       },
       getPortOptions: function() {
         return networkSwitchConfiguration.getEthernetNetworkPortOptions(this.ports.length, this.networkType, this.switchType);

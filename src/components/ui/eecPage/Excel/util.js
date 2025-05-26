@@ -1,5 +1,5 @@
 export const filterItemsByStartsOptions = (options, items, key) => {
-    return items.filter(item => options.some(option => item[key].startsWith(option)));
+    return items.filter(item => options.some(option => item[key]?.startsWith(option)));
 }
 
 export const findClosestHigherNumber = (array, target) => {

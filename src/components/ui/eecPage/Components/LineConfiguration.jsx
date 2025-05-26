@@ -11,7 +11,7 @@ import SafetyGateLocationCount from "./SafetyGateSwitches/SafetyGateLocationCoun
 import { safetyGateStore } from "../Store/safetyGateStore";
 import IO_ModuleCascadingCollection from "./IO_Modules/IO_ModuleCascadingCollection";
 import { ioModuleStore } from "../Store/ioModuleStore";
-import { Chip, TabList} from "@tesla/design-system-react";
+import { Chip, Icon, SideNav_v9, TabList} from "@tesla/design-system-react";
 import { useState } from "react";
 import { pdpStore } from "../Store/pdpStore";
 import { xpdpStore } from "../Store/xpdpStore";
@@ -21,7 +21,6 @@ import IconTriggerHeading from "./Util/IconTriggerHeading";
 import ManufacturingLineNameAndLocation from "./Project/ManufacturingLineNameAndLocation";
 import OneLineComponents from "./Project/OneLineComponents";
 import CustomerProperty from "./Project/CustomerProperty";
-import TabLabel from "./Util/TabLabel";
 import EecJobHistory from "../EecJobHistory";
 
 /**
@@ -40,58 +39,7 @@ const LineConfiguration = ({loadCount}) => {
     const hmis = hmiStore((state) => state.hmis);
     const safetyGates = safetyGateStore((state) => state.safetyGates);
     const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
-    const tabs = [
-        {
-            id: 'tab-1',
-            label: `Line Configurations`,
-            style:{fontSize:"18px"}
-          },
-        {
-          id: 'tab-2',
-          label: `Project Property`,
-          style:{fontSize:"18px"}
-        },
-        {
-          id: 'tab-3',
-          label: <TabLabel label="PDPs" count={pdps.length}/>,
-          style:{fontSize:"18px"}
-        },
-        {
-          id: 'tab-4',
-          label: <TabLabel label="XPDPs" count={xpdps.length}/>,
-          style:{fontSize:"18px"}
-        },
-        {
-          id: 'tab-5',
-          label: <TabLabel label="MCPs" count={mcps.length}/>,
-          style:{fontSize:"18px"}
-        },
-        {
-            id: 'tab-6',
-            label: <TabLabel label="24VDC Power Distibution" count={lpds.length}/>,
-            style:{fontSize:"18px"}
-        },
-        {
-            id: 'tab-7',
-            label: <TabLabel label="Network Switches" count={networkSwitches.length}/>,
-            style:{fontSize:"18px"}
-        },
-        {
-            id: 'tab-8',
-            label: <TabLabel label="HMIs" count={hmis.length}/>,
-            style:{fontSize:"18px"}
-        },
-        {
-            id: 'tab-9',
-            label:  <TabLabel label="Safety Gate Switches" count={safetyGates.length}/>, 
-            style:{fontSize:"18px"}
-        },
-        {
-            id: 'tab-10',
-            label: <TabLabel label="IO Modules" count={ioModuleGroups.length}/>, 
-            style:{fontSize:"18px"}
-        },
-      ];
+   
       const renderSwitch = (param) => {
         switch(param) {
             case 'tab-1':
@@ -118,15 +66,118 @@ const LineConfiguration = ({loadCount}) => {
                 return <PdpConfigurations/>
         }
       }
+
+      const getCircuitBreakers = (pdp) => {
+        var items = []
+        Object.keys(pdp.branchCircuit).forEach(key => {
+            pdp.branchCircuit[key].forEach(cb => {
+                var item = {
+                    leadingText: cb.getFullName(),
+                }
+                items.push(item);
+            })
+        })
+        return items;
+      }
+
+      const getItems = (array,id) => {
+        var items = []
+        array.forEach((element)=> {
+            var children = (element.data.type === 'pdp' || element.data.type === 'xpdp') ? getCircuitBreakers(element) : null;
+            const item = {
+                id:id,
+                leadingText: `${element.getFullName()}`,
+                trailing: children ? <Chip text={`${children.length}`} /> : null,
+                items: children,
+            }
+            items.push(item)
+        })
+
+        return items;
+      }
+
+      const items = [
+        {
+            id:'tab-1',
+            leadingText: 'Line Configurations',
+            highlighted: activeTab==='tab-1',
+        },
+        {
+            id:'tab-2',
+            leadingText: 'Project Property',
+            highlighted: activeTab==='tab-2',
+        },
+        {
+            id:'tab-3',
+            leadingText: "PDPs",
+            trailing: <Chip text={`${pdps.length}`} />,
+            items: getItems(pdps, 'tab-3'),
+            highlighted: activeTab==='tab-3',
+        },
+        {
+            id:'tab-4',
+            leadingText: "XPDPs",
+            trailing: <Chip text={`${xpdps.length}`} />,
+            items: getItems(xpdps, 'tab-4'),
+            highlighted: activeTab==='tab-4',
+        },
+        {
+            id:'tab-5',
+            leadingText: "MCPs",
+            trailing: <Chip text={`${mcps.length}`} />,
+            items: getItems(mcps, 'tab-5'),
+            highlighted: activeTab==='tab-5',
+        },
+        {
+            id:'tab-6',
+            leadingText: "24V Power Dist.",
+            trailing: <Chip text={`${lpds.length}`} />,
+            items: getItems(lpds, 'tab-6'),
+            highlighted: activeTab==='tab-6',
+        },
+        {
+            id:'tab-7',
+            leadingText: "Network Switches",
+            trailing: <Chip text={`${networkSwitches.length}`} />,
+            items: getItems(networkSwitches, 'tab-7'),
+            highlighted: activeTab==='tab-7',
+        },
+        {
+            id:'tab-8',
+            leadingText: "HMIs",
+            trailing: <Chip text={`${hmis.length}`} />,
+            items: getItems(hmis, 'tab-8'),
+            highlighted: activeTab==='tab-8',
+        },
+        {
+            id:'tab-9',
+            leadingText: "Safety Gate Switches",
+            trailing: <Chip text={`${safetyGates.length}`} />,
+            items: getItems(safetyGates, 'tab-9'),
+            highlighted: activeTab==='tab-9',
+        },
+        {
+            id:'tab-10',
+            leadingText: "IO Modules",
+            trailing: <Chip text={`${ioModuleGroups.length}`} />,
+            items: getItems(ioModuleGroups, 'tab-10'),
+            highlighted: activeTab==='tab-10',
+        },
+      ]
+
+    const handleItemSelect = (id) => {
+        setActiveTab(id);
+    }
     return (
         <>
+            
             <IconTriggerHeading heading="One-Lines" children={<OneLineComponents/>}/>
             <IconTriggerHeading heading="Job History" children={<EecJobHistory/>}/>
             
             <div className="tds-layout tds-layout-2col-content_heavy tds-layout-main--right" style={{padding:'0px'}}>
                 <aside className="tds-layout-item tds-layout-aside">
                     <div style={{ border: '1px', padding: '16px', width: '100%' }}>
-                    <TabList
+                    {/* <TabList
                         animated
                         onTabChange={(e) => setActiveTab(e.currentTarget.id)}
                         selected={activeTab}
@@ -134,7 +185,8 @@ const LineConfiguration = ({loadCount}) => {
                         style={{overflow:'hidden', }}
                         
                         variant="vertical"
-                        />
+                        /> */}
+                        <SideNav_v9 variant="internal" items={items} sticky={true} onItemSelect={handleItemSelect}/>
                     </div>
                 </aside>
                 <main className="tds-layout-item tds-layout-main">

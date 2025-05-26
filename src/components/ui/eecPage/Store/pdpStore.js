@@ -33,7 +33,7 @@ const pdpOptions = {
 
 const pdpConfiguration = {
   calculateAllBranchFLA:(pdp)=>{
-    Object.keys(pdp).forEach(key => {
+    Object.keys(pdp.branchCircuit).forEach(key => {
         pdpConfiguration.calculateBranchFLA(pdp.branchCircuit[key])
     })
   },

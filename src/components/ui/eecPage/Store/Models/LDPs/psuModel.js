@@ -55,7 +55,7 @@ export const psuModel = {
              this.setValue(indexObject, key, value,false, true);
            },
           getFullName: function() {
-            return lineConfiguration.getDeviceFullName(this.location, this.deviceTag);
+            return lineConfiguration.getDeviceFullName(this.line, this.location, this.deviceTag);
           },
           getPowerSource: function(location, device){
             var drop = this.drops.find(drop => drop.targetLocation === location && drop.targetDT === device);

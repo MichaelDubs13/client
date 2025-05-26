@@ -25,6 +25,9 @@ export const lpdModel = {
             type:'lpd',
             id:uuidv4(),
           },
+          getFullName: function() {
+            return `++${this.line}+${this.location}`;
+          },
           getIndexObject: function(){
             const lpdIndex = this.getIndex();
             return {lpdIndex:lpdIndex}

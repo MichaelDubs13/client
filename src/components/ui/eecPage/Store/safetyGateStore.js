@@ -25,7 +25,7 @@ const safetyGateConfiguration = {
     const options = [];
     safetyGates.forEach(safetyGate => {
       safetyGate.safetyGateSwitches.forEach(safetyGateSwitch => {
-        const value = lineConfiguration.getDeviceFullName(safetyGateSwitch.location, safetyGateSwitch.deviceTag);
+        const value = lineConfiguration.getDeviceFullName(safetyGateSwitch.line, safetyGateSwitch.location, safetyGateSwitch.deviceTag);
         options.push({label:value, value:value});
       })
     })

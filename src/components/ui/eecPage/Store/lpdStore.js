@@ -42,9 +42,9 @@ const lpdOptions = {
   ],
 }
 const lpdConfiguration = {
-  getDrop:(lpds,location, device, port) => {
+  getPowerSource:(lpds,location, device, port) => {
     for(let i=0;i<lpds.length;i++){
-      const drop = lpds[i].getDrop(location, device, port);
+      const drop = lpds[i].getPowerSource(location, device, port);
       if(drop) return drop;
     }
 

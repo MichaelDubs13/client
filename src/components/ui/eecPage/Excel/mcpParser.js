@@ -140,7 +140,7 @@ const mcpParser = {
 
     getNetworkTopology:(mcps)=>{
         if(mcps.length < 2){
-            return;
+            return mcps;
         }
         for(let i = 0; i<mcps.length;i++){
             mcps[i].b_PLC_ETH = true;

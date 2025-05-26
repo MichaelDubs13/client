@@ -65,7 +65,7 @@ const networkSwitchOptions = {
 const networkSwitchConfiguration = {
   getNetworkSwitchOptions:(networkSwitches)=>{
     const networkSwitchOptions = networkSwitches.map((networkSwitch => {
-        const value = lineConfiguration.getDeviceFullName(networkSwitch.location, networkSwitch.deviceTag);
+        const value = lineConfiguration.getDeviceFullName(networkSwitch.line, networkSwitch.location, networkSwitch.deviceTag);
         return {label:value, value:value}
     }))
 

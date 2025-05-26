@@ -20,8 +20,8 @@ const lineConfiguration = {
     safetyModuleIndicator:'SIO',
     ioModuleIndicator:'MIO',
     powerSupplyIndicator:'PSU',
-    getDeviceFullName:(location, device)=>{
-        return `+${location}-${device}`;
+    getDeviceFullName:(line,location, device)=>{
+        return `++${line}+${location}-${device}`;
     },
     getLines:(array, lines) => {
         array.map((item) => {

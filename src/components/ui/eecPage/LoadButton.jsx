@@ -17,7 +17,6 @@ import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiStore } from "./Store/hmiStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
 import { iconShare } from '@tesla/design-system-icons';
-import { Icon, IconButton } from '@tesla/design-system-react';
 import { useRef } from "react";
 import ActionIcon from "../util/ActionIcon";
 

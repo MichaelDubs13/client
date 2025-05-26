@@ -178,7 +178,8 @@ const deviceParser = {
         //return options: Device, Network Switch, Spare
         devices.forEach(device => {
             const networkSwitchIdentifers = ["LETH", "PETH"]
-            var startsWithAny = networkSwitchIdentifers.some(prefix => device.device_dt.startsWith(prefix));
+            
+            var startsWithAny = networkSwitchIdentifers.some(prefix => device.device_dt?.startsWith(prefix));
             if(startsWithAny){
                 device.deviceType = "Network Switch";
                 const foundMcp = mcps.find(mcp => mcp.mcpName === device.local_network_direct);

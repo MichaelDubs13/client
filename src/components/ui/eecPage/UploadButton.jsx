@@ -52,6 +52,7 @@ const UploadButton = () => {
           var data = event.target.result;
           const excelParser = new Parser(data);
           const {config,pdps, xpdps, mcps, lpds, switches, devices, groupedIOModules, hmis, gates} = excelParser.parse();
+          console.log(mcps);
           setConfig(config);
           setPdps(pdps);
           setXpdps(xpdps);

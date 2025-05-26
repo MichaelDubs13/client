@@ -73,7 +73,7 @@ export const mcpModel = {
             type:'mcp',
             id:uuidv4(),
           },
-          getDeviceFullName: function(){
+          getFullName: function(){
             return `++${this.line}+${this.location}`;
           },
           getIndexObject: function(){
@@ -155,7 +155,7 @@ export const mcpModel = {
             var devices = []
 
             const portDTs = this.ports.map((port) => {
-              return `${this.getDeviceFullName()}-${port.getDeviceName()}`
+              return `${this.getFullName()}-${port.getDeviceName()}`
             })
 
             devices = [...devices, ...portDTs];

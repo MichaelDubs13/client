@@ -19,15 +19,15 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
         setNumberOfExtensionUnitPositions(index, value);
     }
 
-    const handleDeviceChange = (value) => {
-        if(hmi.location && value){
-            const pwrDrop = lpdConfiguration.getDrop(lpds, hmi.location, value)
-            if(pwrDrop){                
-                hmi.setPowerSource(pwrDrop.data.parent.line, pwrDrop.data.parent.location, pwrDrop.data.parent.deviceTag);
-                pwrDrop.setDataValue("targetDevice", hmi.data.id)
-            }
-        }
-    }
+    // const handleDeviceChange = (value) => {
+    //     if(hmi.location && value){
+    //         const pwrDrop = lpdConfiguration.getPowerSource(lpds, hmi.location, value)
+    //         if(pwrDrop){                
+    //             hmi.setPowerSource(pwrDrop.data.parent.line, pwrDrop.data.parent.location, pwrDrop.data.parent.deviceTag);
+    //             pwrDrop.setDataValue("targetDevice", hmi.data.id)
+    //         }
+    //     }
+    // }
 
     const handleRfidPositionChange = (value) => {
         hmi.setRfidExtensionPosition(value)
@@ -39,7 +39,7 @@ const HmiConfiguration = ({hmi, index, createNew}) => {
             <div>
                 <DataTable border={4} className='data-table'> 
                     <DeviceSelection item={hmi} index={hmiIndex}
-                        deviceProperty={"deviceTag"} onDeviceChange={handleDeviceChange}
+                        deviceProperty={"deviceTag"}
                         stationProperty={"location"}/> 
                     <PlcIDSelection item={hmi} title={"HMI is controlled by PLC ID:"} index={hmiIndex} createNew={createNew}/>
                     <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={hmi} index={hmiIndex} property={"localIP"} validation={isValidIP}/>

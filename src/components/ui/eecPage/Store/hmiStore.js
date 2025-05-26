@@ -60,7 +60,7 @@ const hmiConfiguration = {
 
   getHmiOptions:(hmis)=>{
     const hmiOptions = hmis.map((hmi => {
-        const value = lineConfiguration.getDeviceFullName(hmi.location, hmi.deviceTag);
+        const value = lineConfiguration.getDeviceFullName(hmi.line, hmi.location, hmi.deviceTag);
         return {label:value, value:value}
     }))
 

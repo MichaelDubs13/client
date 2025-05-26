@@ -17,6 +17,7 @@ export const Layout = ({ children }) => {
       <div id="header" className="tds-shell-masthead">
         <SiteHeader animated>
           <SiteLogo appTitle="Lithium"  />
+          <img src={`/lithium.png`} style={{transform: 'scale(0.4)'}}/>
           <NavItem key="confluence" href="https://confluence.teslamotors.com/display/CONHUB/TIA+Portal+Openness+-+Lithium+2.0" animated>
             Confluence Page
           </NavItem>

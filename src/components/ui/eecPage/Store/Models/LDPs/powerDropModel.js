@@ -50,7 +50,7 @@ export const powerDropModel = {
         return this.data.parent.drops.findIndex(drop => drop.data.id === this.data.id)
       },
       getFullName: function() {
-        return lineConfiguration.getDeviceFullName(this.location, this.description);
+        return lineConfiguration.getDeviceFullName(this.line, this.location, this.description);
       },
       getNodeData: function(){
         return [

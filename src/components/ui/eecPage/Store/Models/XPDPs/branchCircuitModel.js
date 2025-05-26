@@ -33,6 +33,9 @@ export const branchCircuitModel = {
            powertarget:'',
            id:uuidv4(),
          },
+          getFullName: function() {
+            return `${this.deviceDT}-${amperage}`;
+          },
          getIndexObject: function(){
            const pdpIndex = this.data.parent.getIndex();
            const branchCircuitIndex = this.getIndex();

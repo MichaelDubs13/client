@@ -39,6 +39,9 @@ export const xpdpModel = {
         type:'xpdp',
         id:uuidv4(),
       },
+      getFullName: function (){
+        return `++${this.line}+${this.location}`;
+      },
       getIndexObject: function(){
           const pdpIndex = this.getIndex();
           return {

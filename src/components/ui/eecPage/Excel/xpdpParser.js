@@ -3,6 +3,7 @@ import { xpdpConfiguration } from '../Store/xpdpStore';
 import { pdpConfiguration } from '../Store/pdpStore';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { xpdpModel } from '../Store/Models/XPDPs/xpdpModel';
+import { branchCircuitModel } from '../Store/Models/XPDPs/branchCircuitModel';
 
 
 const xpdpParser = {
@@ -67,7 +68,9 @@ const xpdpParser = {
                     if(arr.length > 2){
                         const branchSize = arr[2]
                         const branch = xpdpParser.createBranchCircuit(sourceDevice,xpdp, branchSize);
-                        xpdp.branchCircuit[branchSize].push(branch);
+                        if(xpdp.branchCircuit.hasOwnProperty(branchSize)){
+                            xpdp.branchCircuit[branchSize].push(branch);
+                        }
                     }
                 }
             }
@@ -77,7 +80,7 @@ const xpdpParser = {
         return xpdps;
     },
     createBranchCircuit:(sourceDevice, parent, amperage)=>{
-        const branch = xpdpConfiguration.createBranchCircuit(parent, amperage);
+        const branch = branchCircuitModel.create(parent, amperage);
         branch.line=ProjectConfiguration.line;
         branch.targetDT = sourceDevice.device_dt;
         branch.targetLocation = sourceDevice.target_device_location;
