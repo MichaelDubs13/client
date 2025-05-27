@@ -67,23 +67,39 @@ const LineConfiguration = ({loadCount}) => {
         }
       }
 
-      const getCircuitBreakers = (pdp) => {
+    const getCircuitBreakers = (pdp) => {
         var items = []
         Object.keys(pdp.branchCircuit).forEach(key => {
-            pdp.branchCircuit[key].forEach(cb => {
-                var item = {
-                    leadingText: cb.getFullName(),
-                }
-                items.push(item);
-            })
+            var childItems = getChildItems(pdp.branchCircuit[key]);
+            items.push(...childItems);
         })
         return items;
-      }
+    }
+
+    const getChildItems = (array) => {
+        var items = []
+        array.forEach(element => {
+             var item = {
+                leadingText: element.getFullName(),
+            }
+            items.push(item);
+        })
+        return items;
+    }
+
+    const getChildren = (element) => {
+        if(element.data.type === 'pdp' || element.data.type === 'xpdp'){
+            return getCircuitBreakers(element);
+        } else if(element.data.type === 'ioModuleGroup') {
+            return getChildItems(element.ioModules);
+        }
+        return null;
+    }
 
       const getItems = (array,id) => {
         var items = []
         array.forEach((element)=> {
-            var children = (element.data.type === 'pdp' || element.data.type === 'xpdp') ? getCircuitBreakers(element) : null;
+            var children = getChildren(element);
             const item = {
                 id:id,
                 leadingText: `${element.getFullName()}`,
@@ -177,15 +193,6 @@ const LineConfiguration = ({loadCount}) => {
             <div className="tds-layout tds-layout-2col-content_heavy tds-layout-main--right" style={{padding:'0px'}}>
                 <aside className="tds-layout-item tds-layout-aside">
                     <div style={{ border: '1px', padding: '16px', width: '100%' }}>
-                    {/* <TabList
-                        animated
-                        onTabChange={(e) => setActiveTab(e.currentTarget.id)}
-                        selected={activeTab}
-                        tabs={tabs}
-                        style={{overflow:'hidden', }}
-                        
-                        variant="vertical"
-                        /> */}
                         <SideNav_v9 variant="internal" items={items} sticky={true} onItemSelect={handleItemSelect}/>
                     </div>
                 </aside>

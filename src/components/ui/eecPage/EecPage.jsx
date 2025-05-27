@@ -8,7 +8,6 @@ import { useState } from "react";
 import ClearButton from "./ClearButton";
 import GenerateButton from "./GenerateButton";
 import PrivateRoute from "../../auth/privateRoute";
-import EecJobHistory from "./EecJobHistory";
 
 
 const EecPage = () => {

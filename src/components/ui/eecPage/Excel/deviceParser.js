@@ -7,6 +7,8 @@ import { safetyGateConfiguration } from '../Store/safetyGateStore';
 import { hmiModel } from '../Store/Models/HMIs/hmiModel';
 import { safetyGateGroupModel } from '../Store/Models/SafetyGates/safetyGateGroupModel';
 import { safetyGateSwitchModel } from '../Store/Models/SafetyGates/safetyGateSwitchModel';
+import { ioModuleGroupModel } from '../Store/Models/IoModules/ioModuleGroupModel';
+import { ioModuleModel } from '../Store/Models/IoModules/ioModuleModel';
 
 
 const deviceParser = {
@@ -326,31 +328,33 @@ const deviceParser = {
         const ioModules = filterItemsByStartsOptions(ioModuleFilterOptions, devices, "device_dt")
         
         ioModules.forEach(ioModule => {
-            if(ioModule.local_network_direct && ioModule.local_network_direct != ioModule.target_device_location_dt){
-                const ioModuleAdded = deviceParser.addIOModuleToGroup(groups, ioModule);
-                if(!ioModuleAdded){
-                    groups.push([ioModule]);
-                }
+            console.log(ioModule)
+            var group = groups.find(i => i.location === ioModule.station && i.line === ioModule.line);
+
+            if(group){
+                var newIoModule = deviceParser.createIoModule(ioModule, group.ioModules.length, group);
+                group.ioModules.push(newIoModule)
             } else {
-                groups.push([ioModule,])
+                var newGroup = ioModuleGroupModel.create();
+                newGroup.line = ioModule.line;
+                newGroup.location = ioModule.station;
+                var newIoModule = deviceParser.createIoModule(ioModule, 0, newGroup);
+                newGroup.ioModules.push(newIoModule)
+                groups.push(newGroup)
             }
         })
 
         return groups;
     },
 
-    addIOModuleToGroup(groups, ioModule){
-        for(let i=0;i<groups.length;i++){
-            var hasItem = groups[i].some(item => item.target_device_location_dt === ioModule.local_network_direct)
-            if(hasItem){
-                groups[i].push(ioModule)
-                return true;
-            }
-        }
-
-        return false;
+    createIoModule(ioModule, index, newGroup){
+        var newIoModule = ioModuleModel.create(newGroup, index);
+        newIoModule.line=ioModule.line;
+        newIoModule.location=ioModule.station;
+        newIoModule.deviceTag=ioModule.device_dt;
+        return newIoModule;
     },
-    
+
     addIO(groups, cables, devices){
         var ioCables = cables.filter(cable => cable.layer === "Cable - IO");
         

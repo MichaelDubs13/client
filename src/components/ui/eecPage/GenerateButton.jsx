@@ -1,3 +1,4 @@
+import { ToastContainer, useToastContainerState,} from "@tesla/design-system-react";
 import { iconRocket } from '@tesla/design-system-icons';
 import { pdpStore } from "./Store/pdpStore";
 import { xpdpStore } from "./Store/xpdpStore";
@@ -25,6 +26,7 @@ import useEecStore from '../../../store/eecStore';
 
 const GenerateButton = () => {
   const {user} = useAuthStore();
+  const { toasts, addToast } = useToastContainerState();
   const fetchJobHistory = useEecStore((state) => state.fetchJobHistory);
   const getConfig = projectStore((state) => state.getConfig);
   const pdps = pdpStore((state) => state.pdps);
@@ -53,15 +55,30 @@ const GenerateButton = () => {
     var imx = ModelBuilder.buildIMX(config, customer, validatedPdps,validatedXpdps, validatedMcps, validatedLpds, validatedNetworkSwitches, devices, validatedIOModules, validatedHmis, validatedSafetyGates);
     var name = `${config.plant}_${config.line}_${config.shop}_generated.imx`
     downloadIMX(imx, name);
-
-    var imxFile = createFile(imx, name)
-    const formData = new FormData();
-    const payload = createPayload();
-    formData.set("imxFile", imxFile);
-    formData.set("data", JSON.stringify(payload));
-    var result = await eecDataService.createJob(formData)
-    fetchJobHistory();
+    createJob(imx, name);
+    addToast({
+        title: 'New EEC Job submitted',
+        dismissible: true,
+        caption: 'New EEC Job submitted',
+        variant: 'status',
+        statusType: 'info',
+      })
   }
+
+  const createJob = async (imx, name) => {
+      try{
+        var imxFile = createFile(imx, name)
+        const formData = new FormData();
+        const payload = createPayload();
+        formData.set("imxFile", imxFile);
+        formData.set("data", JSON.stringify(payload));
+        var result = await eecDataService.createJob(formData)
+        fetchJobHistory();
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
   const createPayload = () => {
     var email = ''
     if(user){
@@ -91,6 +108,7 @@ const GenerateButton = () => {
 
   return (
     <>
+      <ToastContainer toasts={toasts} />
       <ActionIcon label="Generate EEC configuration" onClick={handleSumbit} icon={iconRocket}/>
     </>
   );

@@ -76,19 +76,11 @@ const ElectricalDiagram = ()=> {
                 nodes.push(...device.nodes)
                 edges.push(...device.edges);
             }
-        }  else {
-            if(item.line && item.StrBox_DT && item.TargetDevice_DT)
-            {
-                var deviceNode = NodeCreator.createUnknownHighVoltageDeviceNode(item, layer, nodeWidth, nodeHeight);
-                nodes.push(deviceNode);
-                var edge = NodeCreator.createEdge(parentNode, deviceNode);
-                edges.push(edge);
-            } else if(item.line && item.location && item.deviceTag){
-                var deviceNode = NodeCreator.createUnknownLowVoltageDeviceNode(item, layer, nodeWidth, nodeHeight);
-                nodes.push(deviceNode);
-                var edge = NodeCreator.createEdge(parentNode, deviceNode);
-                edges.push(edge);
-            }
+        }  else if (item.line && item.targetLocation && item.targetDT){
+           var deviceNode = NodeCreator.createUnknownDeviceNode(item, layer, nodeWidth, nodeHeight);
+            nodes.push(deviceNode);
+            var edge = NodeCreator.createEdge(parentNode, deviceNode);
+            edges.push(edge);
         }
     }
     

@@ -19,6 +19,7 @@ import { ioModuleStore } from "./Store/ioModuleStore";
 import { iconShare } from '@tesla/design-system-icons';
 import { useRef } from "react";
 import ActionIcon from "../util/ActionIcon";
+import { lineConfiguration } from "./Store/lineStore";
 
 
 const LoadButton = ({onLoad}) => {
@@ -27,10 +28,11 @@ const LoadButton = ({onLoad}) => {
   const fileInput = useRef(null);
 
   const handleLoad = async (event) => {
-      event.preventDefault();
+      //event.preventDefault();
       if(event.target.files){
         var file = event.target.files[0];
         const result = await load(file);
+        event.target.value = null;
         addToast({
           title: 'EEC Data updated',
           dismissible: true,
@@ -65,6 +67,8 @@ const LoadButton = ({onLoad}) => {
           Object.assign(networkSwitchStore.getState().networkSwitches, networkSwitches);
           Object.assign(hmiStore.getState().hmis, hmis);
           Object.assign(ioModuleStore.getState().ioModuleGroups, ioModuleGroups);
+
+          lineConfiguration.setAllModels(pdps, xpdps, mcps, lpds, networkSwitches, hmis, safetyGates, ioModuleGroups);
           onLoad();
         } catch (error) {
           console.error("Error parsing JSON:", error);

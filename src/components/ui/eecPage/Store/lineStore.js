@@ -149,6 +149,17 @@ const lineConfiguration = {
         return portOptions;
     },
 
+    setAllModels:(pdps, xpdps, mcps, ldps, networkSwitches, hmis,safetyGates, ioModuleGroups)=>{
+        pdpStore.getState().setPdps(pdps)
+        xpdpStore.getState().setXpdps(xpdps)
+        mcpStore.getState().setMcps(mcps)
+        lpdStore.getState().setLpds(ldps)
+        networkSwitchStore.getState().setNetworkSwitches(networkSwitches)
+        hmiStore.getState().setHmis(hmis)
+        safetyGateStore.getState().setSafetyGates(safetyGates)
+        ioModuleStore.getState().setIOModuleGroups(ioModuleGroups)
+    }
+
 }
 const lineStore = create((set) => ({
     lines:[],

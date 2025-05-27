@@ -109,7 +109,7 @@ export const createPsuNode = (psu, lpd, layer, nodeWidth, nodeHeight)=>{
 
 export const createNetworkSwitchNode = (networkSwitch,layer, nodeWidth, nodeHeight)=>{
     const index = networkSwitch.getIndex();
-    const key = `${networkSwitch.location}_${networkSwitch.deviceTag}_${index}`;
+    const key = `${networkSwitch.line}_${networkSwitch.location}_${networkSwitch.deviceTag}_${index}`;
     const icon = networkSwitch.UI.icon;
     const target = `${key}_${layer}`;
     const label = [key,...networkSwitch.getNodeData()];
@@ -119,8 +119,8 @@ export const createNetworkSwitchNode = (networkSwitch,layer, nodeWidth, nodeHeig
     return node;
 }
 
-export const createUnknownHighVoltageDeviceNode = (drop, layer, nodeWidth, nodeHeight)=>{
-    const key = `${drop.line}+${drop.StrBox_DT}+${drop.TargetDevice_DT}`;
+export const createUnknownDeviceNode = (drop, layer, nodeWidth, nodeHeight)=>{
+    const key = `${drop.line}+${drop.targetLocation}+${drop.targetDT}`;
     const icon = "/unknownHighVoltageDevice.png";
     const target = `${key}_${layer}`;
     const label = [key, ...drop.getNodeData()];
@@ -130,24 +130,13 @@ export const createUnknownHighVoltageDeviceNode = (drop, layer, nodeWidth, nodeH
     return node;
 }
 
-export const createUnknownLowVoltageDeviceNode = (drop, layer, nodeWidth, nodeHeight)=>{
-    const key = `${drop.line}+${drop.location}+${drop.deviceTag}`;
-    const icon = "/unknownLowVoltageDevice.png";
-    const target = `${key}_${layer}`;
-    const label = [key, ...drop.getNodeData()];
-    const position = { x: 0, y: 0 };
-    var node =   { id: target, data: { label: label, icon: icon, key:key, type:'unknownHighVoltageDevice'},children:[], 
-        type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
-    return node;
-}
-
 export const createNetworkDeviceNode = (drop, layer, nodeWidth, nodeHeight)=>{
     const key = `${drop.line}+${drop.targetLocation}+${drop.targetDT}`;
     const icon = "/unknownLowVoltageDevice.png";
     const target = `${key}_${layer}`;
     const label = [key, ...drop.getNodeData()];
     const position = { x: 0, y: 0 };
-    var node =   { id: target, data: { label: label, icon: icon, key:key, type:'unknownHighVoltageDevice'},children:[], 
+    var node =   { id: target, data: { label: label, icon: icon, key:key, type:'unknownLowVoltageDevice'},children:[], 
         type:'customNode', width: nodeWidth, height: nodeHeight, position, layer:layer}
     return node;
 }

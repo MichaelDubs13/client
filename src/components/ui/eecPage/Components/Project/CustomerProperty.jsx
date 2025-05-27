@@ -2,6 +2,7 @@ import "../../Eec.css";
 import InputTextItem from "../Util/InputTextItem";
 import { customerOptions, customerStore } from "../../Store/customerStore";
 import DropdownItem from "../Util/DropdownItem";
+import { Heading } from "@tesla/design-system-react";
 
 
 const CustomerProperty = () => {
@@ -11,6 +12,7 @@ const CustomerProperty = () => {
     return (
         
         <>  
+            <Heading is="h4">Customer Property</Heading>
             <InputTextItem title={"Tesla SharePoint Project Links"} placeHolder={property.TeslaProjectSharePointLink} setModelValue={setValue} property={"TeslaProjectSharePointLink"}/>
             <InputTextItem title={"Project Descriptions"} placeHolder={property.ProjectDescription_10011} setModelValue={setValue} property={"ProjectDescription_10011"}/>
             <InputTextItem title={"Project Type"} placeHolder={property.ProjectType_10031} setModelValue={setValue} property={"ProjectType_10031"}/>

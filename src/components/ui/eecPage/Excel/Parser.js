@@ -44,7 +44,9 @@ export default class Parser {
         const gates = deviceParser.getSafetyGates(devices);
         const groupedIOModules = deviceParser.getGroupedIOModules(devices);
         const cables = cableParser.parse(this._wb, this._cablesWorksheet);
-        deviceParser.addIO(groupedIOModules, cables, devices);
+        //deviceParser.addIO(groupedIOModules, cables, devices);
+
+        console.log(groupedIOModules)
 
         let switches = switchParser.parse(this._wb, this._networkWorksheet)
         switches = switchParser.getMcp(switches, mcps);

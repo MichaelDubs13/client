@@ -4,6 +4,7 @@ import InputTextItem from "../Util/InputTextItem";
 import DropdownItem from "../Util/DropdownItem";
 import { lineConfiguration, lineStore } from "../../Store/lineStore";
 import { customerStore } from "../../Store/customerStore";
+import { Heading } from "@tesla/design-system-react";
 
 
 const ManufacturingLineNameAndLocation = () => {
@@ -36,6 +37,7 @@ const ManufacturingLineNameAndLocation = () => {
     return (
         
         <>  
+            <Heading is="h4">Project Property</Heading>
             <InputTextItem title={"Tesla GigaFactory Name"} placeHolder={plant} setModelValue={setPlant} readOnly={false} />
             <InputTextItem title={"Manufacturing Shop Name"} placeHolder={shop} setModelValue={setShop} readOnly={false} />
             <InputTextItem title={"Manufacturing Line Name"} placeHolder={line} setModelValue={setLine} onTypingFinished={handleLineChange}/>

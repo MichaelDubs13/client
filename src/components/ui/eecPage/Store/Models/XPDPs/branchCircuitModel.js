@@ -71,7 +71,7 @@ export const branchCircuitModel = {
          getNodeData: function(){
            return [
              this.data.amperage,
-             `${this.TargetDevice_FLA}A`,
+             `${this.targetFLA}A`,
              `${this.targetCableLength}m`,
            ]
          },

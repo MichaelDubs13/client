@@ -43,6 +43,9 @@ export const ioModuleModel = {
 
             id:uuidv4(),
           },
+          getFullName: function() {
+            return `++${this.line}+${this.location}-${this.deviceTag}`;
+          },
           getDescription: function(){
             if(this.safetyRated){
               return 'Safety IO Module';
