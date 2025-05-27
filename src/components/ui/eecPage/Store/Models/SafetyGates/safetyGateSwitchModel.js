@@ -47,6 +47,9 @@ export const safetyGateSwitchModel = {
         powerTarget:'',
         ethernetTarget:'',
       },
+      getFullName: function() {
+        return `++${this.line}+${this.location}-${this.deviceTag}`;
+      },
       getDescription: function(){
         return 'Safety Gate';
       },

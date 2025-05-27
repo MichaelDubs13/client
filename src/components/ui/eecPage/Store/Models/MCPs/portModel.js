@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { mcpStore, } from '../../mcpStore';
-import { projectStore } from '../../projectStore';
 
 export const portModel = {
     create: (parent) => {
@@ -19,6 +18,9 @@ export const portModel = {
         type:'lethPort',
         ethernetTarget:'',
         id:uuidv4(),
+        },
+        getFullName: function() {
+            return `P${this.getIndex()+1}:++${this.line}+${this.targetLocation}-${this.targetDT}`;
         },
         getIndexObject: function(){
             const mcpIndex = this.data.parent.getIndex();

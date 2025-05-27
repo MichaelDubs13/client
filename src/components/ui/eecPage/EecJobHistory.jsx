@@ -50,7 +50,7 @@ const handleSearchChange = (event) => {
                               <TD>{history.username}</TD>
                               {
                                 history.filename ?
-                                <TD><DownloadButton label={history.filename} filePath={history.filename}/></TD> :
+                                <TD><DownloadButton label={history.filename} filePath={`EEC\\${history.filename}`}/></TD> :
                                 <TD></TD>
                               }
                               <TD>{history.time}</TD>

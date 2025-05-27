@@ -34,7 +34,8 @@ export const branchCircuitModel = {
            id:uuidv4(),
          },
           getFullName: function() {
-            return `${this.deviceDT}-${amperage}`;
+            var targetDevice = this.PwrDrop_Spare ? "Spare" : `${this.targetLocation}-${this.targetDT}`;
+            return `${this.deviceDT}-${amperage}:${targetDevice}`;
           },
          getIndexObject: function(){
            const pdpIndex = this.data.parent.getIndex();

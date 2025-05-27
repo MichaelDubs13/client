@@ -67,7 +67,7 @@ const LineConfiguration = ({loadCount}) => {
         }
       }
 
-    const getCircuitBreakers = (pdp) => {
+    const getCircuitBreakers = (pdp, id) => {
         var items = []
         Object.keys(pdp.branchCircuit).forEach(key => {
             var childItems = getChildItems(pdp.branchCircuit[key]);
@@ -76,22 +76,36 @@ const LineConfiguration = ({loadCount}) => {
         return items;
     }
 
-    const getChildItems = (array) => {
+    const getChildItems = (array,id) => {
         var items = []
         array.forEach(element => {
+            var children = getChildren(element, id);
              var item = {
+                id:id,
                 leadingText: element.getFullName(),
+                trailing: children ? <Chip text={`${children.length}`} /> : null,
+                items: children,
             }
             items.push(item);
         })
         return items;
     }
 
-    const getChildren = (element) => {
+    const getChildren = (element, id) => {
         if(element.data.type === 'pdp' || element.data.type === 'xpdp'){
-            return getCircuitBreakers(element);
+            return getCircuitBreakers(element,id);
         } else if(element.data.type === 'ioModuleGroup') {
-            return getChildItems(element.ioModules);
+            return getChildItems(element.ioModules, id);
+        }else if(element.data.type === 'lpd') {
+            return getChildItems(element.psus, id);
+        }else if(element.data.type === 'networkSwitch') {
+            return getChildItems(element.ports, id);
+        }else if(element.data.type === 'safetyGate') {
+            return getChildItems(element.safetyGateSwitches, id);
+        }else if(element.data.type === 'mcp') {
+            return getChildItems(element.ports, id);
+        }else if(element.data.type === 'psu') {
+            return getChildItems(element.drops, id);
         }
         return null;
     }
@@ -99,7 +113,7 @@ const LineConfiguration = ({loadCount}) => {
       const getItems = (array,id) => {
         var items = []
         array.forEach((element)=> {
-            var children = getChildren(element);
+            var children = getChildren(element, id);
             const item = {
                 id:id,
                 leadingText: `${element.getFullName()}`,
@@ -186,18 +200,17 @@ const LineConfiguration = ({loadCount}) => {
     }
     return (
         <>
-            
             <IconTriggerHeading heading="One-Lines" children={<OneLineComponents/>}/>
             <IconTriggerHeading heading="Job History" children={<EecJobHistory/>}/>
             
             <div className="tds-layout tds-layout-2col-content_heavy tds-layout-main--right" style={{padding:'0px'}}>
                 <aside className="tds-layout-item tds-layout-aside">
                     <div style={{ border: '1px', padding: '16px', width: '100%' }}>
-                        <SideNav_v9 variant="internal" items={items} sticky={true} onItemSelect={handleItemSelect}/>
+                        <SideNav_v9 variant="internal" items={items} sticky={true} onItemSelect={handleItemSelect} style={{width:'300px'}}/>
                     </div>
                 </aside>
                 <main className="tds-layout-item tds-layout-main">
-                    <div style={{ marginLeft:'150px', width: '100%' }}>
+                    <div style={{ marginLeft:'50px', width: '100%' }}>
                     {
                         renderSwitch(activeTab)
                     }

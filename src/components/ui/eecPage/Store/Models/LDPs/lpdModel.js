@@ -26,7 +26,7 @@ export const lpdModel = {
             id:uuidv4(),
           },
           getFullName: function() {
-            return `++${this.line}+${this.location}`;
+            return `++${this.powerSourceLine}+${this.powerSourceLocation}-${this.powerSourceDT}`;
           },
           getIndexObject: function(){
             const lpdIndex = this.getIndex();

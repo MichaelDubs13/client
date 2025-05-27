@@ -25,6 +25,9 @@ export const networkPortModel = {
             ethernetTarget:'',
             id:uuidv4(),
           },
+          getFullName: function() {
+            return this.deviceTypeSelection === "SPARE" ?  `P${this.getIndex()+1}:Spare` :`P${this.getIndex()+1}:++${this.line}+${this.targetLocation}-${this.targetDT}`;
+          },
           getIndexObject: function(){
             const networkSwitchIndex = this.data.parent.getIndex();
             const portIndex = this.getIndex()
