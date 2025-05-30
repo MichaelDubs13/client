@@ -28,13 +28,22 @@ const IO_ModuleConfiguration = ({
     }
   }
 
+  const handleStationChange =(value)=>{
+    ioModule.ports.forEach(port => {
+      var portIndex = port.getIndexObject();
+      port.setValue(portIndex, "pinTargetLocation", value)
+    })
+    
+  }
+
   return (
     <div className="io-module-configuration">
       <div className="io-module-settings">
         <DeviceSelection item={ioModule} index={index} 
             lineProperty={"line"}
             stationProperty={"location"}
-            deviceProperty={"deviceTag"}/>
+            deviceProperty={"deviceTag"}
+            onStationChange={handleStationChange}/>
         <CheckboxItem title={"Is this module safety rated (i.e., Safety I/O):"} item={ioModule} property={"safetyRated"} index={index}/>
         {ioModule.safetyRated && (
           <>

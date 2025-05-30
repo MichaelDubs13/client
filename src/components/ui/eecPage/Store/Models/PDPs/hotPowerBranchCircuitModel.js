@@ -21,6 +21,10 @@ export const hotPowerBranchCircuitModel = {
         id:uuidv4(),
         parent:parent,
       },
+      UI:{
+        expanded:false,
+        icon:"/powerdrop.png",
+      },
       getIndexObject: function(){
         const pdpIndex = this.data.parent.getIndex();
         const hotPowerIndex = this.getIndex();

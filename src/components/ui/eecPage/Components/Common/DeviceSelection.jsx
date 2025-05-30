@@ -167,7 +167,7 @@ const DeviceSelection = ({
         }
 
         if(onDeviceChange){
-            onDeviceChange();
+            onDeviceChange(deviceTag);
         }
     }
     const handleStationChange = (location) => {
@@ -181,7 +181,7 @@ const DeviceSelection = ({
             setDuplicateExist(exist);
         }
         if(onStationChange){
-            onStationChange();
+            onStationChange(location);
         }
     }
 
