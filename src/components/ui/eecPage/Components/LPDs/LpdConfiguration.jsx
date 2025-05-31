@@ -57,7 +57,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                         options={psuOptions} index={index}/>
                 </div>
                 <div style={{gridColumn:2,gridRow:'span 2'}}>
-                    <img src={`/DeviceImages/${manufacturer}/${partNumber}.jpg`} style={{width:'200px', height:'200px'}}/>
+                    <img src={`/DeviceImages/${manufacturer}/${partNumber}.jpg`} style={{width:'200px', height:'225px'}}/>
                 </div>
             </div>
             <DeviceSelection item={lpd} index={index} 

@@ -5,7 +5,6 @@ import ExtensionUnitConfiguration from './ExtensionUnitConfiguration';
 import { hmiStore, hmiOptions } from '../../Store/hmiStore';
 import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
-import { lpdConfiguration, lpdStore } from '../../Store/lpdStore';
 import "../../Eec.css";
 import PlcIDSelection from '../Common/PlcIDSelection';
 import { isValidIP } from '../Util/Validations';
@@ -13,21 +12,10 @@ import { isValidIP } from '../Util/Validations';
 const HmiConfiguration = ({hmi, index, createNew}) => {
     const hmisOptions = hmiStore((state) => state.hmisOptions);
     const setNumberOfExtensionUnitPositions = hmiStore((state) => state.setNumberOfExtensionUnitPositions);
-    const lpds = lpdStore((state)=> state.lpds);
     const hmiIndex = createNew? {}: {hmiIndex:index}
     const setExtensionUnitPositions = (value) =>{
         setNumberOfExtensionUnitPositions(index, value);
     }
-
-    // const handleDeviceChange = (value) => {
-    //     if(hmi.location && value){
-    //         const pwrDrop = lpdConfiguration.getPowerSource(lpds, hmi.location, value)
-    //         if(pwrDrop){                
-    //             hmi.setPowerSource(pwrDrop.data.parent.line, pwrDrop.data.parent.location, pwrDrop.data.parent.deviceTag);
-    //             pwrDrop.setDataValue("targetDevice", hmi.data.id)
-    //         }
-    //     }
-    // }
 
     const handleRfidPositionChange = (value) => {
         hmi.setRfidExtensionPosition(value)

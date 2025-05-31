@@ -34,7 +34,7 @@ const McpConfigurations = () => {
                 {   
                     mcps.map((mcp, index) => {
                         const location = mcp.location
-                        return <HeadingItem label={`Main Control Panel ++${mcp.line}+${location} Parameters:`} 
+                        return <HeadingItem label={`Main Control Panel ++${mcp.line}+${location}:`} 
                                 size={18} margin={"20px"} open={false}
                                 headerIcon={mcp.UI.icon}
                                 children={<McpConfiguration mcp={mcp} index={index}/>}
