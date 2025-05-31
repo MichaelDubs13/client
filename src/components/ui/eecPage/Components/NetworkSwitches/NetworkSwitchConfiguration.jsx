@@ -4,7 +4,6 @@ import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
 import NetworkSwitchPortConfiguration from './NetworkSwitchPortConfiguration';
 import { networkSwitchOptions, networkSwitchStore } from '../../Store/networkSwitchStore';
-import { DataTable } from '@tesla/design-system-react';
 import DeviceSelection from '../Common/DeviceSelection';
 import { mcpStore } from '../../Store/mcpStore';
 import { useEffect } from 'react';
@@ -17,7 +16,8 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
     const getPlcOptions = lineStore((state)=> state.getPlcOptions);
     const setNumberOfPorts = networkSwitchStore((state) => state.setNumberOfPorts);  
     const networkSwitchIndex = createNew ? {} : {networkSwitchIndex:index}
-  
+    const manufacturer = 'Siemens';
+    const partNumber = networkSwitch.ports.length === 8 ? '6GK52080HA002AS6_001_V_O' : '6GK52160HA002AS6_001_V_O';
     useEffect(() => {
         getPlcOptions();
         if(mcps.length === 1){
@@ -33,14 +33,23 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
         
         <div>
             <div>
-                <DataTable border={4} className='data-table'> 
-                    <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
-                        deviceProperty={"deviceTag"}
-                        stationProperty={"location"}/> 
-                    
-                    <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
-                    <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} 
-                        options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
+                    <div style={{display:'grid', gridTemplateColumns:'1100px auto'}} >
+                        <div style={{gridColumn:1,gridRow:1}}>
+                            <DeviceSelection item={networkSwitch} index={networkSwitchIndex}
+                                deviceProperty={"deviceTag"}
+                                stationProperty={"location"}/> 
+                        </div>
+                        <div style={{gridColumn:1,gridRow:2}}>
+                             <DropdownItem title={"Network switch is controlled by PLC ID"} item={networkSwitch} options={plcs} index={networkSwitchIndex} property={"plcID"}/>
+                        </div>
+                        <div style={{gridColumn:1,gridRow:3}}>
+                            <DropdownItem title={"Network type"} item={networkSwitch} property={"networkType"} 
+                                options={networkSwitchOptions.networkTypeOptions} onChange={setPorts} index={networkSwitchIndex}/>
+                        </div>
+                        <div style={{gridColumn:2,gridRow:'span 3'}}>
+                            <img src={`/DeviceImages/${manufacturer}/${partNumber}.jpg`} style={{width:'250px', height:'200px'}}/>
+                        </div>
+                    </div>
                     <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={networkSwitch} index={networkSwitchIndex} property={"localIP"} validation={isValidIP}/>
                     <InputTextItem title={"Plant IP address (e.g., 10.x.x.x)"} item={networkSwitch} index={networkSwitchIndex} property={"plantIP"} validation={isValidIP}/>
                     
@@ -126,8 +135,6 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     )}
                     
                     <NetworkSwitchPortConfiguration networkSwitch={networkSwitch} networkSwitchIndex={index} createNew={createNew}/>
-                    
-                </DataTable>
             </div>  
 
            

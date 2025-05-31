@@ -13,17 +13,14 @@ const SafetyGateInstances = ({safetyGate, index}) => {
         
         <div>
             <div>
-                <DataTable border={4} className='data-table'> 
-                     <LineStationSelection 
-                        title={"Safety Gate Switches mounted in (e.g., ++LINE+LOCATION)"}  stationProperty={"location"}
-                        lineTitle={"Manufacturing Line name (e.g., UBM1, DOR1)"}
-                        item={safetyGate} index={safetyGateIndex}/>
-                    <SetItemsNumberInputBox title={"Enter the total number of Safety Gate Switches within this LOCATION (i.e., Station number)"} 
-                        items={safetyGate.safetyGateSwitches} addItems={setNumberOfSafetyGateSwitches} index={index}/>           
-                    {/* Render all safety gate switches */}
-                    <SafetyGateConfigurations safetyGate={safetyGate} safetyGateIndex={index}/>
-                    
-                </DataTable>
+                <LineStationSelection 
+                    title={"Safety Gate Switches mounted in (e.g., ++LINE+LOCATION)"}  stationProperty={"location"}
+                    lineTitle={"Manufacturing Line name (e.g., UBM1, DOR1)"}
+                    item={safetyGate} index={safetyGateIndex}/>
+                <SetItemsNumberInputBox title={"Enter the total number of Safety Gate Switches within this LOCATION (i.e., Station number)"} 
+                    items={safetyGate.safetyGateSwitches} addItems={setNumberOfSafetyGateSwitches} index={index}/>           
+                {/* Render all safety gate switches */}
+                <SafetyGateConfigurations safetyGate={safetyGate} safetyGateIndex={index}/>
             </div>  
 
            

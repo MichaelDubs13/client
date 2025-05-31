@@ -1,7 +1,7 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
 import { lineConfiguration } from '../../lineStore';
-import { lpdConfiguration, lpdStore } from '../../lpdStore';
+import { lpdStore } from '../../lpdStore';
 import { getItemById, recreateArrayElement, recreateObject } from '../../util';
 import { powerDropModel } from './powerDropModel';
 import { psuModel } from './psuModel';
@@ -11,11 +11,11 @@ export const lpdModel = {
         return {
           line:projectStore.getState().line,
           location:"",
-          powerSourceLine:"",
+          powerSourceLine:projectStore.getState().line,
           powerSourceLocation:"",
           powerSourceDT:"",
-          supplyVoltage:"",
-          psu_selected:"", //only used for UI
+          supplyVoltage:lineConfiguration.getDefaultLpdVoltage(),
+          psu_selected:lineConfiguration.getDefaultLpdPsu(), //only used for UI
           psus:[],
           UI:{
             expanded:false,

@@ -3,13 +3,11 @@ import { Heading, } from '@tesla/design-system-react';
 import { safetyGateStore } from "../../Store/safetyGateStore";
 import SafetyGateInstances from "./SafetyGateInstances";
 import HeadingItem from "../Util/HeadingItem";
-import { projectStore } from "../../Store/projectStore";
 import "../../Eec.css";
 import DeleteButton from "../Util/DeleteButton";
 import DuplicateButton from "../Util/DuplicateButton";
 
 const SafetyGateLocationCount = () => {
-    const line = projectStore((state) => state.line);
     const safetyGates = safetyGateStore((state) => state.safetyGates);
     const addSafetyGates =  safetyGateStore((state) => state.addSafetyGates);
     const deleteSafetyGate =  safetyGateStore((state) => state.deleteSafetyGate);
