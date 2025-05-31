@@ -16,7 +16,7 @@ import { safetyGateStore } from "./Store/safetyGateStore";
 import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiStore } from "./Store/hmiStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
-import { iconShare } from '@tesla/design-system-icons';
+import { iconDownload } from '@tesla/design-system-icons';
 import { useRef } from "react";
 import ActionIcon from "../util/ActionIcon";
 import { lineConfiguration } from "./Store/lineStore";
@@ -95,7 +95,7 @@ const LoadButton = ({onLoad}) => {
           onChange={handleLoad}/>
       
       <ToastContainer toasts={toasts} />
-       <ActionIcon label="Load JSON" icon={iconShare} onClick={handleIconClick}/>
+       <ActionIcon label="Load JSON" icon={iconDownload} onClick={handleIconClick}/>
     </>
   );
 };

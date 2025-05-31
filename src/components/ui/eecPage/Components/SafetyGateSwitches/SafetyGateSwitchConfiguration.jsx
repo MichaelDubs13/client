@@ -15,15 +15,27 @@ const SafetyGateSwitchConfiguration = ({
 }) => {
   const safetyGatesOptions = safetyGateStore((state) => state.safetyGatesOptions);
   const index = createNew ? {} : {safetyGateIndex:safetyGateIndex, safetyGateSwitchIndex:safetyGateSwitchIndex};
- 
+  const manufacturer = 'Euchner';
+  const partNumber = safetyGateSwitch.safetyGateSwitchHandle === "Right" ? '168719' : '168720';
   return (
-    <div className="safety-gate-switch-configuration">
-      <div className="safety-gate-switch-settings">
-        <DeviceSelection item={safetyGateSwitch} index={index} 
-            stationProperty={"location"}
-            deviceProperty={"deviceTag"}/>
-        <DropdownItem title={"Gate switch type:"} item={safetyGateSwitch} property={"safetyGateSwitchType"} options={safetyGateOptions.gateSwitchTypeOptions} index={index}/>
-        <DropdownItem title={"Left or Right handed gate switch?"} item={safetyGateSwitch} property={"safetyGateSwitchHandle"} options={safetyGateOptions.gateSwitchHandleOptions} index={index}/>
+    <div>
+        <div style={{display:'grid', gridTemplateColumns:'1100px auto'}} >
+            <div style={{gridColumn:1,gridRow:1}}>
+                <DeviceSelection item={safetyGateSwitch} index={index} 
+                            stationProperty={"location"}
+                            deviceProperty={"deviceTag"}/>
+            </div>
+            <div style={{gridColumn:1,gridRow:2}}>
+                <DropdownItem title={"Gate switch type:"} item={safetyGateSwitch} property={"safetyGateSwitchType"} options={safetyGateOptions.gateSwitchTypeOptions} index={index}/>
+            </div>
+            <div style={{gridColumn:1,gridRow:3}}>
+                <DropdownItem title={"Left or Right handed gate switch?"} item={safetyGateSwitch} property={"safetyGateSwitchHandle"} options={safetyGateOptions.gateSwitchHandleOptions} index={index}/>
+            </div>
+            <div style={{gridColumn:2,gridRow:'span 3'}}>
+                <img src={`/DeviceImages/${manufacturer}/${partNumber}.jpg`} style={{width:'250px', height:'200px'}}/>
+            </div>
+        </div>
+       
         <PlcIDSelection item={safetyGateSwitch} title={"Safety Gate Switch controlled by PLC ID:"} index={index}/>
         <InputTextItem title={"Local IP address (e.g., 192.168.1.x)"} item={safetyGateSwitch} property={"localIP"} index={index} validation={isValidIP}/>
         <CheckboxItem title={"Check if this gate switch gets power and/or network from another gate switch in this configuration:"} item={safetyGateSwitch} property={"gateSwitchCascadingFrom"} index={index}/>
@@ -86,7 +98,6 @@ const SafetyGateSwitchConfiguration = ({
             }
           </>
         }
-      </div>
     </div>
   );
   };

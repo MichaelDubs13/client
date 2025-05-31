@@ -34,7 +34,7 @@ const XpdpConfigurations = () => {
             <SetItemsNumberInputBox title={"Enter the number of 120/208VAC Power Distribution Panels required for this line:"} items={xpdps} addItems={addXpdp}/>                                     
             {   
                 xpdps.map((xpdp, index) => {
-                    return <HeadingItem label={`120/208VAC Power Distribution Panel ++${xpdp.line}+${xpdp.location} Parameters`}
+                    return <HeadingItem label={`120/208VAC Power Distribution Panel ++${xpdp.line}+${xpdp.location}`}
                     size={18} margin={"20px"} open={false}
                     headerIcon={xpdp.UI.icon}
                     children={<XpdpConfiguration xpdp={xpdp} xpdpIndex={index}/>} 

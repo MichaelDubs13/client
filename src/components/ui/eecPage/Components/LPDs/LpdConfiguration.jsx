@@ -12,10 +12,22 @@ import CheckboxItem from "../Util/CheckboxItem";
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    
     const [psuCascadingLimit, setPsuCascadingLimit]=useState("");
+    const [manufacturer, setManufacturer]=useState("");
+    const [partNumber, setPartNumber]=useState("");
     const setNumberOfPsus = lpdStore((state) => state.setNumberOfPsus);
     const psuOptions =Number(lpd.supplyVoltage) <= 240 ?
     lpdOptions.psuSelection120_240Options : 
     lpdOptions.psuSelection400_480Options;
+
+    useEffect(() => {
+        const value = lpd.psu_selected;
+        getpsuCascadingLimit(value);
+        var arr = value.split(':');
+        const manufacturer = arr[0].trimEnd();
+        const partNumber = arr[1].trimStart();
+        setManufacturer(manufacturer);
+        setPartNumber(partNumber);
+    }, [lpd.psu_selected]);
 
     const getpsuCascadingLimit=(value)=>{
         if (value === "Balluff: BAE00ET" || value === "Balluff: BAE00FL") {
@@ -34,19 +46,22 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
     }
 
 
-    const handleSetpsuSelectionChange = (event)=> {
-        const value = event.value;
-        getpsuCascadingLimit(value);
-    }
-
-
     return (
         
         <div>
-            <DropdownItem title={"Select the supply voltage for the PSU(s):"} item={lpd} property={"supplyVoltage"} 
-                options={lpdOptions.psuSupplyVoltageOptions} index={index}/>
-            <DropdownItem title={"Select the PSU:"} item={lpd} property={"psu_selected"} 
-                options={psuOptions} index={index} onChange={handleSetpsuSelectionChange}/>
+            <div style={{display:'grid'}} >
+                <div style={{gridColumn:1,gridRow:1}}>
+                    <DropdownItem title={"Select the supply voltage for the PSU(s):"} item={lpd} property={"supplyVoltage"} 
+                        options={lpdOptions.psuSupplyVoltageOptions} index={index}/>
+                </div>
+                <div style={{gridColumn:1,gridRow:2}}>
+                    <DropdownItem title={"Select the PSU:"} item={lpd} property={"psu_selected"} 
+                        options={psuOptions} index={index}/>
+                </div>
+                <div style={{gridColumn:2,gridRow:'span 2'}}>
+                    <img src={`/DeviceImages/${manufacturer}/${partNumber}.jpg`} style={{width:'200px', height:'225px'}}/>
+                </div>
+            </div>
             <DeviceSelection item={lpd} index={index} 
                 lineProperty={"powerSourceLine"}
                 stationProperty={"powerSourceLocation"}

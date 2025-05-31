@@ -2,7 +2,7 @@ import {create} from "zustand";
 import { pdpStore } from "./pdpStore";
 import { xpdpStore } from "./xpdpStore";
 import { mcpStore } from "./mcpStore";
-import { lpdStore } from "./lpdStore";
+import { lpdConfiguration, lpdOptions, lpdStore } from "./lpdStore";
 import { networkSwitchStore } from "./networkSwitchStore";
 import { hmiStore } from "./hmiStore";
 import { safetyGateStore } from "./safetyGateStore";
@@ -158,6 +158,22 @@ const lineConfiguration = {
         hmiStore.getState().setHmis(hmis)
         safetyGateStore.getState().setSafetyGates(safetyGates)
         ioModuleStore.getState().setIOModuleGroups(ioModuleGroups)
+    },
+     getDefaultLpdVoltage:()=>{
+        var config = projectStore.getState().getConfig()
+        if(config.installation_location === 'UL'){
+            return '120';
+        } else if(config.installation_location === 'EU'){
+            return '240';
+        }
+    },
+    getDefaultLpdPsu:()=>{
+        var config = projectStore.getState().getConfig()
+        if(config.installation_location === 'UL'){
+            return lpdOptions.ballufBAE0133;
+        } else if(config.installation_location === 'EU'){
+            return lpdOptions.ballufBAE0133;
+        }
     }
 
 }
@@ -210,7 +226,7 @@ const lineStore = create((set) => ({
         })
 
         return cbs;
-    }
+    },
     
 }))
 
