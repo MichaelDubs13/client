@@ -6,6 +6,8 @@ import {lpdStore, lpdOptions} from "../../Store/lpdStore";
 import HeadingItem from '../Util/HeadingItem';
 import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import DeviceSelection from "../Common/DeviceSelection";
+import { FormInputCheckbox } from "@tesla/design-system-react";
+import CheckboxItem from "../Util/CheckboxItem";
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    
@@ -61,6 +63,30 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                     children={<LpdPsuItem lpdIndex={lpdIndex} psuIndex={index} psu={psu} lpd={lpd}/>}/>
                 })
             }
+            {/* Adding PSU feedback - Need help putting in the correct spot to be under the PSU heading*/}
+            <CheckboxItem title={"Activate PSU Feedback to I/O Module:"} item={lpd} property={"enableFeedback"} index={index}/> 
+                {
+                    lpd.psu_selected === lpdOptions.turk && lpd.enableFeedback &&
+                    <div>
+                        <DeviceSelection item={lpd} index={index} 
+                            lineProperty={"psuFeedbackIOTargetLine"}
+                            stationProperty={"psuFeedbackIOTargetLocation"}
+                            deviceProperty={"psuFeedbackIOTargetDT"}
+                            type="psuFeedbackIOTarget"
+                            portConfig={{
+                                title:"Select the port of the I/O Module (e.g., 1)",
+                                property:"psuFeedbackIOTargetPort",
+                                type:"ioModule",
+                                targetDT:lpd.powerSourceDT,
+                                targetLocation:lpd.powerSourceLocation,
+                                targetLine:lpd.powerSourceLine,
+                            }}
+                            canCreateDevice={true}/> 
+                    </div>
+                }
+            {/* This is the dropdown for the list of available ports on the designated I/O Module */}
+            <DropdownItem title={"Select the Port of the I/O Module:"} item={lpd} property={"psuFeedbackIOTargetPort"} 
+                 index={index} onChange={handleSetpsuSelectionChange}/>
     </div>  
     );
 };

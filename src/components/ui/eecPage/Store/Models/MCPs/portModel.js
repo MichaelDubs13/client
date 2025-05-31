@@ -70,7 +70,7 @@ export const portModel = {
             return this.getDeviceName();
         },
         getDeviceName:function(){
-            return `XPF-ETH01:P${this.getIndex()+1}`
+            return `XPF-LETH01:P${this.getIndex()+1}`
         },
         setLine:function(line, newLine){
             if(line === this.line){

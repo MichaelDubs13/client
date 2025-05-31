@@ -85,6 +85,13 @@ const lpdStore = create(
         newLpd.powerSourceLine = newPsu.powerSourceLine;
         newLpd.powerSourceLocation = newPsu.powerSourceLocation;
         newLpd.powerSourceDT = newPsu.powerSourceDT;
+        // adding new parameters for the psufeedback EEC parameters
+        newLpd.enablePsuFeedback = newPsu.enablePsuFeedback;
+        newLpd.psuFeedbackIOTargetLine = newPsu.psuFeedbackIOTargetLine;
+        newLpd.psuFeedbackIOTargetLocation = newPsu.psuFeedbackIOTargetLocation;
+        newLpd.psuFeedbackIOTargetDT = newPsu.psuFeedbackIOTargetDT;
+        newLpd.psuFeedbackIOTargetPort = newPsu.psuFeedbackIOTargetPort;
+        
         newPsu.data.parent = newLpd;
         newLpd.psus.push(newPsu);
         newLpds = [...newLpds, newLpd]

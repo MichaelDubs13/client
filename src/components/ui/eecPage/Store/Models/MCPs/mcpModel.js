@@ -146,7 +146,7 @@ export const mcpModel = {
 
             devices = [...devices, ...portDTs];
 
-            const extraOptions = ["KED01:P4","KED01:P5","LETH01","XPF-PLC01:X1P2","XPM01","XPM02"]
+            const extraOptions = ["XPM01","XPM02","XPF-PLC01:X1P2","XPF-ETH01:P1","XPF-ETH01:P2","KED01:P4","KED01:P5","LETH01"]
             devices = [...devices, ...extraOptions];
 
             return devices;
