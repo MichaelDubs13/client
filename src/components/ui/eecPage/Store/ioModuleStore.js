@@ -90,6 +90,15 @@ const ioModuleGroupOptions = {
 
 
 const ioModuleGroupConfiguration = {
+  getIoModulePortOptions:(numberOfPorts) => {
+    const ports = [];
+    for(let i=0;i<numberOfPorts;i++){
+      const portNumber = i+1;
+      var port = `P${portNumber}`;
+      ports.push(port)
+    }
+    return ports;
+  },
   getIOModuleGroupOptions:(ioModuleGroups)=>{
     const ioModuleGroupOptions = ioModuleGroups.map((ioModuleGroup => {
         const value = lineConfiguration.getDeviceFullName(ioModuleGroup.line, ioModuleGroup.location, ioModuleGroup.ioModuleDT);

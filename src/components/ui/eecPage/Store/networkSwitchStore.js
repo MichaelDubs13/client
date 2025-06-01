@@ -90,6 +90,7 @@ const networkSwitchConfiguration = {
     }
     return ports;
   },
+
   getEthernetPowerPortOptions:(networkType, switchType, switchSpeed) => {
     var ports = [];
     if(networkType === "Local" && switchType === "Managed"){
@@ -105,7 +106,7 @@ const networkSwitchConfiguration = {
           `POWER_IN (7/8")`,
           "ETHERNET (M12 D-coded)",
         ]
-      } else if(switchSpeed === "Fast" && networkType === "Plabt") {
+      } else if(switchSpeed === "Fast" && networkType === "Plant") {
         ports = [
           `POWER (7/8")`,
           "ETHERNET (M12 D-coded)",

@@ -7,6 +7,7 @@ import { lpdStore, lpdOptions } from '../../Store/lpdStore';
 import DeviceSelection from '../Common/DeviceSelection';
 import InputTextItem from "../Util/InputTextItem";
 import { useEffect, useState } from "react";
+import CheckboxItem from "../Util/CheckboxItem";
 
 const LpdPsuItem = ({ 
   psuIndex,
@@ -73,6 +74,14 @@ const getCapacity = ()=>{
   if(lpd.psu_selected === lpdOptions.ballufBAE0133)return 12.5;
 }
 
+const hasFeedbackOption = () => {
+  if(lpd.psu_selected === lpdOptions.turk) return true;
+  if(lpd.psu_selected === lpdOptions.puls) return true;
+  if(lpd.psu_selected === lpdOptions.ballufBAE0133) return true;
+  if(lpd.psu_selected === lpdOptions.siemens) return true;
+  return false;
+}
+
 return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
@@ -88,6 +97,33 @@ return (
                    options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
             </>
           )}
+          {
+              hasFeedbackOption() && 
+              <div>
+                  <CheckboxItem title={"Activate PSU Feedback to I/O Module:"} item={psu} property={"enablePsuFeedback"} index={index}/> 
+                  {
+                      psu.enablePsuFeedback &&
+                      <div>
+                          <DeviceSelection item={psu} index={index} 
+                              label={"Target PSU feedback I/O Module"}
+                              lineProperty={"psuFeedbackIOTargetLine"}
+                              stationProperty={"psuFeedbackIOTargetLocation"}
+                              deviceProperty={"psuFeedbackIOTargetDT"}
+                              type="ioModule"
+                              canCreateDevice={true}
+                              portConfig ={{
+                                title:"Select the Port of the I/O Module:",
+                                property:"psuFeedbackIOTargetPort",
+                                type:"ioModule",
+                                targetDT:psu.psuFeedbackIOTargetDT,
+                                targetLocation:psu.psuFeedbackIOTargetLocation,
+                                targetLine:psu.psuFeedbackIOTargetLine,
+                            }}/>   
+                      </div>
+                  }
+              </div> 
+          }
+          
           {
             lpd && 
             <div>

@@ -17,6 +17,11 @@ export default class _f_PSU_TURCK extends Component{
             {name: "Line", value: this._psu.line, type: "String"},
             {name: "Location", value: this._psu.location, type: "String"},
             {name: "PSU_DT", value: this._psu.deviceTag, type: "String"},
+            {name: "b_psuFeedback", value: this._psu.enablePsuFeedback, type: "Boolean"},
+            {name: "psuFeedbackIOTargetLine", value: this._psu.psuFeedbackIOTargetLine, type: "String"},
+            {name: "psuFeedbackIOTargetLocation", value: this._psu.psuFeedbackIOTargetLocation, type: "String"},
+            {name: "psuFeedbackIOTargertDT", value: this._psu.psuFeedbackIOTargertDT, type: "String"},
+            {name: "psuFeedbackIOTargetPort", value: this._psu.psuFeedbackIOTargetPort, type: "String"},
         ];
     }
     build(){

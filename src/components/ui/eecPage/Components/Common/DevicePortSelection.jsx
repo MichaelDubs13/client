@@ -4,20 +4,30 @@ import "../../Eec.css";
 import DropdownItem from '../Util/DropdownItem';
 import { useState, useEffect } from 'react';
 import CreateableDropdownItem from '../Util/CreateableDropdownItem';
+import { ioModuleGroupConfiguration } from '../../Store/ioModuleStore';
 
 
 
-const NetworkPortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portType,createNew, isCreatable, update}) => {
+const DevicePortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portType,createNew, isCreatable, update}) => {
     const [portOptions, setPortOptions] = useState([]);
     const itemIndex = createNew ? {} : index;
     useEffect(() => {
+        console.log(targetDT)
         var ports = []
         var foundItem = lineConfiguration.getDeviceByNameGlobal(targetDT, targetLocation, targetLine);
-        if(foundItem && foundItem.data.type ==='networkSwitch'){
+        if(!foundItem){
+             setPortOptions(ports);
+             return;
+        }
+        if(foundItem.data.type ==='networkSwitch'){
             if(portType === 'network'){
                 ports = networkSwitchConfiguration.getEthernetNetworkPortOptions(foundItem.ports.length, foundItem.networkType, foundItem.switchType);
             } else if(portType ==='power') {
                 ports = networkSwitchConfiguration.getEthernetPowerPortOptions(foundItem.networkType, foundItem.switchType, foundItem.switchSpeed);
+            }
+        } else if(foundItem.data.type ==='ioModule'){
+            if(portType ==='ioModule'){
+                ports = ioModuleGroupConfiguration.getIoModulePortOptions(foundItem.ports.length);
             }
         }
         setPortOptions(ports);
@@ -25,7 +35,8 @@ const NetworkPortSelection = ({item, title, index, property, targetDT, targetLoc
 
     return (
         <div>
-             {targetDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (
+             {(targetDT?.startsWith(lineConfiguration.networkSwitchIndicator) || 
+                targetDT?.startsWith(lineConfiguration.ioModuleIndicator)) && (
                     <>
                         {
                            isCreatable ? 
@@ -39,4 +50,4 @@ const NetworkPortSelection = ({item, title, index, property, targetDT, targetLoc
         </div>
     );
 };
-export default NetworkPortSelection;
+export default DevicePortSelection;

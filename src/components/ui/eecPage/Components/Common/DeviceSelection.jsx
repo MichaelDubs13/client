@@ -6,7 +6,7 @@ import ModalAddDevice from './ModalAddDevice';
 import { iconStatusSuccess } from '@tesla/design-system-icons';
 import { FormLabel, Icon, FormItem } from '@tesla/design-system-react';
 import {  isValidLocation } from '../Util/Validations';
-import NetworkPortSelection from './NetworkPortSelection';
+import DevicePortSelection from './DevicePortSelection';
 
 
 /**
@@ -16,6 +16,7 @@ import NetworkPortSelection from './NetworkPortSelection';
  */
 const DeviceSelection = ({
     item, index,  
+    label,
     lineProperty,
     stationProperty,
     deviceProperty,
@@ -51,6 +52,7 @@ const DeviceSelection = ({
     }, [item[deviceProperty], item[stationProperty], item.line]);
 
     const getTitle=()=>{
+        if(label) return label;
         switch(type){
             case 'powerTarget':
                 return "Power target Device tag (e.g., ++LINE+LOCATION-DT):";
@@ -143,7 +145,8 @@ const DeviceSelection = ({
     }
     const getDuplicateDevice = (deviceTag, location) =>{
         if(type === "powerTarget" || type==="networkTarget" || 
-        type === "powerSource" || type === "power2Source" || type==="networkSource"){
+        type === "powerSource" || type === "power2Source" || type==="networkSource" || 
+        type==="ioModule"){
             return false
         }
         
@@ -162,7 +165,6 @@ const DeviceSelection = ({
             getSourceDevice(deviceTag, item[stationProperty])
         } else {
             var exist = getDuplicateDevice(deviceTag, item[stationProperty])
-            console.log(exist);
             setDuplicateExist(exist);
         }
 
@@ -210,7 +212,7 @@ const DeviceSelection = ({
             <div>
                 {
                     portConfig &&
-                      <NetworkPortSelection title={portConfig.title} item={item} 
+                      <DevicePortSelection title={portConfig.title} item={item} 
                             index={index} property={portConfig.property} targetDT={portConfig.targetDT} 
                             targetLocation={portConfig.targetLocation} targetLine={portConfig.targetLine}
                             isCreatable={portConfig.isCreatable} createNew={portConfig.createNew} portType={portConfig.type}

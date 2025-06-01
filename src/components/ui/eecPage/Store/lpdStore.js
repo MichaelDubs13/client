@@ -8,7 +8,11 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 const lpdOptions = {
   turk:'Turck: PSU67-3P-1MP-2M5-24200-F',
   puls:'Puls: FPT500.247-064-102',
+  siemens:'Siemens: 6ES7148-4PC00-0HA0',
   ballufBAE0133:'Balluff: BAE0133',
+  ballufBAE00FL:'Balluff: BAE00FL',
+  ballufBAE00ET:'Balluff: BAE00ET',
+
   psuSupplyVoltageOptions: [
     { value: "120", label: "120V" },
     { value: "240", label: "240V" },
@@ -17,15 +21,15 @@ const lpdOptions = {
   ],
 
   psuSelection120_240Options:[
-    {value: "Balluff: BAE00ET", label: "Balluff: BAE00ET"},
-    {value: "Balluff: BAE00FL", label: "Balluff: BAE00FL"},
-    {value: "Balluff: BAE0133", label: "Balluff: BAE0133"},
+    {value: 'Balluff: BAE0133', label: 'Balluff: BAE0133'},
+    {value:'Balluff: BAE00FL', label: 'Balluff: BAE00FL'},
+    {value:'Balluff: BAE0133', label: 'Balluff: BAE0133'},
   ],
 
   psuSelection400_480Options:[
-    {value: "Siemens: 6ES7148-4PC00-0HA0", label: "Siemens: 6ES7148-4PC00-0HA0"},
-    {value: "Turck: PSU67-3P-1MP-2M5-24200-F", label: "Turck: PSU67-3P-1MP-2M5-24200-F"},
-    {value: "Puls: FPT500.247-064-102", label: "Puls: FPT500.247-064-102"},
+    {value: 'Siemens: 6ES7148-4PC00-0HA0', label: 'Siemens: 6ES7148-4PC00-0HA0'},
+    {value: 'Turck: PSU67-3P-1MP-2M5-24200-F', label: 'Turck: PSU67-3P-1MP-2M5-24200-F'},
+    {value: 'Puls: FPT500.247-064-102', label: 'Puls: FPT500.247-064-102'},
   ],
   psuToPsuCableLengthOptions:[
     { value: "TBD", label: "TBD" },
@@ -84,14 +88,7 @@ const lpdStore = create(
         newLpd.location = location;
         newLpd.powerSourceLine = newPsu.powerSourceLine;
         newLpd.powerSourceLocation = newPsu.powerSourceLocation;
-        newLpd.powerSourceDT = newPsu.powerSourceDT;
-        // adding new parameters for the psufeedback EEC parameters
-        newLpd.enablePsuFeedback = newPsu.enablePsuFeedback;
-        newLpd.psuFeedbackIOTargetLine = newPsu.psuFeedbackIOTargetLine;
-        newLpd.psuFeedbackIOTargetLocation = newPsu.psuFeedbackIOTargetLocation;
-        newLpd.psuFeedbackIOTargetDT = newPsu.psuFeedbackIOTargetDT;
-        newLpd.psuFeedbackIOTargetPort = newPsu.psuFeedbackIOTargetPort;
-        
+        newLpd.powerSourceDT = newPsu.powerSourceDT;        
         newPsu.data.parent = newLpd;
         newLpd.psus.push(newPsu);
         newLpds = [...newLpds, newLpd]
