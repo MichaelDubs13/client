@@ -32,6 +32,10 @@ export const pdpBranchCircuitModel = {
         powertarget:'',
         id:uuidv4(),
       },
+      setExpanded: function(value){
+        var indexObject = this.getIndexObject();
+        this.setValue(indexObject, "expanded", value, true, false);
+      },
       getFullName: function() {
         var targetDevice = this.PwrDrop_Spare ? "Spare" : `${this.targetLocation}-${this.targetDT}`;
         return `${this.deviceDT}-${amperage}:${targetDevice}`;
@@ -49,8 +53,8 @@ export const pdpBranchCircuitModel = {
       getIndex: function(){
         return this.data.parent.branchCircuit[amperage].findIndex(drop => drop.data.id === this.data.id)
       },
-      setValue: function(indexObject, key, value){
-        pdpStore.getState().setBranchCircuitValue(indexObject, key, value, false, false);
+      setValue: function(indexObject, key, value, isUI, isData){
+        pdpStore.getState().setBranchCircuitValue(indexObject, key, value, isUI, isData);
       },
       setDataValue: function(key, value){
         const indexObject = this.getIndexObject();

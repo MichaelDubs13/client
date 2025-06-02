@@ -26,32 +26,36 @@ export const branchCircuitModel = {
            icon:"/powerdrop.png",
          },
          //Data can be set without going through zustand
-         data:{
-           type:'cb',
-           parent:parent,
-           amperage:amperage,
-           powertarget:'',
-           id:uuidv4(),
-         },
-          getFullName: function() {
-            var targetDevice = this.PwrDrop_Spare ? "Spare" : `${this.targetLocation}-${this.targetDT}`;
-            return `${this.deviceDT}-${amperage}:${targetDevice}`;
-          },
-         getIndexObject: function(){
-           const pdpIndex = this.data.parent.getIndex();
-           const branchCircuitIndex = this.getIndex();
-           const amperage = this.data.amperage;
-           return {
-             pdpIndex:pdpIndex,
-             branchCircuitIndex:branchCircuitIndex,
-             amperage:amperage,
-           }
-         },
+        data:{
+          type:'cb',
+          parent:parent,
+          amperage:amperage,
+          powertarget:'',
+          id:uuidv4(),
+        },
+        setExpanded: function(value){
+          var indexObject = this.getIndexObject();
+          this.setValue(indexObject, "expanded", value, true, false);
+        },
+        getFullName: function() {
+          var targetDevice = this.PwrDrop_Spare ? "Spare" : `${this.targetLocation}-${this.targetDT}`;
+          return `${this.deviceDT}-${amperage}:${targetDevice}`;
+        },
+        getIndexObject: function(){
+          const pdpIndex = this.data.parent.getIndex();
+          const branchCircuitIndex = this.getIndex();
+          const amperage = this.data.amperage;
+          return {
+            pdpIndex:pdpIndex,
+            branchCircuitIndex:branchCircuitIndex,
+            amperage:amperage,
+          }
+        },
          getIndex: function(){
            return this.data.parent.branchCircuit[amperage].findIndex(drop => drop.data.id === this.data.id)
          },
-         setValue: function(indexObject, key, value){
-           xpdpStore.getState().setBranchCircuitValue(indexObject, key, value, false);
+         setValue: function(indexObject, key, value, isUI, isData){
+           xpdpStore.getState().setBranchCircuitValue(indexObject, key, value, isUI, isData);
          },
          setDataValue: function(key, value){
           const indexObject = this.getIndexObject();

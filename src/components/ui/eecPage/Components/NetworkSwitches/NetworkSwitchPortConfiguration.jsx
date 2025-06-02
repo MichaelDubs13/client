@@ -10,6 +10,7 @@ const NetworkSwitchPortConfiguration = ({networkSwitch, networkSwitchIndex, crea
                 networkSwitch.ports.map((port, index) => {
                     return <HeadingItem label={`Port ${index + 1}`}
                     size={18} margin={"20px"}
+                    component={port}
                     headerIcon={port.UI.icon}
                     open={true}
                     children={<NetworkSwitchPort

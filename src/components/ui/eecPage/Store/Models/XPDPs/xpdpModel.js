@@ -39,6 +39,10 @@ export const xpdpModel = {
         type:'xpdp',
         id:uuidv4(),
       },
+      setExpanded: function(value){
+        var indexObject = this.getIndexObject();
+        this.setValue(indexObject, "expanded", value, true, false);
+      },
       getFullName: function (){
         return `++${this.line}+${this.location}`;
       },
@@ -48,8 +52,8 @@ export const xpdpModel = {
             pdpIndex:pdpIndex,
           }
       },
-      setValue: function(indexObject, key, value){
-          xpdpStore.getState().setXPdpValue(indexObject, key, value);
+      setValue: function(indexObject, key, value, isUI, isData){
+          xpdpStore.getState().setXPdpValue(indexObject, key, value, isUI, isData);
       },
       getCB: function(location, cb_dt){
         if(this.location === location){

@@ -10,6 +10,7 @@ const ExtensionUnitConfiguration = ({hmi, hmiIndex}) => {
                 hmi.extensionUnitPositions.map((extensionUnitPosition, index) => {
                     return <HeadingItem label={`Extension Unit Position ${index + 1}`}
                     size={18} margin={"20px"}
+                    component={extensionUnitPosition}
                     headerIcon={"/networkPort.png"}
                     open={true}
                     children={<ExtensionUnitPositions

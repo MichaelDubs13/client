@@ -14,15 +14,16 @@ import PropTypes from 'prop-types';
  * @param {arrayOf(JSX.Element)} buttons - an array of action buttons trailing the heading component
  * @returns 
  */
-const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons}) => {
+const HeadingItem = ({headerIcon, label, size, open, margin, children, component, buttons}) => {
     const [expanded, setExpanded] = useState(open);
+    const isOpened = component ? component.UI.expanded : expanded;
+
 
     const handleToggleClick = async () => {
-        if (!expanded) {
-          setExpanded(true);
-          
+        if (!isOpened) {
+            component ? component.setExpanded(true) : setExpanded(true) 
         } else {
-          setExpanded(false);
+           component ?component.setExpanded(false): setExpanded(false) 
         }
       };
 
@@ -36,7 +37,7 @@ const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons})
                         {
                             headerIcon ? 
                             <img src={headerIcon} style={{transform: 'scale(0.5)', verticalAlign:'top'}}/> :
-                            expanded?<Icon data={iconChevron180} size='small'/>:<Icon data={iconChevron90} size='small'/>
+                            isOpened?<Icon data={iconChevron180} size='small'/>:<Icon data={iconChevron90} size='small'/>
                             
                         }  
                     </TD>
@@ -48,7 +49,7 @@ const HeadingItem = ({headerIcon, label, size, open, margin, children, buttons})
                     }
             </tr>
             {
-                expanded &&
+                isOpened &&
                 <div>
                     {children}     
                 </div>

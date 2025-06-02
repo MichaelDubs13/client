@@ -36,6 +36,7 @@ const NetworkSwitchConfigurations = () => {
                     networkSwitches.map((networkSwitch, index) => {
                         return <HeadingItem label={`${index+1}:Network Switch ++${networkSwitch.line}+${networkSwitch.location}-${networkSwitch.deviceTag}`} 
                                 size={18} margin={"20px"} open={false}
+                                component={networkSwitch}
                                 headerIcon={networkSwitch.UI.icon}
                                 children={<NetworkSwitchConfiguration networkSwitch={networkSwitch} index={index}/>}
                                 buttons={[<DeleteButton onClick={() => handleDeleteItem(index)} />,

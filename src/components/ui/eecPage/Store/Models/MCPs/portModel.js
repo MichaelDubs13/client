@@ -19,6 +19,10 @@ export const portModel = {
         ethernetTarget:'',
         id:uuidv4(),
         },
+        setExpanded: function(value){
+          var indexObject = this.getIndexObject();
+          this.setValue(indexObject, "expanded", value, true, false);
+        },
         getFullName: function() {
             return `P${this.getIndex()+1}:++${this.line}+${this.targetLocation}-${this.targetDT}`;
         },

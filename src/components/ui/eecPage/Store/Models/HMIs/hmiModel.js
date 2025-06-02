@@ -56,7 +56,11 @@ export const hmiModel = {
              powerTarget:'',
              ethernetTarget:'',
            },
-           getDescription: function(){
+          setExpanded: function(value){
+            var indexObject = this.getIndexObject();
+            this.setValue(indexObject, "expanded", value, true, false);
+          },
+          getDescription: function(){
             return 'HMI';
           },
           getFLA:function(){

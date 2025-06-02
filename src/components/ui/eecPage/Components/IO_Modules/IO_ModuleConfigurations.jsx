@@ -11,6 +11,7 @@ const IO_ModuleConfigurations = ({ioModuleGroup, ioModuleGroupIndex}) => {
                 ioModuleGroup.ioModules.map((ioModule, index) => {
                     return <HeadingItem label={`IO Module ${index + 1}`}
                     size={18} margin={"20px"}
+                    component={ioModule}
                     headerIcon={ioModule.UI.icon}
                     open={true}
                     children={<IO_ModuleConfiguration

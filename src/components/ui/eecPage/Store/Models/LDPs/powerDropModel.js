@@ -23,6 +23,10 @@ export const powerDropModel = {
         parent:parent,
         powerTarget:'',
       },
+      setExpanded: function(value){
+        var indexObject = this.getIndexObject();
+        this.setValue(indexObject, "expanded", value, true, false);
+      },
       getIndexObject: function(){
         const lpdIndex = this.data.parent.data.parent.getIndex();
         const psuIndex = this.data.parent.getIndex();

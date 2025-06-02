@@ -36,6 +36,7 @@ const McpConfigurations = () => {
                         const location = mcp.location
                         return <HeadingItem label={`Main Control Panel ++${mcp.line}+${location}:`} 
                                 size={18} margin={"20px"} open={false}
+                                component={mcp}
                                 headerIcon={mcp.UI.icon}
                                 children={<McpConfiguration mcp={mcp} index={index}/>}
                                 buttons={[<DeleteButton onClick={() => handleDeleteItem(index)}/>,

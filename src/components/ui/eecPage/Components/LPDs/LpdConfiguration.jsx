@@ -74,6 +74,7 @@ const LpdConfiguration = ({lpd, lpdIndex}) => {
                 lpd.psus.map((psu,index) => {
                     return <HeadingItem label={`24VDC Power Supply ${psu.getIndex()+1}: ++${psu.line}+${psu.location}-${psu.deviceTag} | ${lpd.psu_selected}`} 
                     size={18} margin={"20px"} open={false} 
+                    component={psu}
                     headerIcon={psu.UI.icon}
                     children={<LpdPsuItem lpdIndex={lpdIndex} psuIndex={index} psu={psu} lpd={lpd}/>}/>
                 })

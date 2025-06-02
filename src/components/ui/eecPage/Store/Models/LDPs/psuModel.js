@@ -38,6 +38,10 @@ export const psuModel = {
             id:uuidv4(),
             parent:parent,
           },
+          setExpanded: function(value){
+            var indexObject = this.getIndexObject();
+            this.setValue(indexObject, "expanded", value, true, false);
+          },
           getDescription: function(){
             return 'Power Supply';
           },

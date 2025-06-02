@@ -21,6 +21,10 @@ export const safetyGateGroupModel = {
           type:'safetyGate',
           id:uuidv4(),
         },
+        setExpanded: function(value){
+          var indexObject = this.getIndexObject();
+          this.setValue(indexObject, "expanded", value, true, false);
+        },
         getIndexObject: function(){
           const safetyGateIndex = this.getIndex();
           return {

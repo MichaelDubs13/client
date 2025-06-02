@@ -36,6 +36,7 @@ const SafetyGateLocationCount = () => {
                     safetyGates.map((safetyGate, index) => {
                         return <HeadingItem label={`${index+1}:Safety Gate Switches in: ++${safetyGate.line}+${safetyGate.location}`} 
                                 size={18} margin={"20px"} open={false}
+                                component={safetyGate}
                                 headerIcon={safetyGate.UI.icon}
                                 children={<SafetyGateInstances safetyGate={safetyGate} index={index}/>}
                                 buttons={[<DeleteButton onClick={() => handleDeleteItem(index)} />,

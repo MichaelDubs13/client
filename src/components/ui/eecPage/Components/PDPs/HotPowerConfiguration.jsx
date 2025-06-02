@@ -13,6 +13,7 @@ const HotPowerConfiguration = ({pdp, pdpIndex}) => {
                     i=i+1;
                     return <HeadingItem label={`5A Hot Power Branch circuit power drop ${index + 1}: CB${i}`}
                     size={18} margin={"20px"}
+                    component={hotPowerDrop}
                     headerIcon={hotPowerDrop.UI.icon}
                     open={true}
                     children={<HotPowerDropItem

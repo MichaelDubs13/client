@@ -25,6 +25,10 @@ export const hotPowerBranchCircuitModel = {
         expanded:false,
         icon:"/powerdrop.png",
       },
+      setExpanded: function(value){
+        var indexObject = this.getIndexObject();
+        this.setValue(indexObject, "expanded", value, true, false);
+      },
       getIndexObject: function(){
         const pdpIndex = this.data.parent.getIndex();
         const hotPowerIndex = this.getIndex();
@@ -36,8 +40,8 @@ export const hotPowerBranchCircuitModel = {
       getIndex: function(){
         return this.data.parent.hotPowerDrops.findIndex(drop => drop.data.id === this.data.id)
       },
-      setValue: function(indexObject, key, value){
-        pdpStore.getState().setHotPowerValue(indexObject, key, value);
+      setValue: function(indexObject, key, value,isUI,isData){
+        pdpStore.getState().setHotPowerValue(indexObject, key, value,isUI,isData);
       },
       setDataValue: function(key, value){
         const indexObject = this.getIndexObject();

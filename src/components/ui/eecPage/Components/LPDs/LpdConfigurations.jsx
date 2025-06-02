@@ -34,6 +34,7 @@ const LpdConfigurations = () => {
                     lpds.map((lpd, index) => {
                         return <HeadingItem label={`24V Field mounted Power Supply Unit (PSU) Configuration, Group ${lpd.getIndex() + 1}`} 
                             size={18} margin={"20px"} open={false} 
+                            component={lpd}
                             headerIcon={lpd.UI.icon}
                             children={<LpdConfiguration lpd={lpd} lpdIndex={index}/>}
                             buttons={[<DeleteButton onClick={() => handleDeleteItem(index)} />,

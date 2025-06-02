@@ -17,6 +17,10 @@ export const extensionUnitPositionModel = {
         id:uuidv4(),
         parent:parent,
       },
+      setExpanded: function(value){
+        var indexObject = this.getIndexObject();
+        this.setValue(indexObject, "expanded", value, true, false);
+      },
       getIndexObject: function(){
         const hmiIndex = this.data.parent.getIndex();
         const extensionUnitPositionIndex = this.getIndex();
@@ -26,8 +30,8 @@ export const extensionUnitPositionModel = {
         const index = this.data.parent.extensionUnitPositions.findIndex(position => position.data.id === this.data.id)
         return index;
       },
-      setValue: function(indexObject, key, value){
-        hmiStore.getState().setExtensionUnitPositionValue(indexObject, key, value);
+      setValue: function(indexObject, key, value, isUI, isData){
+        hmiStore.getState().setExtensionUnitPositionValue(indexObject, key, value, isUI, isData);
       },
       setDataValue: function(key, value){
         const indexObject = this.getIndexObject();  

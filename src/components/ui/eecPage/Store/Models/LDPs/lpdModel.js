@@ -25,6 +25,10 @@ export const lpdModel = {
             type:'lpd',
             id:uuidv4(),
           },
+          setExpanded: function(value){
+            var indexObject = this.getIndexObject();
+            this.setValue(indexObject, "expanded", value, true, false);
+          },
           getFullName: function() {
             return `++${this.powerSourceLine}+${this.powerSourceLocation}-${this.powerSourceDT}`;
           },

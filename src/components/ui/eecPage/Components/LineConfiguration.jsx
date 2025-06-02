@@ -111,6 +111,7 @@ const LineConfiguration = ({loadCount}) => {
     }
 
       const getItems = (array,id) => {
+        console.log("test")
         var items = []
         array.forEach((element)=> {
             var children = getChildren(element, id);
@@ -119,7 +120,13 @@ const LineConfiguration = ({loadCount}) => {
                 leadingText: `${element.getFullName()}`,
                 trailing: children ? <Chip text={`${children.length}`} /> : null,
                 items: children,
+                expanded: element.UI.expanded,
+                onClick: () => {
+                    element.setExpanded(!element.UI.expanded);
+                },
             }
+
+
             items.push(item)
         })
 

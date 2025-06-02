@@ -49,6 +49,10 @@ export const networkSwitchModel = {
         fla:'',
         id:uuidv4(),
       },
+      setExpanded: function(value){
+        var indexObject = this.getIndexObject();
+        this.setValue(indexObject, "expanded", value, true, false);
+      },
       getDescription: function(){
         return 'Local Network Switch';
       },

@@ -163,6 +163,7 @@ return (
                       accumulatedFla = accumulatedFla + (drop.outputPort != "Class 2" ? Number(drop.fla) : 0);
                       return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
                       size={18} margin={"20px"} open={false} 
+                      component={drop}
                       headerIcon={drop.UI.icon}
                       children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} 
                         drop={drop} lpd={lpd} psu={psu} accumulatedFla={accumulatedFla}

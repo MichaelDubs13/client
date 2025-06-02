@@ -36,6 +36,7 @@ const XpdpConfigurations = () => {
                 xpdps.map((xpdp, index) => {
                     return <HeadingItem label={`120/208VAC Power Distribution Panel ++${xpdp.line}+${xpdp.location}`}
                     size={18} margin={"20px"} open={false}
+                    component={xpdp}
                     headerIcon={xpdp.UI.icon}
                     children={<XpdpConfiguration xpdp={xpdp} xpdpIndex={index}/>} 
                     buttons={[<DeleteButton onClick={() => handleDeleteItem(index)}/>,

@@ -46,6 +46,10 @@ export const pdpModel = {
             type:'pdp',
             id:uuidv4(),
           },
+          setExpanded: function(value){
+            var indexObject = this.getIndexObject();
+            this.setValue(indexObject, "expanded", value, true, false);
+          },
           getFullName: function (){
             return `++${this.line}+${this.location}`;
           },
@@ -55,8 +59,8 @@ export const pdpModel = {
               pdpIndex:pdpIndex,
             }
           },
-          setValue: function(indexObject, key, value){
-            pdpStore.getState().setPdpValue(indexObject, key, value);
+          setValue: function(indexObject, key, value, isUI, isData){
+            pdpStore.getState().setPdpValue(indexObject, key, value, isUI, isData);
           },
           getCB: function(location, cb_dt){
               if(this.location === location){

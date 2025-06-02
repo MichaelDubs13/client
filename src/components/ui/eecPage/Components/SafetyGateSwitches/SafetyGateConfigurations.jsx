@@ -10,6 +10,7 @@ const SafetyGateConfigurations = ({safetyGate, safetyGateIndex}) => {
                 safetyGate.safetyGateSwitches.map((safetyGateSwitch, index) => {
                     return <HeadingItem label={`Safety Gate Switch ${index + 1}`}
                     size={18} margin={"20px"}
+                    component={safetyGateSwitch}
                     headerIcon={safetyGateSwitch.UI.icon}
                     open={true}
                     children={<SafetyGateSwitchConfiguration
