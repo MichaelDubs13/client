@@ -12,7 +12,6 @@ const DevicePortSelection = ({item, title, index, property, targetDT, targetLoca
     const [portOptions, setPortOptions] = useState([]);
     const itemIndex = createNew ? {} : index;
     useEffect(() => {
-        console.log(targetDT)
         var ports = []
         var foundItem = lineConfiguration.getDeviceByNameGlobal(targetDT, targetLocation, targetLine);
         if(!foundItem){

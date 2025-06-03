@@ -75,6 +75,7 @@ const getCapacity = ()=>{
 }
 
 const hasFeedbackOption = () => {
+  if(!lpd) return false;
   if(lpd.psu_selected === lpdOptions.turk) return true;
   if(lpd.psu_selected === lpdOptions.puls) return true;
   if(lpd.psu_selected === lpdOptions.ballufBAE0133) return true;

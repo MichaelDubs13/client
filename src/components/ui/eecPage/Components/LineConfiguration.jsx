@@ -111,7 +111,6 @@ const LineConfiguration = ({loadCount}) => {
     }
 
       const getItems = (array,id) => {
-        console.log("test")
         var items = []
         array.forEach((element)=> {
             var children = getChildren(element, id);

@@ -19,7 +19,6 @@ import { ioModuleStore } from "./Store/ioModuleStore";
 import { iconDownload } from '@tesla/design-system-icons';
 import { useRef } from "react";
 import ActionIcon from "../util/ActionIcon";
-import { lineConfiguration } from "./Store/lineStore";
 
 
 const LoadButton = ({onLoad}) => {
@@ -50,25 +49,54 @@ const LoadButton = ({onLoad}) => {
           var data = e.target.result;
           const jsonObject = JSON.parse(data);
           setConfig(jsonObject.config);
-          var pdps = pdpModel.recreate(jsonObject.pdps)
-          var xpdps = xpdpModel.recreate(jsonObject.xpdps)
-          var mcps = mcpModel.recreate(jsonObject.mcps)
-          var lpds = lpdModel.recreate(jsonObject.lpds)
-          var safetyGates = safetyGateGroupModel.recreate(jsonObject.safetyGates)
-          var networkSwitches = networkSwitchModel.recreate(jsonObject.networkSwitches)
-          var hmis = hmiModel.recreate(jsonObject.hmis)
-          var ioModuleGroups = ioModuleGroupModel.recreate(jsonObject.ioModuleGroups)
-          
-          Object.assign(pdpStore.getState().pdps, pdps);
-          Object.assign(xpdpStore.getState().xpdps, xpdps);
-          Object.assign(mcpStore.getState().mcps, mcps);
-          Object.assign(lpdStore.getState().lpds, lpds);
-          Object.assign(safetyGateStore.getState().safetyGates, safetyGates);
-          Object.assign(networkSwitchStore.getState().networkSwitches, networkSwitches);
-          Object.assign(hmiStore.getState().hmis, hmis);
-          Object.assign(ioModuleStore.getState().ioModuleGroups, ioModuleGroups);
+          if(jsonObject.pdps.length > 0){
+            var pdps = pdpModel.recreate(jsonObject.pdps)
+            Object.assign(pdpStore.getState().pdps, pdps);  
+            pdpStore.getState().setPdps(pdps);
+          }
 
-          lineConfiguration.setAllModels(pdps, xpdps, mcps, lpds, networkSwitches, hmis, safetyGates, ioModuleGroups);
+          if(jsonObject.xpdps.length > 0){
+            var xpdps = xpdpModel.recreate(jsonObject.xpdps)
+            Object.assign(xpdpStore.getState().xpdps, xpdps);
+            xpdpStore.getState().setXpdps(xpdps);
+          }
+
+          if(jsonObject.mcps.length > 0){
+            var mcps = mcpModel.recreate(jsonObject.mcps)
+            Object.assign(mcpStore.getState().mcps, mcps);
+            mcpStore.getState().setMcps(mcps);
+          }
+
+          if(jsonObject.lpds.length > 0){
+            var lpds = lpdModel.recreate(jsonObject.lpds)
+            Object.assign(lpdStore.getState().lpds, lpds);
+            lpdStore.getState().setLpds(lpds);
+          }
+
+          if(jsonObject.safetyGates.length > 0){
+            var safetyGates = safetyGateGroupModel.recreate(jsonObject.safetyGates)
+            Object.assign(safetyGateStore.getState().safetyGates, safetyGates);
+            safetyGateStore.getState().setSafetyGates(safetyGates);
+          }
+
+          if(jsonObject.networkSwitches.length > 0){
+            var networkSwitches = networkSwitchModel.recreate(jsonObject.networkSwitches)
+            Object.assign(networkSwitchStore.getState().networkSwitches, networkSwitches);
+            networkSwitchStore.getState().setNetworkSwitches(networkSwitches);
+          }
+
+          if(jsonObject.hmis.length > 0){
+            var hmis = hmiModel.recreate(jsonObject.hmis)
+            Object.assign(hmiStore.getState().hmis, hmis);
+            hmiStore.getState().setHmis(hmis);
+          }
+
+          if(jsonObject.ioModuleGroups.length > 0){
+            var ioModuleGroups = ioModuleGroupModel.recreate(jsonObject.ioModuleGroups)
+            Object.assign(ioModuleStore.getState().ioModuleGroups, ioModuleGroups);
+            ioModuleStore.getState().setIOModuleGroups(ioModuleGroups);
+          }
+          
           onLoad();
         } catch (error) {
           console.error("Error parsing JSON:", error);
