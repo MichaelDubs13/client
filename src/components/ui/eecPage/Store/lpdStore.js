@@ -21,7 +21,7 @@ const lpdOptions = {
   ],
 
   psuSelection120_240Options:[
-    {value: 'Balluff: BAE0133', label: 'Balluff: BAE0133'},
+    {value: 'Balluff: BAE00ET', label: 'Balluff: BAE00ET'},
     {value:'Balluff: BAE00FL', label: 'Balluff: BAE00FL'},
     {value:'Balluff: BAE0133', label: 'Balluff: BAE0133'},
   ],
