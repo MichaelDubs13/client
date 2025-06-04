@@ -45,7 +45,7 @@ export default class F_Network_SwitchConfig extends Component{
             {name: "8_ports", value: this._networkSwitch.ports.length, type: "Integer"},
             {name: "8or16_ports", value: this._networkSwitch.ports.length, type: "Integer"},
             {name: "8or16or24_ports", value: this._networkSwitch.ports.length, type: "Integer"},
-            {name: "Unmanaged_Etherenet", value: this.Unmanaged_Etherenet, type: "Boolean"}, //Reserved for plant networkSwitch
+            {name: "Unmanaged_Ethernet", value: this.Unmanaged_Ethernet, type: "Boolean"}, //Reserved for plant networkSwitch
             //Parameters that might need to be added later
             // {name: "Plant_IP", value: "Undefined", type: "String"},
             // {name: "Cable_Length_Selection", value: "Undefined", type: "String"},
