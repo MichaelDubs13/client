@@ -10,7 +10,7 @@ export default class _f_PSU_PULS extends Component{
         this._class = "_f_PSU_PULS";
         this._name = `_f_PSU_PULS${number}`;
         this._psu = psu;
-        this._class2Drops = this.psu.drops.filter(drop => drop.outputPort === "Class 2");
+        this._class2Drops = this._psu.drops.filter(drop => drop.outputPort === "Class 2");
         this._class2PortNeeded = this._class2Drops.length > 0;
     }
     get Parameters(){

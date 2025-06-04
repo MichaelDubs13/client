@@ -25,42 +25,42 @@ const ModelBuilder = {
     buildContent : (customer, pdps, xpdps, mcps, lpds, switches,devices, groupedIOModules, hmis, gates) => {
         const manufacturingEquipmentLINE = new ManufacturingEquipmentLINE(customer);
 
-        if(pdps.length > 0){
+        if(pdps && pdps.length > 0){
             const fg_M_W_PowerDistributionPanel = new Fg_M_W_PowerDistributionPanel(manufacturingEquipmentLINE, pdps);
             fg_M_W_PowerDistributionPanel.build();
         }
         
-        if(xpdps.length > 0){
+        if(xpdps && xpdps.length > 0){
             const fg_XPowerDistributionPanel_M = new Fg_XPowerDistributionPanel_M(manufacturingEquipmentLINE, xpdps)
             fg_XPowerDistributionPanel_M.build();
         }
         
-        if(mcps.length >0){
+        if(mcps && mcps.length >0){
             const fg_MainControlPanel = new Fg_MainControlPanel(manufacturingEquipmentLINE, mcps);
             fg_MainControlPanel.build();
         }
         
-        if(lpds.length > 0){
+        if(lpds && lpds.length > 0){
             const fg_24VDCPowerDistribution = new Fg_24VDC_PowerDistribution(manufacturingEquipmentLINE, lpds);
             fg_24VDCPowerDistribution.build();
         }
        
-        if(switches.length >0){
+        if(switches && switches.length >0){
             const fg_NetworkSwitches_FieldInstallations = new Fg_NetworkSwitches_FieldInstallations(manufacturingEquipmentLINE, switches);
             fg_NetworkSwitches_FieldInstallations.build();
         }
         
-        if(groupedIOModules.length > 0){
+        if(groupedIOModules && groupedIOModules.length > 0){
             const fg_IO_Modules = new Fg_IO_Modules(manufacturingEquipmentLINE, groupedIOModules);
             fg_IO_Modules.build();
         }
 
-        if(hmis.length > 0){
+        if(hmis && hmis.length > 0){
             const fg_hmis = new Fg_HMIs(manufacturingEquipmentLINE, hmis);
             fg_hmis.build();
         }
 
-        if(gates.length >0){
+        if(gates && gates.length >0){
             const fg_Safety_GateSwitches = new Fg_Safety_GateSwitches(manufacturingEquipmentLINE, gates)
             fg_Safety_GateSwitches.build();
         }

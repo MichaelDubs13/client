@@ -149,6 +149,7 @@ export const lpdModel = {
             psu.partNumber = lpd.getPartNumber();
           }
         }
+        return lpds
       },
       merge: (state, currentState) => { 
           const lpds = lpdModel.recreate(state.lpds);
