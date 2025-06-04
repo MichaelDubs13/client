@@ -45,12 +45,13 @@ export default class Fg_24VPowerDistribution extends Component{
 
     update(){
         //need to get full list
+        console.log(this._lpd)
         this._lpd.psus.forEach(psu => {
             if(psu.MFG === "Balluff"){
                 if(psu.partNumber === "BAE0133"){
                     this._Balluff_CLS2_BAE0133.push(psu);
-                    this.PSU_Selection_120 = `${psu.MFG}-${psu.partNumber}`;
-                    this.s_PSU_Selection_120_240 = `${psu.MFG}-${psu.partNumber}`;
+                    this.PSU_Selection_120 = `${psu.MFG}: ${psu.partNumber}`;
+                    this.s_PSU_Selection_120_240 = `${psu.MFG}: ${psu.partNumber}`;
                     this.s_PSU_Selection_480_400 = ``;
                     this.b_PSU_Selection_BAE0133 = true;
                 }
@@ -58,12 +59,17 @@ export default class Fg_24VPowerDistribution extends Component{
                 this._Turck.push(psu);
                 this.PSU_Selection_120 = ``;
                 this.s_PSU_Selection_120_240 = ``;
-                this.s_PSU_Selection_480_400 = `${psu.MFG}`;
+                this.s_PSU_Selection_480_400 = `${psu.MFG}: ${psu.partNumber}`;
             } else if(psu.MFG === "Puls"){
                 this._Puls.push(psu);
                 this.PSU_Selection_120 = ``;
                 this.s_PSU_Selection_120_240 = ``;
-                this.s_PSU_Selection_480_400 = `${psu.MFG}`;
+                this.s_PSU_Selection_480_400 = `${psu.MFG}: ${psu.partNumber}`;
+            } else if(psu.MFG === "Siemens"){
+                this._Puls.push(psu);
+                this.PSU_Selection_120 = ``;
+                this.s_PSU_Selection_120_240 = ``;
+                this.s_PSU_Selection_480_400 = `${psu.MFG}: ${psu.partNumber}`;
             }
         })
     }

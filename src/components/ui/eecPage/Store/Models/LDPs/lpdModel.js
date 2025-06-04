@@ -141,7 +141,14 @@ export const lpdModel = {
         }
       },
       generateData: (lpds) => {
-        return lpds;
+        for(let i=0;i<lpds.length;i++){
+          const lpd = lpds[i];
+          for(let j=0;j<lpd.psus.length;j++){
+            const psu = lpd.psus[j];
+            psu.MFG = lpd.getMFG();
+            psu.partNumber = lpd.getPartNumber();
+          }
+        }
       },
       merge: (state, currentState) => { 
           const lpds = lpdModel.recreate(state.lpds);
