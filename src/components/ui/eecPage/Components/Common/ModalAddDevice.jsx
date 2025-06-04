@@ -103,6 +103,7 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
       var newNetworkSwitch = networkSwitchModel.create()
       newNetworkSwitch = updateItem(newNetworkSwitch)
       if(item.data.type === "lethPort"){
+        newNetworkSwitch.ports[15].UI.expanded = true;
         newNetworkSwitch.ports[15].deviceTypeSelection = "Network Switch";
         newNetworkSwitch.ports[15].line = item.data.parent.line;
         newNetworkSwitch.ports[15].targetLocation = item.data.parent.location;

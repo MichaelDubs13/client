@@ -65,7 +65,7 @@ const xpdpStore = create(
       const index = indexObject.pdpIndex
       set((state) => {
         const newPdps = [...state.xpdps];
-        setModelValue(newPdps[index], key, value, isUI, isData);
+        newPdps[index] && setModelValue(newPdps[index], key, value, isUI, isData);
         return { xpdps: newPdps };
       });
     },

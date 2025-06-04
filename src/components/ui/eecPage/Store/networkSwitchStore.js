@@ -71,6 +71,23 @@ const networkSwitchConfiguration = {
 
     return networkSwitchOptions;
   },
+
+  getNetworkSwitchWithPortsOptions:(networkSwitches)=>{
+    const options = []
+    for(let i=0;i<networkSwitches.length;i++){
+      const networkSwitch = networkSwitches[i];
+      const networkSwitchName = lineConfiguration.getDeviceFullName(networkSwitch.line, networkSwitch.location, networkSwitch.deviceTag);
+      for(let j=0;j<networkSwitch.ports.length;j++){
+        const port = `P${j+1}`;
+        const value = `${networkSwitchName}:${port}`;
+        options.push({label:value, value:value})
+      }
+        
+    }
+
+    return options;
+  },
+
   getEthernetNetworkPortOption:(networkType, switchType, portNumber) => {
     const xCodedPorts = [10,12,14,16];
     var port = "";
@@ -139,10 +156,13 @@ const networkSwitchStore = create(
     wipNetworkSwitch:{},
     networkSwitches:[],
     networkSwitchesOptions:[],
-
+    networkSwitcheWithPortsOptions:[],
     setNetworkSwitchesOptions:(networkSwitches)=>{
       var networkSwitchesOptions= networkSwitchConfiguration.getNetworkSwitchOptions(networkSwitches);
       set({networkSwitchesOptions:networkSwitchesOptions});
+
+      var networkSwitcheWithPortsOptions= networkSwitchConfiguration.getNetworkSwitchWithPortsOptions(networkSwitches);
+      set({networkSwitcheWithPortsOptions:networkSwitcheWithPortsOptions});
     },
     /**
      * Set networkSwitches and update networkSwitchOptions
@@ -206,7 +226,7 @@ const networkSwitchStore = create(
     if(Object.keys(indexObject).length > 0){
       set((state) => {
         const newNetworkSwitches = [...state.networkSwitches];
-        setModelValue(newNetworkSwitches[index], key, value, isUI, isData);
+        newNetworkSwitches[index] && setModelValue(newNetworkSwitches[index], key, value, isUI, isData);
         get().setNetworkSwitchesOptions(newNetworkSwitches);
         return { networkSwitches: newNetworkSwitches };
       });
@@ -231,14 +251,15 @@ const networkSwitchStore = create(
     const networkSwitchIndex = indexObject.networkSwitchIndex;
     const portIndex = indexObject.portIndex;
     set((state) => {
-      if(Object.keys(indexObject).length > 1){
+      if(networkSwitchIndex > -1){
         const newNetworkSwitches = [...state.networkSwitches];
         const ports = newNetworkSwitches[networkSwitchIndex].ports;
         setModelValue(ports[portIndex], key, value, isUI, isData);
         return { networkSwitches: newNetworkSwitches };
       } else {
         var wipNetworkSwitch = {...state.wipNetworkSwitch};
-        wipNetworkSwitch.ports[portIndex][key] = value;
+        const ports = wipNetworkSwitch.ports;
+        setModelValue(ports[portIndex], key, value, isUI, isData);
         return { wipNetworkSwitch: wipNetworkSwitch };
       }
     });

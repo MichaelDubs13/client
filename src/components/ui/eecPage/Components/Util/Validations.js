@@ -12,13 +12,8 @@ export const isValidIP = (str)=> {
     return (!str ? true : ipv4Regex.test(str)) || 'Please enter a valid ip address'
 }
 
-export function isAAANN(str) {
-  const regex = /^[a-zA-Z]{3}\d{2}$/;
-  return regex.test(str);
-}
-
 export function isAAAANN(str) {
-  const regex = /^[a-zA-Z]{4}\d{2}$/;
+  const regex = /^[a-zA-Z]{3,4}\d{2}$/;
   return regex.test(str);
 }
 
@@ -27,13 +22,12 @@ export function isNNNNN(str) {
   return regex.test(str);
 }
 
-export function isAAANN_NNN(str) {
-  const regex = /^[a-zA-Z]{3}\.\d{3}$/;
+export function isAAAANN_NNN(str) {
+  const regex = /^[a-zA-Z]{2,4}\d{2,3}.\d{2,3}$/;
   return regex.test(str);
 }
-
-export function isAAAANN_NNN(str) {
-  const regex = /^[a-zA-Z]{4}\.\d{3}$/;
+export function isNNNNN_AANN(str) {
+  const regex = /^\d{5}\.[a-zA-Z]{2,4}\d{2,3}$/;
   return regex.test(str);
 }
 
@@ -43,10 +37,9 @@ export function isNNNNN_NNN(str) {
 }
 
 export function isValidLocation(str){
-  if(isAAANN(str)) return true;
   if(isAAAANN(str)) return true;
   if(isNNNNN(str)) return true;
-  if(isAAANN_NNN(str)) return true;
+  if(isNNNNN_AANN(str)) return true;
   if(isAAAANN_NNN(str)) return true;
   if(isNNNNN_NNN(str)) return true;
 

@@ -113,7 +113,7 @@ const safetyGateStore = create(
     const index = indexObject.safetyGateIndex
     set((state) => {
       const newSafetyGates = [...state.safetyGates];
-      setModelValue(newSafetyGates[index], key, value, isUI, isData);
+      newSafetyGates[index] && setModelValue(newSafetyGates[index], key, value, isUI, isData);
       get().setSafetyGatesOptions(newSafetyGates);
       return { safetyGates: newSafetyGates };
     });

@@ -144,7 +144,7 @@ const pdpStore = create()(
       const index = indexObject.pdpIndex
       set((state) => {
         const newPdps = [...state.pdps];
-        setModelValue(newPdps[index], key, value, isUI, isData);
+        newPdps[index] && setModelValue(newPdps[index], key, value, isUI, isData);
         return { pdps: newPdps };
       });
     },

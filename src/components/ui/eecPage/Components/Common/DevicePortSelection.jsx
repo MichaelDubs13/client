@@ -34,8 +34,8 @@ const DevicePortSelection = ({item, title, index, property, targetDT, targetLoca
 
     return (
         <div>
-             {(targetDT?.startsWith(lineConfiguration.networkSwitchIndicator) || 
-                targetDT?.startsWith(lineConfiguration.ioModuleIndicator)) && (
+             {((targetDT?.startsWith(lineConfiguration.networkSwitchIndicator) && (portType === 'network' || portType === 'power') )|| 
+                (targetDT?.startsWith(lineConfiguration.ioModuleIndicator) && portType === 'ioModule')) && (
                     <>
                         {
                            isCreatable ? 

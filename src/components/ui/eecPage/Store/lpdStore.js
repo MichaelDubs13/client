@@ -122,7 +122,7 @@ const lpdStore = create(
       const index = indexObject.lpdIndex
       set((state) => {
         const newLpds = [...state.lpds];
-        setModelValue(newLpds[index], key, value, isUI, isData);
+        newLpds[index] && setModelValue(newLpds[index], key, value, isUI, isData);
         return { lpds: newLpds };
       });
     },

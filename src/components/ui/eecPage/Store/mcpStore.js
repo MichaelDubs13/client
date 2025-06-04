@@ -47,7 +47,7 @@ const mcpStore = create(
       const index = indexObject.mcpIndex
       set((state) => {
         const newMcps = [...state.mcps];
-        setModelValue(newMcps[index], key, value, isUI, isData);
+        newMcps[index] && setModelValue(newMcps[index], key, value, isUI, isData);
         return { mcps: newMcps };
       });
     },

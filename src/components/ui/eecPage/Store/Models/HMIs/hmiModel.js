@@ -174,7 +174,7 @@ export const hmiModel = {
             }
            }
          }
-         hmi.extensionUnitPositions = hmiModel.initializeExtensionUnitPositions(8);
+         hmi.extensionUnitPositions = hmiModel.initializeExtensionUnitPositions(8, hmi);
          hmiConfiguration.getRfidPositions(hmi);
          return hmi;
        },

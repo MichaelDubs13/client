@@ -199,7 +199,7 @@ const ioModuleStore = create(
     const index = indexObject.ioModuleGroupIndex
     set((state) => {
       const newIOModuleGroups = [...state.ioModuleGroups];
-      setModelValue(newIOModuleGroups[index], key, value, isUI, isData);
+      newIOModuleGroups[index] && setModelValue(newIOModuleGroups[index], key, value, isUI, isData);
       get().setIOModuleGroupsOptions(newIOModuleGroups);
       return { ioModuleGroups: newIOModuleGroups };
     });

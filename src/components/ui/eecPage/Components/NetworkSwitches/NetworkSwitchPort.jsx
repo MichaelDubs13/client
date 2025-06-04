@@ -14,6 +14,7 @@ const NetworkSwitchPort = ({
 }) => {
   const networkSwitches = networkSwitchStore((state) => state.networkSwitches);
   const networkSwitchesOptions = networkSwitchStore((state) => state.networkSwitchesOptions);
+  const networkSwitcheWithPortsOptions = networkSwitchStore((state) => state.networkSwitcheWithPortsOptions);
   const index = createNew? {portIndex:portIndex} : {networkSwitchIndex:networkSwitchIndex, portIndex:portIndex};
   const [portOptions, setPortOptions] = useState([]) 
 
@@ -44,7 +45,7 @@ const NetworkSwitchPort = ({
             <CheckboxItem title={"Is this port connected to another switch in this configuration?"} item={port} property={"cascadingSwitch"} index={index}/>
             {port.communicationFlow === "In" && port.cascadingSwitch &&
               <>
-                <InputTextItem title={"This network port is connected to:"} item={port} property={"connectedDevice"} index={index} />
+                <DropdownItem title={"This network port is connected to:"} item={port} property={"connectedDevice"} options={networkSwitcheWithPortsOptions} index={index}/>
               </>
             }
             {(port.communicationFlow === "In" && !port.cascadingSwitch) &&
