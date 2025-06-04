@@ -19,10 +19,10 @@ export const networkSwitchModel = {
       plantIP: "", // EEC variable name: Plant_IP
       switchType: "Managed", // EEC variable name: Switch_Type_Selection
       switchSpeed: "Gigabit", // EEC variable name: Switch_Speed_Selection
-      power1InLine: "", 
+      power1InLine: "", // EEC variable name: PWR1_IN_Line
       power1InLocation: "", // EEC variable name: PWR1_IN_Location
       power1InDT: "", // EEC variable name: PWR1_IN_DT
-      power2InLine: "", 
+      power2InLine: "", // EEC variable name: PWR2_IN_Line
       power2InLocation: "", // EEC variable name: PWR2_IN_Location
       power2InDT: "", // EEC variable name: PWR2_IN_DT
       powerSourceLine: "", // EEC variable name: PWR_IN_Location
