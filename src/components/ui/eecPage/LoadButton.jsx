@@ -48,50 +48,53 @@ const LoadButton = ({onLoad}) => {
         try {
           var data = e.target.result;
           const jsonObject = JSON.parse(data);
-          setConfig(jsonObject.config);
-          if(jsonObject.pdps.length > 0){
+          if(jsonObject.config){
+              setConfig(jsonObject.config);
+          }
+
+          if(jsonObject.pdps){
             var pdps = pdpModel.recreate(jsonObject.pdps)
             Object.assign(pdpStore.getState().pdps, pdps);  
             pdpStore.getState().setPdps(pdps);
           }
 
-          if(jsonObject.xpdps.length > 0){
+          if(jsonObject.xpdps){
             var xpdps = xpdpModel.recreate(jsonObject.xpdps)
             Object.assign(xpdpStore.getState().xpdps, xpdps);
             xpdpStore.getState().setXpdps(xpdps);
           }
 
-          if(jsonObject.mcps.length > 0){
+          if(jsonObject.mcps){
             var mcps = mcpModel.recreate(jsonObject.mcps)
             Object.assign(mcpStore.getState().mcps, mcps);
             mcpStore.getState().setMcps(mcps);
           }
 
-          if(jsonObject.lpds.length > 0){
+          if(jsonObject.lpds){
             var lpds = lpdModel.recreate(jsonObject.lpds)
             Object.assign(lpdStore.getState().lpds, lpds);
             lpdStore.getState().setLpds(lpds);
           }
 
-          if(jsonObject.safetyGates.length > 0){
+          if(jsonObject.safetyGates){
             var safetyGates = safetyGateGroupModel.recreate(jsonObject.safetyGates)
             Object.assign(safetyGateStore.getState().safetyGates, safetyGates);
             safetyGateStore.getState().setSafetyGates(safetyGates);
           }
 
-          if(jsonObject.networkSwitches.length > 0){
+          if(jsonObject.networkSwitches){
             var networkSwitches = networkSwitchModel.recreate(jsonObject.networkSwitches)
             Object.assign(networkSwitchStore.getState().networkSwitches, networkSwitches);
             networkSwitchStore.getState().setNetworkSwitches(networkSwitches);
           }
 
-          if(jsonObject.hmis.length > 0){
+          if(jsonObject.hmis){
             var hmis = hmiModel.recreate(jsonObject.hmis)
             Object.assign(hmiStore.getState().hmis, hmis);
             hmiStore.getState().setHmis(hmis);
           }
 
-          if(jsonObject.ioModuleGroups.length > 0){
+          if(jsonObject.ioModuleGroups){
             var ioModuleGroups = ioModuleGroupModel.recreate(jsonObject.ioModuleGroups)
             Object.assign(ioModuleStore.getState().ioModuleGroups, ioModuleGroups);
             ioModuleStore.getState().setIOModuleGroups(ioModuleGroups);

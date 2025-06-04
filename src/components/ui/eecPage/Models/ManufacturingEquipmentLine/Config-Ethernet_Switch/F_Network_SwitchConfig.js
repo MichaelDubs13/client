@@ -15,6 +15,7 @@ export default class F_Network_SwitchConfig extends Component{
         this._networkSwitch = networkSwitch
         this._mcp = mcp;
         this.Unmanaged_Etherenet = networkSwitch.ethernetSourceLine && networkSwitch.ethernetSourceLocation && networkSwitch.ethernetSourceDT;
+        console.log(networkSwitch)
     }
 
     get Parameters(){

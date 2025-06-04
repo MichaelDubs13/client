@@ -70,7 +70,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     {networkSwitch.switchType === "Managed" && (
                         <>  
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
-                                lineProperty={"power1InLine"}  deviceProperty={"power1InDT"} stationProperty={"power1InLocation"}
+                                lineProperty={"powerSourceLine"}  deviceProperty={"powerSourceDT"} stationProperty={"powerSourceLocation"}
                                 type="powerSource"/>  
                             <DeviceSelection item={networkSwitch} index={networkSwitchIndex} 
                                 lineProperty={"power2InLine"} deviceProperty={"power2InDT"} stationProperty={"power2InLocation"}
