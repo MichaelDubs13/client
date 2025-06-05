@@ -32,6 +32,7 @@ export default class Fg_24VPowerDistribution extends Component{
 
         this._Balluff_CLS2_BAE0133 = [];
         this._Balluf_BAE00FL_BAE00ET = [];
+        this._Balluff_BAE00ET_BAE00FL = [];
         this._Balluff_CLS2_BAE012P = [];
         this._Turck = [];
         this._Puls = [];
@@ -41,7 +42,6 @@ export default class Fg_24VPowerDistribution extends Component{
 
     update(){
         //need to get full list
-        console.log(this._lpd)
         this._lpd.psus.forEach(psu => {
             if(psu.MFG === "Balluff"){
                 if(psu.partNumber === "BAE0133"){
