@@ -1,9 +1,5 @@
 import Component from "../Component";
 import _F_PSU from "./_F_PSU";
-import _f_DC_Distribution_CLS2_Balluff_120VPSU from "./_f_DC_Distribution/_f_DC_Distribution_CLS2_Balluff_120VPSU";
-import _f_PSU_Balluff_CLS2_BAE0133 from "./_f_PSU_Balluff/_f_PSU_Balluff_CLS2_BAE0133";
-import _f_PSU_TURCK from "./_f_PSU_TURCK/_f_PSU_TURCK";
-
 
 export default class Fg_24VPowerDistribution extends Component{
     constructor(parent, index, lpd) {
@@ -53,8 +49,13 @@ export default class Fg_24VPowerDistribution extends Component{
                     this.PSU_Selection_120 = `${psu.MFG}: ${psu.partNumber}`;
                     this.s_PSU_Selection_120_240 = `${psu.MFG}: ${psu.partNumber}`;
                     this.s_PSU_Selection_480_400 = ``;
-                    this.b_PSU_Selection_BAE0133 = true;
-                }
+                    //this.b_PSU_Selection_BAE0133 = true;
+                } else if(psu.partNumber === "BAE00ET" || "BAE00FL"){
+                    this._Balluff_BAE00ET_BAE00FL.push(psu);
+                    this.PSU_Selection_120 = `${psu.MFG}: ${psu.partNumber}`;
+                    this.s_PSU_Selection_120_240 = `${psu.MFG}: ${psu.partNumber}`;
+                    this.s_PSU_Selection_480_400 = ``;
+                } 
             } else if(psu.MFG === "Turck"){
                 this._Turck.push(psu);
                 this.PSU_Selection_120 = ``;
@@ -66,7 +67,7 @@ export default class Fg_24VPowerDistribution extends Component{
                 this.s_PSU_Selection_120_240 = ``;
                 this.s_PSU_Selection_480_400 = `${psu.MFG}: ${psu.partNumber}`;
             } else if(psu.MFG === "Siemens"){
-                this._Puls.push(psu);
+                this._Siemens.push(psu);
                 this.PSU_Selection_120 = ``;
                 this.s_PSU_Selection_120_240 = ``;
                 this.s_PSU_Selection_480_400 = `${psu.MFG}: ${psu.partNumber}`;
