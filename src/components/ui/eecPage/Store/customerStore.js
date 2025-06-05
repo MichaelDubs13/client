@@ -62,6 +62,8 @@ const customerStore = create((set) => ({
         CreatorCountry_10239:"###Enter Data - Supplier Country",
         CreatorPhone_10240:"###Enter Data - Supplier Phone No.",
         CreatorEmail_10242:"###Enter Data - Supplier Email or Website",
+        b_EnableSendMail: true, // EEC variable name: Enable_Send_Mail
+        userEmailAddress: "", // EEC variable name: User_Email_Address
     },
     
     setValue(value, key){
