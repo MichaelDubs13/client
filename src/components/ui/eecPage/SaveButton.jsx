@@ -7,13 +7,14 @@ import { networkSwitchStore } from "./Store/networkSwitchStore";
 import { hmiStore } from "./Store/hmiStore";
 import { safetyGateStore } from "./Store/safetyGateStore";
 import { ioModuleStore } from "./Store/ioModuleStore";
-import { Icon, IconButton } from '@tesla/design-system-react';
 import { iconZip } from '@tesla/design-system-icons';
 import ActionIcon from "../util/ActionIcon";
+import { customerStore } from "./Store/customerStore";
 
 
 const SaveButton = () => {
   const getConfig =  projectStore((state) => state.getConfig);
+  const property =  customerStore((state) => state.property);
   const pdps = pdpStore((state) => state.pdps);
   const xpdps = xpdpStore((state) => state.xpdps);
   const mcps = mcpStore((state) => state.mcps);
@@ -59,6 +60,7 @@ const SaveButton = () => {
       hmis:hmis,
       safetyGates:safetyGates,
       ioModuleGroups:ioModuleGroups,
+      property:property,
       config:getConfig(),
     }
 

@@ -36,7 +36,7 @@ const DropdownItem = ({title, item, property, placeHolder, setModelValue, option
                 item.setValue (reportedValue);
             }
         } else {
-            setModelValue(reportedValue);
+            setModelValue(reportedValue, property);
         }
         
 

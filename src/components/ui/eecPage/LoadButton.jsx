@@ -19,10 +19,12 @@ import { ioModuleStore } from "./Store/ioModuleStore";
 import { iconDownload } from '@tesla/design-system-icons';
 import { useRef } from "react";
 import ActionIcon from "../util/ActionIcon";
+import { customerStore } from "./Store/customerStore";
 
 
 const LoadButton = ({onLoad}) => {
   const setConfig =  projectStore((state) => state.setConfig)
+  const setProperty =  customerStore((state) => state.setProperty)
   const { toasts, addToast } = useToastContainerState();
   const fileInput = useRef(null);
 
@@ -50,6 +52,10 @@ const LoadButton = ({onLoad}) => {
           const jsonObject = JSON.parse(data);
           if(jsonObject.config){
               setConfig(jsonObject.config);
+          }
+
+          if(jsonObject.property){
+              setProperty(jsonObject.property);
           }
 
           if(jsonObject.pdps){

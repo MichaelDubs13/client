@@ -12,7 +12,9 @@ export default class _f_DC_Distribution extends Component{
         this._psu = psu;
 
         //Needs to generate a page per 4 drops
-        this._numberOfSubDistribution = Math.ceil(psu.drops.length / 4);
+        
+        this._nonclass2Drops = this._psu.drops.filter(drop => drop.outputPort != "Class 2");
+        this._numberOfSubDistribution = Math.ceil(this._nonclass2Drops.length / 4);
     }
     get Parameters(){
         return [
@@ -30,7 +32,7 @@ export default class _f_DC_Distribution extends Component{
             dcSubDistribution.build();
         }
 
-        for(let i=0; i<this._psu.drops.length;i++){
+        for(let i=0; i<this._nonclass2Drops.length;i++){
             const dcPowerDrop = new _c_DC_PowerDrop(this, i+1, this._psu.drops[i]);
             dcPowerDrop.build();
         }

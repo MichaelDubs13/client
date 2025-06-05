@@ -49,7 +49,7 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
                     item.setValue(reportedValue);
                 }
             } else {
-                setModelValue(reportedValue);
+                setModelValue(reportedValue, property);
             }
         }  else {
             item[property] = reportedValue;
