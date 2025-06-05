@@ -114,6 +114,7 @@ export function recreateBranchCircuit(parent, amperage, array, create){
 }
 
 export function recreateObject(item, create){
+
   const newItem = create();
   Object.assign(newItem, item);
   return newItem;

@@ -166,6 +166,7 @@ const lineConfiguration = {
         } else if(config.installation_location === 'EU'){
             return '240';
         }
+        return '120';
     },
     getDefaultLpdPsu:()=>{
         var config = projectStore.getState().getConfig()
@@ -174,6 +175,8 @@ const lineConfiguration = {
         } else if(config.installation_location === 'EU'){
             return lpdOptions.ballufBAE0133;
         }
+
+        return lpdOptions.ballufBAE0133;
     }
 
 }

@@ -151,23 +151,23 @@ export const lpdModel = {
         }
         return lpds
       },
-      merge: (state, currentState) => { 
-          const lpds = lpdModel.recreate(state.lpds);
-          state.lpds = lpds;
-          Object.assign(currentState, state)
-          return currentState
+      merge: (state, currentState) => {         
+        const lpds = lpdModel.recreate(state.lpds);
+        state.lpds = lpds;
+        Object.assign(currentState, state)
+        return currentState
       },
       recreate:(lpds)=>{
         const newLpds = lpds.map(lpd => {
-              var newLpd = recreateObject(lpd, lpdModel.create)
-              var newPsus = recreateArrayElement(newLpd, lpd.psus, psuModel.create)
-              newPsus=newPsus.map(newPsu => {
-                var drops = recreateArrayElement(newPsu, newPsu.drops, powerDropModel.create)
-                newPsu.drops = drops;
-                return newPsu;
-              });
-            newLpd.psus = newPsus;
-            return newLpd;
+          var newLpd = recreateObject(lpd, lpdModel.create)
+          var newPsus = recreateArrayElement(newLpd, lpd.psus, psuModel.create)
+          newPsus=newPsus.map(newPsu => {
+            var drops = recreateArrayElement(newPsu, newPsu.drops, powerDropModel.create)
+            newPsu.drops = drops;
+            return newPsu;
+          });
+          newLpd.psus = newPsus;
+          return newLpd;
         })
         return newLpds;
       } 
