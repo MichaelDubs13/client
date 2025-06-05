@@ -51,6 +51,7 @@ export default class F_Network_SwitchConfig extends Component{
             // {name: "Plant_IP", value: "Undefined", type: "String"},
             // {name: "Cable_Length_Selection", value: "Undefined", type: "String"},
         ];
+        
     }
 
     build(){

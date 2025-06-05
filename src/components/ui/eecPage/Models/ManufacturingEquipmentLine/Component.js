@@ -113,7 +113,7 @@ export default class Component {
                 if(parameter.value){
                     elem.setAttribute("value", parameter.value);            
                 } else {
-                    elem.setAttribute("value", "Undefined"); 
+                    elem.setAttribute("value", ""); 
                 }
             } else {
                 if(parameter.value){

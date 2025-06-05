@@ -183,6 +183,15 @@ export const networkSwitchModel = {
             networkSwitch.powerSourceLocation="";
             networkSwitch.powerSourceDT="";
         }
+        if(networkSwitch.networkType === "Local" && networkSwitch.switchType === "Managed" && networkSwitch.ports.length === 8){
+            networkSwitch.is6GK5208_0HA00_2AS6 = true;
+        } else
+            networkSwitch.is6GK5208_0HA00_2AS6 = false;
+            
+        if(networkSwitch.networkType === "Local" && networkSwitch.switchType === "Managed" && networkSwitch.ports.length === 16){
+            networkSwitch.is6GK5216_0HA00_2AS6 = true;
+        } else
+            networkSwitch.is6GK5216_0HA00_2AS6 = false;
         
     });
     return networkSwitches;
