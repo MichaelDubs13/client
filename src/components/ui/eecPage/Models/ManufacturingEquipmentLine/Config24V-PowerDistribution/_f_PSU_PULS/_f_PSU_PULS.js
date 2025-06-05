@@ -1,5 +1,5 @@
 import Component from "../../Component";
-import _f_DC_Distribution from "../_f_DC_Distribution/_f_DC_Distribution";
+//import _f_DC_Distribution from "../_f_DC_Distribution/_f_DC_Distribution";
 import _f_DC_Distribution_Puls from "../_f_DC_Distribution/_f_DC_Distribution_Puls";
 
 export default class _f_PSU_PULS extends Component{
@@ -30,10 +30,22 @@ export default class _f_PSU_PULS extends Component{
         ];
     }
     build(){
-        const dcDistribution = new _f_DC_Distribution(this, this._psu);
-        dcDistribution.build();
-    
         const dcDistribution_Class2 = new _f_DC_Distribution_Puls(this, this._psu);
         dcDistribution_Class2.build();
     }
+    /* build(){
+        // Separate drops
+        const standardDrops = this._psu.drops.filter(drop => drop.outputPort !== "Class 2");
+        const class2Drops = this._psu.drops.filter(drop => drop.outputPort === "Class 2");
+
+        // Only build if there are drops of that type
+        if (standardDrops.length > 0) {
+            const dcDistribution = new _f_DC_Distribution(this, { ...this._psu, drops: standardDrops });
+            dcDistribution.build();
+        }
+        if (class2Drops.length > 0) {
+            const dcDistribution_Class2 = new _f_DC_Distribution_Puls(this, { ...this._psu, drops: class2Drops });
+            dcDistribution_Class2.build();
+        }
+    } */
 }
