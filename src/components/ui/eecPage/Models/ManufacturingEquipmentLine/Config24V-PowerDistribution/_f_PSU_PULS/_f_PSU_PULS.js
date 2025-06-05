@@ -32,9 +32,8 @@ export default class _f_PSU_PULS extends Component{
     build(){
         const dcDistribution = new _f_DC_Distribution(this, this._psu);
         dcDistribution.build();
-    }
-    build(){
-        const dcDistribution = new _f_DC_Distribution_Puls(this, this._psu);
-        dcDistribution.build();
+    
+        const dcDistribution_Class2 = new _f_DC_Distribution_Puls(this, this._psu);
+        dcDistribution_Class2.build();
     }
 }
