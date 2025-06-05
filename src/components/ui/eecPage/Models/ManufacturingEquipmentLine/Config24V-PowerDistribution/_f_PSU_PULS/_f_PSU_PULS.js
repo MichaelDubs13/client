@@ -41,11 +41,11 @@ export default class _f_PSU_PULS extends Component{
         // Only build if there are drops of that type
         if (standardDrops.length > 0) {
             const dcDistribution = new _f_DC_Distribution(this, { ...this._psu, drops: standardDrops });
-            dcDistribution.build();
+        dcDistribution.build();
         }
         if (class2Drops.length > 0) {
             const dcDistribution_Class2 = new _f_DC_Distribution_Puls(this, { ...this._psu, drops: class2Drops });
             dcDistribution_Class2.build();
-        }
+    }
     } */
 }
