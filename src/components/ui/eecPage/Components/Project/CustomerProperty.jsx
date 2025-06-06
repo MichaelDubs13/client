@@ -3,11 +3,19 @@ import InputTextItem from "../Util/InputTextItem";
 import { customerOptions, customerStore } from "../../Store/customerStore";
 import DropdownItem from "../Util/DropdownItem";
 import { Heading } from "@tesla/design-system-react";
+import useAuthStore from "../../../../../store/authStore";
 
 
 const CustomerProperty = () => {
     const setValue = customerStore((state) => state.setValue)
     const property = customerStore((state) => state.property)
+    const {user, isAuthenticated} = useAuthStore();
+
+     useEffect(() => {
+        if (isAuthenticated === true) {
+          setValue(user.email, "CreatorEmail_10242");
+        }
+      }, [user]);
     
     return (
         
