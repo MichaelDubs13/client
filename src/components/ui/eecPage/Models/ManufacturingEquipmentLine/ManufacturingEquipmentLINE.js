@@ -50,7 +50,7 @@ export default class ManufacturingEquipmentLINE extends Component{
             {name: "CreatorZipCode_10237", value:  this._customer.CreatoryZipCode_10237, type: "String"},
             {name: "CreatorCountry_10239", value:  this._customer.CreatorCountry_10239, type: "String"},
             {name: "b_EnableSendMail", value:  this._customer.b_EnableSendMail, type: "Boolean"},
-            {name: "userEmailAddress", value:  this._customer.userEmailAddress, type: "String"},
+            {name: "userEmailAddress", value:  this._customer.CreatorEmail_10242, type: "String"},
         ];
     }
 }
