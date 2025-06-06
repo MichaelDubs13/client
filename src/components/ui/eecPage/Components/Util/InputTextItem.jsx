@@ -28,6 +28,10 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
     }, []);
 
     useEffect(() => {
+        setItemValue(placeHolder);
+    }, placeHolder);
+
+    useEffect(() => {
         if (finishedInput) {
         if(onTypingFinished){
             onTypingFinished(itemValue);
