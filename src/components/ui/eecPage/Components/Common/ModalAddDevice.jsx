@@ -17,12 +17,14 @@ import { safetyGateSwitchModel } from "../../Store/Models/SafetyGates/safetyGate
 import { ioModuleModel } from "../../Store/Models/IoModules/ioModuleModel";
 import LpdPsuItem from "../LPDs/LpdPsuItem";
 import { psuModel } from "../../Store/Models/LDPs/psuModel";
-import { lpdStore } from "../../Store/lpdStore";
+import { lpdOptions, lpdStore } from "../../Store/lpdStore";
+import { projectStore } from "../../Store/projectStore";
 
 
 
 const ModalAddDevice = ({item, name, line, location, powerSource, networkSource, onSubmit}) => {
   const [openModal, setOpenModal] = useState(false);
+  const installation_location = projectStore((state)=>state.installation_location)
   const addWipNetworkSwitch = networkSwitchStore((state) => state.addWipNetworkSwitch);
   const setWipNetworkSwitch = networkSwitchStore((state) => state.setWipNetworkSwitch);   
   const wipNetworkSwitch = networkSwitchStore((state) => state.wipNetworkSwitch);
@@ -133,6 +135,25 @@ const ModalAddDevice = ({item, name, line, location, powerSource, networkSource,
     }else if(name.startsWith(lineConfiguration.powerSupplyIndicator)){
       var newPsu = psuModel.create();
       newPsu = updateItem(newPsu)
+
+      if(installation_location == 'UL'){
+        newPsu.supplyVoltage='120V';
+      } else {
+        newPsu.supplyVoltage='220V';
+      }
+      newPsu.psu_selected=lpdOptions.ballufBAE0133;
+
+      //set to V480/400 if source is PDP
+      if(item.data.type === "cb"){
+        if(item.data.parent.data.type === "pdp"){
+          if(installation_location == 'UL'){
+            newPsu.supplyVoltage='480V';
+          } else {
+            newPsu.supplyVoltage='400V';
+          }
+          newPsu.psu_selected=lpdOptions.turk;
+        }
+      } 
       setWipPsu(newPsu);
     }
 }, [name]);
