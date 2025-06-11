@@ -32,7 +32,7 @@ const PdpConfiguration = ({pdp, index}) => {
                     <LineLocationSelection item={pdp} index={pdpIndex} showPlantShop={true} onLocationChange={handleLocationChange}/>
                     <DropdownItem title={"Main disconnect amperage"} item={pdp} property={"amp"} options={pdpOptions.amperageOptions} index={pdpIndex}/>
                     <DropdownItem title={"Enclosure size"} item={pdp} property={"enclosureSize"} options={pdpOptions.enclosureSizeOptions} index={pdpIndex}/>
-                    <InputTextItem title={"Enclosure nameplate FLA (e.g., 275 A)"} item={pdp} property={"FLA"} index={pdpIndex}/>
+                    <InputTextItem title={"Enclosure nameplate FLA (e.g., 275)"} item={pdp} property={"FLA"} index={pdpIndex}/>
                     <CheckboxItem title={"Power monitor enable"} item={pdp} property={"PwrMonitorEnable"} index={pdpIndex}/>
                     <CheckboxItem title={"Surge protection enable"} item={pdp} property={"Opt_SurgeProtectionDevice"} index={pdpIndex}/>
                     <CheckboxItem title={"Hot Power enable"} item={pdp} property={"Opt_HotPwrEnable"}  index={pdpIndex} onChange={handleSetOpt_HotPwrChange}/>

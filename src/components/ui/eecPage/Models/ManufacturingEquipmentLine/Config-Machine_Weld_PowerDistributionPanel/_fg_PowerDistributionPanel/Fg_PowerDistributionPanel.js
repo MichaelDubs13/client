@@ -29,6 +29,7 @@ export default class Fg_PowerDistributionPanel extends Component{
         this._hotPwrDrp3_Target_Location = ""
         this._hotPwrDrp3_Target_DT = ""
         this._hotPwrDrp3_Target_Description = ""
+        this._amp = this._pdp.FLA.toLowerCase().endsWith("a") ? this._pdp.FLA : `${this._pdp.FLA}A`;
 
         //only available via UI
         if(this._pdp.Opt_HotPwrEnable){
@@ -67,7 +68,7 @@ export default class Fg_PowerDistributionPanel extends Component{
             {name: "Amperage", value: this._pdp.amp, type: "String"},
             {name: "Line", value: this._pdp.line, type: "String"},
             {name: "Location", value: this._pdp.location, type: "String"},
-            {name: "frmUI_EnclosureNameplateFLA", value: this._pdp.FLA, type: "String"},
+            {name: "frmUI_EnclosureNameplateFLA", value: this._amp, type: "String"},
             {name: "NumberofPowerDrops_10A", value: this._pdp.branchCircuit["10A"].length, type: "Integer"},
             {name: "NumberofPowerDrops_20A", value: this._pdp.branchCircuit["20A"].length, type: "Integer"},
             {name: "NumberofPowerDrops_30A", value: this._pdp.branchCircuit["30A"].length, type: "Integer"},
