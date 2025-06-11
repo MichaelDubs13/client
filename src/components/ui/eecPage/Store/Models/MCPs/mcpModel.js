@@ -194,7 +194,7 @@ export const mcpModel = {
           setNetworkTarget:function(line, location, name){
           },
       }
-      mcp.ports = mcpModel.initializePorts(3, mcp);
+      mcp.ports = mcpModel.initializePorts(2, mcp);
       return mcp;
     },
     initializePorts: (numberOfPorts, parent) => {
