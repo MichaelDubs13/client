@@ -29,7 +29,7 @@ export default class f_Safety_GateSwitch_Config extends Component{
             {name: "EthernetStation", value: this._gate.ethernetSourceLocation, type: "String"},
             {name: "EthernetDT", value: this._gate.ethernetSourceDT, type: "String"},
             {name: "EthernetIn_DevicePort", value: this._gate.ethernetSourceDevicePort, type: "String"},
-            {name: "CascadingTo", value: this._gate.safetyGateCascadingTo, type: "Boolean"},
+            {name: "CascadingTo", value: this._gate.gateSwitchCascadingTo, type: "Boolean"},
             {name: "CascadingTo_Outside", value: this._gate.safetyGateCascadingToOutside, type: "Boolean"},
             {name: "CascadingTo_PowerLine", value: this._gate.powerTargetLine, type: "String"},
             {name: "CascadingTo_PowerStation", value: this._gate.powerTargetLocation, type: "String"},
@@ -37,6 +37,7 @@ export default class f_Safety_GateSwitch_Config extends Component{
             {name: "CascadingTo_EthernetLine", value: this._gate.ethernetTargetLine, type: "String"},
             {name: "CascadingTo_EthernetStation", value: this._gate.ethernetTargetLocation, type: "String"},
             {name: "CascadingTo_EthernetDT", value: this._gate.ethernetTargetDT, type: "String"},
+            {name: "frmUI_GateSwitchSelection", value: this._gate.safetyGateCascadingToSelection, type: "String"},
         ];
     }
     build(){
