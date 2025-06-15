@@ -14,7 +14,7 @@ import { useForm, Controller } from "react-hook-form";
  * @param {string} property - object key to be updated, store will use the value of this parameter to find the property for value update
  * @returns 
  */
-const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished, validation, valueStyle}) =>{
+const InputTextItem = ({title, item, property, placeHolder, setModelValue, readOnly, onChange, index, createNew, onTypingFinished, validation, valueStyle, capitalizeValues}) =>{
     const { control, trigger, setValue, formState: { errors } } = useForm();
     const defaultValue = item? item[property] : placeHolder;
     const [itemValue, setItemValue] = useState(defaultValue);
@@ -29,7 +29,7 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
 
     useEffect(() => {
         setItemValue(placeHolder);
-    }, placeHolder);
+    }, [placeHolder]);
 
     useEffect(() => {
         if (finishedInput) {
@@ -40,7 +40,10 @@ const InputTextItem = ({title, item, property, placeHolder, setModelValue, readO
     }, [finishedInput]);
 
     const handleValueChange = (event)=> {
-        const reportedValue = event.target.value;
+        var reportedValue = event.target.value;
+        if(capitalizeValues){
+            reportedValue = reportedValue.toUpperCase();
+        }
         setItemValue(reportedValue);
 
         if(!createNew){

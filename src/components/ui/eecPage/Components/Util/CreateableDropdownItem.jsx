@@ -93,6 +93,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                         name={validationProperty}
                         render={({ field }) => (
                             <EditableSelect
+                                capitalizeValues={capitalizeValues}
                                 options={options}
                                 selected={selectedOption}
                                 placeHolder={defaultValue}
@@ -122,6 +123,7 @@ const CreateableDropdownItem = ({title, item, property, placeHolder, setModelVal
                         name={validationProperty}
                         render={({ field }) => (
                             <EditableSelect
+                                capitalizeValues={capitalizeValues}
                                 options={options}
                                 selected={selectedOption}
                                 placeHolder={defaultValue}

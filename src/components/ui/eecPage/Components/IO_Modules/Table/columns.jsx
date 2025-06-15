@@ -23,7 +23,7 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex, ports) =>
         options = ["Balluff: BNI00CN", "Balluff: BNI00CR"]
         width = '200px';
         const ioLinkSlaveModuleCount = port.data.parent.getIoLinkSlaveModules().length;
-        const ioLinkModuleName = `${port.data.parent.deviceTag}-MIO${formatToTwoDigits(ioLinkSlaveModuleCount + 1)}`;
+        const ioLinkModuleName = `${port.data.parent.deviceTag}-MIO${formatToTwoDigits(ioLinkSlaveModuleCount)}`;
         if(!port.pinTargetDT && port.pinTargetDT != ioLinkModuleName){
           port.setValue(index, "pinTargetDT", ioLinkModuleName);
         }

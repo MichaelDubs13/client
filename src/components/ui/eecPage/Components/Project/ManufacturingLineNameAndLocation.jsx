@@ -5,6 +5,7 @@ import DropdownItem from "../Util/DropdownItem";
 import { lineConfiguration, lineStore } from "../../Store/lineStore";
 import { customerStore } from "../../Store/customerStore";
 import { Heading } from "@tesla/design-system-react";
+import { isValidLineName } from "../Util/Validations";
 
 
 const ManufacturingLineNameAndLocation = () => {
@@ -38,9 +39,9 @@ const ManufacturingLineNameAndLocation = () => {
         
         <>  
             <Heading is="h4">Project Property</Heading>
-            <InputTextItem title={"Tesla GigaFactory Name"} placeHolder={plant} setModelValue={setPlant} readOnly={false} />
-            <InputTextItem title={"Manufacturing Shop Name"} placeHolder={shop} setModelValue={setShop} readOnly={false} />
-            <InputTextItem title={"Manufacturing Line Name"} placeHolder={line} setModelValue={setLine} onTypingFinished={handleLineChange}/>
+            <InputTextItem title={"Tesla GigaFactory Name"} placeHolder={plant} setModelValue={setPlant} readOnly={false} capitalizeValues={true} validation={isValidLineName} />
+            <InputTextItem title={"Manufacturing Shop Name"} placeHolder={shop} setModelValue={setShop} readOnly={false} capitalizeValues={true} validation={isValidLineName}/>
+            <InputTextItem title={"Manufacturing Line Name"} placeHolder={line} setModelValue={setLine} capitalizeValues={true} onTypingFinished={handleLineChange} validation={isValidLineName}/>
             <DropdownItem title={"InstallationLocation"} placeHolder={installation_location} setModelValue={setinstallation_location} 
                 options={installation_location_options} onChange={handleInstallationLocationChange}/>
         </>           

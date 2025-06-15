@@ -8,6 +8,7 @@ import DeviceSelection from '../Common/DeviceSelection';
 import InputTextItem from "../Util/InputTextItem";
 import { useEffect, useState } from "react";
 import CheckboxItem from "../Util/CheckboxItem";
+import PsuLoadItem from "../Common/PsuLoadItem";
 
 const LpdPsuItem = ({ 
   psuIndex,
@@ -60,18 +61,13 @@ const handleFlaChange =() => {
 }
 
 
-const getColorStyle=(fla, capacity)=>{
-  if(fla > capacity){
-    return {color:'red'}
-  } else if (fla > (capacity * 0.8)){
-    return {color:'#E4D00A'}
-  }
-}
-
 const getCapacity = ()=>{
   if(lpd.psu_selected === lpdOptions.turk)return 20;
   if(lpd.psu_selected === lpdOptions.puls)return 20;
   if(lpd.psu_selected === lpdOptions.ballufBAE0133)return 12.5;
+  if(lpd.psu_selected === lpdOptions.ballufBAE00FL)return 8;
+  if(lpd.psu_selected === lpdOptions.ballufBAE00ET)return 8;
+  if(lpd.psu_selected === lpdOptions.siemens)return 8;
 }
 
 const hasFeedbackOption = () => {
@@ -128,28 +124,28 @@ return (
           {
             lpd && 
             <div>
-                <InputTextItem title={"FLA Sum"} placeHolder={`${totalFLA}A`} readOnly={true} valueStyle={getColorStyle(totalFLA, getCapacity())}/> 
+                <PsuLoadItem title={"FLA Sum"} amperage={totalFLA} capacity={getCapacity()}/>
                 {
                     lpd.psu_selected === lpdOptions.turk && 
                     <div>
-                      <InputTextItem title={"Summation XD2 FLA"} placeHolder={`${totalXD2FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD2FLA, 20)}/> 
-                      <InputTextItem title={"Summation XD3 FLA "} placeHolder={`${totalXD3FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD3FLA, 20)}/> 
+                      <PsuLoadItem title={"Summation XD2 FLA"} amperage={totalXD2FLA} capacity={10}/>
+                      <PsuLoadItem title={"Summation XD3 FLA"} amperage={totalXD3FLA} capacity={10}/>
                     </div>
                 }
                 {
                     lpd.psu_selected === lpdOptions.puls && 
                     <div>
-                      <InputTextItem title={"Summation Class 2 FLA"} placeHolder={`${totalClass2FLA}A`} readOnly={true} valueStyle={getColorStyle(totalClass2FLA, 4)}/> 
-                      <InputTextItem title={"Summation X4 FLA "} placeHolder={`${totalXD4FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD4FLA+totalXD5FLA, 20)}/>
-                      <InputTextItem title={"Summation X5 FLA "} placeHolder={`${totalXD5FLA}A`} readOnly={true} valueStyle={getColorStyle(totalXD4FLA+totalXD5FLA, 20)}/> 
+                      <PsuLoadItem title={"Summation Class 2 FLA"} amperage={totalClass2FLA} capacity={4}/>
+                      <PsuLoadItem title={"Summation X4 FLA"} amperage={totalXD4FLA} capacity={10}/>
+                      <PsuLoadItem title={"Summation X5 FLA"} amperage={totalXD5FLA} capacity={10}/>
                     </div>
                 }        
                 {
                     lpd.psu_selected === lpdOptions.ballufBAE0133 && 
                     <div>
-                      <InputTextItem title={"Summation X3 FLA"} placeHolder={`${totalXD3FLA}A`} readOnly={true} /> 
-                      <InputTextItem title={"Summation X4 FLA"} placeHolder={`${totalXD4FLA}A`} readOnly={true} />
-                      <InputTextItem title={"Summation X5 FLA"} placeHolder={`${totalXD5FLA}A`} readOnly={true} /> 
+                      <PsuLoadItem title={"Summation X3 FLA"} amperage={totalXD3FLA} capacity={4.16}/>
+                      <PsuLoadItem title={"Summation X4 FLA"} amperage={totalXD4FLA} capacity={4.16}/>
+                      <PsuLoadItem title={"Summation X5 FLA"} amperage={totalXD5FLA} capacity={4.16}/>
                     </div>
                 }      
             </div>

@@ -3,14 +3,11 @@ import { Heading, } from '@tesla/design-system-react';
 import { ioModuleStore } from '../../Store/ioModuleStore';
 import IO_ModuleCollectionInstance from './IO_ModuleCollectionInstance';
 import HeadingItem from "../Util/HeadingItem";
-import { projectStore } from "../../Store/projectStore";
 import "../../Eec.css";
 import DeleteButton from "../Util/DeleteButton";
 import DuplicateButton from "../Util/DuplicateButton";
 
 const IO_ModuleCascadingCollection = () => {
-    // this is the data being used in the UI for the safety gate switches
-    const line = projectStore((state) => state.line);
     const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
     const addIOModuleGroups =  ioModuleStore((state) => state.addIOModuleGroups);
     const deleteIOModuleGroup =  ioModuleStore((state) => state.deleteIOModuleGroup);

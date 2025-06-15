@@ -3,7 +3,7 @@ import Select, { components } from "react-select";
 
 const Input = (props) => <components.Input {...props} isHidden={false} />;
 
-const EditableSelect =({options, selected, placeHolder, onChange, onCreateOption})=> {
+const EditableSelect =({options, selected, placeHolder, onChange, onCreateOption, capitalizeValues})=> {
   const [value, setValue] = useState(selected);
   const [inputValue, setInputValue] = useState(placeHolder);
   const [allOptions, setAllOptions] = useState(options);
@@ -20,15 +20,18 @@ const EditableSelect =({options, selected, placeHolder, onChange, onCreateOption
   };
 
   const onKeyDown = (event) => {
-
     if (event.key === 'Enter') {
         event.preventDefault();
-        var newOption = {label:inputValue, value:inputValue};
-        var newOptions = [...options, newOption];
+        var value = inputValue;
+        if(capitalizeValues){
+          value = value.toUpperCase();
+        }
+        var newOption = {label:value, value:value};
+        var newOptions = [...options, newOption];        
         setAllOptions(newOptions);
         setValue(newOption);
-        setInputValue(inputValue);
-        onCreateOption(inputValue);
+        setInputValue(value);
+        onCreateOption(value);
         selectRef.current.blur();
       }
   }
