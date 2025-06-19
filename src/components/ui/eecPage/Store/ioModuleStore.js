@@ -7,6 +7,13 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 const ioModuleGroupOptions = {
   // example of dropdown options for the IO Module parameters
+  BNI00AZ:"BNI00AZ",
+  BNI00FW:"BNI00FW",
+  BNI00HL:"BNI00HL",
+  BNI005H:"BNI005H",
+  BNI0052:"BNI0052",
+  BNI00CN:"Balluff: BNI00CN",
+  BNI00CR:"Balluff: BNI00CR",
   sioManufacturerNameOptions: [
     {label:"A-B (WIP)", value:"A-B (WIP)"},
     {label:"Beckhoff (WIP)", value:"Beckhoff (WIP)"},
@@ -47,6 +54,9 @@ const ioModuleGroupOptions = {
     {label:"BNI0052", value:"BNI0052"},
   ],
 
+   mioParts_BalluffSlaveModuleOptions: [
+    "Balluff: BNI00CN", "Balluff: BNI00CR"
+  ],
   mioParts_BeckhoffOptions: [
     {label:"NULL", value:"NULL"},
   ],
@@ -263,7 +273,27 @@ const ioModuleStore = create(
           return { wipIoModule: newIoModule };
         });
       }
-    },  
+    },
+    setSlavePortValue:(indexObject, key, value,isUI,isData)=>{
+      //const indexObject = item.getIndexObject();
+      const ioModuleGroupIndex = indexObject.ioModuleGroupIndex;
+      const ioModuleIndex = indexObject.ioModuleIndex;
+      const masterPortIndex = indexObject.masterPortIndex;
+      const slavePortIndex = indexObject.slavePortIndex;
+      if(Object.keys(indexObject).length > 0){
+        set((state) => {
+          const newIOModuleGroups = [...state.ioModuleGroups];
+          const port = newIOModuleGroups[ioModuleGroupIndex].ioModules[ioModuleIndex].ports[masterPortIndex].ports[slavePortIndex];
+          setModelValue(port, key, value, isUI, isData);
+          return { ioModuleGroups: newIOModuleGroups };
+        });
+      } else {
+        set((state) => {
+          const newIoModule = {...state.wipIoModule, [key]: value};
+          return { wipIoModule: newIoModule };
+        });
+      }
+    },
   }),
   {
     name: 'ioModule-state',

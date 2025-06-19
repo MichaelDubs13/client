@@ -4,9 +4,10 @@ import DropdownItem from '../Util/DropdownItem';
 import InputTextItem from '../Util/InputTextItem';
 import { ioModuleGroupOptions } from "../../Store/ioModuleStore";
 import DeviceSelection from "../Common/DeviceSelection";
-import IO_ConfigurationTable from "./Table/IO_ConfigurationTable";
-import { useState } from "react";
+import IOLinkMaster_ConfigurationTable from "./Table/IOLinkMaster/IOLinkMaster_ConfigurationTable";
+import { useEffect, useState } from "react";
 import { isValidIP } from "../Util/Validations";
+import IOLinkSlave_ConfigurationTable from "./Table/IOLinkSlave/IOLinkSlave_ConfigurationTable";
 
 const IO_ModuleConfiguration = ({ 
   ioModuleGroupIndex,
@@ -16,12 +17,18 @@ const IO_ModuleConfiguration = ({
 }) => {
   const index = createNew ? {} :  {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex};
   const [defaultPortOption, setDefaultPortOption] = useState(ioModuleGroupOptions.portTypeDefaultSelectionOptions);
+  const ioLinkSlaves = ioModule.ports.filter(i => i.isIOLink && (i.pinTargetPartNumber === ioModuleGroupOptions.BNI00CN || i.pinTargetPartNumber === ioModuleGroupOptions.BNI00CR))
+  
+  useEffect(() => {
+      console.log(ioModule.ports);
+  });
+  
   const handlePortTypeChange = (value) => {
     ioModule.setPortType(index, value);
   }
 
   const handlePartNumberChange = (value)=>{
-    if(value === "BNI0052"){
+    if(value === ioModuleGroupOptions.BNI0052){
       setDefaultPortOption(ioModuleGroupOptions.portTypeDefaultSelection_Balluff_BNI0052Options);
       ioModule.setValue(index, "portTypeDefaultSelection", "Input")
       ioModule.setPortType(index, "Input");
@@ -111,18 +118,21 @@ const IO_ModuleConfiguration = ({
           </>
         }
         {
-          !createNew && <IO_ConfigurationTable ports={ioModule.ports} ioModuleGroupIndex={ioModuleGroupIndex} ioModuleIndex={ioModuleIndex}/>
+          !createNew && <IOLinkMaster_ConfigurationTable ports={ioModule.ports} ioModuleGroupIndex={ioModuleGroupIndex} ioModuleIndex={ioModuleIndex}/>
+        }
+        {
+          ioLinkSlaves.map((ioLinkSlave) => {
+              const index = ioLinkSlave.getIndex();
+              return <div>
+                  <p>IO-Link Slave Module: Port{index+1} {ioLinkSlave.data.parent.pinTargetDT} (Part No.{ioModule.ports[index].pinTargetPartNumber})</p>
+                  <IOLinkSlave_ConfigurationTable ports={ioModule.ports[index].ports} ioModuleGroupIndex={ioModuleGroupIndex} ioModuleIndex={ioModuleIndex} masterPortIndex={index}/>
+              </div>
+              
+          })
         }
         
-        {/* Insert the IO Module table for editing of IO Ports & port pins */}
-        {/* this is my try and creating a table for the IO Module, please change it as needed.
-            I believe you are going to need a subcomponent of ioPorts called Pins as each port will 
-            have 2 pins (pin4 and pin2). */}
-    </div>
-        {/* Render a new subcomponent for the 1st IO-Link Slave for each port designated to have an IO-Link module.
-            Within this new subcomponent there will be another subcomponent for the 2nd IO-Link Slave if required. */}
-        
-        
+     
+      </div>
     </div>
   );
   };

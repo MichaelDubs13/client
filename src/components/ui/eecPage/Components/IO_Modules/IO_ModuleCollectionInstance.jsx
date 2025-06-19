@@ -5,9 +5,7 @@ import SetItemsNumberInputBox from '../Common/SetItemsNumberInputBox';
 import { DataTable } from '@tesla/design-system-react';
 import "../../Eec.css";
 import DeviceSelection from '../Common/DeviceSelection';
-import DropdownItem from '../Util/DropdownItem';
 import PlcIDSelection from '../Common/PlcIDSelection';
-import { lineConfiguration } from '../../Store/lineStore';
 
 const IO_ModuleCollectionInstance = ({ioModuleGroup, index}) => {
     const setNumberOfIOModules = ioModuleStore((state) => state.setNumberOfIOModules);

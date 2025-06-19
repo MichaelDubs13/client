@@ -1,10 +1,10 @@
-import { DataTable } from "../../Util/Table/DataTable/DataTable";
-import { useDataTable } from "../../Util/Table/DataTable/useDataTable";
+import { DataTable } from "../../../Util/Table/DataTable/DataTable";
+import { useDataTable } from "../../../Util/Table/DataTable/useDataTable";
 import { useColumns } from "./columns";
 import React, { useEffect } from "react";
 
-const IO_ConfigurationTable = ({ports, ioModuleGroupIndex,ioModuleIndex })=>{
-    const columns = useColumns(ioModuleGroupIndex, ioModuleIndex, ports);
+const IOLinkSlave_ConfigurationTable = ({ioModuleGroupIndex, ioModuleIndex, masterPortIndex, ports})=>{
+    const columns = useColumns(ioModuleGroupIndex, ioModuleIndex, masterPortIndex);
     const createData = (port) => {
       return {
           Port: port.portCounter,
@@ -56,4 +56,4 @@ const IO_ConfigurationTable = ({ports, ioModuleGroupIndex,ioModuleIndex })=>{
     </div>
   );
 }
-export default React.memo(IO_ConfigurationTable);
+export default React.memo(IOLinkSlave_ConfigurationTable);

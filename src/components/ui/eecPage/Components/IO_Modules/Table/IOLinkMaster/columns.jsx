@@ -1,14 +1,12 @@
 import { FormLabel } from "@tesla/design-system-react";
-import EditableCell from "../../Util/Table/DataTable/EditableCell";
-import './styles.css'
-import InputTextItem from "../../Util/Table/Components/InputTextItem";
-import { ioModuleStore } from "../../../Store/ioModuleStore";
-import DropdownItem from "../../Util/Table/Components/DropdownItem";
-import CreateableSelectItem from "../../Util/Table/Components/CreateableSelectItem";
-import { ioModuleGroupOptions } from "../../../Store/ioModuleStore";
-import CheckboxItem from "../../Util/Table/Components/CheckboxItem";
-import { useEffect } from "react";
-import { formatToTwoDigits } from "../../../Store/util";
+import EditableCell from "../../../Util/Table/DataTable/EditableCell";
+import InputTextItem from "../../../Util/Table/Components/InputTextItem";
+import { ioModuleStore } from "../../../../Store/ioModuleStore";
+import DropdownItem from "../../../Util/Table/Components/DropdownItem";
+import CreateableSelectItem from "../../../Util/Table/Components/CreateableSelectItem";
+import { ioModuleGroupOptions } from "../../../../Store/ioModuleStore";
+import CheckboxItem from "../../../Util/Table/Components/CheckboxItem";
+import { formatToTwoDigits } from "../../../../Store/util";
 const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex, ports) => {
   const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);  
   const index = {ioModuleGroupIndex:ioModuleGroupIndex, ioModuleIndex:ioModuleIndex, ioPortIndex:cell.row.id}
@@ -20,7 +18,7 @@ const renderInputs = (cell, header, ioModuleGroupIndex, ioModuleIndex, ports) =>
     if(port){
       if(port.isIOLink){
         type = 'dropdown';
-        options = ["Balluff: BNI00CN", "Balluff: BNI00CR"]
+        options = ioModuleGroupOptions.mioParts_BalluffSlaveModuleOptions;
         width = '200px';
         const ioLinkSlaveModuleCount = port.data.parent.getIoLinkSlaveModules().length;
         const ioLinkModuleName = `${port.data.parent.deviceTag}-MIO${formatToTwoDigits(ioLinkSlaveModuleCount)}`;

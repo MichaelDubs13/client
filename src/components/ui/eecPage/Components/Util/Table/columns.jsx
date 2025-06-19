@@ -1,7 +1,6 @@
 import React from "react";
 import EditableCell from "./DataTable/EditableCell";
 import { FormInputText, FormInputDropdown } from "@tesla/design-system-react";
-import CreatableSelect from 'react-select/creatable';
 import './styles.css'
 export const columns = [
   {
