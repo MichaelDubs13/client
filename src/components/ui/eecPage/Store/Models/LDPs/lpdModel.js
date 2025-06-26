@@ -158,7 +158,7 @@ export const lpdModel = {
         return currentState
       },
       recreate:(lpds)=>{
-        const newLpds = lpds.map(lpd => {
+        const newLpds = lpds.filter(item => item !== null).map(lpd => {
           var newLpd = recreateObject(lpd, lpdModel.create)
           var newPsus = recreateArrayElement(newLpd, lpd.psus, psuModel.create)
           newPsus=newPsus.map(newPsu => {

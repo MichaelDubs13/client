@@ -240,7 +240,7 @@ export const mcpModel = {
         return currentState
     },
     recreate:(mcps)=>{
-        const newMcps = mcps.map(mcp => {
+        const newMcps = mcps.filter(item => item !== null).map(mcp => {
             var newMcp = recreateObject(mcp, mcpModel.create)
             var ports = recreateArrayElement(newMcp, mcp.ports, portModel.create)
             newMcp.ports = ports;

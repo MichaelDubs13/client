@@ -239,7 +239,7 @@ export const pdpModel = {
       return currentState
     },
     recreate:(pdps) =>{
-      const newPdps = pdps.map(pdp => {
+      const newPdps = pdps.filter(pdp => pdp !== null).map(pdp => {
         var newPdp = recreateObject(pdp, pdpModel.create)
         Object.keys(pdp.branchCircuit).forEach(key => { 
             var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], pdpBranchCircuitModel.create);

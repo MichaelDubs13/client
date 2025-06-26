@@ -111,7 +111,7 @@ export const safetyGateGroupModel = {
       return currentState
     },
     recreate:(safetyGates) =>{
-      const gates = safetyGates.map(gate => {
+      const gates = safetyGates.filter(item => item !== null).map(gate => {
           var newGate = recreateObject(gate, safetyGateGroupModel.create)
           var safetyGateSwitches = recreateArrayElement(newGate, gate.safetyGateSwitches, safetyGateSwitchModel.create)
           newGate.safetyGateSwitches = safetyGateSwitches;

@@ -196,7 +196,7 @@ export const hmiModel = {
         return currentState
     },
     recreate:(hmis)=>{
-        const newHmis = hmis.map(hmi => {
+        const newHmis = hmis.filter(item => item !== null).map(hmi => {
             var newHmi = recreateObject(hmi, hmiModel.create)
             var newExtensionUnitPositions = recreateArrayElement(newHmi, hmi.extensionUnitPositions, extensionUnitPositionModel.create)
             newHmi.extensionUnitPositions = newExtensionUnitPositions;

@@ -211,7 +211,7 @@ export const networkSwitchModel = {
       return currentState
   } ,
   recreate:(networkSwitches)=>{
-    const newNetworkSwitches = networkSwitches.map(networkSwitch => {
+    const newNetworkSwitches = networkSwitches.filter(item => item !== null).map(networkSwitch => {
         var newNetworkSwitch = recreateObject(networkSwitch, networkSwitchModel.create)
         var ports = recreateArrayElement(newNetworkSwitch, networkSwitch.ports, networkPortModel.create)
         newNetworkSwitch.ports = ports;

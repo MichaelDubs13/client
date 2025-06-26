@@ -195,7 +195,7 @@ export const xpdpModel = {
       return currentState
   },
   recreate: (xpdps)=>{
-      const newPdps = xpdps.map(pdp => {
+      const newPdps = xpdps.filter(item => item !== null).map(pdp => {
           var newPdp = recreateObject(pdp, xpdpModel.create)
           Object.keys(pdp.branchCircuit).forEach(key => { 
               var branchCircuit = recreateBranchCircuit(newPdp,key, pdp.branchCircuit[key], branchCircuitModel.create);

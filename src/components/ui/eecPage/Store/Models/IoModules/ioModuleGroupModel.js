@@ -146,7 +146,7 @@ export const ioModuleGroupModel = {
       return currentState
   },
   recreate:(ioModuleGroups) =>{
-    const newIoModuleGroups = ioModuleGroups.map(ioModuleGroup => {
+    const newIoModuleGroups = ioModuleGroups.filter(ioModuleGroup => ioModuleGroup !== null).map(ioModuleGroup => {
         var newIoModuleGroup = recreateObject(ioModuleGroup, ioModuleGroupModel.create)
         var newIoModules = recreateArrayElement(newIoModuleGroup, ioModuleGroup.ioModules, ioModuleModel.create)
         newIoModules=newIoModules.map(newIoModule => {
