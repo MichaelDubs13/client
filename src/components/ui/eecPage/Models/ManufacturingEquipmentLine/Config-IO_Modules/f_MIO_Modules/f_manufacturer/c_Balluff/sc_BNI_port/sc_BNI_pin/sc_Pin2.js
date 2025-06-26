@@ -14,7 +14,7 @@ export default class sc_Pin2 extends Component{
             {name: "s_pin_type_selected", value: this._port.pinType, type: "String"},
             {name: "s_pin_description", value: this._port.pinDescription, type: "String"},
             {name: "s_pin_PLCaddress", value: this._port.pinAddress, type: "String"},
-            {name: "s_TargetDevicePartNumber", value: this._port.pinTargetPartNumber, type: "String"},
+            {name: "s_IOLinkPartNumber", value: this._port.pinTargetPartNumber, type: "String"},
             {name: "s_TargetDeviceLine", value: this._port.pinTargetLine, type: "String"},
             {name: "s_TargetDeviceLocation", value: this._port.pinTargetLocation, type: "String"},
             {name: "s_TargetDeviceDT", value: this._port.pinTargetDT, type: "String"},
