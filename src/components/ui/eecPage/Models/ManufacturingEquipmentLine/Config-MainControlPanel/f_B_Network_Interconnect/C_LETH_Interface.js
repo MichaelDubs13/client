@@ -14,15 +14,15 @@ export default class C_LETH_Interface extends Component{
 
     get Parameters(){
         return [
-            {name: "NumberofDevices", value: this._mcp.ports.length, type: "Integer"},
+            {name: "NumberofDevices", value: this._mcp.ports.length-1, type: "Integer"},
         ];
     }
 
     build(){
         if(this._mcp.ports.length > 4){
-            for(let i=4; i<this._mcp.ports.length;i++){
+            for(let i=1; i<this._mcp.ports.length;i++){
                 const drop = this._mcp.ports[i];
-                const networkDrop = new C_Network_Drop(this,i+1, drop);
+                const networkDrop = new C_Network_Drop(this,i, drop);
                 networkDrop.build();
             }
         }
