@@ -227,7 +227,7 @@ export const pdpModel = {
         const numberOfBusBar = pdpParser.getNumberOfBusBar(pdp.enclosureSize);
         pdp.numberOfBusBar = numberOfBusBar;
         if(isString(pdp.FLA)){
-            pdp.FLA = pdp.FLA.toLowerCase().endsWith("a") ? this._pdp.FLA : `${this._pdp.FLA}A`;
+            pdp.FLA = pdp.FLA.toLowerCase().endsWith("a") ? pdp.FLA : `${pdp.FLA}A`;
         }
       });
       return pdps;
