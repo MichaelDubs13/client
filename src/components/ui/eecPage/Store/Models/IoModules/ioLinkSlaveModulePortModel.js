@@ -10,7 +10,8 @@ export const ioLinkSlaveModulePortModel = {
           pinDescription: "", // EEC variable name: s_pin_description
           pinAddress: "%I0.0", // EEC variable name: s_pin_PLCaddress
           pinTargetPartNumber: "", // EEC variable name: s_TargetDevicePartNumber
-          pinTargetLocation: parent?.location, // EEC variable name: s_TargetDeviceLocation
+          pinTargetLine: parent?.pinTargetLine, // EEC variable name: s_TargetDeviceLocation
+          pinTargetLocation: parent?.pinTargetLocation, // EEC variable name: s_TargetDeviceLocation
           pinTargetDT: "", // EEC variable name: s_TargetDeviceDT
           UI:{
             expanded:false,

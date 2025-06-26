@@ -48,16 +48,16 @@ export default class IO_Module extends Component{
 
     get Parameters(){
         return [
+            {name: "b_frmUI_SafetyIO", value: this._isSIO, type: "Boolean"},   
             {name: "s_frmUI_IOModLine", value: this._ioModule.line, type: "String"},
             {name: "s_frmUI_IOModLocation", value: this._ioModule.location, type: "String"},
-            {name: "s_IOModuleDT", value: this._ioModule.deviceTag, type: "String"},
-            {name: "b_frmUI_SafetyIO", value: this._isSIO, type: "Boolean"},            
+            {name: "s_frmUI_IOModIPv4_IP_Address", value: this._ioModule.localIP, type: "String"},
+            {name: "s_frmUI_OpMode", value: this._ioModule.opMode, type: "String"},        
             {name: "s_frmUI_SIOModManuName", value: this._sioModManuName, type: "String"},
             {name: "s_frmUI_SIOModuleParts_Murr", value: this._sioModuleParts_Murr, type: "String"},
             {name: "s_frmUI_MIOModManuName", value: this._mioModManuName, type: "String"},
             {name: "s_frmUI_MIOModuleParts_Balluff", value: this._mioModuleParts_Balluff, type: "String"},
-            {name: "s_frmUI_IOModIPv4_IP_Address", value: this._ioModule.localIP, type: "String"},
-            {name: "s_frmUI_OpMode", value: this._ioModule.opMode, type: "String"},
+            {name: "s_IOModuleDT", value: this._ioModule.deviceTag, type: "String"}, 
         ];
     }
 

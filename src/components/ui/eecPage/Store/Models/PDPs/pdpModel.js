@@ -1,6 +1,6 @@
 import { projectStore } from '../../projectStore';
 import { v4 as uuidv4 } from 'uuid';
-import { formatToTwoDigits, recreateArrayElement, recreateBranchCircuit, recreateObject } from '../../util';
+import { formatToTwoDigits, isString, recreateArrayElement, recreateBranchCircuit, recreateObject } from '../../util';
 import { lineConfiguration } from '../../lineStore';
 import { pdpConfiguration } from "../../pdpStore";
 import { pdpStore } from "../../pdpStore";
@@ -226,6 +226,9 @@ export const pdpModel = {
       pdps.forEach(pdp => {
         const numberOfBusBar = pdpParser.getNumberOfBusBar(pdp.enclosureSize);
         pdp.numberOfBusBar = numberOfBusBar;
+        if(isString(pdp.FLA)){
+            pdp.FLA = pdp.FLA.toLowerCase().endsWith("a") ? this._pdp.FLA : `${this._pdp.FLA}A`;
+        }
       });
       return pdps;
     },

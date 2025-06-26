@@ -10,7 +10,6 @@ export default class c_SIO_Murr_PortMaster extends Component{
         this._name = `c_SIO_Murr_PortMaster`;
         this._ioModule = ioModule;
         this._partnumber = partnumber;
-        this._numberOfPorts = 8;
     }
     get Parameters(){
         return [
@@ -18,9 +17,8 @@ export default class c_SIO_Murr_PortMaster extends Component{
         ];
     }
     build(){
-        for(let i=0;i<this._numberOfPorts;i++){
-            var targetDevice = this._ioModule.ios.find(device => device.io_port === i);
-            const port = new c_Murr_Port(this, i, this._ioModule, this._partnumber, targetDevice);
+        for(let i=0;i<this._ioModule.ports.length;i++){
+            const port = new c_Murr_Port(this, i, this._ioModule, this._partnumber, this._ioModule.ports[i]);
             port.build();
         }   
     }

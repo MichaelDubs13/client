@@ -1,3 +1,6 @@
+export function isString(variable) {
+  return typeof variable === 'string';
+}
 export function formatToTwoDigits(number) {
     return String(number).padStart(2, '0');
 }

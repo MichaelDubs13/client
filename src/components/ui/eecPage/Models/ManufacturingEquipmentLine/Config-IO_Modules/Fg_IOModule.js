@@ -24,7 +24,7 @@ export default class Fg_IOModule extends Component{
             {name: "s_frmUI_IOModPSUSourceDT", value: this._ioModuleGroup.powerSourceDT, type: "String"},
             {name: "s_frmUI_InstallationSite", value: this._ioModuleGroup.line, type: "String"},
             {name: "s_frmUI_IOModLocation", value: this._ioModuleGroup.location, type: "String"},
-            {name: "PLC_ID", value: this._ioModuleGroup.plcID, type: "String"},
+            // {name: "PLC_ID", value: this._ioModuleGroup.plcID, type: "String"},
         ];
     }
     build(){

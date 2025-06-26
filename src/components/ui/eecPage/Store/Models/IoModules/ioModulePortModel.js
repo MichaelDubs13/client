@@ -12,6 +12,7 @@ export const ioModulePortModel = {
           pinDescription: "", // EEC variable name: s_pin_description
           pinAddress: "%I0.0", // EEC variable name: s_pin_PLCaddress
           pinTargetPartNumber: "", // EEC variable name: s_TargetDevicePartNumber
+          pinTargetLine: parent?.line, // EEC variable name: s_TargetDeviceLocation
           pinTargetLocation: parent?.location, // EEC variable name: s_TargetDeviceLocation
           pinTargetDT: "", // EEC variable name: s_TargetDeviceDT
           ports:[], //IOLink Slave

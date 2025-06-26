@@ -1,12 +1,12 @@
 import Component from "../../../../Component";
-import c_Port_Distribution_Out from "./c_Port_Distribution_Out";
-import c_PortMaster from "./c_PortMaster";
+import c_IOLink_PortMaster from "./c_IOLink_PortMaster";
+
 
 export default class c_PartNumber extends Component{
     constructor(parent, ioModule, partnumber) {
         super(parent);
         this.parent = parent;
-        this._classPath = "Config-IO_Modules.Mechatronic.f_IO_module_selection.f_MIO_Modules.f_manufacturer.c_Balluff";
+        this._classPath = "Config-IO_Modules.Mechatronic.f_IO_module_selection.f_IOLink_Modules.f_manufacturer.c_Balluff";
         this._class = `c_${partnumber}`;
         this._name = `c_${partnumber}`;
         this._ioModule = ioModule;
@@ -14,14 +14,12 @@ export default class c_PartNumber extends Component{
     }
     get Parameters(){
         return [
-
+            
         ];
     }
     build(){
-        const portMaster = new c_PortMaster(this, this._ioModule, this._partnumber);
+        const portMaster = new c_IOLink_PortMaster(this, this._ioModule, this._partnumber);
         portMaster.build();
-        const portDistributionOut = new c_Port_Distribution_Out(this, this._ioModule);
-        portDistributionOut.build();
     }
     
 }

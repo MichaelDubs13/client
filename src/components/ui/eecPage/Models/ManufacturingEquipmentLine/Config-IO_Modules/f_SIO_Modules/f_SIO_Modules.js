@@ -16,7 +16,7 @@ export default class f_SIO_Modules extends Component{
         ];
     }
     build(){
-        if(this._ioModule.mfg === "Murr"){
+        if(this._ioModule.sioManufacturerName === "Murr"){
             const balluff = new f_MIO_Murr(this, this._ioModule);
             balluff.build();
         }

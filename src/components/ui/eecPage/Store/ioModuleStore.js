@@ -55,7 +55,7 @@ const ioModuleGroupOptions = {
   ],
 
    mioParts_BalluffSlaveModuleOptions: [
-    "Balluff: BNI00CN", "Balluff: BNI00CR"
+    "BNI00CN", "BNI00CR"
   ],
   mioParts_BeckhoffOptions: [
     {label:"NULL", value:"NULL"},

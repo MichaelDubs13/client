@@ -9,6 +9,7 @@ export default class f_MIO_Balluff extends Component{
         this._class = "f_MIO_Balluff";
         this._name = `f_MIO_Balluff`;
         this._ioModule = ioModule;
+        this._partNumber = ioModule.mioParts_Balluff;
         this._partNumberOptions = ["BNI00AZ","BNI00FW","BNI00HL","BNI005H","BNI0052"]
     }
 
@@ -18,9 +19,9 @@ export default class f_MIO_Balluff extends Component{
         ];
     }
     build(){
-        var isValidPartNumber = this._partNumberOptions.includes(this._ioModule.partNumber.toString());
+        var isValidPartNumber = this._partNumberOptions.includes(this._partNumber.toString());
         if(isValidPartNumber){
-            var partNumber = new c_PartNumber(this, this._ioModule, this._ioModule.partNumber)
+            var partNumber = new c_PartNumber(this, this._ioModule, this._partNumber)
             partNumber.build();
         }
     }

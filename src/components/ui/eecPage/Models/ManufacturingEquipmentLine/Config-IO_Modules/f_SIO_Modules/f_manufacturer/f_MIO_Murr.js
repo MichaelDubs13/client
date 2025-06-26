@@ -10,6 +10,7 @@ export default class f_MIO_Murr extends Component{
         this._name = `f_MIO_Murr`;
         this._ioModule = ioModule;
         this._partNumberOptions = ["55556","55557"]
+        this._partNumber = this._ioModule.sioParts_Murr;
     }
     get Parameters(){
         return [
@@ -17,9 +18,9 @@ export default class f_MIO_Murr extends Component{
         ];
     }
     build(){
-        var isValidPartNumber = this._partNumberOptions.includes(this._ioModule.partNumber.toString());
+        var isValidPartNumber = this._partNumberOptions.includes(this._partNumber.toString());
         if(isValidPartNumber){
-            var partNumber = new c_PartNumber(this, this._ioModule, this._ioModule.partNumber)
+            var partNumber = new c_PartNumber(this, this._ioModule, this._partNumber)
             partNumber.build();
         }
     }
