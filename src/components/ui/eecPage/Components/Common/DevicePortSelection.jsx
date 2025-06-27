@@ -8,7 +8,7 @@ import { ioModuleGroupConfiguration } from '../../Store/ioModuleStore';
 
 
 
-const DevicePortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portType,createNew, isCreatable, update}) => {
+const DevicePortSelection = ({item, title, index, property, targetDT, targetLocation, targetLine, portType,createNew, isCreatable, update, onChange}) => {
     const [portOptions, setPortOptions] = useState([]);
     const itemIndex = createNew ? {} : index;
     useEffect(() => {
@@ -39,8 +39,8 @@ const DevicePortSelection = ({item, title, index, property, targetDT, targetLoca
                     <>
                         {
                            isCreatable ? 
-                           <CreateableDropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions}/>:
-                           <DropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions}/>
+                           <CreateableDropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions} onChange={onChange}/>:
+                           <DropdownItem title={title} item={item} index={itemIndex} property={property} options={portOptions} onChange={onChange}/>
                         }
                         
                     </>

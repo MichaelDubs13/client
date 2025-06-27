@@ -5,7 +5,7 @@ import HeadingItem from '../Util/HeadingItem';
 import DropdownItem from '../Util/DropdownItem';
 import { lpdStore, lpdOptions } from '../../Store/lpdStore';
 import DeviceSelection from '../Common/DeviceSelection';
-import InputTextItem from "../Util/InputTextItem";
+import { lineConfiguration } from "../../Store/lineStore";
 import { useEffect, useState } from "react";
 import CheckboxItem from "../Util/CheckboxItem";
 import PsuLoadItem from "../Common/PsuLoadItem";
@@ -79,6 +79,51 @@ const hasFeedbackOption = () => {
   return false;
 }
 
+const handlePsuFeedbackPortSelect = (value) => {
+    var line = psu.psuFeedbackIOTargetLine;
+    var location = psu.psuFeedbackIOTargetLocation;
+    var dt = psu.psuFeedbackIOTargetDT;
+
+    if(!dt.startsWith("MIO"))return;
+    var foundMIO = lineConfiguration.getDeviceByNameGlobal(dt, location, line);
+
+    if(!foundMIO) return;
+    const portIndex = Number(value.replace("P", ""))-1;
+    var indexObject = foundMIO.ports[portIndex].getIndexObject()
+
+    if(lpd.psu_selected === lpdOptions.turk){
+      foundMIO.ports[portIndex].setValue(indexObject, "isIOLink", false)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinType", "Input")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinDescription", "PSU feedback - Relay Ok")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetPartNumber", psu.partNumber)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetLocation", psu.location)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetDT", psu.deviceTag)
+    } else if(lpd.psu_selected === lpdOptions.puls){
+      foundMIO.ports[portIndex].setValue(indexObject, "isIOLink", false)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinType", "IO-Link")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinDescription", "PSU feedback - IO-Link")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetPartNumber", psu.partNumber)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetLocation", psu.location)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetDT", psu.deviceTag)
+    } else if(lpd.psu_selected === lpdOptions.ballufBAE0133){
+      foundMIO.ports[portIndex].setValue(indexObject, "isIOLink", false)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinType", "IO-Link")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinDescription", "PSU feedback - IO-Link")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetPartNumber", psu.partNumber)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetLocation", psu.location)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetDT", psu.deviceTag)
+    }else if(lpd.psu_selected === lpdOptions.siemens){
+      foundMIO.ports[portIndex].setValue(indexObject, "isIOLink", false)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinType", "Input")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinDescription", "PSU feedback - Power Ok")
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetPartNumber", psu.partNumber)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetLocation", psu.location)
+      foundMIO.ports[portIndex].setValue(indexObject, "pinTargetDT", psu.deviceTag)
+    }
+    
+    
+}
+
 return (
       <div className="lpd-psu-item">
         <div className="lpd-psu-settings">
@@ -108,6 +153,7 @@ return (
                               deviceProperty={"psuFeedbackIOTargetDT"}
                               type="ioModule"
                               canCreateDevice={true}
+                              onPortSelect={handlePsuFeedbackPortSelect}
                               portConfig ={{
                                 title:"Select the Port of the I/O Module:",
                                 property:"psuFeedbackIOTargetPort",

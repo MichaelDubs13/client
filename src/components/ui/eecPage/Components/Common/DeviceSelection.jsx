@@ -24,6 +24,7 @@ const DeviceSelection = ({
     type,
     canCreateDevice,
     portConfig,
+    onPortSelect,
 }) => {
     const getLineOptions = lineStore((state) => state.getLineOptions)         
     const [stations, setStations]=useState([])
@@ -216,7 +217,7 @@ const DeviceSelection = ({
                             index={index} property={portConfig.property} targetDT={portConfig.targetDT} 
                             targetLocation={portConfig.targetLocation} targetLine={portConfig.targetLine}
                             isCreatable={portConfig.isCreatable} createNew={portConfig.createNew} portType={portConfig.type}
-                            update={updatePortSelect}/>
+                            update={updatePortSelect} onChange={onPortSelect}/>
                 }
             </div>
         </div>
