@@ -11,7 +11,7 @@ import SafetyGateLocationCount from "./SafetyGateSwitches/SafetyGateLocationCoun
 import { safetyGateStore } from "../Store/safetyGateStore";
 import IO_ModuleCascadingCollection from "./IO_Modules/IO_ModuleCascadingCollection";
 import { ioModuleStore } from "../Store/ioModuleStore";
-import { Chip, Icon, SideNav_v9, TabList} from "@tesla/design-system-react";
+import { Chip, FormInputCheckbox, FormItem, FormLabel, SideNav_v9} from "@tesla/design-system-react";
 import { useState } from "react";
 import { pdpStore } from "../Store/pdpStore";
 import { xpdpStore } from "../Store/xpdpStore";
@@ -22,6 +22,7 @@ import ManufacturingLineNameAndLocation from "./Project/ManufacturingLineNameAnd
 import OneLineComponents from "./Project/OneLineComponents";
 import CustomerProperty from "./Project/CustomerProperty";
 import EecJobHistory from "../EecJobHistory";
+import { settingStore } from "../Store/settingStore";
 
 /**
  * loadCount is used to force refresh after load JSON(maybe theres a better way to do this)
@@ -39,32 +40,34 @@ const LineConfiguration = ({loadCount}) => {
     const hmis = hmiStore((state) => state.hmis);
     const safetyGates = safetyGateStore((state) => state.safetyGates);
     const ioModuleGroups = ioModuleStore((state) => state.ioModuleGroups);
-   
+    const setSelectedValue = settingStore((state) => state.setSelectedValue);
+    const options = settingStore((state)=>state.options);
+    const setOptionsValue = settingStore((state)=>state.setOptionsValue);
+
       const renderSwitch = (param) => {
-        switch(param) {
-            case 'tab-1':
-                return <ManufacturingLineNameAndLocation/>
-            case 'tab-2':
-                return <CustomerProperty/>
-            case 'tab-3':
-                return <PdpConfigurations/>
-            case 'tab-4':
-                return <XpdpConfigurations/>
-            case 'tab-5':
-                return <McpConfigurations/>
-            case 'tab-6':
-                return <LpdConfigurations/>
-            case 'tab-7':
-                return <NetworkSwitchConfigurations/>
-            case 'tab-8':
-                return <HmiInstances/>
-            case 'tab-9':
-                return <SafetyGateLocationCount/>
-            case 'tab-10':
-                return <IO_ModuleCascadingCollection/>
-            default:
-                return <PdpConfigurations/>
+        if(param.startsWith('tab-1')){
+            return <ManufacturingLineNameAndLocation/>
+        } else if(param.startsWith('tab-2')){
+            return <CustomerProperty/>
+        }else if(param.startsWith('tab-3')){
+            return <PdpConfigurations/>
+        }else if(param.startsWith('tab-4')){
+            return <XpdpConfigurations/>
+        }else if(param.startsWith('tab-5')){
+            return <McpConfigurations/>
+        }else if(param.startsWith('tab-6')){
+            return <LpdConfigurations/>
+        }else if(param.startsWith('tab-7')){
+            return <NetworkSwitchConfigurations/>
+        }else if(param.startsWith('tab-8')){
+            return <HmiInstances/>
+        }else if(param.startsWith('tab-9')){
+            return <SafetyGateLocationCount/>
+        }else if(param.startsWith('tab-10')){
+            return <IO_ModuleCascadingCollection/>
         }
+        
+        return <ManufacturingLineNameAndLocation/>
       }
 
     const getCircuitBreakers = (pdp, id) => {
@@ -80,11 +83,16 @@ const LineConfiguration = ({loadCount}) => {
         var items = []
         array.forEach(element => {
             var children = getChildren(element, id);
+            const itemId = `${id}${element.data.id}`;
              var item = {
-                id:id,
+                id:itemId,
                 leadingText: element.getFullName(),
                 trailing: children ? <Chip text={`${children.length}`} /> : null,
                 items: children,
+                highlighted: activeTab===itemId,
+                onClick:() => {
+                    setSelectedValue(element, "element")
+                }
             }
             items.push(item);
         })
@@ -114,14 +122,17 @@ const LineConfiguration = ({loadCount}) => {
         var items = []
         array.forEach((element)=> {
             var children = getChildren(element, id);
+            const itemId = `${id}${element.data.id}`;
             const item = {
-                id:id,
+                id:itemId,
                 leadingText: `${element.getFullName()}`,
                 trailing: children ? <Chip text={`${children.length}`} /> : null,
                 items: children,
                 expanded: element.UI.expanded,
+                highlighted: activeTab===itemId,
                 onClick: () => {
                     element.setExpanded(!element.UI.expanded);
+                    setSelectedValue(element, "element")
                 },
             }
 
@@ -204,6 +215,11 @@ const LineConfiguration = ({loadCount}) => {
     const handleItemSelect = (id) => {
         setActiveTab(id);
     }
+
+    const handleDisplaySelectedOnlyClick = () =>{
+        setOptionsValue(!options.displayOnlySelected, "displayOnlySelected")
+    }
+
     return (
         <>
             <IconTriggerHeading heading="One-Lines" children={<OneLineComponents/>}/>
@@ -216,6 +232,12 @@ const LineConfiguration = ({loadCount}) => {
                     </div>
                 </aside>
                 <main className="tds-layout-item tds-layout-main">
+                    <FormItem style={{display:'flex'}}>
+                        <FormLabel style={{marginRight:'10px'}} htmlFor="context">Display Selected Tab Only</FormLabel>
+                        <FormInputCheckbox id="context" type="checkbox" 
+                        checked={options.displayOnlySelected} 
+                        onChange={handleDisplaySelectedOnlyClick}/>
+                    </FormItem>
                     <div style={{ marginLeft:'50px', width: '100%' }}>
                     {
                         renderSwitch(activeTab)

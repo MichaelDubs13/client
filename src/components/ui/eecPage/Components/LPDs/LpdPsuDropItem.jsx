@@ -68,32 +68,35 @@ import { lpdOptions } from "../../Store/lpdStore";
     }
 
     return (
-      <div className="lpd-psu-drop-item">
-        <div className="lpd-psu-drop-settings">
-        {outputPortBrandOptions.includes(lpd.psu_selected) && (
-            <>
-                <DropdownItem title={"Select the output port of the PSU:"} item={drop} property={"outputPort"} options={outputPortOptions} index={index}/>    
-            </>
-          )}     
-          <DeviceSelection item={drop} index={index} 
-              deviceProperty={"targetDT"}
-              stationProperty={"targetLocation"}
-              type="powerTarget"
-              canCreateDevice={true}
-              portConfig ={{
-                  title:"Enter the device port to be connected to",
-                  property:"ethernetSourceDevicePort",
-                  type:"power",
-                  targetDT:drop.targetDT,
-                  targetLocation:drop.targetLocation,
-                  targetLine:drop.line,
-              }}/>                                
-       
-          <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
-          <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"}/>    
-              
-        </div>
-      </div>
+      <>
+      {
+        <div className="lpd-psu-drop-item">
+            <div className="lpd-psu-drop-settings">
+            {outputPortBrandOptions.includes(lpd.psu_selected) && (
+                <>
+                    <DropdownItem title={"Select the output port of the PSU:"} item={drop} property={"outputPort"} options={outputPortOptions} index={index}/>    
+                </>
+              )}     
+              <DeviceSelection item={drop} index={index} 
+                  deviceProperty={"targetDT"}
+                  stationProperty={"targetLocation"}
+                  type="powerTarget"
+                  canCreateDevice={true}
+                  portConfig ={{
+                      title:"Enter the device port to be connected to",
+                      property:"ethernetSourceDevicePort",
+                      type:"power",
+                      targetDT:drop.targetDT,
+                      targetLocation:drop.targetLocation,
+                      targetLine:drop.line,
+                  }}/>                                
+          
+              <InputTextItem title={"Enter the description of the target device"} item={drop} index={index} property={"description"}/>    
+              <InputTextItem title={"FLA"} item={drop} index={index} property={"fla"}/>    
+            </div>
+          </div>
+      }
+      </>
     );
   };
   

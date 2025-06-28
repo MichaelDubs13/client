@@ -6,8 +6,6 @@ import {lpdStore, lpdOptions} from "../../Store/lpdStore";
 import HeadingItem from '../Util/HeadingItem';
 import SetItemsNumberInputBox from "../Common/SetItemsNumberInputBox";
 import DeviceSelection from "../Common/DeviceSelection";
-import { FormInputCheckbox } from "@tesla/design-system-react";
-import CheckboxItem from "../Util/CheckboxItem";
 
 const LpdConfiguration = ({lpd, lpdIndex}) => {
     const index = {lpdIndex:lpdIndex}    

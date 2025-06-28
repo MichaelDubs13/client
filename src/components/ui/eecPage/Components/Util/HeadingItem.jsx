@@ -3,6 +3,7 @@ import { Icon, TD } from '@tesla/design-system-react'
 import { Children, useState } from "react";
 import "../../Eec.css";
 import PropTypes from 'prop-types';
+import { settingStore } from '../../Store/settingStore';
 /**
  * This is a collapsible heading component with optional actions buttons and heading icons
  * @param {string} headerIcon - path to the headerIcon, if no value is given then an arrow is used for collpasible state
@@ -17,7 +18,36 @@ import PropTypes from 'prop-types';
 const HeadingItem = ({headerIcon, label, size, open, margin, children, component, buttons}) => {
     const [expanded, setExpanded] = useState(open);
     const isOpened = component ? component.UI.expanded : expanded;
+    const options = settingStore((state)=>state.options);
+    const selected = settingStore((state) => state.selected);
+    const getParents = (component, parents) =>{
+        if(!component) return;
+        if(!component.data) return;
+        var parent = component.data.parent;
+        if(parent){
+            parents.push(parent);
+            getParents(parent, parents);
+        }
+    }
 
+    const getVisible = () => {
+        if(!options.displayOnlySelected) return true;
+        if(!component) return true;
+        if(!selected.element) return true;
+        var compareList = [selected.element,];
+        getParents(selected.element, compareList);
+        console.log(compareList)
+        for(let i=0;i<compareList.length;i++){
+            var item = compareList[i];
+            if(item.data.type === component.data.type && item.data.id === component.data.id){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    const visible = getVisible();
 
     const handleToggleClick = async () => {
         if (!isOpened) {
@@ -28,33 +58,37 @@ const HeadingItem = ({headerIcon, label, size, open, margin, children, component
       };
 
     return (
-        
-        <div style={{marginTop:'20px', marginLeft:margin, overflow:'visible'}}>
-             <tr className={`heading-tr`}
-                    onClick={handleToggleClick}>
-                    <TD style={{alignContent:'center'}}>
-                        
-                        {
-                            headerIcon ? 
-                            <img src={headerIcon} style={{transform: 'scale(0.5)', verticalAlign:'top'}}/> :
-                            isOpened?<Icon data={iconChevron180} size='small'/>:<Icon data={iconChevron90} size='small'/>
+        <>
+        {
+            visible && 
+              <div style={{marginTop:'20px', marginLeft:margin, overflow:'visible'}}>
+                <tr className={`heading-tr`}
+                        onClick={handleToggleClick}>
+                        <TD style={{alignContent:'center'}}>
                             
-                        }  
-                    </TD>
-                    <TD className='heading-td' style={{fontSize:size, fontWeight:"bolder", alignContent:'center'}}>{label}</TD>
-                    {
-                        buttons?.map(button => {
-                            return <TD style={{alignContent:'center'}}>{button}</TD>
-                        })
-                    }
-            </tr>
-            {
-                isOpened &&
-                <div>
-                    {children}     
-                </div>
-            }
-        </div>           
+                            {
+                                headerIcon ? 
+                                <img src={headerIcon} style={{transform: 'scale(0.5)', verticalAlign:'top'}}/> :
+                                isOpened?<Icon data={iconChevron180} size='small'/>:<Icon data={iconChevron90} size='small'/>
+                                
+                            }  
+                        </TD>
+                        <TD className='heading-td' style={{fontSize:size, fontWeight:"bolder", alignContent:'center'}}>{label}</TD>
+                        {
+                            buttons?.map(button => {
+                                return <TD style={{alignContent:'center'}}>{button}</TD>
+                            })
+                        }
+                </tr>
+                {
+                    isOpened &&
+                    <div>
+                        {children}     
+                    </div>
+                }
+            </div>    
+        }
+        </>       
     );
 };
 

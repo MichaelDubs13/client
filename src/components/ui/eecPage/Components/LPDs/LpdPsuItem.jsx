@@ -26,11 +26,14 @@ const [totalClass2FLA, setTotalClass2FLA]= useState(0);
 const [totalXD4FLA, setTotalXD4FLA]= useState(0);
 const [totalXD5FLA, setTotalXD5FLA]= useState(0);
 const [updateOutputPort, setUpdateOutputPort]=useState(0);
+
+
 var accumulatedFla = 0;
 
 useEffect(() => {
   handleFlaChange();
 }, [psu.drops]);
+
 
 const handleFlaChange =() => {
   var totalFLA = 0;
@@ -125,98 +128,103 @@ const handlePsuFeedbackPortSelect = (value) => {
 }
 
 return (
-      <div className="lpd-psu-item">
-        <div className="lpd-psu-settings">
-          <DeviceSelection item={psu} index={index} 
-            deviceProperty={"deviceTag"}
-            stationProperty={"location"}
-            type ={"parentPowerSource"}/>                             
-          {
-            lpd &&
-            lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
-            <>
-                <DropdownItem title={"Enter the cable length to the next cascaded PSU (m)"} item={psu} property={"cable_length"}
-                   options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
-            </>
-          )}
-          {
-              hasFeedbackOption() && 
+      <>
+      {
+        <div className="lpd-psu-item">
+          <div className="lpd-psu-settings">
+            <DeviceSelection item={psu} index={index} 
+              deviceProperty={"deviceTag"}
+              stationProperty={"location"}
+              type ={"parentPowerSource"}/>                             
+            {
+              lpd &&
+              lpd.psus.length > 1 && psuIndex < lpd.psus.length - 1 && (
+              <>
+                  <DropdownItem title={"Enter the cable length to the next cascaded PSU (m)"} item={psu} property={"cable_length"}
+                    options={lpdOptions.psuToPsuCableLengthOptions} index={index}/>    
+              </>
+            )}
+            {
+                hasFeedbackOption() && 
+                <div>
+                    <CheckboxItem title={"Activate PSU Feedback to I/O Module:"} item={psu} property={"enablePsuFeedback"} index={index}/> 
+                    {
+                        psu.enablePsuFeedback &&
+                        <div>
+                            <DeviceSelection item={psu} index={index} 
+                                label={"Target PSU feedback I/O Module"}
+                                lineProperty={"psuFeedbackIOTargetLine"}
+                                stationProperty={"psuFeedbackIOTargetLocation"}
+                                deviceProperty={"psuFeedbackIOTargetDT"}
+                                type="ioModule"
+                                canCreateDevice={true}
+                                onPortSelect={handlePsuFeedbackPortSelect}
+                                portConfig ={{
+                                  title:"Select the Port of the I/O Module:",
+                                  property:"psuFeedbackIOTargetPort",
+                                  type:"ioModule",
+                                  targetDT:psu.psuFeedbackIOTargetDT,
+                                  targetLocation:psu.psuFeedbackIOTargetLocation,
+                                  targetLine:psu.psuFeedbackIOTargetLine,
+                              }}/>   
+                        </div>
+                    }
+                </div> 
+            }
+            
+            {
+              lpd && 
               <div>
-                  <CheckboxItem title={"Activate PSU Feedback to I/O Module:"} item={psu} property={"enablePsuFeedback"} index={index}/> 
+                  <PsuLoadItem title={"FLA Sum"} amperage={totalFLA} capacity={getCapacity()}/>
                   {
-                      psu.enablePsuFeedback &&
+                      lpd.psu_selected === lpdOptions.turk && 
                       <div>
-                          <DeviceSelection item={psu} index={index} 
-                              label={"Target PSU feedback I/O Module"}
-                              lineProperty={"psuFeedbackIOTargetLine"}
-                              stationProperty={"psuFeedbackIOTargetLocation"}
-                              deviceProperty={"psuFeedbackIOTargetDT"}
-                              type="ioModule"
-                              canCreateDevice={true}
-                              onPortSelect={handlePsuFeedbackPortSelect}
-                              portConfig ={{
-                                title:"Select the Port of the I/O Module:",
-                                property:"psuFeedbackIOTargetPort",
-                                type:"ioModule",
-                                targetDT:psu.psuFeedbackIOTargetDT,
-                                targetLocation:psu.psuFeedbackIOTargetLocation,
-                                targetLine:psu.psuFeedbackIOTargetLine,
-                            }}/>   
+                        <PsuLoadItem title={"Summation XD2 FLA"} amperage={totalXD2FLA} capacity={10}/>
+                        <PsuLoadItem title={"Summation XD3 FLA"} amperage={totalXD3FLA} capacity={10}/>
                       </div>
                   }
-              </div> 
-          }
-          
-          {
-            lpd && 
-            <div>
-                <PsuLoadItem title={"FLA Sum"} amperage={totalFLA} capacity={getCapacity()}/>
-                {
-                    lpd.psu_selected === lpdOptions.turk && 
-                    <div>
-                      <PsuLoadItem title={"Summation XD2 FLA"} amperage={totalXD2FLA} capacity={10}/>
-                      <PsuLoadItem title={"Summation XD3 FLA"} amperage={totalXD3FLA} capacity={10}/>
-                    </div>
-                }
-                {
-                    lpd.psu_selected === lpdOptions.puls && 
-                    <div>
-                      <PsuLoadItem title={"Summation Class 2 FLA"} amperage={totalClass2FLA} capacity={4}/>
-                      <PsuLoadItem title={"Summation X4 FLA"} amperage={totalXD4FLA} capacity={10}/>
-                      <PsuLoadItem title={"Summation X5 FLA"} amperage={totalXD5FLA} capacity={10}/>
-                    </div>
-                }        
-                {
-                    lpd.psu_selected === lpdOptions.ballufBAE0133 && 
-                    <div>
-                      <PsuLoadItem title={"Summation X3 FLA"} amperage={totalXD3FLA} capacity={4.16}/>
-                      <PsuLoadItem title={"Summation X4 FLA"} amperage={totalXD4FLA} capacity={4.16}/>
-                      <PsuLoadItem title={"Summation X5 FLA"} amperage={totalXD5FLA} capacity={4.16}/>
-                    </div>
-                }      
-            </div>
-          }  
-          {
-            lpd && 
-            <>
-               <SetItemsNumberInputBox title={"Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)"} 
-                    items={psu.drops} addItems={setNumberOfDrops} index={index}/>          
-                {
-                    psu.drops.map((drop, index) => {
-                      accumulatedFla = accumulatedFla + (drop.outputPort != "Class 2" ? Number(drop.fla) : 0);
-                      return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
-                      size={18} margin={"20px"} open={false} 
-                      component={drop}
-                      headerIcon={drop.UI.icon}
-                      children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} 
-                        drop={drop} lpd={lpd} psu={psu} accumulatedFla={accumulatedFla}
-                        onFlaChange={handleFlaChange} updateOutputPort={updateOutputPort}/>}/>
-                    })
-                } 
-            </>
-          }
+                  {
+                      lpd.psu_selected === lpdOptions.puls && 
+                      <div>
+                        <PsuLoadItem title={"Summation Class 2 FLA"} amperage={totalClass2FLA} capacity={4}/>
+                        <PsuLoadItem title={"Summation X4 FLA"} amperage={totalXD4FLA} capacity={10}/>
+                        <PsuLoadItem title={"Summation X5 FLA"} amperage={totalXD5FLA} capacity={10}/>
+                      </div>
+                  }        
+                  {
+                      lpd.psu_selected === lpdOptions.ballufBAE0133 && 
+                      <div>
+                        <PsuLoadItem title={"Summation X3 FLA"} amperage={totalXD3FLA} capacity={4.16}/>
+                        <PsuLoadItem title={"Summation X4 FLA"} amperage={totalXD4FLA} capacity={4.16}/>
+                        <PsuLoadItem title={"Summation X5 FLA"} amperage={totalXD5FLA} capacity={4.16}/>
+                      </div>
+                  }      
+              </div>
+            }  
+            {
+              lpd && 
+              <>
+                <SetItemsNumberInputBox title={"Enter the number of devices to be powered by this PSU (i.e., number of 24V drops)"} 
+                      items={psu.drops} addItems={setNumberOfDrops} index={index}/>          
+                  {
+                      psu.drops.map((drop, index) => {
+                        accumulatedFla = accumulatedFla + (drop.outputPort != "Class 2" ? Number(drop.fla) : 0);
+                        return <HeadingItem label={`24VDC field power drop ${drop.getIndex()+1}`} 
+                        size={18} margin={"20px"} open={false} 
+                        component={drop}
+                        headerIcon={drop.UI.icon}
+                        children={<LpdPsuDropItem lpdIndex={lpdIndex} psuIndex={psuIndex} dropIndex={index} 
+                          drop={drop} lpd={lpd} psu={psu} accumulatedFla={accumulatedFla}
+                          onFlaChange={handleFlaChange} updateOutputPort={updateOutputPort}/>}/>
+                      })
+                  } 
+              </>
+            }
+          </div>
         </div>
-      </div>
+      }
+      
+      </>
     );
   };
   
