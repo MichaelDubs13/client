@@ -1,5 +1,8 @@
 import Component from "./Component";
 import ProjectConfiguration from "./ProjectConfiguration";
+import useAuthStore from "../../../../../store/authStore";
+import { use } from "react";
+import { get } from "react-hook-form";
 
 export default class ManufacturingEquipmentLINE extends Component{
     constructor(customer) {
@@ -9,7 +12,11 @@ export default class ManufacturingEquipmentLINE extends Component{
         this._class = "ManufacturingEquipmentLINE";
         this._name = "ManufacturingEquipmentLINE";
         this._customer = customer;
+
+        const user = useAuthStore.getState().user;
+        this._userEmail = user ? user.email : null;
     }
+    
 
     get Parameters(){
         return [{name: "Plant", value: ProjectConfiguration.plant, type: "String"},
@@ -50,7 +57,7 @@ export default class ManufacturingEquipmentLINE extends Component{
             {name: "CreatorZipCode_10237", value:  this._customer.CreatoryZipCode_10237, type: "String"},
             {name: "CreatorCountry_10239", value:  this._customer.CreatorCountry_10239, type: "String"},
             {name: "b_EnableSendMail", value:  this._customer.b_EnableSendMail, type: "Boolean"},
-            {name: "userEmailAddress", value:  this._customer.CreatorEmail_10242, type: "String"},
+            {name: "userEmailAddress", value:  this._userEmail, type: "String"},
         ];
     }
 }
