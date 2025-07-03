@@ -73,7 +73,7 @@ const LineConfiguration = ({loadCount}) => {
     const getCircuitBreakers = (pdp, id) => {
         var items = []
         Object.keys(pdp.branchCircuit).forEach(key => {
-            var childItems = getChildItems(pdp.branchCircuit[key]);
+            var childItems = getChildItems(pdp.branchCircuit[key],id);
             items.push(...childItems);
         })
         return items;
