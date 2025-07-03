@@ -119,4 +119,23 @@ export const pdpBranchCircuitModel = {
 
     return branchCircuit;
   },
+
+  getSpaceUsed: function(amperage) {
+    switch(amperage){
+      case '250A':
+        return 105;
+      case '100A':
+        return 76;
+      case '70A':
+      case '60A':
+      case '40A':
+      case '30A':
+        return 72;
+      case '20A':
+      case '10A':
+        return 45;
+      default:
+        return 0;
+    }
+  },
 }

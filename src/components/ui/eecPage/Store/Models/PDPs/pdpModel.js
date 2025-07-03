@@ -46,6 +46,19 @@ export const pdpModel = {
             type:'pdp',
             id:uuidv4(),
           },
+          getSpaceUsed: function() {
+            var total = 0;
+            Object.keys(this.branchCircuit).forEach(key => {
+              const spaceUsed = this.branchCircuit[key].length * pdpBranchCircuitModel.getSpaceUsed(key);
+              total = total + spaceUsed;
+            })
+
+            if(this.Opt_HotPwrEnable) total = total + 45;
+            if(this.Opt_SurgeProtectionDevice) total = total + 55;
+            if(this.PwrMonitorEnable) total = total + 90;
+
+            return total;
+          },
           setExpanded: function(value){
             var indexObject = this.getIndexObject();
             this.setValue(indexObject, "expanded", value, true, false);

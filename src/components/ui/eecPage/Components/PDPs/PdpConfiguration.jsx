@@ -5,10 +5,11 @@ import DropdownItem from '../Util/DropdownItem';
 import CheckboxItem from '../Util/CheckboxItem';
 import PowerDropConfiguration from './PowerDropConfiguration';
 import HotPowerConfiguration from './HotPowerConfiguration';
-import { DataTable } from '@tesla/design-system-react';
+import { DataTable, FormItem, FormLabel } from '@tesla/design-system-react';
 import LineLocationSelection from '../Common/LineLocationSelection';
 import LineStationSelection from "../Common/LineStationSelection";
 import { getTrailingNumbers } from "../../Store/util";
+import { useState } from "react";
 
 const PdpConfiguration = ({pdp, index}) => {
     const pdpIndex = {pdpIndex:index}
@@ -24,6 +25,9 @@ const PdpConfiguration = ({pdp, index}) => {
         pdp.setValue(pdpIndex, "hotPowerPanelLocation", `HPDP${trailingNumbers}`)
     }
 
+    const totalSpace = pdp.enclosureSize === "800x1400x500(WHD)" ? 1320 : 2417;
+    const availableSpace = totalSpace - pdp.getSpaceUsed();
+    
     return (
         
         <div>
@@ -36,6 +40,13 @@ const PdpConfiguration = ({pdp, index}) => {
                     <CheckboxItem title={"Power monitor enable"} item={pdp} property={"PwrMonitorEnable"} index={pdpIndex}/>
                     <CheckboxItem title={"Surge protection enable"} item={pdp} property={"Opt_SurgeProtectionDevice"} index={pdpIndex}/>
                     <CheckboxItem title={"Hot Power enable"} item={pdp} property={"Opt_HotPwrEnable"}  index={pdpIndex} onChange={handleSetOpt_HotPwrChange}/>
+                    <div style={{display:'flex'}}>
+                        <FormItem className='form-item-device'>
+                            <FormLabel className="form-label-device">Available Space</FormLabel>
+                            <InputTextItem valueStyle={availableSpace < 0 ?  {color:'red'} : null} placeHolder={`${availableSpace}/${totalSpace}mm`} readOnly={true}/>
+                            {availableSpace < 0 && <p style={{color:'red', marginLeft:'50px'}}> Not enough space</p>}
+                        </FormItem>
+                    </div>
                 </DataTable>
             </div>  
 
