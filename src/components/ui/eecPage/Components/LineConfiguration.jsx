@@ -31,7 +31,7 @@ import { settingStore } from "../Store/settingStore";
  */
 const LineConfiguration = ({loadCount}) => {
     // this is the data being used in the UI for the line configuration
-    const [activeTab, setActiveTab] = useState('tab-1');
+    const [activeTab, setActiveTab] = useState('tab-line');
     const pdps = pdpStore((state) => state.pdps);
     const xpdps = xpdpStore((state) => state.xpdps);
     const mcps = mcpStore((state) => state.mcps);
@@ -45,25 +45,25 @@ const LineConfiguration = ({loadCount}) => {
     const setOptionsValue = settingStore((state)=>state.setOptionsValue);
 
       const renderSwitch = (param) => {
-        if(param.startsWith('tab-1')){
+        if(param.startsWith('line')){
             return <ManufacturingLineNameAndLocation/>
-        } else if(param.startsWith('tab-2')){
+        } else if(param.startsWith('customer')){
             return <CustomerProperty/>
-        }else if(param.startsWith('tab-3')){
+        }else if(param.startsWith('pdp')){
             return <PdpConfigurations/>
-        }else if(param.startsWith('tab-4')){
+        }else if(param.startsWith('xpdp')){
             return <XpdpConfigurations/>
-        }else if(param.startsWith('tab-5')){
+        }else if(param.startsWith('mcp')){
             return <McpConfigurations/>
-        }else if(param.startsWith('tab-6')){
+        }else if(param.startsWith('lpd')){
             return <LpdConfigurations/>
-        }else if(param.startsWith('tab-7')){
+        }else if(param.startsWith('networkSwitch')){
             return <NetworkSwitchConfigurations/>
-        }else if(param.startsWith('tab-8')){
+        }else if(param.startsWith('hmi')){
             return <HmiInstances/>
-        }else if(param.startsWith('tab-9')){
+        }else if(param.startsWith('safetyGate')){
             return <SafetyGateLocationCount/>
-        }else if(param.startsWith('tab-10')){
+        }else if(param.startsWith('ioModule')){
             return <IO_ModuleCascadingCollection/>
         }
         
@@ -145,70 +145,70 @@ const LineConfiguration = ({loadCount}) => {
 
       const items = [
         {
-            id:'tab-1',
+            id:'line',
             leadingText: 'Line Configurations',
-            highlighted: activeTab==='tab-1',
+            highlighted: activeTab==='line',
         },
         {
-            id:'tab-2',
+            id:'customer',
             leadingText: 'Project Property',
-            highlighted: activeTab==='tab-2',
+            highlighted: activeTab==='customer',
         },
         {
-            id:'tab-3',
+            id:'pdp',
             leadingText: "PDPs",
             trailing: <Chip text={`${pdps.length}`} />,
-            items: getItems(pdps, 'tab-3'),
-            highlighted: activeTab==='tab-3',
+            items: getItems(pdps, 'pdp'),
+            highlighted: activeTab==='pdp',
         },
         {
-            id:'tab-4',
+            id:'xpdp',
             leadingText: "XPDPs",
             trailing: <Chip text={`${xpdps.length}`} />,
-            items: getItems(xpdps, 'tab-4'),
-            highlighted: activeTab==='tab-4',
+            items: getItems(xpdps, 'xpdp'),
+            highlighted: activeTab==='xpdp',
         },
         {
-            id:'tab-5',
+            id:'mcp',
             leadingText: "MCPs",
             trailing: <Chip text={`${mcps.length}`} />,
-            items: getItems(mcps, 'tab-5'),
-            highlighted: activeTab==='tab-5',
+            items: getItems(mcps, 'mcp'),
+            highlighted: activeTab==='mcp',
         },
         {
-            id:'tab-6',
+            id:'lpd',
             leadingText: "24V Power Dist.",
             trailing: <Chip text={`${lpds.length}`} />,
-            items: getItems(lpds, 'tab-6'),
-            highlighted: activeTab==='tab-6',
+            items: getItems(lpds, 'lpd'),
+            highlighted: activeTab==='lpd',
         },
         {
-            id:'tab-7',
+            id:'networkSwitch',
             leadingText: "Network Switches",
             trailing: <Chip text={`${networkSwitches.length}`} />,
-            items: getItems(networkSwitches, 'tab-7'),
-            highlighted: activeTab==='tab-7',
+            items: getItems(networkSwitches, 'networkSwitch'),
+            highlighted: activeTab==='networkSwitch',
         },
         {
-            id:'tab-8',
+            id:'hmi',
             leadingText: "HMIs",
             trailing: <Chip text={`${hmis.length}`} />,
-            items: getItems(hmis, 'tab-8'),
-            highlighted: activeTab==='tab-8',
+            items: getItems(hmis, 'hmi'),
+            highlighted: activeTab==='hmi',
         },
         {
-            id:'tab-9',
+            id:'safetyGate',
             leadingText: "Safety Gate Switches",
             trailing: <Chip text={`${safetyGates.length}`} />,
-            items: getItems(safetyGates, 'tab-9'),
-            highlighted: activeTab==='tab-9',
+            items: getItems(safetyGates, 'safetyGate'),
+            highlighted: activeTab==='safetyGate',
         },
         {
-            id:'tab-10',
+            id:'ioModule',
             leadingText: "IO Modules",
             trailing: <Chip text={`${ioModuleGroups.length}`} />,
-            items: getItems(ioModuleGroups, 'tab-10'),
-            highlighted: activeTab==='tab-10',
+            items: getItems(ioModuleGroups, 'ioModule'),
+            highlighted: activeTab==='ioModule',
         },
       ]
 
