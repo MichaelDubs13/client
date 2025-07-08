@@ -25,6 +25,7 @@ export default class BranchCircuit extends Component {
             {name: "TargetDevice_DT", value: this._branchCircuit.targetDT, type: "String"}, 
             {name: "TargetDevice_FLA", value: this._branchCircuit.targetFLA, type: "String"}, 
             {name: "PwrDrop_Spare", value: this._branchCircuit.PwrDrop_Spare, type: "Boolean"},
+            {name: "DropType", value: this._branchCircuit.DropType, type: "String"},
             ];
     }   
     

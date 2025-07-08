@@ -242,6 +242,12 @@ export const pdpModel = {
         if(isString(pdp.FLA)){
             pdp.FLA = pdp.FLA.toLowerCase().endsWith("a") ? pdp.FLA : `${pdp.FLA}A`;
         }
+        Object.keys(pdp.branchCircuit).forEach(key => { 
+          pdp.branchCircuit[key].forEach((branchCircuit, index) => {
+            branchCircuit.DropType = branchCircuit.DropType.split('-')[0];
+            console.log(branchCircuit);
+          });
+        });
       });
       return pdps;
     },
