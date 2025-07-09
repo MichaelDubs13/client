@@ -42,9 +42,9 @@ const PdpConfiguration = ({pdp, index}) => {
                     <CheckboxItem title={"Hot Power enable"} item={pdp} property={"Opt_HotPwrEnable"}  index={pdpIndex} onChange={handleSetOpt_HotPwrChange}/>
                     <div style={{display:'flex'}}>
                         <FormItem className='form-item-device'>
-                            <FormLabel className="form-label-device">Available Space</FormLabel>
+                            <FormLabel className="form-label-device">Available Busbar space (remaining space/total space)</FormLabel>
                             <InputTextItem valueStyle={availableSpace < 0 ?  {color:'red'} : null} placeHolder={`${availableSpace}/${totalSpace}mm`} readOnly={true}/>
-                            {availableSpace < 0 && <p style={{color:'red', marginLeft:'50px'}}> Not enough space</p>}
+                            {availableSpace < 0 && <p style={{color:'red', marginLeft:'50px'}}> The available space as been exceeded. Reduce the number of drops or create another PDP.</p>}
                         </FormItem>
                     </div>
                 </DataTable>
