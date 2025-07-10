@@ -1,3 +1,5 @@
+import * as XLSX from 'xlsx'
+
 export const filterItemsByStartsOptions = (options, items, key) => {
     return items.filter(item => options.some(option => item[key]?.startsWith(option)));
 }
@@ -45,5 +47,12 @@ export const splitIntoTwo = (source, delimiter) =>{
     } else {
         return ["",""]
     }
+}
+
+export const getCellValue = (worksheet, row, col) => {
+    const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+    const desiredCell = worksheet[cellAddress];
+    const cellValue = desiredCell ? desiredCell.v : null; 
+    return cellValue;
 }
 

@@ -21,14 +21,14 @@ const UploadButton = () => {
         setEecPath(event.target.value);
         setEecFile(file);
         await parseExcel(event.target.files[0]);
-        event.target.value = null;
-        addToast({
-          title: 'EEC Data updated',
-          dismissible: true,
-          caption: 'EEC UI forms updated',
-          variant: 'status',
-          statusType: 'info',
-        })
+        // event.target.value = null;
+        // addToast({
+        //   title: 'EEC Data updated',
+        //   dismissible: true,
+        //   caption: 'EEC UI forms updated',
+        //   variant: 'status',
+        //   statusType: 'info',
+        // })
       }
     }
     
@@ -38,10 +38,17 @@ const UploadButton = () => {
         reader.onload = function(event) {
           var data = event.target.result;
           const excelParser = new Parser(data);
-          const {config,pdps, xpdps, mcps, lpds, switches, devices, groupedIOModules, hmis, gates} = excelParser.parse();
-          
+          excelParser.parse();
+          const {pdps} = excelParser.parse();
+          const xpdps = []
+          const mcps = []
+          const lpds = []
+          const switches = []
+          const hmis = []
+          const gates = []
+          const groupedIOModules = []
           lineConfiguration.setAllModels(pdps, xpdps, mcps, lpds, switches, hmis, gates, groupedIOModules);
-          setConfig(config);
+          // setConfig(config);
         }
         reader.readAsBinaryString(file)
   }

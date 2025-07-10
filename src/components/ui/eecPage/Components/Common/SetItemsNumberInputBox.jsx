@@ -3,7 +3,7 @@ import { FormLabel, FormItem, Button, FormInputText } from '@tesla/design-system
 import "../../Eec.css";
 import { useForm, Controller } from "react-hook-form";
 
-const SetItemsNumberInputBox = ({title, items, addItems, index, property, validation}) => {
+const SetItemsNumberInputBox = ({title, items, addItems, index, property, validation, onSubmit}) => {
     const [numberOfItems, setNumberOfItems] = useState(items.length);
     const { control, trigger, setValue, formState: { errors } } = useForm();
     const validationProperty = "input";
@@ -20,6 +20,10 @@ const SetItemsNumberInputBox = ({title, items, addItems, index, property, valida
             addItems(index, numberOfItems);     
         } else {
             addItems(numberOfItems); 
+        }
+
+        if(onSubmit){
+            onSubmit();
         }
     }
     

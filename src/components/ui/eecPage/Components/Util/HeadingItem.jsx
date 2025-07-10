@@ -36,7 +36,6 @@ const HeadingItem = ({headerIcon, label, size, open, margin, children, component
         if(!selected.element) return true;
         var compareList = [selected.element,];
         getParents(selected.element, compareList);
-        console.log(compareList)
         for(let i=0;i<compareList.length;i++){
             var item = compareList[i];
             if(item.data.type === component.data.type && item.data.id === component.data.id){

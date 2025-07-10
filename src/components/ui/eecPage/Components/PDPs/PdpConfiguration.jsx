@@ -9,7 +9,7 @@ import { DataTable, FormItem, FormLabel } from '@tesla/design-system-react';
 import LineLocationSelection from '../Common/LineLocationSelection';
 import LineStationSelection from "../Common/LineStationSelection";
 import { getTrailingNumbers } from "../../Store/util";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PdpConfiguration = ({pdp, index}) => {
     const pdpIndex = {pdpIndex:index}
@@ -24,6 +24,9 @@ const PdpConfiguration = ({pdp, index}) => {
         var trailingNumbers = getTrailingNumbers(value);
         pdp.setValue(pdpIndex, "hotPowerPanelLocation", `HPDP${trailingNumbers}`)
     }
+    useEffect(() => {
+        pdp.setCBNumber();
+    }, [pdp.PwrMonitorEnable]);
 
     const totalSpace = pdp.enclosureSize === "800x1400x500(WHD)" ? 1320 : 2417;
     const availableSpace = totalSpace - pdp.getSpaceUsed();

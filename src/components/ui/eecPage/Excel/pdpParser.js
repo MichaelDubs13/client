@@ -1,123 +1,131 @@
 import * as XLSX from 'xlsx'
 import {pdpConfiguration} from '../Store/pdpStore';
-import { findClosestHigherNumber } from './util';
+import { findClosestHigherNumber, getCellValue } from './util';
 import ProjectConfiguration from '../Models/ManufacturingEquipmentLine/ProjectConfiguration';
 import { pdpModel } from '../Store/Models/PDPs/pdpModel';
 import { pdpBranchCircuitModel } from '../Store/Models/PDPs/pdpBranchCircuitModel';
+import { formatToTwoDigits } from '../Store/util';
+
+const col = {
+    line:0,
+    location:1,
+    disconnectSize:2,
+    enclosureSize:3,
+    nameplateFLA:4,
+    powerMonitor:5,
+    surgeProtection:6,
+    hotPowerPanel:7,
+    hotPowerPowerDrop:{
+        dropType:8,
+        amperage:9,
+        line:10,
+        location:11,
+        dt:12,
+        description:13,
+    },
+    branchCircuitPowerDrop:{
+        spare: 14,
+        amperage:15,
+        dropType:16,
+        description:17,
+        line:18,
+        location:19,
+        dt:20,
+        cableLength:21,
+        fla:22,
+        totalFla:23,
+    }
+}
+
 
 const pdpParser = {
-    enclosureSizeOptions: ["800x1400x500", "1000x1800x500"],
-    ampOptions : [600, 400, 200],
     parse:(workbook, sheet) => {
-        var arr = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
         let pdps = [];
-        arr.forEach(item => {
-            const name = item["PDP name"];
-            var enclosureSize = item["Enclosure Size"];
-            enclosureSize = pdpParser.getEnclosureSize(enclosureSize);
-            const numberOfBusBar = pdpParser.getNumberOfBusBar(enclosureSize);
-            var amp = item["Amperage"];
-            if(amp){
-                amp = findClosestHigherNumber(pdpParser.ampOptions, amp)
-                amp = `${amp}A`;
-            }
+        let pdpData = [];
+        const startRow = 3;
+        const worksheet = workbook.Sheets[sheet];
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
 
-            const FLA = item["FLA Demand"];
-            var location = item["Location"];
-            if(location){
-                var locationArray = location.split('-')
-                if(locationArray.length > 1){
-                    location = locationArray[1]
-                }
-            }
+        //create PDPs
+        for(let row=startRow;row<range.e.r;row++){
+            const line = getCellValue(worksheet, row, col.line);
+            
+            if(line){
+                const location = getCellValue(worksheet, row, col.location);
+                const disconnectSize = getCellValue(worksheet, row, col.disconnectSize);
+                const enclosureSize = getCellValue(worksheet, row, col.enclosureSize);
+                const nameplateFLA = getCellValue(worksheet, row, col.nameplateFLA);
+                const powerMonitor = getCellValue(worksheet, row, col.powerMonitor);
+                const surgeProtection = getCellValue(worksheet, row, col.surgeProtection);
 
-            const spare10A = item["Spare 10A"];
-            const spare20A = item["Spare 20A"];
-            const spare30A = item["Spare 30A"];
-            const spare40A = item["Spare 40A"];
-            const spare60A = item["Spare 60A"];
-            const spare70A = item["Spare 70A"];
-            const spare100A = item["Spare 100A"];
-            const spare250A = item["Spare 250A"];
-            const branchCircuit = pdpModel.initializeBranchCircuits();
-            const hotPowerDrops = [] //only available in UI
-            if(name){
-                const pdp = pdpModel.create(null,name);
-                pdp.deviceTag =name;
-                pdp.amp = amp;
-                pdp.FLA = FLA; 
-                pdp.location = name; //location is name of the PDP eg:MPDP
-                pdp.enclosureSize=enclosureSize;
-                pdp.numberOfBusBar=numberOfBusBar;
-                pdp.spare10A=spare10A;
-                pdp.spare20A=spare20A;
-                pdp.spare30A=spare30A;
-                pdp.spare40A=spare40A;
-                pdp.spare60A=spare60A;
-                pdp.spare70A=spare70A;
-                pdp.spare100A=spare100A;
-                pdp.spare250A=spare250A;
-                pdp.Opt_SurgeProtectionDevice=false
-                pdp.PwrMonitorEnable=false;
-                pdp.Opt_HotPwrEnable=false;
-                pdp.branchCircuit=branchCircuit;
-                pdp.hotPowerDrops=hotPowerDrops;
+                var pdp = pdpModel.create();
+                pdp.line = line;
+                pdp.location = location;
+                pdp.enclosureSize = enclosureSize;
+                pdp.FLA = nameplateFLA;
+                pdp.PwrMonitorEnable = powerMonitor;
+                pdp.Opt_SurgeProtectionDevice = surgeProtection;
                 pdps.push(pdp);
-            }
-        })
-
-        return pdps;
-    },
-    getEnclosureSize:(enclosureSize)=>{
-        if(!enclosureSize || enclosureSize === "N/A"){
-            enclosureSize = "1000x1800x500(WHD)";
-        } else {
-            if(pdpParser.enclosureSizeOptions.includes(enclosureSize)){
-                enclosureSize = `${enclosureSize}(WHD)`;
-            } else {
-                enclosureSize = "1000x1800x500(WHD)";
+                
+                //set endRow for previous pdp
+                if(pdpData.length > 0){
+                    pdpData.at(-1).endRow = row-1;
+                }
+                pdpData.push({model:pdp, startRow: row, endRow:0})
             }
         }
 
-        return enclosureSize;
-    },
-    getNumberOfBusBar:(enclosureSize)=>{
-        if(enclosureSize == "800x1400x500(WHD)"){
-            return 3;
-        } else {
-            return 4;
-        }
-    },
-    createPdpBranchCircuit:(pdps, devices)=>{
-        pdps.forEach(pdp => {
-            var sources = devices.filter(device => device.ac_primary_connection_source === pdp.deviceTag)
-            for(let i=0; i<sources.length; i++){
-                const sourceDevice = sources[i];
-                if(sourceDevice.ac_primary_power_branch_size){
-                    const arr = sourceDevice.ac_primary_power_branch_size.split(" ")
-                    if(arr.length > 2){
-                        const branchSize = arr[2]
-                        const branch = pdpParser.createBranchCircuit(sourceDevice, pdp, branchSize);
-                        pdp.branchCircuit[branchSize].push(branch);
-                    }
+        //create branchCircuits
+        for(let i=0;i<pdpData.length;i++){
+            var cbNumber = 0;
+            const item = pdpData[i];
+            const pdp = item.model;
+            const endRow = i === pdpData.length-1 ? range.e.r : item.endRow;
+            var branchCircuitData = [];
+            for(let row=item.startRow;row<endRow;row++){
+                const amperage = getCellValue(worksheet, row, col.branchCircuitPowerDrop.amperage);
+                if(amperage){
+                    const dto = {amperage:amperage}
+                    dto.spare = getCellValue(worksheet, row, col.branchCircuitPowerDrop.spare);
+                    dto.line = getCellValue(worksheet, row, col.branchCircuitPowerDrop.line);
+                    dto.location = getCellValue(worksheet, row, col.branchCircuitPowerDrop.location);
+                    dto.dropType = getCellValue(worksheet, row, col.branchCircuitPowerDrop.dropType);
+                    dto.description = getCellValue(worksheet, row, col.branchCircuitPowerDrop.description);
+                    dto.dt = getCellValue(worksheet, row, col.branchCircuitPowerDrop.dt);
+                    dto.cableLength = getCellValue(worksheet, row, col.branchCircuitPowerDrop.cableLength);
+                    dto.fla = getCellValue(worksheet, row, col.branchCircuitPowerDrop.fla);
+                    dto.totalFla = getCellValue(worksheet, row, col.branchCircuitPowerDrop.totalFla);
+                    branchCircuitData.push(dto);
                 }
             }
-            //pdpConfiguration.updateBranchCircuitDT(pdp.branchCircuit)
-            pdpConfiguration.calculateAllBranchFLA(pdp);
-        })        
+
+            branchCircuitData = branchCircuitData.sort().reverse()
+
+            console.log(branchCircuitData)
+            var cbNumber = 0;
+            branchCircuitData.forEach(dto => {
+                pdpParser.createBranchCircuit(pdp, dto, cbNumber)
+                cbNumber = cbNumber + 1;
+            })
+        }
+
+
         return pdps;
     },
-    createBranchCircuit:(sourceDevice, pdp, amperage)=>{
-        const branch = pdpBranchCircuitModel.create(pdp, amperage);
-        branch.line=ProjectConfiguration.line;
-        branch.targetDT = sourceDevice.device_dt;
-        branch.targetLocation = sourceDevice.target_device_location;
-        branch.targetFLA = sourceDevice.primary_ac_power_fla;
-        branch.targetCableLength = sourceDevice.ac_primary_power_length;
-        branch.DropType = sourceDevice.ac_secondary_power_drop_type;
-        branch.PwrDrop_DescTxt = sourceDevice.target_device_function_text;
-        return branch;
-    },
+    createBranchCircuit:(pdp,dto, cbNumber)=>{
+        const branchCircuit = pdpBranchCircuitModel.create(pdp, dto.amperage);
+        branchCircuit.PwrDrop_Spare = dto.spare;
+        branchCircuit.DropType = dto.dropType;
+        branchCircuit.description = dto.description;
+        branchCircuit.deviceDT = `CB${formatToTwoDigits(1+cbNumber)}`;
+        branchCircuit.line = dto.line;
+        branchCircuit.targetLocation = dto.location;
+        branchCircuit.targetDT = dto.dt;
+        branchCircuit.targetCableLength = dto.cableLength;
+        branchCircuit.targetFLA = dto.fla;
+        branchCircuit.targetFLA_Total = dto.totalFla;
+        pdp.branchCircuit[dto.amperage].push(branchCircuit)
+    }
 }
 
 export default pdpParser

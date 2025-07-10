@@ -131,6 +131,20 @@ export const pdpModel = {
               drop.setLine(line, newLine);
             })
           },
+          setCBNumber: function () {
+            var cbNumber = 0;
+            if(this.PwrMonitorEnable) cbNumber = 2;
+
+            Object.keys(this.branchCircuit).sort(function (a,b) {
+              return b-a
+            }).forEach(key => {
+                this.branchCircuit[key].forEach(branchCircuit => {
+                    var indexObject= branchCircuit.getIndexObject();
+                    branchCircuit.setValue(indexObject, "deviceDT", `CB${formatToTwoDigits(1+cbNumber)}`)
+                    cbNumber = cbNumber + 1;
+                });
+            });
+          },
           getNumberOfCBs: function(){
             var cbCount = 0;
             Object.keys(this.branchCircuit).forEach(key => {
