@@ -60,6 +60,7 @@ const pdpParser = {
 
                 var pdp = pdpModel.create();
                 pdp.line = line;
+                pdp.amp = disconnectSize;
                 pdp.location = location;
                 pdp.enclosureSize = enclosureSize;
                 pdp.FLA = nameplateFLA;

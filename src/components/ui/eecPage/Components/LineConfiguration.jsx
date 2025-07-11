@@ -222,8 +222,8 @@ const LineConfiguration = ({loadCount}) => {
 
     return (
         <>
+            <IconTriggerHeading heading="Job History" children={<EecJobHistory/>} defaultState={true}/>
             <IconTriggerHeading heading="One-Lines" children={<OneLineComponents/>}/>
-            <IconTriggerHeading heading="Job History" children={<EecJobHistory/>}/>
             
             <div className="tds-layout tds-layout-2col-content_heavy tds-layout-main--right" style={{padding:'0px'}}>
                 <aside className="tds-layout-item tds-layout-aside">

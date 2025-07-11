@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TD, TBody, DataTH, DataTable, Pagination, FormInputSearch } from "@tesla/design-system-react";
+import { TD, TBody, DataTH, DataTable, Pagination, FormInputSearch, Link } from "@tesla/design-system-react";
 import DownloadButton from '../libraryPage/DownloadButton';
 import useEecStore from '../../../store/eecStore';
+import { Icon, IconButton } from '@tesla/design-system-react';
+import { iconStatusSuccess} from '@tesla/design-system-icons';
 
 
 
@@ -39,7 +41,9 @@ const handleSearchChange = (event) => {
               <tr>
                   <DataTH sortable={true} key="username">User</DataTH>
                   <DataTH sortable={true} key="imx" >IMX</DataTH>
+                  <DataTH sortable={true} key="progress" >Progress</DataTH>
                   <DataTH sortable={true} key="time" >Time</DataTH>
+                  <DataTH sortable={true} key="state" >State</DataTH>
               </tr>
           </thead>
           <TBody>
@@ -53,7 +57,20 @@ const handleSearchChange = (event) => {
                                 <TD><DownloadButton label={history.filename} filePath={`EEC\\${history.filename}`}/></TD> :
                                 <TD></TD>
                               }
+                              {
+                                history.job_id ?
+                                <TD><Link href={`http://sjc37p1epnap001.teslamotors.com:8686/#/jobs/${history.job_id}`}>Job Progress</Link> </TD> :
+                                <TD></TD>
+                              }
                               <TD>{history.time}</TD>
+                              <TD>
+                                {
+                                  history.state === 1 &&
+                                  <IconButton size="medium">
+                                    <Icon data={iconStatusSuccess} size="medium" />
+                                  </IconButton> 
+                                }
+                              </TD>
                     </tr>
                   )})
           }

@@ -3,8 +3,8 @@ import { IconTrigger } from '@tesla/design-system-react';
 import { useState } from "react";
 
 
-const IconTriggerHeading = ({heading, children}) => {
-   const [pressed, setPressed] = useState(false);
+const IconTriggerHeading = ({heading, children, defaultState}) => {
+   const [pressed, setPressed] = useState(defaultState);
 
     return (
         
