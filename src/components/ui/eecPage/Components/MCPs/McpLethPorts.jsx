@@ -1,6 +1,6 @@
 import DeviceSelection from "../Common/DeviceSelection";
 import DropdownItem from "../Util/DropdownItem";
-import { networkSwitchOptions } from "../../Store/networkSwitchStore";
+import { mcpOptions } from "../../Store/mcpStore";
 import "../../Eec.css";
 
 const McpLethPorts = ({ 
@@ -26,7 +26,7 @@ const McpLethPorts = ({
                   targetLine:port.line,
               }}/>    
             
-          <DropdownItem title={"Cable length (m)"} item={port} property={"targetCableLength"}  options={networkSwitchOptions.cableLengthOptions} index={index}/>
+          <DropdownItem title={"Cable length (m)"} item={port} property={"targetCableLength"}  options={mcpOptions.cableLengthOptions} index={index}/>
         </div>
       </div>
     );
