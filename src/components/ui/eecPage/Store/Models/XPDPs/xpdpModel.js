@@ -52,6 +52,18 @@ export const xpdpModel = {
             pdpIndex:pdpIndex,
           }
       },
+      setCBNumber: function () {
+        var cbNumber = 0;
+        Object.keys(this.branchCircuit).sort(function (a,b) {
+          return b-a
+        }).reverse().forEach(key => {
+            this.branchCircuit[key].forEach(branchCircuit => {
+                var indexObject= branchCircuit.getIndexObject();
+                branchCircuit.setValue(indexObject, "deviceDT", `CB${formatToTwoDigits(1+cbNumber)}`)
+                cbNumber = cbNumber + 1;
+            });
+        });
+      },
       setValue: function(indexObject, key, value, isUI, isData){
           xpdpStore.getState().setXPdpValue(indexObject, key, value, isUI, isData);
       },

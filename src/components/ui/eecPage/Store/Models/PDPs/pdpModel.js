@@ -137,7 +137,7 @@ export const pdpModel = {
 
             Object.keys(this.branchCircuit).sort(function (a,b) {
               return b-a
-            }).forEach(key => {
+            }).reverse().forEach(key => {
                 this.branchCircuit[key].forEach(branchCircuit => {
                     var indexObject= branchCircuit.getIndexObject();
                     branchCircuit.setValue(indexObject, "deviceDT", `CB${formatToTwoDigits(1+cbNumber)}`)

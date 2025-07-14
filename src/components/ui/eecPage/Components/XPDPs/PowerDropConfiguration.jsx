@@ -42,12 +42,16 @@ const PowerDropConfiguration = ({xpdp, index}) => {
         return [...numberOfPwrDrop20A3p,...numberOfPwrDrop20A1p, ...numberOfPwrDrop15A, ...numberOfPwrDrop8A]
     }
 
+     const handleBranchCircuitChange = () => {
+        xpdp.setCBNumber();
+    }
+
     return (
         
         <div>
             {/* Input fields for each amperage */}
             {Object.keys(xpdp.branchCircuit).reverse().map(amperage => (
-                <SetItemsNumberInputBox title={`Number of ${amperage} power drops:`} 
+                <SetItemsNumberInputBox title={`Number of ${amperage} power drops:`} onSubmit={handleBranchCircuitChange}
                 items={xpdp.branchCircuit[amperage]} addItems={setNumberOfPowerDrps} index={index} property={amperage}
                 validation={amperage === '20A 3ph' ? (value)=>{return isNumberLessThanValidation(2,value)} : null}/>   
             ))}

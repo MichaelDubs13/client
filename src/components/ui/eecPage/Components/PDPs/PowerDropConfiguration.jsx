@@ -13,7 +13,7 @@ const PowerDropConfiguration = ({pdp, index}) => {
         var powerDropItems = []        
         var branchCircuit = pdp.branchCircuit[amperage].sort()
 
-        for(let i=branchCircuit.length-1;i>=0;i--){
+        for(let i=0;i<branchCircuit.length;i++){
             powerDropItems.push(
                 <HeadingItem label={`${amperage} Branch circuit power drop ${i+1}: ${branchCircuit[i].deviceDT}`}
                     size={18} margin={"20px"} open={false}
@@ -34,7 +34,7 @@ const PowerDropConfiguration = ({pdp, index}) => {
         var powerMonitorDrops = [] 
         if(pdp.PwrMonitorEnable){
             for(let i=0;i<2;i++){
-                powerMonitorDrops.push(<HeadingItem label={`Branch circuit for Power Monitor CB${formatToTwoDigits(i)}`} 
+                powerMonitorDrops.push(<HeadingItem label={`Branch circuit for Power Monitor CB${formatToTwoDigits(i+1)}`} 
                 size={18} margin={"20px"}
                 headerIcon="/powerdrop.png" />)    
             }
