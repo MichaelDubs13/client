@@ -22,7 +22,7 @@ const EecPage = () => {
         <>
           <div style={{marginLeft:'50px'}}>
             <div>
-              <p style={{fontSize:'18px', fontWeight:'bold'}}>Report any issues to <Link variant="vertical" href={`https://issues.teslamotors.com/servicedesk/customer/portal/3/create/969`} rel="noopener noreferrer" target="_blank">EPLAN-191</Link></p>
+              <p style={{fontSize:'18px', fontWeight:'bold'}}>Report any issues to JIRA Service Desk / designTech Support / EEC Issue <Link variant="vertical" href={`https://issues.teslamotors.com/servicedesk/customer/portal/3/create/969`} rel="noopener noreferrer" target="_blank">click here</Link></p>
             </div>
             <PrivateRoute message={"access Tools"}>
               <h2>
