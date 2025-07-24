@@ -48,6 +48,6 @@ export function isValidLocation(str){
 
 export function isValidLineName(str){
   //validate if a string contains only letters, numbers, underscores, and periods
-  return /^[a-zA-Z0-9_.]+$/.test(str) || 'only letters, numbers, underscores, and periods allowed'
+  return /^[a-zA-Z0-9_]+$/.test(str) || 'only letters, numbers and underscores allowed'
   
 }
