@@ -34,7 +34,7 @@ export const networkSwitchModel = {
       alarmEnable: false, // EEC variable name: Alarm_Output_Selection
       consoleEnable: false, // EEC variable name: Console_Output_Selection
       alarmName: "", // EEC variable name: Alarm_DT
-      consuleName: "", // EEC variable name: Console_DT
+      consoleName: "", // EEC variable name: Console_DT
       ports_8: 0, // EEC variable name: 8_ports
       ports_8or16: 16, // EEC variable name: 8or16_ports
       ports_8or16or24: 0, // EEC variable name: 8or16or24_ports

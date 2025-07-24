@@ -100,7 +100,7 @@ const NetworkSwitchConfiguration = ({networkSwitch, index, createNew}) => {
                     <CheckboxItem title={"Console output enable"} item={networkSwitch} property={"consoleEnable"}  index={networkSwitchIndex}/>
                     {networkSwitch.consoleEnable && (
                         <>
-                            <InputTextItem title={"Console device tag (e.g., CONSOLE)"} item={networkSwitch} property={"consuleName"} index={networkSwitchIndex}/>
+                            <InputTextItem title={"Console device tag (e.g., CONSOLE)"} item={networkSwitch} property={"consoleName"} index={networkSwitchIndex}/>
                         </>
                     )}
 

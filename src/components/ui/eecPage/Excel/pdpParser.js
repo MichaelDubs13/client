@@ -16,24 +16,26 @@ const col = {
     surgeProtection:6,
     hotPowerPanel:7,
     hotPowerPowerDrop:{
-        dropType:8,
-        amperage:9,
-        line:10,
-        location:11,
-        dt:12,
-        description:13,
+        hpdpLine:8,
+        hpdpLocation:9,
+        dropType:10,
+        amperage:11,
+        line:12,
+        location:13,
+        dt:14,
+        description:15,
     },
     branchCircuitPowerDrop:{
-        spare: 14,
-        amperage:15,
-        dropType:16,
-        description:17,
-        line:18,
-        location:19,
-        dt:20,
-        cableLength:21,
-        fla:22,
-        totalFla:23,
+        spare: 16,
+        amperage:17,
+        dropType:18,
+        description:19,
+        line:20,
+        location:21,
+        dt:22,
+        cableLength:23,
+        fla:24,
+        totalFla:25,
     }
 }
 
@@ -109,6 +111,29 @@ const pdpParser = {
                 cbNumber = cbNumber + 1;
             })
         }
+
+        //create hotPowerDrops
+        /* for(let i=0;i<hpdpData.length;i++){
+            const item = hpdpData[i];
+            const hpdp = item.model;
+            const endRow = i === hpdpData.length-1 ? range.e.r : item.endRow;
+            for(let row=item.startRow;row<endRow;row++){
+                const hotPowerPanel = getCellValue(worksheet, row, col.hotPowerPanel);
+                if(hotPowerPanel){
+                    const hpdpLine = getCellValue(worksheet, row, col.hotPowerPowerDrop.hpdpLine);
+                    const hpdpLocation = getCellValue(worksheet, row, col.hotPowerPowerDrop.hpdpLocation);
+                    const dropType = getCellValue(worksheet, row, col.hotPowerPowerDrop.dropType);
+                    const amperage = getCellValue(worksheet, row, col.hotPowerPowerDrop.amperage);
+                    const line = getCellValue(worksheet, row, col.hotPowerPowerDrop.line);
+                    const location = getCellValue(worksheet, row, col.hotPowerPowerDrop.location);
+                    const dt = getCellValue(worksheet, row, col.hotPowerPowerDrop.dt);
+                    const description = getCellValue(worksheet, row, col.hotPowerPowerDrop.description);
+
+                    hpdp.setHotPowerBranchCircuit(hotPowerPanel, hpdpLine, hpdpLocation,
+                        dropType, amperage, line, location, dt, description)
+                }
+            }
+        } */
 
 
         return pdps;

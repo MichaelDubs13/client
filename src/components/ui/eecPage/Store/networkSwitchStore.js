@@ -52,12 +52,12 @@ const networkSwitchOptions = {
 
   cableLengthOptions: [
     { value: "TBD", label: "TBD" },
-    { value: 1.5, label: 1.5 },
-    { value: 3, label: 3 },
-    { value: 5, label: 5 },
-    { value: 10, label: 10 },
-    { value: 15, label: 15 },
-    { value: 20, label: 20 },
+    { value: "1.5 m", label: "1.5 m" },
+    { value: "3 m", label: "3 m" },
+    { value: "5 m", label: "5 m" },
+    { value: "10 m", label: "10 m" },
+    { value: "15 m", label: "15 m" },
+    { value: "20 m", label: "20 m" },
   ],
 }
 
