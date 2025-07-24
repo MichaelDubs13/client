@@ -258,7 +258,7 @@ export const pdpModel = {
      */
     generateData: (pdps) => {
       pdps.forEach(pdp => {
-        const numberOfBusBar = this.getNumberOfBusBar(pdp.enclosureSize);
+        const numberOfBusBar = pdpModel.getNumberOfBusBar(pdp.enclosureSize);
         pdp.numberOfBusBar = numberOfBusBar;
         if(isString(pdp.FLA)){
             pdp.FLA = pdp.FLA.toLowerCase().endsWith("a") ? pdp.FLA : `${pdp.FLA}A`;
